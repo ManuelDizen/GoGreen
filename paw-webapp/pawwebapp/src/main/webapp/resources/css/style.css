@@ -1,0 +1,97 @@
+*{
+    border: 1px solid lightgreen;
+    font-family: 'Manrope';
+}
+
+.custom-nav{
+    background-color: #407056;
+    color: #ADE28A;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom: 1px solid #EDFA8B;
+    height: 20vh;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+nav {
+    height: 15vh;
+    margin: 0;
+    padding: 0;
+    background-color:#1E425E;
+    color:#ADE28A;
+    align-content: center;
+}
+
+body{
+    background-color: #1e425e;
+    color: white;
+}
+
+.main-container{
+    display:flex;
+    flex-wrap: nowrap;
+    justify-content: space-betwen;
+    flex-grow: 1;
+    margin: 0;
+
+    height:1vh;
+    width: 100vw;
+}
+
+.landing-image{
+    display:block;
+    position:auto;
+    width: 50%;
+    height:50%;
+}
+.web.info{
+    width:100px;
+}
+
+.row{
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+    margin-top: 2vh;
+    width: 100%;
+}
+
+.column {
+    text-align:justify;
+    width:44%;
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+
+.column1{
+    margin-left: 10vh;
+}
+
+.column2{
+    margin-right: 10vh;
+    text-align: center;
+}
+
+  /* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+.standard-button{
+    background-color: #EDF8AB;
+    color: #1E425E;
+    border-radius: 10px;
+}
