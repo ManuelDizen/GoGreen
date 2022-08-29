@@ -22,7 +22,7 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper custom-nav">
-                    <a href="#" class="left brand-logo" style="padding-left:2vw;">
+                    <a href="<c:url value="/"/>" class="left brand-logo" style="padding-left:2vw;">
                         <img src="<c:url value="/resources/images/logo.png"/>" height="50"
                              style="vertical-align: middle;" class="circle z-depth-2" alt="Logo">
                     </a>

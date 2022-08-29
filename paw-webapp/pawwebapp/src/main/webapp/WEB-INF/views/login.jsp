@@ -12,5 +12,7 @@
 </head>
 <body>
     <%@ include file="header.jsp"%>
+    <div style="height:80%;"></div>
+    <%@ include file="footer.jsp"%>
 </body>
 </html>
