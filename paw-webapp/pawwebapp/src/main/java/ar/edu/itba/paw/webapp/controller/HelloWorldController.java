@@ -6,6 +6,7 @@ import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,6 +44,24 @@ public class HelloWorldController {
             mav.addObject("username", "PAW");
             mav.addObject("user", user);
         }
+        return mav;
+    }
+
+    @RequestMapping("/explore")
+    public ModelAndView explore(){
+        final ModelAndView mav = new ModelAndView("explore");
+        return mav;
+    }
+
+    @RequestMapping("/FAQ")
+    public ModelAndView faq(){
+        final ModelAndView mav = new ModelAndView("FAQ");
+        return mav;
+    }
+
+    @RequestMapping("/login")
+    public ModelAndView login(){
+        final ModelAndView mav = new ModelAndView("login");
         return mav;
     }
 

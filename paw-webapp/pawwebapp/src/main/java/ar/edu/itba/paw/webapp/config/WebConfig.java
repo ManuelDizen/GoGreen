@@ -10,6 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
+import java.util.Map;
 
 @EnableWebMvc
 @ComponentScan({
@@ -33,7 +34,6 @@ public class WebConfig {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-        //La base de datos se llama 'paw'
         ds.setUrl("jdbc:postgresql://localhost/postgres");
         //El username y la password son aquellos establecidos en la creación de la BD PostgreSQL.
         ds.setUsername("postgres");

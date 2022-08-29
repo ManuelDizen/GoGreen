@@ -33,5 +33,11 @@
             </div>
             <span class="stretch"></span>
         </div>
+
+        <div>
+            <span>
+                <a href="<c:url value="explore"/>">Testeo</a>
+            </span>
+        </div>
     </body>
 </html>
