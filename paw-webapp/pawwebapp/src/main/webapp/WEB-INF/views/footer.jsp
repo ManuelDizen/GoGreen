@@ -18,7 +18,7 @@
 </head>
 <body>
     <footer class="page-footer">
-        <div class="container custom-footer">
+        <div class="container custom-footer" style="font-size: 12px;">
             © 2022 - PAW - Grupo 2
         </div>
     </footer>

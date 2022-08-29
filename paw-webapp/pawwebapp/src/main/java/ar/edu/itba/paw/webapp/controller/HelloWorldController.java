@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Optional;
+
 @Controller
 public class HelloWorldController {
 
@@ -39,11 +41,12 @@ public class HelloWorldController {
     public ModelAndView helloWorld() {
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("greeting", "manu");
-        if(!us.findByEmail("paw@itba.edu.ar").isPresent()){
-            final User user = us.register("paw@itba.edu.ar", "secret");
-            mav.addObject("username", "PAW");
-            mav.addObject("user", user);
+        Optional<User> user = us.findByEmail("paw@itba.edu.ar");
+        if(!user.isPresent()) {
+            user = Optional.ofNullable(us.register("paw@itba.edu.ar", "secret"));
         }
+        mav.addObject("username", "PAW");
+        mav.addObject("user", user);
         return mav;
     }
 

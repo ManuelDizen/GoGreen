@@ -9,6 +9,9 @@
         <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>" type="text/css"
               media="screen,projection">
         <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
+
+        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+
         <title>MainPage</title>
     </head>
     <body>
