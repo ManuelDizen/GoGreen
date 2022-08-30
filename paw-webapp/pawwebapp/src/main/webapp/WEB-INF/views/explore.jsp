@@ -14,7 +14,26 @@
 </head>
 <body>
     <%@ include file="header.jsp"%>
-    <div style="height:80%;"></div>
+    <div class="explore-container">
+        <div class="explore-filter">
+            <div class="explore-filter-title">Filtros</div>
+            <div class="explore-filter-filters">
+                <span>Nombre</span>
+                <div class="name-input"><input type="text"></div>
+                <span>Precio máximo</span>
+                <input type="range">
+                <span>Categoría</span>
+                <ul>
+                    <li><input type="checkbox" name="Higiene" value="1"></li>
+                    <li><input type="checkbox"></li>
+                    <li><input type="checkbox"></li>
+                    <li><input type="checkbox"></li>
+                    <li><input type="checkbox"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="explore-products"></div>
+    </div>
     <%@ include file="footer.jsp"%>
 </body>
 </html>
