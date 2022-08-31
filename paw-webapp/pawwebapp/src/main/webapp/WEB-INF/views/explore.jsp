@@ -23,13 +23,22 @@
                 <span>Precio máximo</span>
                 <input type="range">
                 <span>Categoría</span>
-                <ul>
-                    <li><input type="checkbox" name="Higiene" value="1"></li>
-                    <li><input type="checkbox"></li>
-                    <li><input type="checkbox"></li>
-                    <li><input type="checkbox"></li>
-                    <li><input type="checkbox"></li>
-                </ul>
+                <div>
+                    <label>
+                        <input type="checkbox" name="Higiene">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="Higiene">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="Higiene">
+                    </label>
+                </div>
+
             </div>
         </div>
         <div class="explore-products"></div>
