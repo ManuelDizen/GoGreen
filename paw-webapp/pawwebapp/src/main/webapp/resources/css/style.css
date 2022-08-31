@@ -13,6 +13,12 @@
     overflow: hidden;
 }
 
+.custom-title{
+    padding-left: 4vw;
+    font-size: 18px;
+    color: #ADE28A;
+}
+
 .custom-footer{
     background-color: #407056;
     color: #ADE28A;

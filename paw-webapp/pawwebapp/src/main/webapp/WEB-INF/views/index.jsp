@@ -12,7 +12,7 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 
-        <title>MainPage</title>
+        <title>GoGreen</title>
     </head>
     <body>
         <%@ include file="header.jsp"%>
