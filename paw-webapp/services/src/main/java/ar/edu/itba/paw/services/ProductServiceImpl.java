@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -20,12 +21,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProduct(String name, String description, int stock, int price) {
-        return productDao.create(name, description, stock, price);
+    public Product create(long sellerId, long categoryId, String name, String description, int stock, float price) {
+        return productDao.create(sellerId, categoryId, name, description, stock, price);
     }
 
     @Override
-    public List<Product> getProductList() {
+    public Optional<List<Product>> findBySeller(long sellerId) {
+        return productDao.findBySeller(sellerId);
+    }
+
+    @Override
+    public Optional<List<Product>> getByMaxPrice(float price) {
+        return productDao.getByMaxPrice(price);
+    }
+
+    @Override
+    public Optional<List<Product>> getByCategory(long categoryId) {
+        return productDao.getByCategory(categoryId);
+    }
+
+    @Override
+    public List<Product> getAll() {
         return productDao.getAll();
     }
 }

@@ -14,7 +14,15 @@
 </head>
 <body>
     <%@ include file="header.jsp"%>
-    <div style="height:80%;"></div>
+    <div style="height:80%;">
+        <c:forEach items="${products}" var="product">
+            <div>
+                <a href="<c:url value="/product/${product.id}"/>">
+                    <h4><c:out value="${product.name}"/></h4>
+                </a>
+            </div>
+        </c:forEach>
+    </div>
     <%@ include file="footer.jsp"%>
 </body>
 </html>

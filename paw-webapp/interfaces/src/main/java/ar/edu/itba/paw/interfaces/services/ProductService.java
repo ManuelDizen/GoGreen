@@ -3,11 +3,16 @@ package ar.edu.itba.paw.interfaces.services;
 import ar.edu.itba.paw.models.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
-    Product addProduct(String name, String description, int stock, int price);
+    Product create(long sellerId, long categoryId, String name, String description, int stock, float price);
 
-    List<Product> getProductList();
+    Optional<List<Product>> findBySeller(long sellerId);
+    Optional<List<Product>> getByMaxPrice(float price);
+    Optional<List<Product>> getByCategory(long categoryId);
+
+    List<Product> getAll();
 
 }

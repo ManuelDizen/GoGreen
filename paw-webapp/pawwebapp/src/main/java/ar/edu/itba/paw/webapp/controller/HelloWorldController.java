@@ -50,11 +50,11 @@ public class HelloWorldController {
         return mav;
     }
 
-    @RequestMapping("/explore")
+    /*@RequestMapping("/explore")
     public ModelAndView explore(){
         final ModelAndView mav = new ModelAndView("explore");
         return mav;
-    }
+    }*/
 
     @RequestMapping("/FAQ")
     public ModelAndView faq(){
