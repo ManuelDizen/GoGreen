@@ -30,12 +30,12 @@
                     <li style="padding-right:2vw;">
                         <a href="<c:url value="explore"/>"> Explorar </a>
                     </li>
-                    <li style="padding-right:2vw;">
+                    <!--<li style="padding-right:2vw;">
                         <a href="FAQ">FAQ</a>
                     </li>
                     <li style="padding-right:5vw;">
                         <a href="login">Iniciar Sesión/Registrarse</a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </nav>
