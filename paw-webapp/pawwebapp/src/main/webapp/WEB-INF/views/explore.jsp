@@ -17,7 +17,7 @@
     <div style="height:80%;">
         <c:forEach items="${products}" var="product">
             <div>
-                <a href="<c:url value="/product/${product.id}"/>">
+                <a href="<c:url value="/product/${product.productId}"/>">
                     <h4><c:out value="${product.name}"/></h4>
                 </a>
             </div>
