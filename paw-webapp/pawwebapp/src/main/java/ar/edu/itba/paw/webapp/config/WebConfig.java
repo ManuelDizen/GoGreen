@@ -29,8 +29,8 @@ public class WebConfig {
     @Value("classpath:products.sql")
     private Resource productsSql;
 
-    //@Value("classpath:schemes.sql")
-    //private Resource schemaSql;
+    @Value("classpath:schemes.sql")
+    private Resource schemaSql;
 
     @Bean
     public ViewResolver viewResolver() {
@@ -63,7 +63,7 @@ public class WebConfig {
 
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        //dbp.addScript(schemaSql);
+        dbp.addScript(schemaSql);
         dbp.addScript(productsSql);
         return dbp;
     }
