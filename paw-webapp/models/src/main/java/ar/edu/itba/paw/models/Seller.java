@@ -7,7 +7,7 @@ public class Seller {
     private String phone;
     private String address;
 
-    public Seller(long id, String name, String mail, String phone, String address) {
+    public Seller(long id, String mail, String phone, String address, String name) {
         this.id = id;
         this.name = name;
         this.mail = mail;
