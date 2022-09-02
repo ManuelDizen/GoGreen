@@ -191,6 +191,7 @@ body{
     grid-template-rows: 1fr 9fr;
     margin: 10px 10px 10px 10px;
     background-color: #ade28a;
+    background-color: transparent; /*TODO: BORRAR UNA VEZ QUE SE IMPLEMENTE LA FUNCIONALIDAD!!!*/
     color: #1E425E;
     border-radius: 20px;
     height:fit-content;

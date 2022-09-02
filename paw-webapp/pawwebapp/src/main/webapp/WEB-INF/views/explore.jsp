@@ -13,6 +13,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
+    <%@ include file="navbar.jsp"%>
     <div class="explore-container">
         <div class="explore-filter">
             <div class="explore-filter-title">Filtros</div>

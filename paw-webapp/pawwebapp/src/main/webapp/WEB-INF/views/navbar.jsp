@@ -26,17 +26,18 @@
                     <a href="<c:url value="/"/>" class="left brand-logo" style="padding-left:2vw;">
                         <img src="<c:url value="/resources/images/logo.png"/>" height="50"
                              style="vertical-align: middle;" class="circle z-depth-2" alt="Logo">
+                        <span class="custom-title">GoGreen</span>
                     </a>
                     <ul id="nav-mobile" class="right">
                         <li style="padding-right:2vw;">
                             <a href="<c:url value="/explore"/>"> Explorar </a>
                         </li>
-                        <li style="padding-right:2vw;">
+                        <!--<li style="padding-right:2vw;">
                             <a href="FAQ">FAQ</a>
                         </li>
                         <li style="padding-right:5vw;">
                             <a href="login">Iniciar Sesión/Registrarse</a>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </nav>
