@@ -14,6 +14,7 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
+    <div class="explore-title">Productos</div>
     <div class="explore-container">
         <div class="explore-filter">
             <div class="explore-filter-title">Filtros</div>

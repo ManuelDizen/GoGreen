@@ -1,13 +1,14 @@
 /* General CSS rules for every view */
 
 *{
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     font-family: 'Manrope';
 }
 
 body{
     min-height:100vh;
-    background-color: #256670;
+    /*background-color: #256670;*/
+    background-image: linear-gradient(to bottom right, #44A08D, #093637);
     color: white;
     display: flex;
     flex-direction: column;
@@ -103,6 +104,37 @@ nav {
     font-size: 30px;
 }
 
+.introduction-container{
+    width:75%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    position:center;
+    background-color: #407056;
+    color: #ADE28A;
+    border: 1px solid #EDFA8B;
+    text-align:center;
+    border-radius: 10px;
+    margin-bottom: 10vh;
+
+    align-items: center;
+}
+
+.introduction-box{
+    justify-content: center;
+    width:80%;
+}
+
+.introduction-title{
+    font-size: 20px;
+    text-align:center;
+}
+
+.introduction-body{
+    font-size: 15px;
+}
+
 .animate {
     animation-duration: 0.75s;
     animation-delay: 0.5s;
@@ -135,10 +167,14 @@ nav {
     animation-delay: 0.5s;
 }
 
+.delay-3{
+    animation-delay: 0.6s;
+}
+
 /*                  */
 
 .product-card-title{
-    font-size: 35px;
+    font-size: 25px;
     text-align: center;
     margin-top: 2px;
     margin-bottom:2px;
@@ -273,6 +309,14 @@ nav {
     padding: 10px;
 }
 
+.explore-title{
+    width:100%;
+    text-align: center;
+    font-size: 40px;
+    text-decoration:underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
+}
 
 .explore-container{
     display:grid;
