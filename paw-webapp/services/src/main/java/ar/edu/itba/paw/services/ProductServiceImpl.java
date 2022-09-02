@@ -47,11 +47,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Seller> getProductSeller(long sellerId) {
-        return productDao.getProductSeller(sellerId);
-    }
-
-    @Override
     public List<Product> getAll() {
         return productDao.getAll();
     }

@@ -15,7 +15,7 @@
         <title>MainPage</title>
     </head>
     <body>
-        <%@ include file="header.jsp"%>
+        <%@ include file="navbar.jsp"%>
         <div class="row">
             <div class="column column1">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu efficitur metus.

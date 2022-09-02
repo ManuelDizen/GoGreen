@@ -3,33 +3,21 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
 public class HelloWorldController {
 
     private final UserService us;
-
-    //----------------------------------------------
-    //Inyeccion de dependencias por el contructor
-    //----------------------------------------------
-
-    // @Qualifier("userServiceImpl") es para indicarle cual implementacion quiero que use y evitar
-    // conflictos en la inyeccion de dependencias
-
-    //    public HelloWorldController(@Qualifier("userServiceImpl") final UserService us){
-    //        this.us = us;
-    //    }
-
-    // La otra forma es agregarle @Primary a la clase que quiero que use,
-    // sin embargo el @Qualifier tiene mayor prioridad
 
     @Autowired  //Para indicarle que este es el constructor que quiero que use
     public HelloWorldController( final UserService us){
@@ -50,12 +38,6 @@ public class HelloWorldController {
         return mav;
     }
 
-    /*@RequestMapping("/explore")
-    public ModelAndView explore(){
-        final ModelAndView mav = new ModelAndView("explore");
-        return mav;
-    }*/
-
     @RequestMapping("/FAQ")
     public ModelAndView faq(){
         final ModelAndView mav = new ModelAndView("FAQ");
@@ -67,6 +49,12 @@ public class HelloWorldController {
         final ModelAndView mav = new ModelAndView("login");
         return mav;
     }
+
+    /*@RequestMapping("/explore")
+    public ModelAndView explore(){
+        final ModelAndView mav = new ModelAndView("explore");
+        return mav;
+    }*/
 
     @RequestMapping("/register")
     public ModelAndView register(
@@ -90,6 +78,7 @@ public class HelloWorldController {
         // Con esto puedo ingresar a:
         // http://localhost:8080/profile/1
     }
+
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)

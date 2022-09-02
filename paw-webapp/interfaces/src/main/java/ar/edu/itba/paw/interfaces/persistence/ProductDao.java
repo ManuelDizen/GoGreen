@@ -14,7 +14,6 @@ public interface ProductDao {
     Optional<List<Product>> getByMaxPrice(float price);
     Optional<List<Product>> getByCategory(long categoryId);
     Optional<Product> getById(long productId);
-    Optional<Seller> getProductSeller(long sellerId);
     List<Product> getAll();
 
 }

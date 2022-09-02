@@ -3,12 +3,16 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Seller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class SellerServiceImpl implements SellerService {
     private final SellerDao sd;
+
+    @Autowired
 
     public SellerServiceImpl(final SellerDao sd) {
         this.sd = sd;

@@ -30,9 +30,6 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getFloat("price")
             );
 
-
-    //TODO: Preguntar si esto es válido (colocar un row mapper de otra tabla
-    // en un DAO ajeno)
     private static final RowMapper<Seller> SELLER_ROW_MAPPER =
             (resultSet, rowNum) -> new Seller(
                     resultSet.getLong("id"),
@@ -89,12 +86,6 @@ public class ProductJdbcDao implements ProductDao {
         List<Product> product =  template.query("SELECT * from products where id = ?",
                 new Object[]{productId}, PRODUCT_ROW_MAPPER);
         return product.stream().findFirst();
-    }
-
-    @Override
-    public Optional<Seller> getProductSeller(long sellerId) {
-        return template.query("SELECT * from sellers where id = ?",
-                new Object[]{sellerId}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
