@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,15 @@ public class ProductController {
         final ModelAndView mav = new ModelAndView("productPage");
         final Optional<Product> product = ps.getById(productId);
         if(!product.isPresent()) throw new RuntimeException("Product not found");
-        mav.addObject("product", product.get());
+        final Product productObj = product.get();
+        mav.addObject("product", productObj);
+
+        //TODO: Preguntar si está bien consultar los getters de los models
+        final Optional<Seller> seller = ps.getProductSeller(productObj.getSellerId());
+        if(!seller.isPresent()) throw new RuntimeException("Seller not found");
+        //Should never have that exception, the product exists and sellerID is FK...
+        mav.addObject("seller", seller.get());
+
         return mav;
     }
 }

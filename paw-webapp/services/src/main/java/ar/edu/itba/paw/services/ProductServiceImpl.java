@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> getById(long productId) {
         return productDao.getById(productId);
+    }
+
+    @Override
+    public Optional<Seller> getProductSeller(long sellerId) {
+        return productDao.getProductSeller(sellerId);
     }
 
     @Override

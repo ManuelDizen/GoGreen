@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,6 +29,19 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getInt("stock"),
                     resultSet.getFloat("price")
             );
+
+
+    //TODO: Preguntar si esto es válido (colocar un row mapper de otra tabla
+    // en un DAO ajeno)
+    private static final RowMapper<Seller> SELLER_ROW_MAPPER =
+            (resultSet, rowNum) -> new Seller(
+                    resultSet.getLong("id"),
+                    resultSet.getString("mail"),
+                    resultSet.getString("phone"),
+                    resultSet.getString("address"),
+                    resultSet.getString("name")
+            );
+
 
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
@@ -75,6 +89,12 @@ public class ProductJdbcDao implements ProductDao {
         List<Product> product =  template.query("SELECT * from products where id = ?",
                 new Object[]{productId}, PRODUCT_ROW_MAPPER);
         return product.stream().findFirst();
+    }
+
+    @Override
+    public Optional<Seller> getProductSeller(long sellerId) {
+        return template.query("SELECT * from sellers where id = ?",
+                new Object[]{sellerId}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override

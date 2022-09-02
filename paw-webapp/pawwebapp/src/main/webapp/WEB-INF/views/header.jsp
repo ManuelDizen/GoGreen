@@ -19,6 +19,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
+    <!-- TODO: Fix spacing on top of header. Tried margin and padding but I can't fix it-->
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper custom-nav">
@@ -28,7 +29,7 @@
                     </a>
                     <ul id="nav-mobile" class="right">
                         <li style="padding-right:2vw;">
-                            <a href="<c:url value="explore"/>"> Explorar </a>
+                            <a href="<c:url value="/explore"/>"> Explorar </a>
                         </li>
                         <li style="padding-right:2vw;">
                             <a href="FAQ">FAQ</a>
