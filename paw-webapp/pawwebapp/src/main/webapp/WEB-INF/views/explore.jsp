@@ -47,18 +47,11 @@
                 <c:if test="${count==5}">
                     <c:set var="count" value="1"/>
                 </c:if>
-                <div id="col${count}">
-                    <div class="card small">
-                        <div class="card blue-grey darken-1">
-                            <div class="card-content">
-                                <span class="card-title">${product.name}</span>
-                                <p>${product.description}</p>
-                                <p>${product.price}</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="<c:url value="/product/${product.productId}"/>">Ver más</a>
-                            </div>
-                        </div>
+                <div class="card-container">
+                    <div class="product-card-title">${product.name}</div>
+                    <div class="description-container">${product.description}</div>
+                    <div class="product-card-link-container">
+                        <a href="<c:url value="/product/${product.productId}"/>">Ver más</a>
                     </div>
                 </div>
                 <c:set var="count" value="${count+1}"/>
