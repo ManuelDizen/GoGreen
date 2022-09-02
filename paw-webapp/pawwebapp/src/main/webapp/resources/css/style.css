@@ -52,7 +52,6 @@ body{
 }
 
 .main-container{
-    display:flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     flex-grow: 1;
@@ -145,4 +144,27 @@ body{
 .process-page-title{
     font-size: 40px;
 
+}
+
+#col1 {
+    position: absolute;
+    left: 5px;
+    padding: 10px;
+}
+
+#col2 {
+    position: absolute;
+    margin-left: 25%;
+    padding: 10px;
+}
+
+#col3 {
+    position: absolute;
+    margin-left: 50%;
+    padding: 10px;
+}
+
+#col4 {
+    margin-left: 75%;
+    padding: 10px;
 }
