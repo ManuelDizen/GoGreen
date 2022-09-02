@@ -15,7 +15,7 @@
         <title>GoGreen</title>
     </head>
     <body>
-        <%@ include file="header.jsp"%>
+        <%@ include file="navbar.jsp"%>
         <div class="row">
             <div class="column column1">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu efficitur metus.
@@ -29,7 +29,7 @@
                 hendrerit odio
                 <div style="display:flex; justify-content:center; margin-top:3vh;">
                     <a class="waves-effect waves-light btn standard-button" href="
-                        <c:url value="explore.jsp"/>">Comencemos</a>
+                        <c:url value="explore"/>">Comencemos</a>
                 </div>
             </div>
             <div class="column column2">
