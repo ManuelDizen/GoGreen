@@ -12,7 +12,7 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 
-        <title>MainPage</title>
+        <title>GoGreen</title>
     </head>
     <body>
         <%@ include file="navbar.jsp"%>
@@ -28,7 +28,8 @@
                 ornare erat ut neque tincidunt rutrum. Quisque interdum dolor vitae fringilla mollis. Quisque vel
                 hendrerit odio
                 <div style="display:flex; justify-content:center; margin-top:3vh;">
-                    <a class="waves-effect waves-light btn standard-button" href="">Comencemos</a>
+                    <a class="waves-effect waves-light btn standard-button" href="
+                        <c:url value="explore.jsp"/>">Comencemos</a>
                 </div>
             </div>
             <div class="column column2">
