@@ -1,22 +1,17 @@
 create table if not exists userDetails(
-                                          id serial primary key ,
-                                          userId integer unique,
-                                          phone varchar(20),
+      id serial primary key ,
+      userId integer unique,
+      phone varchar(20),
     address varchar(255),
     foreign key(userId) references users(id)
     );
 
 create table if not exists sellers(
-                                      id serial primary key,
-                                      mail varchar(255) unique
-    );
-
-create table if not exists sellerDetails(
-                                            id serial primary key,
-                                            sellerId integer unique not null ,
-                                            phone varchar(20) not null,
-    address varchar(255) not null,
-    foreign key (sellerId) references sellers(id)
+    id serial primary key,
+    name varchar(50) not null,
+    mail varchar(255) unique not null,
+    phone varchar(20) unique not null,
+    address varchar(255) not null
     );
 
 create table if not exists category(
