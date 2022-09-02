@@ -12,6 +12,7 @@ public interface ProductService {
     Optional<List<Product>> findBySeller(long sellerId);
     Optional<List<Product>> getByMaxPrice(float price);
     Optional<List<Product>> getByCategory(long categoryId);
+    Optional<Product> getById(long productId);
 
     List<Product> getAll();
 

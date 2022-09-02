@@ -71,6 +71,13 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
+    public Optional<Product> getById(long productId) {
+        List<Product> product =  template.query("SELECT * from products where id = ?",
+                new Object[]{productId}, PRODUCT_ROW_MAPPER);
+        return product.stream().findFirst();
+    }
+
+    @Override
     public List<Product> getAll() {
         return template.query("SELECT * FROM products",
         PRODUCT_ROW_MAPPER);

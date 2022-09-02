@@ -35,31 +35,3 @@ create table if not exists products(
     foreign key (sellerId) references sellers(id),
     foreign key (categoryId) references category(id)
     );
-
-insert into sellers (mail) values ('seller1@gmail.com'), ('seller2@gmail.com'), ('seller3@gmail.com');
-insert into category (name) values ('Higiene'), ('Salud'), ('Cuidado de la piel');
-insert into sellerDetails (sellerId, phone, address) values((select id from sellers where mail='seller1@gmail.com'),
-                                                            '1133445566', 'Riobamba 123'),
-                                                           ((select id from sellers where mail='seller2@gmail.com'),
-                                                            '1184848484', 'Av Callao 123'),
-                                                           ((select id from sellers where mail='seller3@gmail.com'),
-                                                            '1133554422', 'Ayacucho 123');
-insert into products (sellerId, categoryId, name, description, stock, price)
-values((select id from sellers where mail='seller1@gmail.com'),
-       (select id from category where name='Higiene'),
-       'Jabon solido',
-       'Un jabon solido que cuida mucho el medio ambiente',
-       1000,
-       100),
-      ((select id from sellers where mail='seller2@gmail.com'),
-       (select id from category where name='Salud'),
-       'Medicamento para la caída de pelo',
-       'Un medicamento que ayuda contra la caida del pelo',
-       1000,
-       200),
-      ((select id from sellers where mail='seller3@gmail.com'),
-       (select id from category where name='Cuidado de la piel'),
-       'Crema exfoliante',
-       'Una crema para tu cuidado personal',
-       1000,
-       100);

@@ -13,6 +13,7 @@ public class Product {
     public Product(long productId, long sellerId, long categoryId, String name, String description, int stock, float price) {
         this.productId = productId;
         this.sellerId = sellerId;
+        this.categoryId = categoryId;
         this.name = name;
         this.description = description;
         this.stock = stock;
@@ -47,4 +48,23 @@ public class Product {
         this.price = price;
     }
 
+    public void setProductId(long productId) {
+        this.productId = productId;
+    }
+
+    public long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(long sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
 }
