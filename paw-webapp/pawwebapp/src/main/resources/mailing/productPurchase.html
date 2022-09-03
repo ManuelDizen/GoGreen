@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Se completó su compra</title>
 </head>
 <body>
-
+    <h3 th:text="#{abz}"></h3>
+    <h3 th:text="#{greeting(${buyer})}"></h3>
+    <p th:text="#{purchase(${amount})(${product})}"></p>
 </body>
 </html>
