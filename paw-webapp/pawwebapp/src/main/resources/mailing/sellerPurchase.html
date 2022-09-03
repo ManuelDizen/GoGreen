@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Se completó su compra</title>
+</head>
+<body>
+<div style="align-items:center; text-align:center;">
+    <h3 th:text="#{greeting(${seller})}"></h3>
+    <p th:text="#{itemsold(${amount}, ${product}, ${price})}"></p>
+    <h4 th:text="#{buyerInfo}"></h4>
+    <div th:text="#{buyerNameMsg(${buyerName})}"></div>
+    <div th:text="#{buyerEmailMsg(${buyerEmail})}"></div>
+    <div th:text="#{buyerPhoneMsg(${buyerPhone})}"></div>
+</div>
+</body>
+</html>

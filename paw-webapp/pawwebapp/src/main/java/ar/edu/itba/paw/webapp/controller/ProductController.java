@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Product;
@@ -24,10 +25,13 @@ public class ProductController {
 
     private final SellerService sellerService;
 
+    private final EmailService es;
+
     @Autowired
-    public ProductController(final ProductService ps, final SellerService sellerService){
+    public ProductController(final ProductService ps, final SellerService sellerService, final EmailService es){
         this.ps = ps;
         this.sellerService = sellerService;
+        this.es = es;
     }
 
     @RequestMapping("/explore")
@@ -67,11 +71,27 @@ public class ProductController {
         }
         final Optional<Product> product = ps.getById(prodId);
 
-        /* TODO: Acá debería haber una lógica para el mailing LLAMANDO AL SERVICE!!!*/
+        if(product.isPresent()) {
+            // TODO: Check for isPresent() in get() of 1st parameter of itemsold
+            final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
+            if(seller.isPresent()) {
+                final Seller s = seller.get();
+                es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(),
+                        product.get().getPrice(), s.getName(), s.getPhone(), s.getMail());
+
+                es.itemsold(s.getMail(), s.getName(), product.get(),
+                        form.getAmount(), product.get().getPrice(),
+                        form.getName(), form.getMail(), form.getPhone());
+            }
+        }
+        System.out.println("mail sent");
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
         mav.addObject("product", ps.getById(prodId).orElseThrow(ProductNotFoundException::new));
         mav.addObject("formSuccess", true);
         return mav;
     }
+
+
+
 }
