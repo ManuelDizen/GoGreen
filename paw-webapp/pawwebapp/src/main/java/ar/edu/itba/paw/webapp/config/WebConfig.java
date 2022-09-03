@@ -105,7 +105,7 @@ public class WebConfig {
     @Bean
     public ResourceBundleMessageSource emailMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("mailing/i18n/");
+        messageSource.setBasename("mailing/i18n/mailing");
         return messageSource;
     }
 

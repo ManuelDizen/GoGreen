@@ -72,8 +72,7 @@ public class ProductController {
         final Optional<Product> product = ps.getById(prodId);
 
         if(product.isPresent())
-            es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount());
-        /* TODO: Acá debería haber una lógica para el mailing LLAMANDO AL SERVICE!!!*/
+            es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(), product.get().getPrice());
         System.out.println("mail sent");
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);

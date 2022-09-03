@@ -48,11 +48,13 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void purchase(String buyerEmail, String buyer, Product product, int amount) {
+    public void purchase(String buyerEmail, String buyer, Product product, int amount, float price) {
         Map<String, Object> data = new HashMap<>();
         data.put("buyer", buyer);
         data.put("product", product.getName());
         data.put("amount", amount);
+        data.put("price", price);
+        data.put("total", amount*price);
         sendThymeleafMail(buyerEmail, "productPurchase", data, "Se completó tu compra");
     }
 }
