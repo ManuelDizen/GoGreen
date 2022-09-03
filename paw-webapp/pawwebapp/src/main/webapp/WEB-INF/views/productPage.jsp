@@ -16,6 +16,12 @@
 <body>
     <%@ include file="navbar.jsp"%>
     <div style="height:5vh; width:100%;"></div>
+    <c:if test="${formSuccess}">
+        <div class="order-success">
+            ¡Muchas gracias por comprar en GoGreen! Por favor, chequee su mail para visualizar
+            la confirmación.
+        </div>
+    </c:if>
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>

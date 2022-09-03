@@ -20,7 +20,7 @@
     </head>
     <body>
     <!-- TODO: Fix spacing on top of header. Tried margin and padding but I can't fix it-->
-        <div class="navbar-fixed">
+        <div class="navbar">
             <nav>
                 <div class="nav-wrapper custom-nav">
                     <a href="<c:url value="/"/>" class="left brand-logo" style="padding-left:2vw;">

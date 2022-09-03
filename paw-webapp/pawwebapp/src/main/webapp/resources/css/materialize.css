@@ -6,9 +6,8 @@
 
 * {
 
-  border: 1px solid lightgreen;
+  /*border: 1px solid lightgreen;*/
 
-  /*border: 1px solid red;*/
 
   font-family: 'Manrope';
 }
@@ -4894,6 +4893,11 @@ small {
   padding: 24px;
 }
 
+.card-content{
+  background-color: #1b5e20;
+  color: #ADE28A;
+}
+
 .card .card-content {
   padding: 24px;
   border-radius: 0 0 2px 2px;
@@ -4914,7 +4918,7 @@ small {
 }
 
 .card .card-action {
-  background-color: inherit;
+  background-color: #1b5e20;
   border-top: 1px solid rgba(160, 160, 160, 0.2);
   position: relative;
   padding: 16px 24px;
@@ -4925,7 +4929,7 @@ small {
 }
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
-  color: #ffab40;
+  color: #ADE28A;
   margin-right: 24px;
   -webkit-transition: color .3s ease;
   transition: color .3s ease;
