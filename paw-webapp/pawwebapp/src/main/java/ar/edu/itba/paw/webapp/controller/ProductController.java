@@ -71,8 +71,19 @@ public class ProductController {
         }
         final Optional<Product> product = ps.getById(prodId);
 
-        if(product.isPresent())
-            es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(), product.get().getPrice());
+        if(product.isPresent()) {
+            // TODO: Check for isPresent() in get() of 1st parameter of itemsold
+            final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
+            if(seller.isPresent()) {
+                final Seller s = seller.get();
+                es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(),
+                        product.get().getPrice(), s.getName(), s.getPhone(), s.getMail());
+
+                es.itemsold(s.getMail(), s.getName(), product.get(),
+                        form.getAmount(), product.get().getPrice(),
+                        form.getName(), form.getMail(), form.getPhone());
+            }
+        }
         System.out.println("mail sent");
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);

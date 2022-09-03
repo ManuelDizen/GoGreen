@@ -48,13 +48,34 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void purchase(String buyerEmail, String buyer, Product product, int amount, float price) {
+    public void purchase(String buyerEmail, String buyer, Product product, int amount, float price,
+                         String sellerName, String sellerPhone, String sellerMail) {
         Map<String, Object> data = new HashMap<>();
         data.put("buyer", buyer);
         data.put("product", product.getName());
         data.put("amount", amount);
         data.put("price", price);
         data.put("total", amount*price);
-        sendThymeleafMail(buyerEmail, "productPurchase", data, "Se completó tu compra");
+        data.put("sellerName", sellerName);
+        data.put("sellerPhone", sellerPhone);
+        data.put("sellerMail", sellerMail);
+        sendThymeleafMail(buyerEmail, "productPurchase", data, "Se completó tu compra!");
+    }
+
+    @Override
+    public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
+                         String buyerName, String buyerEmail, String buyerPhone) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("seller", seller);
+        data.put("product", product.getName());
+        data.put("amount", amount);
+        data.put("price", price);
+        data.put("buyerName", buyerName);
+        data.put("buyerEmail", buyerEmail);
+        data.put("buyerPhone", buyerPhone);
+
+        // TODO: FIX THIS HARDCODE (to paramter), ONLY FOR TESTING PURPOSES
+        // TODO: Fix hardcoding of email subjects
+        sendThymeleafMail("mdizenhaus@itba.edu.ar", "sellerPurchase", data, "Completaste una venta!");
     }
 }

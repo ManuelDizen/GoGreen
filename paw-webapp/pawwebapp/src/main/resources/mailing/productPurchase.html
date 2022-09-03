@@ -9,6 +9,10 @@
         <h3 th:text="#{greeting(${buyer})}"></h3>
         <p th:text="#{purchase(${amount}, ${product}, ${price})}"></p>
         <p style="font-weight: bold;" th:text="#{totalprice(${total})}"></p>
+        <h3 th:text="#{sellerInfo}"></h3>
+        <div th:text="#{sellerNameMsg(${sellerName})}"></div>
+        <div th:text="#{sellerEmailMsg(${sellerMail})}"></div>
+        <div th:text="#{sellerPhoneMsg(${sellerPhone})}"></div>
     </div>
 </body>
 </html>
