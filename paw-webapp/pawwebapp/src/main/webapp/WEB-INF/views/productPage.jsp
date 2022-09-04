@@ -22,6 +22,17 @@
             la confirmación.
         </div>
     </c:if>
+    <c:if test="${formFailure}">
+        <div class="order-failure">
+            Error al llenar el formulario. Por favor, intentar nuevamente revisando los campos.
+            <!--<c:forEach items="${errorMsgs}" var="errorMsg">
+                <div>${errorMsg}</div>
+            </c:forEach>
+
+            TODO: Averiguar como se hace para pasarle los errores del form e imprimirlos
+            -->
+        </div>
+    </c:if>
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>

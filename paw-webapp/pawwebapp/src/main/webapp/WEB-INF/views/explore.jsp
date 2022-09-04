@@ -17,12 +17,16 @@
     <div class="explore-title">Productos</div>
     <div class="explore-container">
         <div class="explore-filter">
-            <div class="explore-filter-title">Filtros</div>
-            <div class="explore-filter-filters">
+            <div class="explore-filter-title">Filtrar por</div>
+            <!--<div class="explore-filter-filters">
                 <span>Nombre</span>
-                <div class="name-input"><input type="text"></div>
+                <div class="name-input">
+                    <input type="text">
+                </div>
                 <span>Precio máximo</span>
-                <input type="range">
+                <div class="price-input">
+                    <input type="text">
+                </div>
                 <span>Categoría</span>
                 <div>
                     <label>
@@ -39,23 +43,20 @@
                         <input type="checkbox" name="Higiene">
                     </label>
                 </div>
+            </div>-->
+            <c:url value="/filter" var="filter"/>
 
-            </div>
         </div>
         <div class="explore-products">
-            <c:set var="count" value="1"/>
-            <c:forEach items="${products}" var="product" step="1" begin="0">
-                <c:if test="${count==5}">
-                    <c:set var="count" value="1"/>
-                </c:if>
+            <c:forEach items="${products}" var="product">
                 <div class="card-container">
                     <div class="product-card-title">${product.name}</div>
                     <div class="description-container">${product.description}</div>
                     <div class="product-card-link-container">
+                        <span>Precio: $${product.price}</span>
                         <a href="<c:url value="/product/${product.productId}"/>">Ver más</a>
                     </div>
                 </div>
-                <c:set var="count" value="${count+1}"/>
             </c:forEach>
         </div>
     </div>
