@@ -35,9 +35,11 @@
         </div>
         <div class="introduction-container animate glow delay-3">
             <div class="introduction-box">
+                <hr class="landing-separator">
                 <div class="introduction-title">Una alternativa sustentable</div>
+                <hr class="landing-separator" style="margin-bottom: 5vh;">
                 <div class="introduction-body">GoGreen busca unir a aquellas empresas dedicadas a luchar
-                por un modelo ecosustentable, con personas que buscan hacer la diferencia con su consumo.</div>
+                    por un modelo ecosustentable, con personas que buscan hacer la diferencia con su consumo.</div>
             </div>
         </div>
         <%@ include file="footer.jsp"%>

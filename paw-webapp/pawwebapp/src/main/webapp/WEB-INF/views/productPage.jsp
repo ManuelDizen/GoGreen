@@ -84,7 +84,7 @@
                         <td><form:label path="amount">Cantidad:</form:label></td>
                         <td><form:input path="amount"/></td>
                     </tr>
-                    <tr>
+                    <tr style="align-content: center;">
                         <td><input type="submit" value="Submit"/></td>
                     </tr>
                 </table>
