@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> filter(String name, float maxPrice) {
-        return productDao.filter(name, maxPrice);
+    public List<Product> filter(String name, String category, float maxPrice) {
+        return productDao.filter(name, category, maxPrice);
     }
 }

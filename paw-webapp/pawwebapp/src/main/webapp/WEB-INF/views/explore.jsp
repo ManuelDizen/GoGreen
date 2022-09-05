@@ -54,6 +54,10 @@
                         <td><input name="name" type="text"/></td>
                     </tr>
                     <tr>
+                        <td>Category:</td>
+                        <td><input name="category" type="text"/><td>
+                    </tr>
+                    <tr>
                         <!--<td><label path="price">Max price</label></td>-->
                         <td>Max price:</td>
                         <td><input name="maxPrice" type="number"/></td>

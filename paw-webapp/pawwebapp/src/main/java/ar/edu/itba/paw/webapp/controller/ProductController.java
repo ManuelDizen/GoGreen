@@ -40,10 +40,11 @@ public class ProductController {
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
+            @RequestParam(name="category", defaultValue="") final String category,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        mav.addObject("products", ps.filter(name, maxPrice));
+        mav.addObject("products", ps.filter(name, category, maxPrice));
         return mav;
     }
 
