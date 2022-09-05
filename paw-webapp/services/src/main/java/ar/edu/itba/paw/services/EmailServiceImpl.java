@@ -64,7 +64,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
-                         String buyerName, String buyerEmail, String buyerPhone) {
+                         String buyerName, String buyerEmail, String buyerPhone, String buyerMessage) {
         Map<String, Object> data = new HashMap<>();
         data.put("seller", seller);
         data.put("product", product.getName());
@@ -73,6 +73,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("buyerName", buyerName);
         data.put("buyerEmail", buyerEmail);
         data.put("buyerPhone", buyerPhone);
+        data.put("buyerMessage", buyerMessage);
 
         // TODO: FIX THIS HARDCODE (to paramter), ONLY FOR TESTING PURPOSES
         // TODO: Fix hardcoding of email subjects

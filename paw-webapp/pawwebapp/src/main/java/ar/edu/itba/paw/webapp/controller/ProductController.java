@@ -96,7 +96,7 @@ public class ProductController {
 
                 es.itemsold(s.getMail(), s.getName(), product.get(),
                         form.getAmount(), product.get().getPrice(),
-                        form.getName(), form.getMail(), form.getPhone());
+                        form.getName(), form.getMail(), form.getPhone(), form.getMessage());
             }
         }
         System.out.println("mail sent");
