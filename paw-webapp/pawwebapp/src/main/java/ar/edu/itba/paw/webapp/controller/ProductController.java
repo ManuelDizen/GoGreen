@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,11 +37,13 @@ public class ProductController {
         this.es = es;
     }
 
-    @RequestMapping("/explore")
-    public ModelAndView exploreProducts(){
+    @RequestMapping(value="/explore")
+    public ModelAndView exploreProducts(
+            @RequestParam(name="name", defaultValue="") final String name,
+            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
+    ){
         final ModelAndView mav = new ModelAndView("explore");
-        final List<Product> products = ps.getAll();
-        mav.addObject("products", products);
+        mav.addObject("products", ps.filter(name, maxPrice));
         return mav;
     }
 
@@ -103,13 +106,4 @@ public class ProductController {
         mav.addObject("formSuccess", true);
         return mav;
     }
-
-    @RequestMapping(value="/filter", method=RequestMethod.POST)
-    public ModelAndView filter(){
-        final ModelAndView mav = new ModelAndView("explore");
-        return mav;
-    }
-
-
-
 }

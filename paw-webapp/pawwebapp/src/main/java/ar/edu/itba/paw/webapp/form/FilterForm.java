@@ -10,7 +10,7 @@ public class FilterForm {
     @Max(value=100000, message="Price must be equal or less to $100.000")
     private Integer price;
 
-    private String category;
+    //private String category;
 
     public String getName() {
         return name;
@@ -28,11 +28,11 @@ public class FilterForm {
         this.price = price;
     }
 
-    public String getCategory() {
+    /*public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
-    }
+    }*/
 }

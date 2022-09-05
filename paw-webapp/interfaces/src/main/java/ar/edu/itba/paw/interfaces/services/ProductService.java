@@ -15,4 +15,6 @@ public interface ProductService {
     Optional<List<Product>> getByCategory(long categoryId);
     Optional<Product> getById(long productId);
     List<Product> getAll();
+
+    List<Product> filter(String name, float maxPrice);
 }

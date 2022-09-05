@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Explore</title>
@@ -44,7 +45,24 @@
                     </label>
                 </div>
             </div>-->
-            <c:url value="/filter" var="filter"/>
+            <c:url value="/explore" var="explore"/>
+            <form action="${explore}" method="get" id="filter_form">
+                <table>
+                    <tr>
+                        <!--<td><label path="name">Name</label></td>-->
+                        <td>Name:</td>
+                        <td><input name="name" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <!--<td><label path="price">Max price</label></td>-->
+                        <td>Max price:</td>
+                        <td><input name="maxPrice" type="number"/></td>
+                    </tr>
+                    <tr>
+                        <td><button type="submit">Filtrar</button></td>
+                    </tr>
+                </table>
+            </form>
 
         </div>
         <div class="explore-products">

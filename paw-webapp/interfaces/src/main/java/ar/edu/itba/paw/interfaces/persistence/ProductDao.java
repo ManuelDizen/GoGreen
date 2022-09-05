@@ -16,4 +16,6 @@ public interface ProductDao {
     Optional<Product> getById(long productId);
     List<Product> getAll();
 
+    List<Product> filter(String name, float maxPrice);
+
 }
