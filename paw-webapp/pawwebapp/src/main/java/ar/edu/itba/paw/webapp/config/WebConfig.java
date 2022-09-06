@@ -62,13 +62,12 @@ public class WebConfig {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-        //ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2022b-2");
-        //El username y la password son aquellos establecidos en la creación de la BD PostgreSQL.
-        //ds.setUsername("paw-2022b-2");
-        //ds.setPassword("hhd39ZPwt");
-        ds.setUrl("jdbc:postgresql://localhost/postgres");
-        ds.setUsername("postgres");
-        ds.setPassword("docker");
+        //ds.setUrl("jdbc:postgresql://localhost/postgres");
+        //ds.setUsername("postgres");
+        //ds.setPassword("docker");
+        ds.setUrl(environment.getProperty("database.path"));
+        ds.setUsername(environment.getProperty("database.username"));
+        ds.setPassword(environment.getProperty("database.password"));
         return ds;
     }
 
