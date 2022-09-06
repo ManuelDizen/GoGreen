@@ -292,6 +292,22 @@ nav {
     padding: 5px 5px;
 }
 
+.errorTr{
+    width: 100%;
+    height:fit-content;
+    color: white;
+    background:red;
+}
+
+.errorTr td{
+
+}
+
+#amount.errors, #phone.errors{
+    font-size: medium;
+    color: inherit;
+}
+
 .process-page-title{
     font-size: 40px;
 

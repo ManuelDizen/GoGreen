@@ -63,7 +63,7 @@
                         <td><input name="maxPrice" type="number"/></td>
                     </tr>
                     <tr>
-                        <td><button type="submit">Filtrar</button></td>
+                        <td colspan="2"><button type="submit">Filtrar</button></td>
                     </tr>
                 </table>
             </form>

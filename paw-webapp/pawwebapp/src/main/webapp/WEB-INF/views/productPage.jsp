@@ -77,6 +77,9 @@
                         <td><form:input path="phone"/></td>
                     </tr>
                     <tr>
+                        <td colspan="2"><form:errors path="phone" cssClass="error" element="p"/></td>
+                    </tr>
+                    <tr>
                         <td><form:label path="message">Mensaje para vendedor:</form:label></td>
                         <td><form:textarea path="message"/></td>
                     </tr>
@@ -84,8 +87,11 @@
                         <td><form:label path="amount">Cantidad:</form:label></td>
                         <td><form:input path="amount"/></td>
                     </tr>
-                    <tr style="align-content: center;">
-                        <td><input type="submit" value="Submit"/></td>
+                    <tr>
+                        <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Submit"/></td>
                     </tr>
                 </table>
             </form:form>
