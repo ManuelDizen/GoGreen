@@ -13,7 +13,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
-    <%@ include file="header.jsp"%>
+    <%@ include file="navbar.jsp"%>
+    <div class="explore-title">Productos</div>
     <div class="explore-container">
         <div class="explore-filter">
             <div class="explore-filter-title">Filtros</div>
@@ -41,7 +42,22 @@
 
             </div>
         </div>
-        <div class="explore-products"></div>
+        <div class="explore-products">
+            <c:set var="count" value="1"/>
+            <c:forEach items="${products}" var="product" step="1" begin="0">
+                <c:if test="${count==5}">
+                    <c:set var="count" value="1"/>
+                </c:if>
+                <div class="card-container">
+                    <div class="product-card-title">${product.name}</div>
+                    <div class="description-container">${product.description}</div>
+                    <div class="product-card-link-container">
+                        <a href="<c:url value="/product/${product.productId}"/>">Ver más</a>
+                    </div>
+                </div>
+                <c:set var="count" value="${count+1}"/>
+            </c:forEach>
+        </div>
     </div>
     <%@ include file="footer.jsp"%>
 </body>

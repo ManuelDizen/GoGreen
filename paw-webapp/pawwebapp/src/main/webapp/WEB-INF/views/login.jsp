@@ -13,7 +13,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
-    <%@ include file="header.jsp"%>
+    <%@ include file="navbar.jsp"%>
     <div style="height:80%;"></div>
     <%@ include file="footer.jsp"%>
 </body>

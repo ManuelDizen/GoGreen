@@ -16,10 +16,13 @@
     <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
+<body style="bottom:0;">
     <footer class="page-footer">
-        <div class="container custom-footer" style="font-size: 12px;">
-            © 2022 - PAW - Grupo 2
+        <div class="footer-copyright">
+            <div class="container">
+                © 2022 - PAW - Grupo 2
+                <!--<a class="grey-text text-lighten-4 right" href="#!">More Links</a>-->
+            </div>
         </div>
     </footer>
 </body>
