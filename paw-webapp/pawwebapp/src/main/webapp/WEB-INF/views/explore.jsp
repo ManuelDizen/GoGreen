@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Explore</title>
@@ -14,48 +16,48 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="explore-title">Productos</div>
+    <div class="explore-title"><spring:message code="explore.title"/></div>
     <div class="explore-container">
         <div class="explore-filter">
-            <div class="explore-filter-title">Filtros</div>
-            <div class="explore-filter-filters">
-                <span>Nombre</span>
-                <div class="name-input"><input type="text"></div>
-                <span>Precio máximo</span>
-                <input type="range">
-                <span>Categoría</span>
-                <div>
-                    <label>
-                        <input type="checkbox" name="Higiene">
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="checkbox" name="Higiene">
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="checkbox" name="Higiene">
-                    </label>
-                </div>
+            <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
+            <c:url value="/explore" var="explore"/>
+            <form action="${explore}" method="get" id="filter_form">
+                <table>
+                    <tr>
+                        <!--<td><label path="name">Name</label></td>-->
+                        <td><spring:message code="explore.filterform.name"/></td>
+                        <td><input name="name" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td><spring:message code="explore.filterform.category"/></td>
+                        <td><input name="category" type="text"/><td>
+                    </tr>
+                    <tr>
+                        <!--<td><label path="price">Max price</label></td>-->
+                        <td><spring:message code="explore.filterform.maxprice"/></td>
+                        <td><input name="maxPrice" type="number"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button type="submit"><spring:message code="explore.filterform.submit"/></button></td>
+                    </tr>
+                </table>
+            </form>
 
-            </div>
         </div>
         <div class="explore-products">
-            <c:set var="count" value="1"/>
-            <c:forEach items="${products}" var="product" step="1" begin="0">
-                <c:if test="${count==5}">
-                    <c:set var="count" value="1"/>
-                </c:if>
+            <c:forEach items="${products}" var="product">
                 <div class="card-container">
                     <div class="product-card-title">${product.name}</div>
                     <div class="description-container">${product.description}</div>
                     <div class="product-card-link-container">
-                        <a href="<c:url value="/product/${product.productId}"/>">Ver más</a>
+                        <span style="color:#ADE28A; text-decoration: underline #ADE28A;">
+                            <spring:message code="explore.products.price"/>${product.price}
+                        </span>
+                        <a style="color:#ADE28A; text-decoration: underline #ADE28A;" href="<c:url value="/product/${product.productId}"/>">
+                            <spring:message code="explore.products.more"/>
+                        </a>
                     </div>
                 </div>
-                <c:set var="count" value="${count+1}"/>
             </c:forEach>
         </div>
     </div>

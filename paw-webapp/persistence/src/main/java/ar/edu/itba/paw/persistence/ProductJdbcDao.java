@@ -11,10 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductJdbcDao implements ProductDao {
@@ -92,5 +89,24 @@ public class ProductJdbcDao implements ProductDao {
     public List<Product> getAll() {
         return template.query("SELECT * FROM products",
         PRODUCT_ROW_MAPPER);
+    }
+
+    @Override
+    public List<Product> filter(String name, String category, float maxPrice) {
+        StringBuilder query = new StringBuilder("SELECT * from products where ");
+        List<Object> args = new ArrayList<>();
+        if(name != null){
+            query.append("LOWER(name) like ? ");
+            args.add('%' + name.toLowerCase() + '%');
+        }
+        if(category != null){
+            query.append("AND categoryId IN (SELECT id from category where LOWER(name) like ?) ");
+            args.add('%' + category.toLowerCase() + '%');
+        }
+        if(maxPrice != -1.0){
+           query.append("AND price <= ?");
+           args.add(maxPrice);
+        }
+        return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
     }
 }

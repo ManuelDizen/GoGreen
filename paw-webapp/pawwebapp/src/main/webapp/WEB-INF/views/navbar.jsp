@@ -26,11 +26,11 @@
                     <a href="<c:url value="/"/>" class="left brand-logo" style="padding-left:2vw;">
                         <img src="<c:url value="/resources/images/logo.png"/>" height="50"
                              style="vertical-align: middle;" class="circle z-depth-2" alt="Logo">
-                        <span class="custom-title">GoGreen</span>
+                        <span class="custom-title"><spring:message code="navbar.companyname"/></span>
                     </a>
                     <ul id="nav-mobile" class="right">
                         <li style="padding-right:2vw;">
-                            <a href="<c:url value="/explore"/>"> Explorar </a>
+                            <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                         </li>
                         <!--<li style="padding-right:2vw;">
                             <a href="FAQ">FAQ</a>

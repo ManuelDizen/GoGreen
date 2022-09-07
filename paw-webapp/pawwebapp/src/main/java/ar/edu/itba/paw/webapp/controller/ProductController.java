@@ -7,14 +7,17 @@ import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,19 +37,28 @@ public class ProductController {
         this.es = es;
     }
 
-    @RequestMapping("/explore")
-    public ModelAndView exploreProducts(){
+    @RequestMapping(value="/explore")
+    public ModelAndView exploreProducts(
+            @RequestParam(name="name", defaultValue="") final String name,
+            @RequestParam(name="category", defaultValue="") final String category,
+            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
+    ){
         final ModelAndView mav = new ModelAndView("explore");
-        final List<Product> products = ps.getAll();
-        mav.addObject("products", products);
+        mav.addObject("products", ps.filter(name, category, maxPrice));
         return mav;
     }
 
+    /* TODO: Discutir sobre esta solución (doble boolean). Explicación para acordarme
+    cuando lo charlemos: 3 estados posibles, consulta de página, form falló, form exitoso.
+    No me alcanza con un solo boolean, pero siento que es ineficiente dos variables, aunque de
+    momento no se me ocurre algo mejor.
+     */
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
             @Valid @ModelAttribute("orderForm") final OrderForm form,
-            @RequestParam(name="formSuccess", defaultValue = "false") final boolean formSuccess){
+            @RequestParam(name="formSuccess", defaultValue = "false") final boolean formSuccess,
+            @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
         final Optional<Product> product = ps.getById(productId);
@@ -59,6 +71,7 @@ public class ProductController {
         //Should never have that exception, the product exists and sellerID is FK...
         mav.addObject("seller", seller.get());
         mav.addObject("formSuccess", formSuccess);
+        mav.addObject("formFailure", formFailure);
         return mav;
     }
 
@@ -67,12 +80,15 @@ public class ProductController {
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
         if(errors.hasErrors()){
-            return productPage(prodId, form, false);
+            /*List<FieldError> errorsAux = errors.getFieldErrors();
+            List<String> errorMsgs = new ArrayList<String>();
+            for(FieldError error : errorsAux){
+                errorMsgs.add(error.getObjectName() + " - " + error.getDefaultMessage());
+            }*/
+            return productPage(prodId, form, false, true);
         }
         final Optional<Product> product = ps.getById(prodId);
-
         if(product.isPresent()) {
-            // TODO: Check for isPresent() in get() of 1st parameter of itemsold
             final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
             if(seller.isPresent()) {
                 final Seller s = seller.get();
@@ -81,7 +97,7 @@ public class ProductController {
 
                 es.itemsold(s.getMail(), s.getName(), product.get(),
                         form.getAmount(), product.get().getPrice(),
-                        form.getName(), form.getMail(), form.getPhone());
+                        form.getName(), form.getMail(), form.getPhone(), form.getMessage());
             }
         }
         System.out.println("mail sent");
@@ -91,7 +107,4 @@ public class ProductController {
         mav.addObject("formSuccess", true);
         return mav;
     }
-
-
-
 }

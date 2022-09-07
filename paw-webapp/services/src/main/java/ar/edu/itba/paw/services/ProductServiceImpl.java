@@ -50,4 +50,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAll() {
         return productDao.getAll();
     }
+
+    @Override
+    public List<Product> filter(String name, String category, float maxPrice) {
+        return productDao.filter(name, category, maxPrice);
+    }
 }
