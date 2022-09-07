@@ -46,17 +46,19 @@
         </div>
         <div class="explore-products">
             <c:forEach items="${products}" var="product">
-                <div class="card-container">
-                    <div class="product-card-title">${product.name}</div>
-                    <div class="description-container">${product.description}</div>
-                    <div class="product-card-link-container">
-                        <span style="color:#ADE28A; text-decoration: underline #ADE28A;">
+                <div class="pccontainer">
+                    <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
+                        <h3>${product.name}</h3>
+                        <p class="small">${product.description}</p>
+                        <p class="small">
                             <spring:message code="explore.products.price"/>${product.price}
-                        </span>
-                        <a style="color:#ADE28A; text-decoration: underline #ADE28A;" href="<c:url value="/product/${product.productId}"/>">
-                            <spring:message code="explore.products.more"/>
-                        </a>
-                    </div>
+                        </p>
+                        <div class="go-corner" href="#">
+                            <div class="go-arrow">
+                                →
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </c:forEach>
         </div>

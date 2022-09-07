@@ -404,3 +404,101 @@ nav {
     margin-right: 5px;
 
 }
+
+/*
+PRODUCT CARD DESIGN RETRIEVED FROM: https://codepen.io/andrewsims/pen/mQoYwz
+ALL CREDITS TO @andrewsims
+ */
+
+.pccontainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.pccontainer h3 {
+    color: white;
+    font-size: 30px;
+    line-height: 1.6;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align:center;
+
+}
+
+.pccontainer p {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    color: white;
+}
+.pccontainer p .small {
+     font-size: 14px;
+ }
+
+.go-corner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    border-radius: 0 4px 0 32px;
+}
+
+.go-arrow {
+    margin-top: -4px;
+    margin-right: -4px;
+    color: black;
+}
+
+.pccard1 {
+    display: block;
+    position: relative;
+    width:80%;
+    background-color: #407056;
+    border-radius: 4px;
+    padding: 10px 24px;
+    margin: 12px;
+    text-decoration: none;
+    z-index: 0;
+    overflow: hidden;
+    border: 1px solid #EDFA8B;
+    color:white;
+}
+
+.pccard1:before {
+     content: "";
+     position: absolute;
+     z-index: -1;
+     top: -16px;
+     right: -16px;
+     background: #EDFA8B;
+     height: 50px;
+     width: 50px;
+     border-radius: 32px;
+     transform: scale(1);
+     transform-origin: 50% 50%;
+     transition: transform 0.25s ease-out;
+ }
+
+.pccard1:hover:before {
+     transform: scale(21);
+ }
+
+.pccard1:hover p{
+    transition: all 0.3s ease-out;
+    color:black;
+}
+
+.pccard1:hover h3 {
+    transition: all 0.3s ease-out;
+    color: black;
+}
