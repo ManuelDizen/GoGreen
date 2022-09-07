@@ -50,8 +50,10 @@
                     <div class="product-card-title">${product.name}</div>
                     <div class="description-container">${product.description}</div>
                     <div class="product-card-link-container">
-                        <span><spring:message code="explore.products.price"/>${product.price}</span>
-                        <a href="<c:url value="/product/${product.productId}"/>">
+                        <span style="color:#ADE28A; text-decoration: underline #ADE28A;">
+                            <spring:message code="explore.products.price"/>${product.price}
+                        </span>
+                        <a style="color:#ADE28A; text-decoration: underline #ADE28A;" href="<c:url value="/product/${product.productId}"/>">
                             <spring:message code="explore.products.more"/>
                         </a>
                     </div>
