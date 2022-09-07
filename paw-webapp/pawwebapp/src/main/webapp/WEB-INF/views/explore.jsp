@@ -25,16 +25,16 @@
                 <table>
                     <tr>
                         <!--<td><label path="name">Name</label></td>-->
-                        <td><spring:message code="explore.filterform.name"/></td>
+                        <td class="filter-inputlabel"><spring:message code="explore.filterform.name"/></td>
                         <td><input name="name" type="text"/></td>
                     </tr>
                     <tr>
-                        <td><spring:message code="explore.filterform.category"/></td>
+                        <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
                         <td><input name="category" type="text"/><td>
                     </tr>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
-                        <td><spring:message code="explore.filterform.maxprice"/></td>
+                        <td class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></td>
                         <td><input name="maxPrice" type="number"/></td>
                     </tr>
                     <tr>

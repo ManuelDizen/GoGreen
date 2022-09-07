@@ -378,10 +378,27 @@ nav {
     height:fit-content; /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
+.filter-inputlabel{
+    color: #1E425E;
+}
+
+/* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
+to remove automatic appearance of increment and decrement bar
+ */
+
+.explore-filter input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.explore-filter input[type=number]{
+    -moz-appearance: textfield;
+}
+
 .explore-products{
     display:flex;
     flex-direction: column;
-    align-items: center;
+    /*align-items: center;*/
     /*justify-content: center;*/
 }
 
