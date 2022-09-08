@@ -111,6 +111,8 @@ public class WebConfig {
     public ResourceBundleMessageSource emailMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("mailing/i18n/mailing");
+        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+        messageSource.setCacheSeconds(5);
         return messageSource;
     }
 

@@ -37,12 +37,10 @@
                         <td class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></td>
                         <td><input name="maxPrice" type="number"/></td>
                     </tr>
-                    <tr>
-                        <td colspan="5">
-                            <button type="submit" class="waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
-                        </td>
-                    </tr>
                 </table>
+                <div style="display:flex;justify-content: space-around;margin-top:5vh;">
+                    <button type="submit" class="waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
+                </div>
             </form>
 
         </div>
