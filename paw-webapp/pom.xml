@@ -26,6 +26,7 @@
     <thymeleaf-version>3.0.11.RELEASE</thymeleaf-version>
     <javax.mail.version>1.6.2</javax.mail.version>
     <commons-fileupload.version>1.4</commons-fileupload.version>
+    <spring-security.version>4.0.4.RELEASE</spring-security.version>
   </properties>
 
   <dependencyManagement>
@@ -123,6 +124,21 @@
         <groupId>commons-fileupload</groupId>
         <artifactId>commons-fileupload</artifactId>
         <version>${commons-fileupload.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring-security.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
