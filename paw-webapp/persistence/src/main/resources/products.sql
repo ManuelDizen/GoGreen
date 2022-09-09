@@ -37,4 +37,4 @@ create table if not exists images(
 );
 
 alter table products add column if not exists imageId integer default null;
-alter table products add foreign key (imageId) references image(id) on delete set null;
+alter table products add foreign key (imageId) references images(id) on delete set null;

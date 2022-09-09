@@ -11,8 +11,16 @@
 <body>
     <%@ include file="navbar.jsp"%>
     <div class="register-container">
-        <div class="register-buyer-container"></div>
-        <div class="register-seller-container"></div>
+        <div class="register-buyer-container">
+            <div class="register-buyer-title">Comprador</div>
+            <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
+            <a class="waves-effect waves-light btn">button</a>
+        </div>
+        <div class="register-seller-container">
+            <div class="register-buyer-title">Comprador</div>
+            <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
+            <a class="waves-effect waves-light btn">button</a>
+        </div>
     </div>
     <%@ include file="footer.jsp"%>
 </body>
