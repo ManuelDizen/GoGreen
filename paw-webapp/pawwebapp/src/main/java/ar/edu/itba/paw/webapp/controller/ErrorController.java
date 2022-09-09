@@ -8,20 +8,20 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ErrorController {
 
-    @RequestMapping(value = "/404", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/error404", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error404() {
         ModelAndView mav = new ModelAndView("error");
         return mav;
     }
 
-    @RequestMapping(value = "/500", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/error500", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error500() {
         ModelAndView mav = new ModelAndView("error");
         mav.addObject("name", "Error 500");
         return mav;
     }
 
-    @RequestMapping(value = "/503", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/error503", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error503() {
         ModelAndView mav = new ModelAndView("error");
         return mav;
