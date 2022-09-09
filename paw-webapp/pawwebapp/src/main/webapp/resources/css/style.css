@@ -1,7 +1,7 @@
 /* General CSS rules for every view */
 
 *{
-    /*border: 1px solid red;*/
+    border: 1px solid red;
     font-family: 'Manrope';
 }
 
@@ -519,4 +519,23 @@ ALL CREDITS TO @andrewsims
 .pccard1:hover h3 {
     transition: all 0.3s ease-out;
     color: black;
+}
+
+
+/*
+    REGISTER PAGE
+*/
+
+.register-container{
+    width:100%;
+    height: fit-content;
+    display:flex;
+}
+
+.register-buyer-container{
+    flex:50%;
+}
+
+.register-seller-container{
+    flex:50%;
 }

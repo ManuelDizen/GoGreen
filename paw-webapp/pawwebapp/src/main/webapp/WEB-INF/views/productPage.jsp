@@ -24,7 +24,7 @@
     </c:if>
     <c:if test="${formFailure}">
         <div class="order-failure">
-<spring:message code="productpage.orderfail"/>
+            <spring:message code="productpage.orderfail"/>
         </div>
     </c:if>
     <div class="product-page-container" style="height:available;">

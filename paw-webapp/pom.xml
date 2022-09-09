@@ -25,6 +25,7 @@
     <org.hibernate.validator>4.3.1.Final</org.hibernate.validator>
     <thymeleaf-version>3.0.11.RELEASE</thymeleaf-version>
     <javax.mail.version>1.6.2</javax.mail.version>
+    <commons-fileupload.version>1.4</commons-fileupload.version>
   </properties>
 
   <dependencyManagement>
@@ -117,6 +118,11 @@
         <groupId>com.sun.mail</groupId>
         <artifactId>javax.mail</artifactId>
         <version>${javax.mail.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>${commons-fileupload.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
