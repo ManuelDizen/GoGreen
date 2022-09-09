@@ -30,3 +30,10 @@ create table if not exists products(
     foreign key (sellerId) references sellers(id),
     foreign key (categoryId) references category(id)
     );
+
+create table if not exists images(
+    id serial primary key,
+    source bytea
+);
+
+alter table products add column if not exists imageId integer default null;
