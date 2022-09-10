@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,6 +28,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private GoGreenUserDetailsService userDetailsService;
 
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "ROLE_ADMIN > ROLE_SELLER \n ROLE_ADMIN > ROLE_BUYER";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
+    }
+
     @Override
     public void configure(final WebSecurity web) throws	Exception	{
         web.ignoring().antMatchers("/css/**","/js/**","/img/**",	"/favicon.ico",	"/403");
@@ -41,22 +51,36 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
     }
 
     /* TODO: Este método que queda abajo es el que hay que revisar para nuestros
-    roles y authorities (en el script de SQL está armado pero hay que hablarlo)
+        roles y authorities (en el script de SQL está armado pero hay que hablarlo)
      */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.sessionManagement().invalidSessionUrl("/login").and().authorizeRequests().
-                antMatchers("/login").anonymous().
-                antMatchers("/admin/**").hasRole("ADMIN").
-                antMatchers("/**").authenticated().and().
-                formLogin().usernameParameter("j_username").passwordParameter("j_password").
-                defaultSuccessUrl("/", false).loginPage("/login").and().
-                rememberMe().rememberMeParameter("j_rememberme").userDetailsService(userDetailsService).
-                key("mysupersecretketthatnobodyknowsabout"). //Esto hay que cambiarlo por una clave segura en env.application.properties
-                tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))												.
-                and().logout().logoutUrl("/logout").logoutSuccessUrl("/login").
-                and().exceptionHandling().accessDeniedPage("/403").
-                and().csrf().disable();
-        //TODO: ESTO HAY QUE REHACERLE TODOS LOS ANTMATCHERS!!! CHARLAR
+
+        http.sessionManagement().invalidSessionUrl("/").and()
+                .authorizeRequests()
+                    .antMatchers("/", "/explore", "/productpage/**").permitAll()
+                    .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
+                .and().formLogin()
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .defaultSuccessUrl("/", false)
+                    .failureUrl("/login?failure=true")
+                    .loginPage("/login")
+                .and().rememberMe()
+                    .rememberMeParameter("remember-me")
+                    .userDetailsService(userDetailsService)
+                    .key(env.getProperty("rememberme.key"))
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+                .and().logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .and().exceptionHandling()
+                .accessDeniedPage("/403")
+                .and().csrf().disable();
+        /*
+        TODO: Esto va a haber que cambiarlo dinamicamente, de momento va a funcionar xq tiene las paginas
+            creadas, pero eso no se va a mantener.
+        */
+
     }
 }

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UserForm {
+
     @Size(max = 50)
     @NotNull
     @NotEmpty
@@ -24,12 +25,19 @@ public class UserForm {
     @Email
     @Size(min = 8, max = 50)
     @UniqueUserMail
+    @NotNull
     private String email;
 
     @Password
     @NotNull
     @NotEmpty
     private String password;
+
+    @Size(min = 10, max = 100)
+    private String address;
+
+    @Size(min = 8, max = 11)
+    private String phone;
 
     public String getName() {
         return name;
@@ -61,5 +69,21 @@ public class UserForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

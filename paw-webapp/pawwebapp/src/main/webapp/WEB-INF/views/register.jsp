@@ -13,12 +13,16 @@
     <div class="register-container">
         <div class="register-buyer-container">
             <div class="register-buyer-title">Comprador</div>
-            <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
-            <a class="waves-effect waves-light btn">button</a>
+            <div>
+                <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
+            </div>
+            <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>">Registrarse</a>
         </div>
         <div class="register-seller-container">
             <div class="register-buyer-title">Comprador</div>
-            <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
+            <div>
+                <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
+            </div>
             <a class="waves-effect waves-light btn">button</a>
         </div>
     </div>
