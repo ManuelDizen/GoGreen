@@ -29,7 +29,7 @@ public class RegisterController {
 
     @RequestMapping(value="/registerbuyer", method = RequestMethod.GET)
     public ModelAndView registerBuyer(
-            @Valid @ModelAttribute("userForm") final UserForm form
+            @ModelAttribute("userForm") final UserForm form
     ){
         final ModelAndView mav = new ModelAndView("registerbuyer");
         return mav;
