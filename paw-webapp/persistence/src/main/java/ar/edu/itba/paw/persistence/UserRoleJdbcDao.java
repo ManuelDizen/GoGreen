@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.UserRoleDao;
 import ar.edu.itba.paw.models.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -22,6 +23,7 @@ public class UserRoleJdbcDao implements UserRoleDao {
                     resultSet.getLong("user_id"),
                     resultSet.getLong("role_id"));
 
+    @Autowired
     public UserRoleJdbcDao(final DataSource ds) {
         this.template = new JdbcTemplate(ds);
         this.insert = new SimpleJdbcInsert(ds)
