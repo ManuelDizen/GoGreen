@@ -35,14 +35,14 @@
             <div style="height:2vh; width:100%;"></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
-                <div style="height:fit-content; margin:0; padding: 1px;">
-                    <span><spring:message code="productpage.prodinfo.sellername"/></span>
-                    <span><c:out value="${seller.name}"/></span>
-                </div>
-                <div style="height:fit-content;">
-                    <span><spring:message code="productpage.prodinfo.sellermail"/></span>
-                    <span><c:out value="${seller.mail}"/></span>
-                </div>
+<%--                <div style="height:fit-content; margin:0; padding: 1px;">--%>
+<%--                    <span><spring:message code="productpage.prodinfo.sellername"/></span>--%>
+<%--                    <span><c:out value="${seller.name}"/></span>--%>
+<%--                </div>--%>
+<%--                <div style="height:fit-content;">--%>
+<%--                    <span><spring:message code="productpage.prodinfo.sellermail"/></span>--%>
+<%--                    <span><c:out value="${seller.mail}"/></span>--%>
+<%--                </div>--%>
                 <div style="height:fit-content;">
                     <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
                     <span><c:out value="${seller.address}"/></span>

@@ -22,6 +22,7 @@ public class UserJdbcDao implements UserDao {
     private static final RowMapper<User> USER_ROW_MAPPER = (resultSet, rowNum) ->
             new User(resultSet.getLong("id"),
                     resultSet.getString("email"),
+                    resultSet.getString("username"),
                     resultSet.getString("password"));
 
     private final JdbcTemplate template;
@@ -39,12 +40,13 @@ public class UserJdbcDao implements UserDao {
     }
 
     @Override
-    public User create(final String email, final String password) {
+    public User create(final String email, final String username, final String password) {
         final Map<String, Object> values = new HashMap<>();
         values.put("email", email);
+        values.put("username", username);
         values.put("password", password);
         final Number userId = insert.executeAndReturnKey(values);
-        return new User(userId.longValue(), "from-the-dao-" + email, password);
+        return new User(userId.longValue(), email, username, password);
     }
 
     @Override

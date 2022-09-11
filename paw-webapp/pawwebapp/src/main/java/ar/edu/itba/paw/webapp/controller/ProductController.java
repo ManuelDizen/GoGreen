@@ -93,9 +93,9 @@ public class ProductController {
             if(seller.isPresent()) {
                 final Seller s = seller.get();
                 es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(),
-                        product.get().getPrice(), s.getName(), s.getPhone(), s.getMail());
+                        product.get().getPrice(), sellerService.getName(s.getUserId()), s.getPhone(), sellerService.getEmail(s.getUserId()));
 
-                es.itemsold(s.getMail(), s.getName(), product.get(),
+                es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()), product.get(),
                         form.getAmount(), product.get().getPrice(),
                         form.getName(), form.getMail(), form.getPhone(), form.getMessage());
             }
@@ -103,7 +103,7 @@ public class ProductController {
         System.out.println("mail sent");
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
-        mav.addObject("product", ps.getById(prodId).orElseThrow(ProductNotFoundException::new));
+        //mav.addObject("product", ps.getById(prodId).orElseThrow(ProductNotFoundException::new));
         mav.addObject("formSuccess", true);
         return mav;
     }

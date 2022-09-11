@@ -7,11 +7,13 @@ import java.util.Optional;
 
 public interface SellerService {
 
-    Seller create(String mail, String phone, String address, String name);
+    Seller create(long userid, String phone, String address);
     Optional<Seller> findById(long id);
     Optional<Seller> findByMail(String mail);
     List<Seller> findByName(String name);
     Optional<Seller> findByPhone(String phone);
     List<Seller> getAll();
+    String getEmail(long userid);
+    public String getName(long userid);
 
 }

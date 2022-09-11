@@ -30,10 +30,9 @@ public class ProductJdbcDao implements ProductDao {
     private static final RowMapper<Seller> SELLER_ROW_MAPPER =
             (resultSet, rowNum) -> new Seller(
                     resultSet.getLong("id"),
-                    resultSet.getString("mail"),
+                    resultSet.getLong("userid"),
                     resultSet.getString("phone"),
-                    resultSet.getString("address"),
-                    resultSet.getString("name")
+                    resultSet.getString("address")
             );
 
 

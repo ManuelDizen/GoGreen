@@ -1,17 +1,17 @@
-create table if not exists userDetails(
-      id serial primary key ,
-      userId integer unique,
-      phone varchar(20),
-    address varchar(255),
-    foreign key(userId) references users(id)
+create table if not exists users(
+      id serial primary key,
+      email varchar(255) unique not null,
+      username varchar(255) unique not null,
+      password varchar(255) not null
+
     );
 
 create table if not exists sellers(
     id serial primary key,
-    name varchar(50) not null,
-    mail varchar(255) unique not null,
+    userId integer not null,
     phone varchar(20) unique not null,
-    address varchar(255) not null
+    address varchar(255) not null,
+    foreign key(userId) references users(id) on delete cascade
     );
 
 create table if not exists category(
