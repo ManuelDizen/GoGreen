@@ -46,16 +46,6 @@
                 <form:input path="password" type="password"/>
             </div>
             <div>
-                <form:errors path="address" element="p" cssClass="error"/>
-                <form:label path="address"><spring:message code="registerbuyer.form.address"/></form:label>
-                <form:input path="address" type="text"/>
-            </div>
-            <div>
-                <form:errors path="phone" element="p" cssClass="error"/>
-                <form:label path="phone"><spring:message code="registerbuyer.form.phone"/></form:label>
-                <form:input path="phone" type="text"/>
-            </div>
-            <div>
                 <button type="submit" class="waves-effect waves-light btn">
                     <spring:message code="registerbuyer.form.submit"/>
                 </button>

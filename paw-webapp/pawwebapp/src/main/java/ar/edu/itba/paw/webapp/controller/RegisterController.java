@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -50,6 +51,24 @@ public class RegisterController {
         }
 
         return new ModelAndView("");
+    }
 
+    @RequestMapping(value="/registerseller", method=RequestMethod.GET)
+    public ModelAndView registerSeller(
+            @ModelAttribute("sellerForm") final SellerForm form
+    ){
+        final ModelAndView mav = new ModelAndView("registerseller");
+        return mav;
+    }
+
+    @RequestMapping(value="/registerseller", method=RequestMethod.POST)
+    public ModelAndView registerSellerPost(
+            @Valid @ModelAttribute("sellerForm") final SellerForm form,
+            final BindingResult errors
+    ){
+        if(errors.hasErrors()){
+            return registerSeller(form);
+        }
+        return new ModelAndView("");
     }
 }
