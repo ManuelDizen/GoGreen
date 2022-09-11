@@ -53,7 +53,8 @@ public class SellerJdbcDao implements SellerDao {
 
     @Override
     public Optional<Seller> findByMail(String mail) {
-        return template.query("SELECT * from sellers where email = ?",
+        return template.query("SELECT * from sellers where userId = " +
+                        "(SELECT id from users where email = ?)",
                 new Object[]{mail}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
