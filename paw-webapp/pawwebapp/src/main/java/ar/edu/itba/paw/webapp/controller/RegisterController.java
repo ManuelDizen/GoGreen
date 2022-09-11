@@ -1,6 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.RoleService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.interfaces.services.UserRoleService;
+import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.Role;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.UserRole;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +21,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class RegisterController {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @RequestMapping(value= "/register", method= RequestMethod.GET)
     public ModelAndView register(){
@@ -42,15 +58,14 @@ public class RegisterController {
             final BindingResult errors){
         if(errors.hasErrors())
             return registerBuyer(form);
-        try{
-            //sellerService.create(form.getEmail(), form.getPhone(), form.getAddress(), form.getName());
-        }
-        catch(DuplicateKeyException e){
-            errors.addError(new FieldError("form", "email", "El email está en uso"));
-            return registerBuyer(form);
-        }
 
-        return new ModelAndView("");
+        User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(), form.getUsername(), form.getPassword());
+        // Seteo rol para comprador
+        Optional<Role> role = roleService.getByName("USER");
+        if(!role.isPresent())
+            throw new IllegalStateException("No se enconetró el rol.");
+        userRoleService.create(user.getId(), role.get().getId());
+        return new ModelAndView("redirect:/userProfile");
     }
 
     @RequestMapping(value="/registerseller", method=RequestMethod.GET)
@@ -69,6 +84,6 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
-        return new ModelAndView("");
+        return new ModelAndView("index");
     }
 }

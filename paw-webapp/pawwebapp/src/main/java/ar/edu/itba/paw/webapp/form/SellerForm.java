@@ -30,9 +30,13 @@ public class SellerForm {
     @NotEmpty
     private String password;
 
+    @NotNull
+    @NotEmpty
     @Size(min = 10, max = 100)
     private String address;
 
+    @NotNull
+    @NotEmpty
     @Size(min = 8, max = 11)
     private String phone;
 

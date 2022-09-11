@@ -11,14 +11,14 @@ import java.util.Optional;
 public class UniqueUserMailValidator implements ConstraintValidator<UniqueUserMail, String> {
 
     @Autowired
-    private SellerService sellerService;
+    private SellerService userService;
 
     @Override
     public void initialize(UniqueUserMail uniqueUserMail) {}
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        Optional<Seller> seller = sellerService.findByMail(s);
+        Optional<Seller> seller = userService.findByMail(s);
         return !seller.isPresent();
     }
 }

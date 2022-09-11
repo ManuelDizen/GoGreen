@@ -47,21 +47,21 @@ public class SellerJdbcDao implements SellerDao {
 
     @Override
     public Optional<Seller> findById(long id) {
-        return template.query("SELECT * from sellers where id = ?",
+        return template.query("SELECT * from sellers where userId = ?",
                 new Object[]{id}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
     public Optional<Seller> findByMail(String mail) {
-        return template.query("SELECT * from sellers where mail = ?",
+        return template.query("SELECT * from sellers where email = ?",
                 new Object[]{mail}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
     public List<Seller> findByName(String name) {
-        return template.query("SELECT * from sellers where name = ?",
+        return template.query("SELECT * from sellers where userId = " +
+                        "(SELECT id FROM users where firstName = ?)",
                 new Object[]{name}, SELLER_ROW_MAPPER);
-
     }
 
     @Override

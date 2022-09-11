@@ -1,0 +1,18 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: manuel
+  Date: 11/9/22
+  Time: 10:37
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title><spring:message code="profile.title"/>${user.firstName}</title>
+</head>
+<body>
+    <div>${user.firstName} ${user.surname}</div>
+    <div>${user.email}</div>
+</body>
+</html>

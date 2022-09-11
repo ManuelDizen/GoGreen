@@ -22,10 +22,10 @@
                 <h4><spring:message code="registerbuyer.title"/></h4>
             </div>
             <div>
-                <form:errors path="name" element="p" cssClass="error"/>
-                <form:label path="name"><spring:message code="registerbuyer.form.name"/>
+                <form:errors path="firstName" element="p" cssClass="error"/>
+                <form:label path="firstName"><spring:message code="registerbuyer.form.name"/>
                 <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="name" type="text"/>
+                <form:input path="firstName" type="text"/>
             </div>
             <div>
                 <form:errors path="surname" element="p" cssClass="error"/>
