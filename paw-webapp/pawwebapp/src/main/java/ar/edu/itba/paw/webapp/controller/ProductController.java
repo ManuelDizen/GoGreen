@@ -7,34 +7,30 @@ import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ProductController {
 
-    private final ProductService ps;
+    private final ProductService productService;
 
     private final SellerService sellerService;
 
-    private final EmailService es;
+    private final EmailService emailService;
 
     @Autowired
-    public ProductController(final ProductService ps, final SellerService sellerService, final EmailService es){
-        this.ps = ps;
+    public ProductController(final ProductService productService, final SellerService sellerService, final EmailService es){
+        this.productService = productService;
         this.sellerService = sellerService;
-        this.es = es;
+        this.emailService = es;
     }
 
     @RequestMapping(value="/explore")
@@ -44,7 +40,7 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        mav.addObject("products", ps.filter(name, category, maxPrice));
+        mav.addObject("products", productService.filter(name, category, maxPrice));
         return mav;
     }
 
@@ -61,7 +57,7 @@ public class ProductController {
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
-        final Optional<Product> product = ps.getById(productId);
+        final Optional<Product> product = productService.getById(productId);
         if(!product.isPresent()) throw new RuntimeException("Product not found");
         final Product productObj = product.get();
         mav.addObject("product", productObj);
@@ -87,15 +83,15 @@ public class ProductController {
             }*/
             return productPage(prodId, form, false, true);
         }
-        final Optional<Product> product = ps.getById(prodId);
+        final Optional<Product> product = productService.getById(prodId);
         if(product.isPresent()) {
             final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
             if(seller.isPresent()) {
                 final Seller s = seller.get();
-                es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(),
+                emailService.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(),
                         product.get().getPrice(), s.getName(), s.getPhone(), s.getMail());
 
-                es.itemsold(s.getMail(), s.getName(), product.get(),
+                emailService.itemsold(s.getMail(), s.getName(), product.get(),
                         form.getAmount(), product.get().getPrice(),
                         form.getName(), form.getMail(), form.getPhone(), form.getMessage());
             }
@@ -103,7 +99,7 @@ public class ProductController {
         System.out.println("mail sent");
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
-        mav.addObject("product", ps.getById(prodId).orElseThrow(ProductNotFoundException::new));
+        mav.addObject("product", productService.getById(prodId).orElseThrow(ProductNotFoundException::new));
         mav.addObject("formSuccess", true);
         return mav;
     }
