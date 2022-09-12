@@ -32,6 +32,9 @@
                     <li style="padding-right:2vw;">
                         <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                     </li>
+                    <li style="padding-right:2vw;">
+                        <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
+                    </li>
                     <c:if test="${pageContext.request.userPrincipal.name == null}">
                         <li style="padding-right:2vw;">
                             <a href="<c:url value="/login"/>"><spring:message code="navbar.login"/></a>
