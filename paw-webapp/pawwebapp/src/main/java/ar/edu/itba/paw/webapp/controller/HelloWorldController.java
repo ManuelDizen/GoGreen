@@ -56,17 +56,13 @@ public class HelloWorldController {
         return mav;
     }*/
 
-    @RequestMapping("/register")
+    @RequestMapping("/mockregister")
     public ModelAndView register(
             @RequestParam(value = "email", required = false, defaultValue = "itba@edu.ar") final String email,
             @RequestParam("password") final String password
     ) {
         final User user = us.register(email, password);
         return new ModelAndView("redirect:/profile" + user.getId());
-        // Con esto puedo ingresar a:
-        // http://localhost:8080/register?email=foo@bar.com&password=secret
-        // (aunque el mail no es requerido pq le pusimos un valor default)
-        // y esto me redirige a http://localhost:8080/profile/1
     }
 
     //Puedo agregar una validacion como expresion regular para userId

@@ -24,7 +24,7 @@
     </c:if>
     <c:if test="${formFailure}">
         <div class="order-failure">
-<spring:message code="productpage.orderfail"/>
+            <spring:message code="productpage.orderfail"/>
         </div>
     </c:if>
     <div class="product-page-container" style="height:available;">
@@ -85,7 +85,8 @@
                         <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><input type="submit" value="<spring:message code="productpage.orderform.submit"/>"/></td>
+                        <td colspan="2"><button type="submit" class="waves-effect waves-light btn"><spring:message code="productpage.orderform.submit"/></button>
+                        </td>
                     </tr>
                 </table>
             </form:form>
