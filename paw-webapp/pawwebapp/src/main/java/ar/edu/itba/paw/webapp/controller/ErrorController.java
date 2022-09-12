@@ -11,19 +11,21 @@ public class ErrorController {
     @RequestMapping(value = "/error404", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error404() {
         ModelAndView mav = new ModelAndView("error");
+        mav.addObject("error", "404");
         return mav;
     }
 
     @RequestMapping(value = "/error500", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error500() {
         ModelAndView mav = new ModelAndView("error");
-        mav.addObject("name", "Error 500");
+        mav.addObject("error", "500");
         return mav;
     }
 
     @RequestMapping(value = "/error503", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView error503() {
         ModelAndView mav = new ModelAndView("error");
+        mav.addObject("error", "503");
         return mav;
     }
 
