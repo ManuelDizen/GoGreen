@@ -29,12 +29,15 @@ public class AuthenticationController {
     @ResponseBody
     public String getLoggedEmail(){
         Authentication auth = getAuthentication();
-        Optional<User> user = userService.findByEmail(auth.getName());
-        // Remember username is given by email and not a proper username
-        if(!user.isPresent()){
-            throw new IllegalStateException("No se encontró usuario");
+        if(auth != null) {
+            Optional<User> user = userService.findByEmail(auth.getName());
+            // Remember username is given by email and not a proper username
+            if (!user.isPresent()) {
+                throw new IllegalStateException("No se encontró usuario");
+            }
+            return user.get().getEmail();
         }
-        return user.get().getEmail();
+        return null;
     }
 
     @RequestMapping(value="/firstName", method = RequestMethod.GET)

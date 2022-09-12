@@ -27,9 +27,9 @@ public class UserController {
             throw new IllegalStateException("No se encontró usuario loggeado");
         }*/
         final ModelAndView mav = new ModelAndView("userProfile");
-        Optional<User> user = userService.findById(1);
+        Optional<User> user = userService.findByEmail(authController.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
-        //mav.addObject("user", user.get());
+        mav.addObject("user", user.get());
         return mav;
     }
 }
