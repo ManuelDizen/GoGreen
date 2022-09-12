@@ -12,7 +12,9 @@
     <title><spring:message code="profile.title"/>${user.firstName}</title>
 </head>
 <body>
+<%@ include file="navbar.jsp"%>
     <div>${user.firstName} ${user.surname}</div>
     <div>${user.email}</div>
+<%@ include file="footer.jsp"%>
 </body>
 </html>

@@ -22,12 +22,14 @@ public class UserController {
 
     @RequestMapping(value="/userProfile")
     public ModelAndView profile(){
-        Optional<User> user = userService.findByEmail(authController.getLoggedEmail());
+        /*Optional<User> user = userService.findByEmail(authController.getLoggedEmail());
         if(!user.isPresent()){
             throw new IllegalStateException("No se encontró usuario loggeado");
-        }
+        }*/
         final ModelAndView mav = new ModelAndView("userProfile");
-        mav.addObject("user", user.get());
+        Optional<User> user = userService.findById(1);
+        if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
+        //mav.addObject("user", user.get());
         return mav;
     }
 }

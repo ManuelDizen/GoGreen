@@ -60,6 +60,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                     .antMatchers("/", "/explore", "/productpage/**").permitAll()
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
+                    .antMatchers("/userProfile").hasRole("USER")
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")

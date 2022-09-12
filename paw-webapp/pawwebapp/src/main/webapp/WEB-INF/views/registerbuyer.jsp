@@ -16,7 +16,7 @@
 <body>
     <%@ include file="navbar.jsp"%>
     <div class="register-buyer-form-container">
-        <c:url value="/registerbuyer" var="postUrl"/>
+        <c:url value="/registerbuyerprocess" var="postUrl"/>
         <form:form modelAttribute="userForm" method="post" action="${postUrl}" id="user_form">
             <div>
                 <h4><spring:message code="registerbuyer.title"/></h4>
@@ -38,6 +38,12 @@
                 <form:label path="email"><spring:message code="registerbuyer.form.email"/>
                     <spring:message code="forms.obligatorysign"/></form:label>
                 <form:input path="email" type="text"/>
+            </div>
+            <div>
+                <form:errors path="username" element="p" cssClass="error"/>
+                <form:label path="username"><spring:message code="registerbuyer.form.username"/>
+                    <spring:message code="forms.obligatorysign"/></form:label>
+                <form:input path="username" type="text"/>
             </div>
             <div>
                 <form:errors path="password" element="p" cssClass="error"/>

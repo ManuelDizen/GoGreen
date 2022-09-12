@@ -6,15 +6,12 @@ import ar.edu.itba.paw.interfaces.services.UserRoleService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.UserRole;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,13 +49,13 @@ public class RegisterController {
         return mav;
     }
 
-    @RequestMapping(value = "/registerbuyer", method = RequestMethod.POST)
+    @RequestMapping(value = "/registerbuyerprocess", method = RequestMethod.POST)
     public ModelAndView registerBuyerPost(
             @Valid @ModelAttribute("userForm") final UserForm form,
             final BindingResult errors){
-        if(errors.hasErrors())
+        if(errors.hasErrors()) {
             return registerBuyer(form);
-
+        }
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(), form.getUsername(), form.getPassword());
         // Seteo rol para comprador
         Optional<Role> role = roleService.getByName("USER");
