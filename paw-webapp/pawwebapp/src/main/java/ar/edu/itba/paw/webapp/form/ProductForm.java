@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,7 +21,18 @@ public class ProductForm {
 
     private Integer stock;
 
-    //faltan imágenes
+    private MultipartFile image;
+
+    // Falta category!!! Que habría que pasar a un enum dado que es estático.
+
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;

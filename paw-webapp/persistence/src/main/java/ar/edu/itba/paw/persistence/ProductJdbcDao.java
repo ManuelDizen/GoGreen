@@ -50,7 +50,8 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description, int stock, float price) {
+    public Product create(long sellerId, long categoryId, String name, String description,
+                          int stock, float price, long imageId) {
         final Map<String, Object> values = new HashMap<>();
         values.put("sellerId", sellerId);
         values.put("categoryId", categoryId);
@@ -58,6 +59,7 @@ public class ProductJdbcDao implements ProductDao {
         values.put("description", description);
         values.put("stock", stock);
         values.put("price", price);
+        values.put("imageId", imageId);
         final Number productId = insert.executeAndReturnKey(values);
         return new Product(productId.longValue(), sellerId, categoryId, name, description, stock, price);
     }

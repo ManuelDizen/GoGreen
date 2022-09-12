@@ -22,8 +22,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description, int stock, float price) {
-        return productDao.create(sellerId, categoryId, name, description, stock, price);
+    public Product create(long sellerId, long categoryId, String name, String description,
+                          int stock, float price, long imageId) {
+        return productDao.create(sellerId, categoryId, name, description, stock, price, imageId);
     }
 
     @Override

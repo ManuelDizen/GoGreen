@@ -15,7 +15,7 @@
 <body>
 <%@ include file="navbar.jsp"%>
 <div>
-    <c:url value="/registerbuyer" var="postUrl"/>
+    <c:url value="/createProduct" var="postUrl"/>
     <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form">
         <div>
             <h4><spring:message code="createproduct.title"/></h4>
@@ -41,6 +41,11 @@
             <form:errors path="stock" element="p" cssClass="error"/>
             <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
             <form:input path="stock"/>
+        </div>
+        <div>
+            <form:errors path="image" element="p" cssClass="error"/>
+            <form:label path="image"><spring:message code="createproduct.form.image"/></form:label>
+            <form:input path="image" type="file"/>
         </div>
         <div>
             <button type="submit" class="waves-effect waves-light btn">
