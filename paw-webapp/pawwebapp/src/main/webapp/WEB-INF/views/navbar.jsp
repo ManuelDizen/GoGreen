@@ -44,7 +44,6 @@
                         <li style="padding-right: 2vw">
                             <a href="<c:url value="/userProfile"/>">
                                 <i class="material-icons">account_circle</i>
-                                <c:import url="/firstName"/>
                             </a>
                         </li>
                     </c:if>

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class BasicController {
 
@@ -32,8 +35,16 @@ public class BasicController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(){
+    public ModelAndView login(HttpServletRequest request){
         final ModelAndView mav = new ModelAndView("login");
+        final HttpSession session = request.getSession();
+        //Retrieve previous webpage
+        final String referer = request.getHeader("Referer");
+        if (session != null && referer != null && !referer.contains("login")) {
+            // Es importante chequear que la pagina previa del referer no sea login
+            // para que, si viene
+            session.setAttribute("login_referer", referer);
+        }
         return mav;
     }
 
