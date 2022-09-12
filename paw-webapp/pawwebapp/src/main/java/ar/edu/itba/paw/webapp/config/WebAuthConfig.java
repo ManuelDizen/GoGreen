@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +35,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         String hierarchy = "ROLE_ADMIN > ROLE_SELLER \n ROLE_ADMIN > ROLE_BUYER";
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
+    }
+
+    @Bean
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+        return expressionHandler;
     }
 
     @Override
@@ -56,7 +64,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
 
-        http.sessionManagement().invalidSessionUrl("/").and()
+        http.sessionManagement().
+                invalidSessionUrl("/").and()
                 .authorizeRequests()
                     .antMatchers("/", "/explore", "/productpage/**").permitAll()
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()

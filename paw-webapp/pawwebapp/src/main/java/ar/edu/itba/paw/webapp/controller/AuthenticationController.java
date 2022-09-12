@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class AuthenticationController {
         return SecurityContextHolder.getContext().getAuthentication();
     }
     @RequestMapping(value="/email", method = RequestMethod.GET)
+    @ResponseBody
     public String getLoggedEmail(){
         Authentication auth = getAuthentication();
         Optional<User> user = userService.findByEmail(auth.getName());

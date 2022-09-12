@@ -32,9 +32,19 @@
                     <li style="padding-right:2vw;">
                         <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                     </li>
-                    <li style="padding-right:2vw;">
-                        <a href="<c:url value="/register"/>"><spring:message code="navbar.login"/></a>
-                    </li>
+                    <c:if test="${pageContext.request.userPrincipal.name == null}">
+                        <li style="padding-right:2vw;">
+                            <a href="<c:url value="/login"/>"><spring:message code="navbar.login"/></a>
+                        </li>
+                    </c:if>
+                    <c:if test="${pageContext.request.userPrincipal.name != null}">
+                        <li style="padding-right: 2vw">
+                            <a href="<c:url value="/userProfile"/>">
+                                <i class="material-icons">account_circle</i>
+                                <c:import url="/firstName"/>
+                            </a>
+                        </li>
+                    </c:if>
                 </ul>
 
             </div>

@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Title</title>
@@ -14,7 +16,40 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div style="height:80%;"></div>
+    <c:if test="${param.failure}">
+        <div class="error">
+            <spring:message code="loginpage.error"/>
+        </div>
+    </c:if>
+    <div style="height:fit-content;">
+        <c:url value="/login" var="postUrl"/>
+        <form method="post" action="${postUrl}" id="login_form">
+            <div class="login-container">
+                <h1><spring:message code="loginpage.title"/></h1>
+            </div>
+            <div>
+                <label><spring:message code="loginpage.email"/></label>
+                <input type="text" name="email"/>
+            </div>
+            <div>
+                <label><spring:message code="loginpage.password"/></label>
+                <input type="password" name="password"/>
+            </div>
+            <div>
+                <button type="submit" class="waves-effect waves-light btn">
+                    <spring:message code="loginpage.submit"/>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <span><spring:message code="loginpage.redirectregister"/></span>
+        <a href="<c:url value="/register"/>">
+            <button class="waves-effect waves-light btn">
+                <spring:message code="loginpage.registerbutton"/>
+            </button>
+        </a>
+    </div>
     <%@ include file="footer.jsp"%>
 </body>
 </html>
