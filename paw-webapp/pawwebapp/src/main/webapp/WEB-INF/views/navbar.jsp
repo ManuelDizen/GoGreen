@@ -33,6 +33,9 @@
                         <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                     </li>
                     <li style="padding-right:2vw;">
+                        <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
+                    </li>
+                    <li style="padding-right:2vw;">
                         <a href="<c:url value="/register"/>"><spring:message code="navbar.login"/></a>
                     </li>
                 </ul>

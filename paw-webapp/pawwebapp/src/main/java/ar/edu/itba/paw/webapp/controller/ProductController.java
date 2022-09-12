@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
+import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -107,4 +108,23 @@ public class ProductController {
         mav.addObject("formSuccess", true);
         return mav;
     }
+
+    @RequestMapping(value="/createProduct", method=RequestMethod.GET)
+    public ModelAndView createProduct(@ModelAttribute("productForm") final ProductForm form) {
+        final ModelAndView mav = new ModelAndView("createProducts");
+        return mav;
+    }
+
+    @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
+    public ModelAndView createProductPost(
+            @Valid @ModelAttribute("productForm") final ProductForm form,
+            final BindingResult errors){
+        if(errors.hasErrors())
+            return createProduct(form);
+        //llamada al backend
+        return new ModelAndView("");
+    }
+
+
+
 }
