@@ -2,13 +2,16 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
+import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +34,15 @@ public class ProductController {
 
     private final EmailService es;
 
+    private final ImageService is;
+
     @Autowired
-    public ProductController(final ProductService ps, final SellerService sellerService, final EmailService es){
+    public ProductController(final ProductService ps, final SellerService sellerService,
+                             final EmailService es, final ImageService is){
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
+        this.is = is;
     }
 
     @RequestMapping(value="/explore")
@@ -107,4 +115,34 @@ public class ProductController {
         mav.addObject("formSuccess", true);
         return mav;
     }
+
+    @RequestMapping(value="/createProduct", method=RequestMethod.GET)
+    public ModelAndView createProduct(@ModelAttribute("productForm") final ProductForm form) {
+        final ModelAndView mav = new ModelAndView("createProducts");
+        return mav;
+    }
+
+    @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
+    public ModelAndView createProductPost(
+            @Valid @ModelAttribute("productForm") final ProductForm form,
+            final BindingResult errors){
+        if(errors.hasErrors())
+            return createProduct(form);
+        //llamada al backend
+        byte[] image;
+        try {
+            image = form.getImage().getBytes();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //TODO: Hardcoded sellerId. Should retreive from session.
+        //  THis view must only be accessed by users with SELLER role
+        Product product = ps.create(1, 1, form.getName(), form.getDescription(),
+                form.getStock(), form.getPrice(), image);
+        return new ModelAndView("redirect:/product/" + product.getProductId());
+    }
+
+
+
 }

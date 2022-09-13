@@ -1,6 +1,3 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%--
   Created by IntelliJ IDEA.
   User: manuel
@@ -8,14 +5,15 @@
   Time: 20:32
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
+    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+    <%@ include file="header.jsp"%>
 </head>
 <body>
   <div class="register-seller-form-container">
-      <c:url value="/registerseller" var="postUrl"/>
+      <c:url value="/registersellerprocess" var="postUrl"/>
           <form:form modelAttribute="sellerForm" method="post" action="${postUrl}" id="user_form">
               <div>
                   <h4><spring:message code="registerseller.title"/></h4>
@@ -46,12 +44,14 @@
               </div>
               <div>
                   <form:errors path="address" element="p" cssClass="error"/>
-                  <form:label path="address"><spring:message code="registerbuyer.form.address"/></form:label>
+                  <form:label path="address"><spring:message code="registerbuyer.form.address"/>
+                  <spring:message code="forms.obligatorysign"/></form:label>
                   <form:input path="address" type="text"/>
               </div>
               <div>
                   <form:errors path="phone" element="p" cssClass="error"/>
-                  <form:label path="phone"><spring:message code="registerbuyer.form.phone"/></form:label>
+                  <form:label path="phone"><spring:message code="registerbuyer.form.phone"/>
+                  <spring:message code="forms.obligatorysign"/></form:label>
                   <form:input path="phone" type="text"/>
               </div>
               <div>

@@ -21,6 +21,8 @@ public class UserJdbcDao implements UserDao {
 
     private static final RowMapper<User> USER_ROW_MAPPER = (resultSet, rowNum) ->
             new User(resultSet.getLong("id"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("surname"),
                     resultSet.getString("email"),
                     resultSet.getString("username"),
                     resultSet.getString("password"));
@@ -40,46 +42,22 @@ public class UserJdbcDao implements UserDao {
     }
 
     @Override
-    public User create(final String email, final String username, final String password) {
+    public User create(final String name, final String surname, final String email, final String username, final String password) {
         final Map<String, Object> values = new HashMap<>();
+        values.put("firstName", name);
+        values.put("surname", surname);
         values.put("email", email);
         values.put("username", username);
         values.put("password", password);
         final Number userId = insert.executeAndReturnKey(values);
-        return new User(userId.longValue(), email, username, password);
+        return new User(userId.longValue(), name, surname, email, username, password);
     }
 
     @Override
     public Optional<User> findByEmail(final String email) {
-        // Hacer esto esta MAL por SQL Injection
-        // NO hay que concatenar variables en una query
-        //template.query("SELECT * FROM users WHERE email = " + email, null);
-
         return template.query("SELECT * FROM users WHERE email = ?",
                 new Object[]{ email }, USER_ROW_MAPPER
         ).stream().findFirst();
-
-        /*------------------ Sin lambda ------------------
-        return template.query("SELECT * FROM users WHERE email = ?",
-                new Object[]{email}, new RowMapper<User>() {
-                    @Override
-                    public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-                        return new User(resultSet.getString("email"),
-                                resultSet.getString("password"));
-                    }
-                }).stream().findFirst();
-
-         */
-
-        /*------------------ OTRA FORMA ------------------
-        List<User> users = template.query("SELECT * FROM users WHERE email = ?",
-                new Object[]{email}, new RowMapper<User>() {
-                    @Override
-                    public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-                        return new User(resultSet.getString("email"), resultSet.getString("password"));
-                    }
-                });
-        return users.isEmpty() ? Optional.<User>empty() : Optional.of(users.get(0));*/
 
     }
 

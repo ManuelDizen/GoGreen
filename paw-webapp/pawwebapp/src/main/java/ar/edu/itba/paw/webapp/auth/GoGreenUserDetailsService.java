@@ -15,12 +15,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Component
 public class GoGreenUserDetailsService implements UserDetailsService {
     private final UserService us;
     private final UserRoleService urs;
     private final RoleService rs;
+
+    private final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     @Autowired
     public GoGreenUserDetailsService(final UserService us, final UserRoleService urs,
