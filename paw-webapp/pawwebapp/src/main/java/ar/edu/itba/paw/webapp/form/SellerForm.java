@@ -32,6 +32,11 @@ public class SellerForm {
 
     @NotNull
     @NotEmpty
+    @Size(min = 8, max = 50)
+    private String username;
+
+    @NotNull
+    @NotEmpty
     @Size(min = 10, max = 100)
     private String address;
 
@@ -86,5 +91,13 @@ public class SellerForm {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -13,7 +13,7 @@
 </head>
 <body>
   <div class="register-seller-form-container">
-      <c:url value="/registerseller" var="postUrl"/>
+      <c:url value="/registersellerprocess" var="postUrl"/>
           <form:form modelAttribute="sellerForm" method="post" action="${postUrl}" id="user_form">
               <div>
                   <h4><spring:message code="registerseller.title"/></h4>
