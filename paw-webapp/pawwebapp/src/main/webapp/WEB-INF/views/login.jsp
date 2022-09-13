@@ -36,6 +36,10 @@
                 <input type="password" name="password"/>
             </div>
             <div>
+                <input type="checkbox" name="remember-me">
+                <label><spring:message code="loginpage.rememberme"/></label>
+            </div>
+            <div>
                 <button type="submit" class="waves-effect waves-light btn">
                     <spring:message code="loginpage.submit"/>
                 </button>

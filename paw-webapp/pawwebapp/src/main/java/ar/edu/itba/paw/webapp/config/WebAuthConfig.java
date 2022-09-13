@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.validation.constraints.Pattern;
 import java.util.concurrent.TimeUnit;
 
 @ComponentScan({"ar.edu.itba.paw.webapp.auth"})
@@ -31,6 +32,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
     private Environment env;
     @Autowired
     private GoGreenUserDetailsService userDetailsService;
+
 
     @Bean
     public RoleHierarchy roleHierarchy(){
@@ -53,7 +55,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Bean
-    public AuthenticationSuccessHandler success() {
+    public AuthenticationSuccessHandler successHandler() {
         return new RefererRedirectionAuthenticationSuccessHandler("/");
     }
 
@@ -88,7 +90,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .successHandler(success())
+                    .successHandler(successHandler())
                     .defaultSuccessUrl("/", false)
                     .failureUrl("/login?failure=true")
                     .loginPage("/login")

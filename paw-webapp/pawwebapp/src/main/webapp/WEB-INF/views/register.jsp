@@ -17,11 +17,11 @@
             <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>">Registrarse</a>
         </div>
         <div class="register-seller-container">
-            <div class="register-buyer-title">Comprador</div>
+            <div class="register-buyer-title">Vendedor</div>
             <div>
                 <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
             </div>
-            <a class="waves-effect waves-light btn">button</a>
+            <a class="waves-effect waves-light btn">Registrarse</a>
         </div>
     </div>
     <%@ include file="footer.jsp"%>

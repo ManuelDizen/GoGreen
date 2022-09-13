@@ -138,12 +138,8 @@ public class ProductController {
         }
         //TODO: Hardcoded sellerId. Should retreive from session.
         //  THis view must only be accessed by users with SELLER role
-        Image img = is.create(image);
-        if(img == null){
-            throw new IllegalArgumentException("Error en creación de imagen");
-        }
         Product product = ps.create(1, 1, form.getName(), form.getDescription(),
-                form.getStock(), form.getPrice(), img.getId());
+                form.getStock(), form.getPrice(), image);
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }
 

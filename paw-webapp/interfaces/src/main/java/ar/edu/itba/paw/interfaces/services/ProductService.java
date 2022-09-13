@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ProductService {
 
     Product create(long sellerId, long categoryId, String name, String description, int stock,
-                   float price, long imageId);
+                   float price, byte[] image);
 
     Optional<List<Product>> findBySeller(long sellerId);
     Optional<List<Product>> getByMaxPrice(float price);
