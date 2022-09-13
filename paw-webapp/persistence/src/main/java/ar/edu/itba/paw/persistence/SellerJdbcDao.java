@@ -47,7 +47,7 @@ public class SellerJdbcDao implements SellerDao {
 
     @Override
     public Optional<Seller> findById(long id) {
-        return template.query("SELECT * from sellers where userId = ?",
+        return template.query("SELECT * from sellers where id = ?",
                 new Object[]{id}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
