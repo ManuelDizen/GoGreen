@@ -25,6 +25,17 @@ public class AuthenticationController {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    //TODO: All this logic should be in a security service, no logic should be on controller
+
+    public User getLoggedUser(){
+        Authentication auth = getAuthentication();
+        if(auth != null){
+            Optional<User> user = userService.findByEmail(auth.getName());
+            return user.orElse(null);
+        }
+        return null;
+    }
+
     @RequestMapping(value="/email", method = RequestMethod.GET)
     @ResponseBody
     public String getLoggedEmail(){

@@ -12,7 +12,7 @@ public class SellerForm {
     @Size(max = 50)
     @NotNull
     @NotEmpty
-    private String name;
+    private String firstName;
 
     @Size(max = 100)
     @NotNull
@@ -44,14 +44,6 @@ public class SellerForm {
     @NotEmpty
     @Size(min = 8, max = 11)
     private String phone;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getSurname() {
         return surname;
@@ -99,5 +91,13 @@ public class SellerForm {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }

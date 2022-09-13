@@ -21,7 +21,7 @@
             <div>
                 <img src="<c:url value="/resources/images/landingImage1.png"/>" alt="HOla" style="width:50%;">
             </div>
-            <a class="waves-effect waves-light btn">Registrarse</a>
+            <a class="waves-effect waves-light btn" href="<c:url value="/registerseller"/>">Registrarse</a>
         </div>
     </div>
     <%@ include file="footer.jsp"%>

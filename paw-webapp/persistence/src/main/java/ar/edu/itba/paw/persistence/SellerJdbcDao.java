@@ -30,7 +30,7 @@ public class SellerJdbcDao implements SellerDao {
     @Autowired
     public SellerJdbcDao(final DataSource ds){
         this.template = new JdbcTemplate(ds);
-        this.insert = new SimpleJdbcInsert(ds).withTableName("products")
+        this.insert = new SimpleJdbcInsert(ds).withTableName("sellers")
                 .usingGeneratedKeyColumns("id");
 
     }
