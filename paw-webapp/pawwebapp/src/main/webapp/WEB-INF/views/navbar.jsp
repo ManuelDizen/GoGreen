@@ -5,12 +5,9 @@
   Time: 17:18
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
 <html>
     <head>
-        <title>Header</title>
+        <title>Navbar</title>
         <link rel="stylesheet" href="<c:url value="/resources/css/materialize.css"/>" type="text/css"
               media="screen,projection">
         <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>" type="text/css"
@@ -42,7 +39,7 @@
                     </c:if>
                     <c:if test="${pageContext.request.userPrincipal.name != null}">
                         <li style="padding-right: 2vw">
-                            <a href="<c:url value="/userProfile"/>">
+                            <a href="<c:url value="/profile"/>">
                                 <i class="material-icons">account_circle</i>
                             </a>
                         </li>
