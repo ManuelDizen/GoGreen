@@ -32,10 +32,10 @@
                         <li style="padding-right:2vw;">
                             <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                         </li>
-                        <!--<li style="padding-right:2vw;">
-                            <a href="FAQ">FAQ</a>
+                        <li style="padding-right:2vw;">
+                            <a href="<c:url value="/faq"/>"><spring:message code="navbar.faq"/></a>
                         </li>
-                        <li style="padding-right:5vw;">
+                        <!--<li style="padding-right:5vw;">
                             <a href="login">Iniciar Sesión/Registrarse</a>
                         </li>-->
                     </ul>
