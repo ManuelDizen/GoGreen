@@ -47,6 +47,13 @@
                                 <i class="material-icons">account_circle</i>
                             </a>
                         </li>
+                        <li style="padding-right: 2vw">
+                            <a href="<c:url value="/logout"/>">
+                                <button type="submit" class="waves-effect waves-light btn">
+                                    <spring:message code="logout"/>
+                                </button>
+                            </a>
+                        </li>
                     </c:if>
                 </ul>
 
