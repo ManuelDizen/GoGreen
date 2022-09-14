@@ -27,10 +27,10 @@ public class ProductController {
     private final EmailService emailService;
 
     @Autowired
-    public ProductController(final ProductService productService, final SellerService sellerService, final EmailService es){
+    public ProductController(final ProductService productService, final SellerService sellerService, final EmailService emailService){
         this.productService = productService;
         this.sellerService = sellerService;
-        this.emailService = es;
+        this.emailService = emailService;
     }
 
     @RequestMapping(value="/explore")
