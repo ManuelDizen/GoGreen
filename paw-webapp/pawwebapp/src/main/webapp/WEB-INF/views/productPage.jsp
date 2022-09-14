@@ -12,7 +12,7 @@
 <html>
 <head>
     <title><c:out value="${product.name}"/></title>
-    <link rel="icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
