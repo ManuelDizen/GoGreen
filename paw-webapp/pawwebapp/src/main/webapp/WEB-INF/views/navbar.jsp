@@ -5,6 +5,7 @@
   Time: 17:18
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
     <head>
         <title>Navbar</title>
@@ -29,14 +30,17 @@
                     <li style="padding-right:2vw;">
                         <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                     </li>
-                    <li style="padding-right:2vw;">
-                        <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
-                    </li>
+                    <sec:authorize access="hasRole('SELLER')">
+                        <li style="padding-right:2vw;">
+                            <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
+                        </li>
+                    </sec:authorize>
                     <c:if test="${pageContext.request.userPrincipal.name == null}">
                         <li style="padding-right:2vw;">
                             <a href="<c:url value="/login"/>"><spring:message code="navbar.login"/></a>
                         </li>
                     </c:if>
+
                     <c:if test="${pageContext.request.userPrincipal.name != null}">
                         <li style="padding-right: 2vw">
                             <a href="<c:url value="/profile"/>">

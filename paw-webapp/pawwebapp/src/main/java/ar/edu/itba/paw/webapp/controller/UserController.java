@@ -57,7 +57,7 @@ public class UserController {
         final ModelAndView mav = new ModelAndView("sellerProfile");
         Optional<User> user = userService.findByEmail(authController.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
-        Optional<Seller> seller = sellerService.findById(user.get().getId());
+        Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         // TODO: Acá faltaría además buscar los productos que vende un seller,
