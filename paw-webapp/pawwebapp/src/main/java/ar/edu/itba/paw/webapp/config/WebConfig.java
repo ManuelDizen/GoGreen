@@ -50,6 +50,9 @@ public class WebConfig {
     @Value("classpath:roles.sql")
     private Resource rolesSql;
 
+    @Value("classpath:faqs.sql")
+    private Resource faqsSql;
+
     @Bean
     public ViewResolver viewResolver() {
         final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -85,6 +88,7 @@ public class WebConfig {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
         dbp.addScript(productsSql);
         dbp.addScript(rolesSql);
+        dbp.addScript(faqsSql);
         return dbp;
     }
 
