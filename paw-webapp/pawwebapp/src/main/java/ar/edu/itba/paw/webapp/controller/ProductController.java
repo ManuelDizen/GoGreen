@@ -21,11 +21,11 @@ import java.util.Optional;
 @Controller
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductService ps;
 
     private final SellerService sellerService;
 
-    private final EmailService emailService;
+    private final EmailService es;
 
     private final ImageService is;
 
@@ -53,7 +53,7 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        mav.addObject("products", productService.filter(name, category, maxPrice));
+        mav.addObject("products", ps.filter(name, category, maxPrice));
         return mav;
     }
 
@@ -70,7 +70,7 @@ public class ProductController {
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
-        final Optional<Product> product = productService.getById(productId);
+        final Optional<Product> product = ps.getById(productId);
         if(!product.isPresent()) throw new RuntimeException("Product not found");
         final Product productObj = product.get();
         mav.addObject("product", productObj);
@@ -96,7 +96,7 @@ public class ProductController {
             }*/
             return productPage(prodId, form, false, true);
         }
-        final Optional<Product> product = productService.getById(prodId);
+        final Optional<Product> product = ps.getById(prodId);
         if(product.isPresent()) {
             final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
             if(seller.isPresent()) {
