@@ -33,6 +33,11 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    public Optional<Seller> findByUserId(long userId) {
+        return sd.findByUserId(userId);
+    }
+
+    @Override
     public Optional<Seller> findByMail(String mail) {
         return sd.findByMail(mail);
     }

@@ -24,7 +24,8 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getString("name"),
                     resultSet.getString("description"),
                     resultSet.getInt("stock"),
-                    resultSet.getFloat("price")
+                    resultSet.getFloat("price"),
+                    resultSet.getLong("imageId")
             );
 
     private static final RowMapper<Seller> SELLER_ROW_MAPPER =
@@ -61,7 +62,8 @@ public class ProductJdbcDao implements ProductDao {
         values.put("price", price);
         values.put("imageId", imageId);
         final Number productId = insert.executeAndReturnKey(values);
-        return new Product(productId.longValue(), sellerId, categoryId, name, description, stock, price);
+        return new Product(productId.longValue(), sellerId, categoryId, name, description, stock, price,
+                imageId);
     }
 
     @Override

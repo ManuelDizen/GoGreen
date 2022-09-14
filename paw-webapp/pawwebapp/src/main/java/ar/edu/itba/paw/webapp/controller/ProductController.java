@@ -1,28 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
 
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.ImageService;
-import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.SellerService;
-import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.webapp.form.FilterForm;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -36,13 +28,21 @@ public class ProductController {
 
     private final ImageService is;
 
+    private final UserService us;
+
+    private final AuthenticationController authController;
+
+
+
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
-                             final EmailService es, final ImageService is){
+                             final EmailService es, final ImageService is, UserService us, AuthenticationController authController){
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
         this.is = is;
+        this.us = us;
+        this.authController = authController;
     }
 
     @RequestMapping(value="/explore")
@@ -136,9 +136,18 @@ public class ProductController {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //TODO: Hardcoded sellerId. Should retreive from session.
+        //TODO: Hardcoded sellerId. Should retrieve from session.
         //  THis view must only be accessed by users with SELLER role
-        Product product = ps.create(1, 1, form.getName(), form.getDescription(),
+        // UPDATE: sellerId now parametrized to logged user, see what to do with category
+
+        Optional<User> user = us.findByEmail(authController.getLoggedEmail());
+        if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
+
+        Optional<Seller> seller = sellerService.findByUserId(user.get().getId());
+        if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
+
+        Product product = ps.create(seller.get().getId(),
+                1, form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }

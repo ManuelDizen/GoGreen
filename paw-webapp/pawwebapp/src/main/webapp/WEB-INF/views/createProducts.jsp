@@ -17,7 +17,7 @@
 <%@ include file="navbar.jsp"%>
 <div>
     <c:url value="/createProduct" var="postUrl"/>
-    <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form">
+    <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
         <div>
             <h4><spring:message code="createproduct.title"/></h4>
         </div>

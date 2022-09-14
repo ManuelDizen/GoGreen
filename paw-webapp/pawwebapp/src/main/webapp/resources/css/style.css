@@ -207,6 +207,24 @@ nav {
     text-decoration: underline #ADE28A;
 }
 
+.product-card-holder{
+    display:inline-flex;
+}
+
+.explore-product-image-container{
+    left:0;
+    top:0;
+    flex:20%;
+    height:auto;
+    width:auto;
+    margin-left: 10%;
+}
+
+.product-card-holder img{
+    height:100%;
+    width:100%;
+}
+
 .card-container{
     text-align: center;
     width:80%;
