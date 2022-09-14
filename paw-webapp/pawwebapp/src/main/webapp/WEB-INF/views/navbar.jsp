@@ -8,7 +8,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
     <head>
-        <title><spring:message code="navbar.companyname"></title>
+        <title><spring:message code="navbar.companyname"/></title>
         <link rel="stylesheet" href="<c:url value="/resources/css/materialize.css"/>" type="text/css"
               media="screen,projection">
         <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>" type="text/css"

@@ -74,9 +74,9 @@ public class RegisterController {
             throw new IllegalStateException("No se encontró el rol.");
         userRoleService.create(user.getId(), role.get().getId());
 
-        authWithAuthManager(request, user.getEmail(), user.getPassword());
+        authWithAuthManager(request, form.getEmail(), form.getPassword());
 
-        return new ModelAndView("redirect:/userProfile");
+        return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value="/registerseller", method=RequestMethod.GET)
@@ -114,15 +114,14 @@ public class RegisterController {
         // Para setear al usuario recién creado como activo
         // (Una convención, podríamos preguntar si es apropiado)
         // (Fuente: https://www.baeldung.com/spring-security-auto-login-user-after-registration)
-        authWithAuthManager(request, user.getEmail(), user.getPassword());
+        authWithAuthManager(request, form.getEmail(), form.getPassword());
 
-        return new ModelAndView("redirect:/sellerProfile");
+        return new ModelAndView("redirect:/");
     }
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         authToken.setDetails(new WebAuthenticationDetails(request));
-        request.getSession();
         Authentication authentication = authenticationManager.authenticate(authToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
