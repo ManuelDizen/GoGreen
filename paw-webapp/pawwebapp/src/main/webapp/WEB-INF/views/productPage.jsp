@@ -30,6 +30,9 @@
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
+            <div class = "productpage-image-container">
+            <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+            </div>
             <div><c:out value="${product.description}"/></div>
             <div><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
             <div style="height:2vh; width:100%;"></div>
