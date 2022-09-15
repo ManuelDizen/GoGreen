@@ -65,11 +65,12 @@
                 <div class="product-card-holder">
                     <!-- TODO: Me da toda la sensación que esta mal, pero el return default
                             para los products con columna null de imageId es 0.-->
-                    <c:if test="${product.imageId != 0}">
-                        <div class="explore-product-image-container">
+
+                    <div class="explore-product-image-container">
+                        <c:if test="${product.imageId != 0}">
                             <img src="<c:url value="/image/${product.imageId}"/>" alt="">
-                        </div>
-                    </c:if>
+                        </c:if>
+                    </div>
                     <div class="pccontainer">
                         <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
                             <h3>${product.name}</h3>
