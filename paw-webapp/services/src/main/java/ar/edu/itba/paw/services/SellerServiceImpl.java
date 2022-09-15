@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
+import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Seller;
+import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +13,28 @@ import java.util.Optional;
 @Service
 public class SellerServiceImpl implements SellerService {
     private final SellerDao sd;
+    private final UserDao ud;
 
     @Autowired
 
-    public SellerServiceImpl(final SellerDao sd) {
+    public SellerServiceImpl(final SellerDao sd, final UserDao ud) {
         this.sd = sd;
-
+        this.ud = ud;
     }
 
     @Override
-    public Seller create(String mail, String phone, String address, String name) {
-        return sd.create(mail, phone, address, name);
+    public Seller create(long userid, String phone, String address) {
+        return sd.create(userid, phone, address);
     }
 
     @Override
     public Optional<Seller> findById(long id) {
         return sd.findById(id);
+    }
+
+    @Override
+    public Optional<Seller> findByUserId(long userId) {
+        return sd.findByUserId(userId);
     }
 
     @Override
@@ -47,5 +55,25 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public List<Seller> getAll() {
         return sd.getAll();
+    }
+
+    @Override
+    public String getEmail(long userid) {
+        Optional<User> maybeUser = ud.findById(userid);
+        if(maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            return user.getEmail();
+        }
+        return null;
+    }
+
+    @Override
+    public String getName(long userid) {
+        Optional<User> maybeUser = ud.findById(userid);
+        if(maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            return user.getUsername();
+        }
+        return null;
     }
 }

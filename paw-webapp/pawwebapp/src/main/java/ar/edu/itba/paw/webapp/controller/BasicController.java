@@ -1,26 +1,23 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.UserService;
-import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import javax.validation.Valid;
-import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
-public class HelloWorldController {
+public class BasicController {
 
     private final UserService us;
 
-    @Autowired  //Para indicarle que este es el constructor que quiero que use
-    public HelloWorldController( final UserService us){
+    @Autowired
+    public BasicController(final UserService us){
         this.us = us;
     }
 
@@ -28,13 +25,6 @@ public class HelloWorldController {
     @RequestMapping("/")
     public ModelAndView helloWorld() {
         final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("greeting", "manu");
-        Optional<User> user = us.findByEmail("paw@itba.edu.ar");
-        if(!user.isPresent()) {
-            user = Optional.ofNullable(us.register("paw@itba.edu.ar", "secret"));
-        }
-        mav.addObject("username", "PAW");
-        mav.addObject("user", user);
         return mav;
     }
 
@@ -45,24 +35,9 @@ public class HelloWorldController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(){
+    public ModelAndView login(HttpServletRequest request){
         final ModelAndView mav = new ModelAndView("login");
         return mav;
-    }
-
-    /*@RequestMapping("/explore")
-    public ModelAndView explore(){
-        final ModelAndView mav = new ModelAndView("explore");
-        return mav;
-    }*/
-
-    @RequestMapping("/mockregister")
-    public ModelAndView register(
-            @RequestParam(value = "email", required = false, defaultValue = "itba@edu.ar") final String email,
-            @RequestParam("password") final String password
-    ) {
-        final User user = us.register(email, password);
-        return new ModelAndView("redirect:/profile" + user.getId());
     }
 
     //Puedo agregar una validacion como expresion regular para userId

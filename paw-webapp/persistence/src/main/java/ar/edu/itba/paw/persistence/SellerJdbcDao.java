@@ -20,10 +20,9 @@ public class SellerJdbcDao implements SellerDao {
     private static final RowMapper<Seller> SELLER_ROW_MAPPER =
             (resultSet, rowNum) -> new Seller(
                     resultSet.getLong("id"),
-                    resultSet.getString("mail"),
+                    resultSet.getLong("userid"),
                     resultSet.getString("phone"),
-                    resultSet.getString("address"),
-                    resultSet.getString("name")
+                    resultSet.getString("address")
             );
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
@@ -31,20 +30,19 @@ public class SellerJdbcDao implements SellerDao {
     @Autowired
     public SellerJdbcDao(final DataSource ds){
         this.template = new JdbcTemplate(ds);
-        this.insert = new SimpleJdbcInsert(ds).withTableName("products")
+        this.insert = new SimpleJdbcInsert(ds).withTableName("sellers")
                 .usingGeneratedKeyColumns("id");
 
     }
 
     @Override
-    public Seller create(String mail, String phone, String address, String name) {
+    public Seller create(long userid, String phone, String address) {
         final Map<String, Object> values = new HashMap<>();
-        values.put("mail", mail);
+        values.put("userid", userid);
         values.put("phone", phone);
-        values.put("name", name);
         values.put("address", address);
         final Number sellerId = insert.executeAndReturnKey(values);
-        return new Seller(sellerId.longValue(), mail, phone, address, name);
+        return new Seller(sellerId.longValue(), userid, phone, address);
     }
 
     @Override
@@ -54,16 +52,24 @@ public class SellerJdbcDao implements SellerDao {
     }
 
     @Override
+    public Optional<Seller> findByUserId(long userId) {
+        return template.query("SELECT * from sellers where userId = "
+        + "(SELECT id from users where id = ?)", new Object[]{userId}, SELLER_ROW_MAPPER)
+                .stream().findFirst();
+    }
+
+    @Override
     public Optional<Seller> findByMail(String mail) {
-        return template.query("SELECT * from sellers where mail = ?",
+        return template.query("SELECT * from sellers where userId = " +
+                        "(SELECT id from users where email = ?)",
                 new Object[]{mail}, SELLER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
     public List<Seller> findByName(String name) {
-        return template.query("SELECT * from sellers where name = ?",
+        return template.query("SELECT * from sellers where userId = " +
+                        "(SELECT id FROM users where firstName = ?)",
                 new Object[]{name}, SELLER_ROW_MAPPER);
-
     }
 
     @Override
@@ -78,4 +84,5 @@ public class SellerJdbcDao implements SellerDao {
         return template.query("SELECT * FROM sellers",
                 SELLER_ROW_MAPPER);
     }
+
 }

@@ -11,13 +11,14 @@
 
 <html>
 <head>
-    <title>FAQ</title>
     <link rel="stylesheet" href="<c:url value="/resources/css/materialize.css"/>" type="text/css" media="screen,projection">
     <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>" type="text/css" media="screen,projection">
     <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+    <title><spring:message code="faq.title"/></title>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>

@@ -13,7 +13,7 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 
-        <title>GoGreen</title>
+        <title><spring:message code="navbar.companyname"/></title>
     </head>
     <body>
         <%@ include file="navbar.jsp"%>

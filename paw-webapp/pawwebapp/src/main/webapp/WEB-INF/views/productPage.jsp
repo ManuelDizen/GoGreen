@@ -12,7 +12,7 @@
 <html>
 <head>
     <title><c:out value="${product.name}"/></title>
-    <link rel="icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
@@ -30,19 +30,22 @@
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
+            <div class = "productpage-image-container">
+            <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+            </div>
             <div><c:out value="${product.description}"/></div>
             <div><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
             <div style="height:2vh; width:100%;"></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
-                <div style="height:fit-content; margin:0; padding: 1px;">
-                    <span><spring:message code="productpage.prodinfo.sellername"/></span>
-                    <span><c:out value="${seller.name}"/></span>
-                </div>
-                <div style="height:fit-content;">
-                    <span><spring:message code="productpage.prodinfo.sellermail"/></span>
-                    <span><c:out value="${seller.mail}"/></span>
-                </div>
+<%--                <div style="height:fit-content; margin:0; padding: 1px;">--%>
+<%--                    <span><spring:message code="productpage.prodinfo.sellername"/></span>--%>
+<%--                    <span><c:out value="${seller.name}"/></span>--%>
+<%--                </div>--%>
+<%--                <div style="height:fit-content;">--%>
+<%--                    <span><spring:message code="productpage.prodinfo.sellermail"/></span>--%>
+<%--                    <span><c:out value="${seller.mail}"/></span>--%>
+<%--                </div>--%>
                 <div style="height:fit-content;">
                     <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
                     <span><c:out value="${seller.address}"/></span>

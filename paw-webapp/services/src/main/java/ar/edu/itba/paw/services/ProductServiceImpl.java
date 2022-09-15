@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
-import ar.edu.itba.paw.interfaces.persistence.UserDao;
+import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +15,22 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
+    private final ImageService imageService;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao){
+    public ProductServiceImpl(final ProductDao productDao, ImageService imageService){
         this.productDao = productDao;
+        this.imageService = imageService;
     }
 
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description, int stock, float price) {
-        return productDao.create(sellerId, categoryId, name, description, stock, price);
+    public Product create(long sellerId, long categoryId, String name, String description,
+                          int stock, float price, byte[] image) {
+        Image img = imageService.create(image);
+        if(img == null){
+            throw new IllegalArgumentException("Error en creación de imagen");
+        }
+        return productDao.create(sellerId, categoryId, name, description, stock, price, img.getId());
     }
 
     @Override

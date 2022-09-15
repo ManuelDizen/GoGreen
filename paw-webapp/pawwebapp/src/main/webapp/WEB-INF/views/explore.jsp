@@ -7,9 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Explore</title>
+    <title><spring:message code="explore.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
@@ -44,19 +45,28 @@
         </div>
         <div class="explore-products">
             <c:forEach items="${products}" var="product">
-                <div class="pccontainer">
-                    <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
-                        <h3>${product.name}</h3>
-                        <p class="small">${product.description}</p>
-                        <p class="small">
-                            <spring:message code="explore.products.price"/>${product.price}
-                        </p>
-                        <div class="go-corner" href="#">
-                            <div class="go-arrow">
-                                →
-                            </div>
+                <div class="product-card-holder">
+                    <!-- TODO: Me da toda la sensación que esta mal, pero el return default
+                            para los products con columna null de imageId es 0.-->
+                    <c:if test="${product.imageId != 0}">
+                        <div class="explore-product-image-container">
+                            <img src="<c:url value="/image/${product.imageId}"/>" alt="">
                         </div>
-                    </a>
+                    </c:if>
+                    <div class="pccontainer">
+                        <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
+                            <h3>${product.name}</h3>
+                            <p class="small">${product.description}</p>
+                            <p class="small">
+                                <spring:message code="explore.products.price"/>${product.price}
+                            </p>
+                            <div class="go-corner" href="#">
+                                <div class="go-arrow">
+                                    →
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </c:forEach>
         </div>

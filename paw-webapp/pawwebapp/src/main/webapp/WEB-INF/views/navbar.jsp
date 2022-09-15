@@ -5,12 +5,10 @@
   Time: 17:18
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
     <head>
-        <title>Header</title>
+        <title><spring:message code="navbar.companyname"/></title>
         <link rel="stylesheet" href="<c:url value="/resources/css/materialize.css"/>" type="text/css"
               media="screen,projection">
         <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>" type="text/css"
@@ -32,9 +30,31 @@
                     <li style="padding-right:2vw;">
                         <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                     </li>
-                    <li style="padding-right:2vw;">
-                        <a href="<c:url value="/register"/>"><spring:message code="navbar.login"/></a>
-                    </li>
+                    <sec:authorize access="hasRole('SELLER')">
+                        <li style="padding-right:2vw;">
+                            <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
+                        </li>
+                    </sec:authorize>
+                    <c:if test="${pageContext.request.userPrincipal.name == null}">
+                        <li style="padding-right:2vw;">
+                            <a href="<c:url value="/login"/>"><spring:message code="navbar.login"/></a>
+                        </li>
+                    </c:if>
+
+                    <c:if test="${pageContext.request.userPrincipal.name != null}">
+                        <li style="padding-right: 2vw">
+                            <a href="<c:url value="/profile"/>">
+                                <i class="material-icons">account_circle</i>
+                            </a>
+                        </li>
+                        <li style="padding-right: 2vw">
+                            <a href="<c:url value="/logout"/>">
+                                <button type="submit" class="waves-effect waves-light btn">
+                                    <spring:message code="logout"/>
+                                </button>
+                            </a>
+                        </li>
+                    </c:if>
                 </ul>
 
             </div>

@@ -47,8 +47,8 @@ public class WebConfig {
     @Value("classpath:products.sql")
     private Resource productsSql;
 
-    @Value("classpath:schemes.sql")
-    private Resource schemaSql;
+    @Value("classpath:roles.sql")
+    private Resource rolesSql;
 
     @Value("classpath:faqs.sql")
     private Resource faqsSql;
@@ -86,8 +86,8 @@ public class WebConfig {
 
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScript(schemaSql);
         dbp.addScript(productsSql);
+        dbp.addScript(rolesSql);
         dbp.addScript(faqsSql);
         return dbp;
     }

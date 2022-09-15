@@ -207,6 +207,24 @@ nav {
     text-decoration: underline #ADE28A;
 }
 
+.product-card-holder{
+    display:inline-flex;
+}
+
+.explore-product-image-container{
+    left:0;
+    top:0;
+    flex:20%;
+    height:auto;
+    width:auto;
+    margin-left: 10%;
+}
+
+.product-card-holder img{
+    height:100%;
+    width:100%;
+}
+
 .card-container{
     text-align: center;
     width:80%;
@@ -283,6 +301,20 @@ nav {
     display:flex;
     width:100%;
     height: fit-content;
+}
+
+.productpage-image-container{
+    display:flex;
+    align-content: space-around;
+    height: 30%;
+    width: 100%;
+}
+
+.productpage-image-container img{
+    border-radius: 50px;
+    max-height:50%;
+    max-width:50%;
+    flex:40%;
 }
 
 .product-info-container{
@@ -532,10 +564,18 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
-.register-buyer-container{
+.register-seller-container, .register-buyer-container{
+    align-content: center;
+    text-align: center;
+    height: fit-content;
     flex:50%;
+    margin: 10px 5px;
+    padding-bottom: 10px;
+    /*background-color: #EDF8AB;*/
+    border-radius: 10px;
+    color: white;
 }
 
-.register-seller-container{
-    flex:50%;
+.register-seller-form-container{
+    color:white;
 }
