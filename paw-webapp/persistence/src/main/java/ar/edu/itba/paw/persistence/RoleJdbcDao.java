@@ -16,9 +16,6 @@ import java.util.Optional;
 public class RoleJdbcDao implements RoleDao {
 
     private final JdbcTemplate template;
-    //TODO: Remove insert? Nobody should be able to add or remove roles
-    //  Leave it for now but consider removing it altogheter.
-    private final SimpleJdbcInsert jdbcInsert;
     private static final RowMapper<Role> ROLE_ROW_MAPPER = (result_set, row_num) ->
             new Role(result_set.getLong("id"),
                 result_set.getString("name"));
@@ -26,9 +23,6 @@ public class RoleJdbcDao implements RoleDao {
     @Autowired
     public RoleJdbcDao(final DataSource ds){
         this.template = new JdbcTemplate(ds);
-        this.jdbcInsert = new SimpleJdbcInsert(ds)
-                .withTableName("roles")
-                .usingGeneratedKeyColumns("id");
     }
 
 

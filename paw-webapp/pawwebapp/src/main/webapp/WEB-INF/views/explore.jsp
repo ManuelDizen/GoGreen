@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title><spring:message code="explore.title"/></title>
@@ -46,7 +47,7 @@
             <c:forEach items="${products}" var="product">
                 <div class="product-card-holder">
                     <!-- TODO: Me da toda la sensación que esta mal, pero el return default
-                    para los products con columna null de imageId es 0.-->
+                            para los products con columna null de imageId es 0.-->
                     <c:if test="${product.imageId != 0}">
                         <div class="explore-product-image-container">
                             <img src="<c:url value="/image/${product.imageId}"/>" alt="">
