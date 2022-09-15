@@ -13,6 +13,7 @@
 <head>
     <title><c:out value="${product.name}"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
