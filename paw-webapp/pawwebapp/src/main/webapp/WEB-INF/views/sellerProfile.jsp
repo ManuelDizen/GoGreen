@@ -14,6 +14,16 @@
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
+<div class="seller-profile-container">
+    <h4>${user.firstName} ${user.surname}</h4>
+    <c:if test="${user.}
+    <div>
+        <span><spring:message code ="sellerprofile.mail"/> ${user.email}</span>
+    </div>
+    <div>
+        <span><spring:message code ="sellerprofile.name"/> ${user.email}</span>
+    </div>
+</div>
 <div>${user.firstName} ${user.surname}</div>
 <div>${user.email}</div>
 <div>

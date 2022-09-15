@@ -9,6 +9,8 @@ public interface UserDao {
 
     User create(String firstName, String surname, String email, String username, String password);
 
+    void updateImage(long userId, long imageId);
+
     Optional<User> findByEmail(String email);
 
     Optional<User> findById(long userId);
