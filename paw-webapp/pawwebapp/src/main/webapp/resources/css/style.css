@@ -216,13 +216,21 @@ nav {
     top:0;
     flex:20%;
     height:auto;
-    width:auto;
-    margin-left: 10%;
+    width:100%;
+    margin-left:10%;
 }
+
+.explore-product-image-container img{
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+
 
 .product-card-holder img{
     height:100%;
     width:100%;
+    border-radius:10px;
 }
 
 .card-container{
@@ -508,6 +516,8 @@ ALL CREDITS TO @andrewsims
     margin-right: -4px;
     color: black;
 }
+
+
 
 .pccard1 {
     display: block;
