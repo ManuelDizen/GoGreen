@@ -579,3 +579,39 @@ ALL CREDITS TO @andrewsims
 .register-seller-form-container{
     color:white;
 }
+
+/* ------ SELLER PROFILE ------ */
+
+.seller-profile-main-body-container{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-around;
+    height:fit-content;
+    margin: 10vh 10vh;
+}
+
+
+.seller-profile-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    background-color: #EDF8AB;
+    color: #407056;
+    align-content: center;
+    width:60%;
+    margin:auto;
+    border-radius: 10px;
+    border: 1px solid #407056;
+}
+
+.seller-profile-container img{
+    -o-object-fit: contain;
+    object-fit: contain;
+    max-height: 100px;
+}
+
+.seller-profile-container .profile-row{
+    display:flex;
+    justify-content: space-around;
+    margin: 10px;
+}
