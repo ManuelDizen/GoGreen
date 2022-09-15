@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -54,7 +55,12 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        mav.addObject("products", ps.filter(name, category, maxPrice));
+        List<Product> productList = ps.filter(name, category, maxPrice);
+        boolean isEmpty = false;
+        if(productList.isEmpty())
+            isEmpty = true;
+        mav.addObject("products", productList);
+        mav.addObject("isEmpty", isEmpty);
         return mav;
     }
 
