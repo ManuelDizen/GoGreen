@@ -58,6 +58,11 @@ public class ProductController {
         final ModelAndView mav = new ModelAndView("explore");
 
         List<Product> products = ps.filter(name, category, maxPrice);
+        boolean isEmpty = false;
+        if(products.isEmpty())
+            isEmpty = true;
+
+        mav.addObject("isEmpty", isEmpty);
 
         List<List<Ecotag>> productTags = new ArrayList<>();
         for(Product product : products) {
