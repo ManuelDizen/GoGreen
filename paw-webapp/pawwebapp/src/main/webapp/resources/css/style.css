@@ -645,24 +645,30 @@ ALL CREDITS TO @andrewsims
     flex: 50%;
 }
 
+/* ------- REGISTER VIEWS ------- */
+
+.register-form-row{
+    display:flex;
+    justify-content: space-around;
+}
 
 /* -------- LOGIN VIEW ------- */
 
-.login-form-container, .login-register-container{
+.login-form-container, .login-register-container, .register-form-container{
     height:fit-content;
     width:60%;
     margin:auto;
     color:white;
 }
 
-.login-form-container div, .login-register-container div{
+.login-form-container div, .login-register-container div, .register-form-container div{
     width:100%;
     display:flex;
     justify-content: space-around;
     margin-bottom: 4vh;
 }
 
-.login-form-container div label{
+.login-form-container div label, .register-form-container div label{
     display:flex;
     flex-direction: column;
     justify-content: space-around;
@@ -681,6 +687,11 @@ ALL CREDITS TO @andrewsims
 
 .login-page-container .error{
     font-size:20px;
+}
+
+.form-input{
+margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
+    color:white;
 }
 
 /* Extracted from https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/ */
