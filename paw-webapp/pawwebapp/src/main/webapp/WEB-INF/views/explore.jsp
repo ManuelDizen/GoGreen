@@ -54,17 +54,11 @@
 
         </div>
         <div class="explore-products">
-            <c:if test="${isEmpty}">
-                <div class="center">
-                    <h4><spring:message code="explore.noproducts"/></h4>
-                    <img style="width:30%; position:relative;" src="<c:url value="/resources/images/landingImage1.png"/>" alt="Sustainability for all!">
-                    <h4><spring:message code="explore.comeback"/></h4>
-                </div>
-            </c:if>
-            <c:forEach items="${products}" var="product">
-                <div class="product-card-holder">
-                    <!-- TODO: Me da toda la sensación que esta mal, pero el return default
-                            para los products con columna null de imageId es 0.-->
+            <c:if test="${products.size() != 0}">
+                <c:forEach items="${products}" var="product">
+                    <div class="product-card-holder">
+                        <!-- TODO: Me da toda la sensación que esta mal, pero el return default
+                                para los products con columna null de imageId es 0.-->
 
                     <div class="explore-product-image-container">
                         <c:if test="${product.imageId != 0}">
@@ -88,11 +82,17 @@
                                 <div class="go-arrow">
                                     →
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </c:if>
+            <c:if test="${products.size() == 0}">
+                <h4><spring:message code="explore.noproducts"/></h4>
+                <sec:authorize access="hasRole('SELLER')">
+                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
+                </sec:authorize>
+            </c:if>
         </div>
     </div>
     <%@ include file="footer.jsp"%>
