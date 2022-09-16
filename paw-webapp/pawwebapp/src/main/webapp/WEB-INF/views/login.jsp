@@ -18,7 +18,7 @@
 <%@ include file="navbar.jsp"%>
     <div class="login-page-container">
         <c:if test="${param.failure}">
-            <div class="error">
+            <div class="error" style="width:60%; margin: 5vh auto; text-align:center;">
                 <spring:message code="loginpage.error"/>
             </div>
         </c:if>
