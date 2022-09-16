@@ -49,4 +49,5 @@ public class EcotagJdbcDao implements EcotagDao {
         return template.query("SELECT tag from tags_to_products WHERE productId = ?",
                 new Object[]{productId}, ECOTAG_ROW_MAPPER);
     }
+
 }

@@ -130,7 +130,9 @@ public class ProductController {
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)
     public ModelAndView createProduct(@ModelAttribute("productForm") final ProductForm form) {
+        List<Ecotag> tagList = Arrays.asList(Ecotag.values());
         final ModelAndView mav = new ModelAndView("createProducts");
+        mav.addObject("tagList", tagList);
         return mav;
     }
 
@@ -162,10 +164,9 @@ public class ProductController {
                 1, form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
 
-        //TODO que entren por formulario
-        ecos.addTag(Ecotag.ECOTAG1, product.getProductId());
-        ecos.addTag(Ecotag.ECOTAG3, product.getProductId());
-
+        for(long id : form.getEcotag()) {
+            ecos.addTag(Ecotag.getById(id), product.getProductId());
+        }
 
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }

@@ -5560,7 +5560,6 @@ button.btn-floating {
 .dropdown-content {
   background-color: #fff;
   margin: 0;
-  display: none;
   min-width: 100px;
   overflow-y: auto;
   opacity: 0;
@@ -7152,9 +7151,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 
 /* Select Field
    ========================================================================== */
-select {
-  display: none;
-}
+
 
 select.browser-default {
   display: block;
