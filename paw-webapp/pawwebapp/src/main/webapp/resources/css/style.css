@@ -594,10 +594,15 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-main-body-container{
     display:flex;
+}
+
+.seller-profile-main-body-container-information{
+    display:flex;
     flex-direction: column;
     justify-content:space-around;
     height:fit-content;
     margin: 10vh 10vh;
+    flex:49%;
 }
 
 
@@ -624,4 +629,7 @@ ALL CREDITS TO @andrewsims
     display:flex;
     justify-content: space-around;
     margin: 10px;
+}
+.seller-profile-container-orders{
+    flex: 50%;
 }
