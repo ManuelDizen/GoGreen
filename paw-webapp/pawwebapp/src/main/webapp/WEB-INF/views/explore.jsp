@@ -44,32 +44,40 @@
 
         </div>
         <div class="explore-products">
-            <c:forEach items="${products}" var="product">
-                <div class="product-card-holder">
-                    <!-- TODO: Me da toda la sensación que esta mal, pero el return default
-                            para los products con columna null de imageId es 0.-->
+            <c:if test="${products.size() != 0}">
+                <c:forEach items="${products}" var="product">
+                    <div class="product-card-holder">
+                        <!-- TODO: Me da toda la sensación que esta mal, pero el return default
+                                para los products con columna null de imageId es 0.-->
 
-                    <div class="explore-product-image-container">
-                        <c:if test="${product.imageId != 0}">
-                            <img src="<c:url value="/image/${product.imageId}"/>" alt="">
-                        </c:if>
-                    </div>
-                    <div class="pccontainer">
-                        <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
-                            <h3>${product.name}</h3>
-                            <p class="small">${product.description}</p>
-                            <p class="small">
-                                <spring:message code="explore.products.price"/>${product.price}
-                            </p>
-                            <div class="go-corner" href="#">
-                                <div class="go-arrow">
-                                    →
+                        <div class="explore-product-image-container">
+                            <c:if test="${product.imageId != 0}">
+                                <img src="<c:url value="/image/${product.imageId}"/>" alt="">
+                            </c:if>
+                        </div>
+                        <div class="pccontainer">
+                            <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
+                                <h3>${product.name}</h3>
+                                <p class="small">${product.description}</p>
+                                <p class="small">
+                                    <spring:message code="explore.products.price"/>${product.price}
+                                </p>
+                                <div class="go-corner" href="#">
+                                    <div class="go-arrow">
+                                        →
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </c:if>
+            <c:if test="${products.size() == 0}">
+                <h4><spring:message code="explore.noproducts"/></h4>
+                <sec:authorize access="hasRole('SELLER')">
+                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
+                </sec:authorize>
+            </c:if>
         </div>
     </div>
     <%@ include file="footer.jsp"%>
