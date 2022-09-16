@@ -76,4 +76,14 @@ public class SellerServiceImpl implements SellerService {
         }
         return null;
     }
+
+    @Override
+    public String getSurname(long userid) {
+        Optional<User> maybeUser = ud.findById(userid);
+        if(maybeUser.isPresent()) {
+            User user = maybeUser.get();
+            return user.getSurname();
+        }
+        return null;
+    }
 }

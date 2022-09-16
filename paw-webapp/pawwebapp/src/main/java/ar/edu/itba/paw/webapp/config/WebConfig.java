@@ -50,6 +50,9 @@ public class WebConfig {
     @Value("classpath:roles.sql")
     private Resource rolesSql;
 
+    @Value("classpath:orders.sql")
+    private Resource ordersSql;
+
     @Value("classpath:faqs.sql")
     private Resource faqsSql;
 
@@ -89,6 +92,7 @@ public class WebConfig {
         dbp.addScript(productsSql);
         dbp.addScript(rolesSql);
         dbp.addScript(faqsSql);
+        dbp.addScript(ordersSql);
         return dbp;
     }
 

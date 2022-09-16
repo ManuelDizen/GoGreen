@@ -1,4 +1,4 @@
-create table if not exists orders{
+create table if not exists orders(
     id serial primary key,
     productName varchar(255) not null,
     sellerName varchar(255) not null,
@@ -10,4 +10,4 @@ create table if not exists orders{
     amount integer not null,
     price integer not null,
     datetime timestamp not null
-}
+    );
