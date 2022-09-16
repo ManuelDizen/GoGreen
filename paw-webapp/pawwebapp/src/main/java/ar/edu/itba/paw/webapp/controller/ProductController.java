@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Controller
@@ -33,18 +36,21 @@ public class ProductController {
 
     private final AuthenticationController authController;
 
+    private final OrderService os;
+
 
 
 
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
-                             final EmailService es, final ImageService is, UserService us, AuthenticationController authController){
+                             final EmailService es, final ImageService is, UserService us, AuthenticationController authController, OrderService os){
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
         this.is = is;
         this.us = us;
         this.authController = authController;
+        this.os = os;
     }
 
     @RequestMapping(value="/explore")
@@ -89,30 +95,46 @@ public class ProductController {
     public ModelAndView process(@PathVariable final long prodId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
+
+        //TODO: Change ALL this logic to service.
+
         if(errors.hasErrors()){
             return productPage(prodId, form, false, true);
         }
         final Optional<Product> product = ps.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
 
+        final Product p = product.get();
+
         final Optional<User> user = us.findByEmail(authController.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
+
+        final User u = user.get();
 
         final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         final Seller s = seller.get();
 
-        es.purchase(user.get().getEmail(), user.get().getFirstName(),
-                product.get(), form.getAmount(),
-                product.get().getPrice(), sellerService.getName(s.getUserId()),
+        es.purchase(u.getEmail(), u.getFirstName(),
+                p, form.getAmount(),
+                p.getPrice(), sellerService.getName(s.getUserId()),
                 s.getPhone(), sellerService.getEmail(s.getUserId()));
 
         es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()),
-                product.get(),
-                form.getAmount(), product.get().getPrice(),
-                user.get().getFirstName(), user.get().getEmail(),
+                p,
+                form.getAmount(), p.getPrice(),
+                u.getFirstName(), u.getEmail(),
                 form.getMessage());
+
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        Order order = os.create(p.getName(), u.getFirstName(),
+                u.getSurname(), u.getEmail(), sellerService.getName(s.getUserId()),
+                sellerService.getSurname(s.getUserId()),
+        sellerService.getEmail(s.getUserId()), form.getAmount(), p.getPrice(), dateTime);
+
+        if(order == null) throw new IllegalStateException("No se instanció la orden");
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
         mav.addObject("formSuccess", true);

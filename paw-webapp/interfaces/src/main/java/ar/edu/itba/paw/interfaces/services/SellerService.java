@@ -16,5 +16,6 @@ public interface SellerService {
     List<Seller> getAll();
     String getEmail(long userid);
     public String getName(long userid);
+    public String getSurname(long userid);
 
 }

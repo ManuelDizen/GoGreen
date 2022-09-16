@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.time.LocalDateTime;
+
 public class Order {
     private long id;
     private String productName;
@@ -11,8 +13,11 @@ public class Order {
     private String sellerEmail;
     private Integer amount;
     private float price;
+    private LocalDateTime dateTime;
 
-    public Order(long id, String productName, String buyerName, String buyerSurname, String buyerEmail, String sellerName, String sellerSurname, String sellerEmail, Integer amount, float price) {
+    public Order(long id, String productName, String buyerName, String buyerSurname,
+                 String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
+                 Integer amount, float price, LocalDateTime dateTime) {
         this.id = id;
         this.productName = productName;
         this.buyerName = buyerName;
@@ -23,6 +28,7 @@ public class Order {
         this.sellerEmail = sellerEmail;
         this.amount = amount;
         this.price = price;
+        this.dateTime = dateTime;
     }
 
     public long getId() {
@@ -103,5 +109,13 @@ public class Order {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
