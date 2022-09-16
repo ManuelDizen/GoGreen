@@ -12,6 +12,8 @@
 <head>
     <title><spring:message code="explore.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
@@ -61,7 +63,8 @@
                                 <spring:message code="explore.products.price"/>${product.price}
                             </p>
                             <c:forEach items="${product.tagList}" var="ecotag">
-                                <div class="chip">
+                                <div class="${ecotag.color} white-text chip">
+                                    <i class="tiny material-icons">${ecotag.icon}</i>
                                         ${ecotag.tag}
                                 </div>
                             </c:forEach>
