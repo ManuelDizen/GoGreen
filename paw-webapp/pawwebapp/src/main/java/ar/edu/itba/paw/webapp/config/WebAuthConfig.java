@@ -54,11 +54,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         return expressionHandler;
     }
 
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new RefererRedirectionAuthenticationSuccessHandler("/");
-    }
-
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -92,8 +87,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .successHandler(successHandler())
-                    .defaultSuccessUrl("/", false)
+                    .defaultSuccessUrl("/explore", false)
                     .failureUrl("/login?failure=true")
                     .loginPage("/login")
                 .and().rememberMe()
