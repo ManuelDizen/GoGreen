@@ -18,40 +18,32 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 
 @Controller
 public class ProductController {
 
-    private final ProductService ps;
-
-    private final SellerService sellerService;
-
-    private final EmailService es;
-
-    private final ImageService is;
-
-    private final UserService us;
-
-    private final AuthenticationController authController;
-
-    private final OrderService os;
-
-
-
+    @Autowired
+    private ProductService ps;
 
     @Autowired
-    public ProductController(final ProductService ps, final SellerService sellerService,
-                             final EmailService es, final ImageService is, UserService us, AuthenticationController authController, OrderService os){
-        this.ps = ps;
-        this.sellerService = sellerService;
-        this.es = es;
-        this.is = is;
-        this.us = us;
-        this.authController = authController;
-        this.os = os;
-    }
+    private SellerService sellerService;
+
+    @Autowired
+    private EmailService es;
+
+    @Autowired
+    private ImageService is;
+
+    @Autowired
+    private UserService us;
+
+    @Autowired
+    private SecurityService securityService;
+
+    @Autowired
+    private OrderService os;
+
 
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
@@ -106,7 +98,7 @@ public class ProductController {
 
         final Product p = product.get();
 
-        final Optional<User> user = us.findByEmail(authController.getLoggedEmail());
+        final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
 
         final User u = user.get();
@@ -164,7 +156,7 @@ public class ProductController {
 
         // UPDATE: Category is hardcoded. Discuss.
 
-        Optional<User> user = us.findByEmail(authController.getLoggedEmail());
+        Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
 
         Optional<Seller> seller = sellerService.findByUserId(user.get().getId());

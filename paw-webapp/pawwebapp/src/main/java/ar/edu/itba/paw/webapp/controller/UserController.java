@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Seller;
@@ -23,12 +24,11 @@ public class UserController {
     private SellerService sellerService;
 
     @Autowired
-    private AuthenticationController authController;
-    //TODO: Esto está mal!!! hay que cambiarlo
+    private SecurityService securityService;
 
     @RequestMapping(value="profile")
     public ModelAndView profile(){
-        User user = authController.getLoggedUser();
+        User user = securityService.getLoggedUser();
         if(user == null){
             throw new IllegalStateException("Only logged users can access their profile");
         }
@@ -46,7 +46,7 @@ public class UserController {
             throw new IllegalStateException("No se encontró usuario loggeado");
         }*/
         final ModelAndView mav = new ModelAndView("userProfile");
-        Optional<User> user = userService.findByEmail(authController.getLoggedEmail());
+        Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
         mav.addObject("user", user.get());
         return mav;
@@ -55,7 +55,7 @@ public class UserController {
     @RequestMapping(value="/sellerProfile")
     public ModelAndView sellerProfile(){
         final ModelAndView mav = new ModelAndView("sellerProfile");
-        Optional<User> user = userService.findByEmail(authController.getLoggedEmail());
+        Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
         Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
