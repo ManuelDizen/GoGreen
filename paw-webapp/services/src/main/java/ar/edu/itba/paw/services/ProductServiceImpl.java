@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ImageService imageService;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, ImageService imageService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService){
         this.productDao = productDao;
         this.imageService = imageService;
     }

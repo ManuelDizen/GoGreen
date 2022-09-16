@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 
 import java.util.*;
@@ -28,26 +27,29 @@ import java.util.*;
 @Controller
 public class ProductController {
 
-    private final ProductService ps;
+    @Autowired
+    private ProductService ps;
 
-    private final SellerService sellerService;
+    @Autowired
+    private SellerService sellerService;
 
-    private final EmailService es;
+    @Autowired
+    private EmailService es;
 
-    private final ImageService is;
+    @Autowired
+    private ImageService is;
 
-    private final UserService us;
+    @Autowired
+    private UserService us;
 
+    @Autowired
+    private SecurityService securityService;
     private final EcotagService ecos;
 
     private final AuthenticationController authController;
 
-    private final OrderService os;
-
-
-
-
     @Autowired
+    private OrderService os;
     public ProductController(final ProductService ps, final SellerService sellerService,
                              final EmailService es, final ImageService is, final UserService us, final EcotagService ecos, AuthenticationController authController, OrderService os){
         this.ps = ps;
@@ -59,6 +61,7 @@ public class ProductController {
         this.authController = authController;
         this.os = os;
     }
+
 
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
@@ -134,7 +137,7 @@ public class ProductController {
 
         final Product p = product.get();
 
-        final Optional<User> user = us.findByEmail(authController.getLoggedEmail());
+        final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
 
         final User u = user.get();
@@ -194,7 +197,7 @@ public class ProductController {
 
         // UPDATE: Category is hardcoded. Discuss.
 
-        Optional<User> user = us.findByEmail(authController.getLoggedEmail());
+        Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
 
         Optional<Seller> seller = sellerService.findByUserId(user.get().getId());
