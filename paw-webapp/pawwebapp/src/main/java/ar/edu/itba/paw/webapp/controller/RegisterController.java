@@ -72,6 +72,8 @@ public class RegisterController {
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent())
             throw new IllegalStateException("No se encontró el rol.");
+
+        // TODO: This call could potentially be included in the userService.register() call
         userRoleService.create(user.getId(), role.get().getId());
 
         authWithAuthManager(request, form.getEmail(), form.getPassword());
@@ -96,6 +98,7 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
+        //TODO: All this logic could go into sellerService.create() method
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getUsername(), form.getPassword());
         if(user == null){

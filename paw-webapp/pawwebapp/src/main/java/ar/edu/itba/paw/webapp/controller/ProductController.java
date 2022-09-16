@@ -93,10 +93,11 @@ public class ProductController {
     }
 
     /* TODO: Discutir sobre esta solución (doble boolean). Explicación para acordarme
-    cuando lo charlemos: 3 estados posibles, consulta de página, form falló, form exitoso.
-    No me alcanza con un solo boolean, pero siento que es ineficiente dos variables, aunque de
-    momento no se me ocurre algo mejor.
+        cuando lo charlemos: 3 estados posibles, consulta de página, form falló, form exitoso.
+        No me alcanza con un solo boolean, pero siento que es ineficiente dos variables, aunque de
+        momento no se me ocurre algo mejor.
      */
+
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
@@ -114,7 +115,7 @@ public class ProductController {
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
         if(!seller.isPresent()) throw new RuntimeException("Seller not found");
-        //Should never have that exception, the product exists and sellerID is FK...
+        //Should never have that exception, the product exists and sellerID is FK
         mav.addObject("seller", seller.get());
         mav.addObject("formSuccess", formSuccess);
         mav.addObject("formFailure", formFailure);
@@ -146,6 +147,11 @@ public class ProductController {
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         final Seller s = seller.get();
+
+        /* TODO: Move es.purchase(), es.itemsold(), and os.create() to service logic
+        *   Idea: Move everything to new method es.createAndNotify() where order is persisted
+        *   and emails are sent (yet less logic in controller)*/
+        //es.sendOrderConfirmationMails(/*TODO: fill arguments*/);
 
         es.purchase(u.getEmail(), u.getFirstName(),
                 p, form.getAmount(),
