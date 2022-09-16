@@ -19,35 +19,36 @@
     <body>
         <nav style="background-color:#407056; color: #ADE28A;
         border-radius: 0 0 10px 10px;
-        border-bottom: 1px solid #EDFA8B;">
+        border-bottom: 1px solid #EDFA8B;
+        height: 100px;">
             <div class="nav-wrapper">
-                <a href="<c:url value="/"/>" class="brand-logo" style="margin-left:4vw;">
+                <a href="<c:url value="/"/>" class="brand-logo" style="margin-left:4vw; width:fit-content;">
                     <img src="<c:url value="/resources/images/logo.png"/>" height="50"
                          style="vertical-align: middle;" class="circle z-depth-2" alt="Logo">
                     <span class="custom-title"><spring:message code="navbar.companyname"/></span>
                 </a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li style="padding-right:2vw;">
+                <ul id="nav-mobile" class="right hide-on-med-and-down" style="height:100%;">
+                    <li style="padding-right:2vw; display:flex; flex-direction: column; justify-content: space-around; height:100%;">
                         <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
                     </li>
                     <sec:authorize access="hasRole('SELLER')">
-                        <li style="padding-right:2vw;">
+                        <li style="padding-right:2vw; display:flex; flex-direction: column; justify-content: space-around; height:100%;">
                             <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
                         </li>
                     </sec:authorize>
                     <c:if test="${pageContext.request.userPrincipal.name == null}">
-                        <li style="padding-right:2vw;">
+                        <li style="padding-right:2vw; display:flex; flex-direction: column; justify-content: space-around; height:100%;">
                             <a href="<c:url value="/login"/>"><spring:message code="navbar.login"/></a>
                         </li>
                     </c:if>
 
                     <c:if test="${pageContext.request.userPrincipal.name != null}">
-                        <li style="padding-right: 2vw">
+                        <li style="padding-right: 2vw; display:flex; flex-direction: column; justify-content: space-around; height:100%;">
                             <a href="<c:url value="/profile"/>">
                                 <i class="material-icons">account_circle</i>
                             </a>
                         </li>
-                        <li style="padding-right: 2vw">
+                        <li style="padding-right: 2vw; display:flex; flex-direction: column; justify-content: space-around; height:100%;">
                             <a href="<c:url value="/logout"/>">
                                 <button type="submit" class="waves-effect waves-light btn">
                                     <spring:message code="logout"/>
