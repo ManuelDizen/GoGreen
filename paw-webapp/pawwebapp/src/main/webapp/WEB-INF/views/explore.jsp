@@ -60,6 +60,11 @@
                             <p class="small">
                                 <spring:message code="explore.products.price"/>${product.price}
                             </p>
+                            <c:forEach items="${product.tagList}" var="ecotag">
+                                <div class="chip">
+                                        ${ecotag.tag}
+                                </div>
+                            </c:forEach>
                             <div class="go-corner" href="#">
                                 <div class="go-arrow">
                                     →

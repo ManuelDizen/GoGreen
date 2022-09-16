@@ -2,10 +2,10 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ProductController {
@@ -31,18 +31,21 @@ public class ProductController {
 
     private final UserService us;
 
+    private final EcotagService ecos;
+
     private final AuthenticationController authController;
 
 
 
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
-                             final EmailService es, final ImageService is, UserService us, AuthenticationController authController){
+                             final EmailService es, final ImageService is, final UserService us, final EcotagService ecos, AuthenticationController authController){
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
         this.is = is;
         this.us = us;
+        this.ecos = ecos;
         this.authController = authController;
     }
 
@@ -53,7 +56,15 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        mav.addObject("products", ps.filter(name, category, maxPrice));
+
+        List<Product> products = ps.filter(name, category, maxPrice);
+
+        List<List<Ecotag>> productTags = new ArrayList<>();
+        for(Product product : products) {
+            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+        }
+
+        mav.addObject("products", products);
         return mav;
     }
 
@@ -150,6 +161,12 @@ public class ProductController {
         Product product = ps.create(seller.get().getId(),
                 1, form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
+
+        //TODO que entren por formulario
+        ecos.addTag(Ecotag.ECOTAG1, product.getProductId());
+        ecos.addTag(Ecotag.ECOTAG3, product.getProductId());
+
+
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }
 
