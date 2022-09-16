@@ -633,3 +633,51 @@ ALL CREDITS TO @andrewsims
 .seller-profile-container-orders{
     flex: 50%;
 }
+
+
+/* -------- LOGIN VIEW ------- */
+
+.login-form-container, .login-register-container{
+    height:fit-content;
+    width:60%;
+    margin:auto;
+    color:white;
+}
+
+.login-form-container div, .login-register-container div{
+    width:100%;
+    display:flex;
+    justify-content: space-around;
+    margin-bottom: 4vh;
+}
+
+.login-form-container div label{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color:white;
+    font-size: 18px;
+}
+
+.login-form-container input{
+    color:white;
+    font-family: 'Manrope';
+}
+
+/* Extracted from https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/ */
+.login-page-container {
+    width:100%;
+    height:fit-content;
+    animation: fadeInAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
