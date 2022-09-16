@@ -389,7 +389,7 @@ nav {
     margin-bottom: 10px;
 }
 
-.explore-title{
+.generic-title{
     width:100%;
     text-align: center;
     font-size: 40px;
@@ -574,10 +574,21 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
+.register-title{
+    font-size: 20px;
+    margin: 2vh auto;
+}
+
+.register-textbody{
+    width:100%;
+    padding: 2vh 4vw;
+    font-size: 15px;
+}
+
 .register-seller-container, .register-buyer-container{
     align-content: center;
     text-align: center;
-    height: fit-content;
+    height: 100%;
     flex:50%;
     margin: 10px 5px;
     padding-bottom: 10px;
