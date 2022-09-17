@@ -69,4 +69,8 @@ public class ProductServiceImpl implements ProductService {
 
         return productDao.filter(name, category, ecotags, maxPrice);
     }
+    @Override
+    public List<Product> getRecent(int amount){
+        return productDao.getRecent(amount);
+    }
 }

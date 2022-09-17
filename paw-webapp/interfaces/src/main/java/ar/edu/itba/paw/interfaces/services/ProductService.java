@@ -18,5 +18,7 @@ public interface ProductService {
     Optional<Product> getById(long productId);
     List<Product> getAll();
 
+
+    List<Product> getRecent(int amount);
     List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice);
 }

@@ -18,7 +18,7 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="generic-title"><spring:message code="explore.title"/></div>
+    <div class="generic-title" style="margin-bottom:8vh;"><spring:message code="explore.title"/></div>
     <div class="explore-container">
         <div class="explore-filter">
             <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
