@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,6 +33,7 @@ public class ProductController {
     private final UserService us;
 
     private final AuthenticationController authController;
+
 
 
 
@@ -53,7 +55,9 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        mav.addObject("products", ps.filter(name, category, maxPrice));
+        List<Product> productList = ps.filter(name, category, maxPrice);
+        mav.addObject("products", productList);
+        mav.addObject("isEmpty", productList.isEmpty());
         return mav;
     }
 
@@ -71,7 +75,7 @@ public class ProductController {
 
         final ModelAndView mav = new ModelAndView("productPage");
         final Optional<Product> product = ps.getById(productId);
-        if(!product.isPresent()) throw new RuntimeException("Product not found");
+        if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
         mav.addObject("product", productObj);
 
@@ -89,30 +93,31 @@ public class ProductController {
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
         if(errors.hasErrors()){
-            /*List<FieldError> errorsAux = errors.getFieldErrors();
-            List<String> errorMsgs = new ArrayList<String>();
-            for(FieldError error : errorsAux){
-                errorMsgs.add(error.getObjectName() + " - " + error.getDefaultMessage());
-            }*/
             return productPage(prodId, form, false, true);
         }
         final Optional<Product> product = ps.getById(prodId);
-        if(product.isPresent()) {
-            final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
-            if(seller.isPresent()) {
-                final Seller s = seller.get();
-                es.purchase(form.getMail(), form.getName(), product.get(), form.getAmount(),
-                        product.get().getPrice(), sellerService.getName(s.getUserId()), s.getPhone(), sellerService.getEmail(s.getUserId()));
+        if(!product.isPresent()) throw new ProductNotFoundException();
 
-                es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()), product.get(),
-                        form.getAmount(), product.get().getPrice(),
-                        form.getName(), form.getMail(), form.getPhone(), form.getMessage());
-            }
-        }
-        System.out.println("mail sent");
+        final Optional<User> user = us.findByEmail(authController.getLoggedEmail());
+        if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
+
+        final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
+        if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
+
+        final Seller s = seller.get();
+
+        es.purchase(user.get().getEmail(), user.get().getFirstName(),
+                product.get(), form.getAmount(),
+                product.get().getPrice(), sellerService.getName(s.getUserId()),
+                s.getPhone(), sellerService.getEmail(s.getUserId()));
+
+        es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()),
+                product.get(),
+                form.getAmount(), product.get().getPrice(),
+                user.get().getFirstName(), user.get().getEmail(),
+                form.getMessage());
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
-        //mav.addObject("product", ps.getById(prodId).orElseThrow(ProductNotFoundException::new));
         mav.addObject("formSuccess", true);
         return mav;
     }
@@ -137,9 +142,8 @@ public class ProductController {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //TODO: Hardcoded sellerId. Should retrieve from session.
-        //  THis view must only be accessed by users with SELLER role
-        // UPDATE: sellerId now parametrized to logged user, see what to do with category
+
+        // UPDATE: Category is hardcoded. Discuss.
 
         Optional<User> user = us.findByEmail(authController.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
