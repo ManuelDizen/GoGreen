@@ -453,9 +453,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .explore-products{
     display:flex;
-    flex-direction: column;
-    /*align-items: center;*/
-    /*justify-content: center;*/
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .explore-filter-title{
@@ -646,10 +646,42 @@ ALL CREDITS TO @andrewsims
     border: 1px solid #407056;
 }
 
-.seller-profile-container img{
+.seller-profile-container img, .card-image img{
     -o-object-fit: contain;
     object-fit: contain;
+}
+
+.seller-profile-container img{
     max-height: 100px;
+}
+
+.product-card{
+    width: 40%;
+    background: transparent;
+    box-shadow:none;
+    transition: 0.3s;
+}
+
+.product-card:hover{
+    transform: translate(0, -10px);
+}
+
+.product-card .card-image{
+    background:white;
+    border-radius:10px 10px 0 0;
+}
+
+.product-card .card-content{
+    border-radius: 0 0 10px 10px;
+}
+
+.explore-products .product-card .card-content{
+    height:220px;
+}
+
+.explore-products .card-image img{
+    max-height:150px;
+    object-fit:cover;
 }
 
 .seller-profile-container .profile-row{
