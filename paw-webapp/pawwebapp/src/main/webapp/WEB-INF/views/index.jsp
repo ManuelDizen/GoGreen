@@ -35,7 +35,7 @@
         </div>
         <div class="landing-recent-product-container animate glow delay-2" style="margin-top:10vh;">
             <div class="row">
-                <c:if test="${recent.size() >= 3}">
+                <c:if test="${!recent.empty()}">
                     <div class="col s12">
                         <hr class="landing-separator">
                         <h4 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="landing.discoverproducts"/></h4>

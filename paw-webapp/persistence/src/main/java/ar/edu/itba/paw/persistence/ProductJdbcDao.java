@@ -118,6 +118,7 @@ public class ProductJdbcDao implements ProductDao {
     public List<Product> getRecent(int amount) {
         List<Product> products = template.query("SELECT * FROM products ORDER BY id DESC",
                 PRODUCT_ROW_MAPPER);
+        if(products.size() < amount) return products;
         return products.subList(0, amount);
     }
 }
