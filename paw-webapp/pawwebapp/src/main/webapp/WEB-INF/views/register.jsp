@@ -9,22 +9,42 @@
 <body>
     <%@ include file="navbar.jsp"%>
     <h4 style="margin: 4vh auto;" class="generic-title"><spring:message code="register.title"/></h4>
-    <div class="register-container">
-        <div class="register-buyer-container">
+    <div class="row" style="text-align: center;">
+        <div class="col s6">
             <div class="register-title"><spring:message code="register.buyertitle"/></div>
-            <div class="register-textbody"><spring:message code="register.buyerdescription"/></div>
-            <div>
-                <img src="<c:url value="/resources/images/BuyerImage.png"/>" alt="HOla" style="width:50%; margin:4vh auto;">
-            </div>
-            <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>">Registrarse</a>
         </div>
-        <div class="register-seller-container">
+        <div class="col s6">
             <div class="register-title"><spring:message code="register.sellertitle"/></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s6">
+            <div class="register-textbody"><spring:message code="register.buyerdescription"/></div>
+        </div>
+        <div class="col s6">
             <div class="register-textbody"><spring:message code="register.sellerdescription"/></div>
-            <div>
-                <img src="<c:url value="/resources/images/SellerImage.png"/>" alt="HOla" style="width:50%; margin:4vh auto;">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s6">
+            <div style="height:30vh; text-align:center;">
+                <img src="<c:url value="/resources/images/BuyerImage.png"/>" alt="Buyers" style="object-fit:contain; width:50%; margin:4vh auto;">
             </div>
-            <a class="waves-effect waves-light btn" href="<c:url value="/registerseller"/>">Registrarse</a>
+        </div>
+        <div class="col s6">
+            <div style="height:30vh; text-align:center;">
+                <img src="<c:url value="/resources/images/SellerImage.png"/>" alt="Buyers" style="object-fit:contain; width:50%; margin:4vh auto;">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s6" style="text-align:center;">
+            <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>" style="margin-top:5vh;">
+                Registrarse</a>
+        </div>
+        <div class="col s6" style="text-align:center;">
+            <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>" style="text-align:center; margin-top:5vh;">
+                Registrarse</a>
         </div>
     </div>
     <%@ include file="footer.jsp"%>
