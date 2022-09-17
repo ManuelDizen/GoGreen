@@ -168,7 +168,7 @@ public class ProductController {
         /* TODO: Move es.purchase(), es.itemsold(), and os.create() to service logic
         *   Idea: Move everything to new method es.createAndNotify() where order is persisted
         *   and emails are sent (yet less logic in controller)*/
-        //es.sendOrderConfirmationMails(/*TODO: fill arguments*/);
+        //  es.sendOrderConfirmationMails(/*TODO: fill arguments*/);
 
         es.purchase(u.getEmail(), u.getFirstName(),
                 p, form.getAmount(),
@@ -186,7 +186,8 @@ public class ProductController {
         Order order = os.create(p.getName(), u.getFirstName(),
                 u.getSurname(), u.getEmail(), sellerService.getName(s.getUserId()),
                 sellerService.getSurname(s.getUserId()),
-        sellerService.getEmail(s.getUserId()), form.getAmount(), p.getPrice(), dateTime);
+        sellerService.getEmail(s.getUserId()), form.getAmount(), p.getPrice(), dateTime,
+                form.getMessage());
 
         if(order == null) throw new IllegalStateException("No se instanció la orden");
 

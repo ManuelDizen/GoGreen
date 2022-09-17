@@ -41,7 +41,9 @@
     </div>
     <div class="seller-profile-container-orders">
         <c:if test="${orders.size() == 0}">
-            <div><spring:message code="sellerprofile.noorders"/></div>
+            <div style="margin-top:5vh;">
+                <h4 style="text-align: center;"><spring:message code="sellerprofile.noorders"/></h4>
+            </div>
         </c:if>
         <c:if test="${orders.size() != 0}">
             <h4><spring:message code="sellerprofile.orders"/></h4>

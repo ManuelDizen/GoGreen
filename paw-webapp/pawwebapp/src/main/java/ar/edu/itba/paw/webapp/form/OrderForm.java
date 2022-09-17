@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class OrderForm {
-    @Size(max = 1000)
+    @Size(max = 1023)
     private String message;
 
     // TODO: Custom validation @CheckForStock

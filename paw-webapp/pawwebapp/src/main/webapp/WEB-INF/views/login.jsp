@@ -30,10 +30,14 @@
                 </div>
                 <div>
                     <label style="color:white;"><spring:message code="loginpage.email"/></label>
+                </div>
+                <div>
                     <input type="text" name="email" style="margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;"/>
                 </div>
                 <div>
                     <label><spring:message code="loginpage.password"/></label>
+                </div>
+                <div>
                     <input type="password" name="password" style="margin-bottom: 0; margin-left:4vw; width:60%;align-self:end;"/>
                 </div>
                 <div style="display:flex; align-content: center;" id="login-checkbox">

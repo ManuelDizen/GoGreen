@@ -11,38 +11,38 @@ import javax.validation.constraints.Size;
 public class SellerForm {
     @Size(max = 50)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message="Por favor, indicar su nombre")
     private String firstName;
 
     @Size(max = 100)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Por favor, indicar su apellido")
     private String surname;
 
     @Email
-    @Size(min = 8, max = 50)
-    @UniqueUserMail
-    @NotNull
+    @Size(min = 8, max = 50, message = "El mail debe tener como mínimo 8 caracteres y máximo 50.")
+    @UniqueUserMail(message = "Este email ya se encuenta registrado. Por favor, intente con otro.")
+    @NotNull(message = "Por favor, indicar su mail")
     private String email;
 
     @Password
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Por favor, indicar la contraseña")
     private String password;
 
     @NotNull
-    @NotEmpty
-    @Size(min = 8, max = 50)
+    @NotEmpty(message="Por favor, indicar su nombre de usuario")
+    @Size(min = 8, max = 50, message="El nombre de usuario debe tener entre 8 y 50 caracteres")
     private String username;
 
     @NotNull
-    @NotEmpty
-    @Size(min = 10, max = 100)
+    @NotEmpty(message="Por favor, indicar su dirección")
+    @Size(max = 100, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
     private String address;
 
     @NotNull
-    @NotEmpty
-    @Size(min = 8, max = 11)
+    @NotEmpty(message="Por favor, indicar su teléfono")
+    @Size(min = 8, max = 11, message="Indique su teléfono sin espacios ni código de area. Ejemplo: 1100001111, o 11112222")
     private String phone;
 
     public String getSurname() {
