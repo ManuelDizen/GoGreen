@@ -28,12 +28,12 @@
     <div class="row">
         <div class="col s6">
             <div style="height:30vh; text-align:center;">
-                <img src="<c:url value="/resources/images/BuyerImage.png"/>" alt="Buyers" style="object-fit:contain; width:50%; margin:4vh auto;">
+                <img src="<c:url value="/resources/images/BuyerImage.png"/>" alt="Buyers" style="object-fit:contain; height: 100%; margin:4vh auto;">
             </div>
         </div>
         <div class="col s6">
             <div style="height:30vh; text-align:center;">
-                <img src="<c:url value="/resources/images/SellerImage.png"/>" alt="Buyers" style="object-fit:contain; width:50%; margin:4vh auto;">
+                <img src="<c:url value="/resources/images/SellerImage.png"/>" alt="Buyers" style="object-fit:contain; height:100%; margin:4vh auto;">
             </div>
         </div>
     </div>
