@@ -67,8 +67,9 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public Optional<List<Product>> findBySeller(long sellerId) {
-        return Optional.empty();
+    public List<Product> findBySeller(long sellerId) {
+        return template.query("SELECT * FROM products WHERE sellerId = ?", new Object[]{sellerId},
+                PRODUCT_ROW_MAPPER);
     }
 
     @Override

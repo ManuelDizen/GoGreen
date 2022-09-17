@@ -621,6 +621,12 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-main-body-container{
     display:flex;
+    margin: 10vh 5vh;
+
+}
+
+.seller-profile-main-body-container h4{
+    margin-top:0;
 }
 
 .seller-profile-main-body-container-information{
@@ -628,8 +634,8 @@ ALL CREDITS TO @andrewsims
     flex-direction: column;
     justify-content:space-around;
     height:fit-content;
-    margin: 10vh 10vh;
-    flex:49%;
+    margin:0;
+    flex:33%;
 }
 
 
@@ -640,10 +646,11 @@ ALL CREDITS TO @andrewsims
     background-color: #EDF8AB;
     color: #407056;
     align-content: center;
-    width:60%;
-    margin:auto;
+    width:80%;
+    margin: 0;
     border-radius: 10px;
     border: 1px solid #407056;
+    align-self: center;
 }
 
 .seller-profile-container img, .card-image img{
@@ -689,8 +696,11 @@ ALL CREDITS TO @andrewsims
     justify-content: space-around;
     margin: 10px;
 }
-.seller-profile-container-orders{
-    flex: 50%;
+.seller-profile-container-orders, .seller-profile-container-products, .seller-profile-published-products{
+    flex: 33%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
 }
 
 /* ------- REGISTER VIEWS ------- */

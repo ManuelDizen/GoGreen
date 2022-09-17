@@ -40,18 +40,38 @@
         </div>
     </div>
     <div class="seller-profile-container-orders">
+        <h4><spring:message code="sellerprofile.orders"/></h4>
         <c:if test="${orders.size() == 0}">
             <div style="margin-top:5vh;">
-                <h4 style="text-align: center;"><spring:message code="sellerprofile.noorders"/></h4>
+                <div style="text-align: center;"><spring:message code="sellerprofile.noorders"/></div>
             </div>
         </c:if>
         <c:if test="${orders.size() != 0}">
-            <h4><spring:message code="sellerprofile.orders"/></h4>
             <c:forEach items="${orders}" var="order">
                 <div class="seller-profile-order-card">
                     <div>${order.productName}</div>
                     <div>${order.price} - ${order.amount}</div>
-                    <div> ${order.dateTime}</div>
+                    <div>${order.dateTime}</div>
+                </div>
+            </c:forEach>
+        </c:if>
+    </div>
+    <div class="seller-profile-published-products">
+        <h4><spring:message code="sellerprofile.productos"/></h4>
+        <c:if test="${products.size() == 0}">
+            <div><spring:message code="sellerprofile.noproducts"/></div>
+            <div style="margin-top:5vh;">
+                <a class="waves-effect waves-light btn standard-button"
+                   href="<c:url value="/createProduct"/>">
+                    <spring:message code="explore.createproduct"/>
+                </a>
+            </div>
+        </c:if>
+        <c:if test="${products.size() != 0}">
+            <c:forEach items="${products}" var="product">
+                <div class="seller-profile-product-card">
+                    <div><c:out value="${product.name}"/></div>
+                    <div><c:out value="${product.price}"/></div>
                 </div>
             </c:forEach>
         </c:if>

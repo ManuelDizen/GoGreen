@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<List<Product>> findBySeller(long sellerId) {
+    public List<Product> findBySeller(long sellerId) {
         return productDao.findBySeller(sellerId);
     }
 
