@@ -36,7 +36,7 @@
                 </div>
             </c:if>
             <div><c:out value="${product.description}"/></div>
-            <div><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
+            <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
             <div style="height:2vh; width:100%;"></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
