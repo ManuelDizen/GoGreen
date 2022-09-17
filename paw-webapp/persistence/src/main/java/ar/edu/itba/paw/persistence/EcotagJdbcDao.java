@@ -24,7 +24,7 @@ public class EcotagJdbcDao implements EcotagDao {
     private final SimpleJdbcInsert insert;
 
     @Autowired
-    public EcotagJdbcDao(final DataSource ds){
+    public EcotagJdbcDao(final DataSource ds) {
         this.template = new JdbcTemplate(ds);
         this.insert = new SimpleJdbcInsert(ds).withTableName("tags_to_products")
                 .usingGeneratedKeyColumns("id");
@@ -37,11 +37,6 @@ public class EcotagJdbcDao implements EcotagDao {
         values.put("tag", tag.getId());
         values.put("productId", productId);
         insert.execute(values);
-    }
-
-    @Override
-    public void remove(Ecotag tag, long productId) {
-
     }
 
     @Override

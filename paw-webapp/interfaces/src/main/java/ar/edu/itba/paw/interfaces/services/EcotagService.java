@@ -10,8 +10,8 @@ public interface EcotagService {
 
     public void addTag(Ecotag tag, long productId);
 
-    public void removeTag(Ecotag tag, long productId);
-
     public List<Ecotag> getTagFromProduct(long productId);
+
+    public List<Ecotag> filterByTags(boolean[] ecotags);
 
 }

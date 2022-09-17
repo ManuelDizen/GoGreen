@@ -8,8 +8,6 @@ public interface EcotagDao {
 
     void add(Ecotag tag, long productId);
 
-    void remove(Ecotag tag, long productId);
-
     List<Ecotag> getTagsFromProduct(long productId);
 
 }
