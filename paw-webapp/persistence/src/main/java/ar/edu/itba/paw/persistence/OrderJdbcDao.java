@@ -29,7 +29,8 @@ public class OrderJdbcDao implements OrderDao {
                             resultSet.getString("buyerEmail"),
                             resultSet.getInt("amount"),
                             resultSet.getFloat("price"),
-                            resultSet.getObject("datetime", LocalDateTime.class)
+                            resultSet.getObject("datetime", LocalDateTime.class),
+                            resultSet.getString("message")
                             );
 
     private final JdbcTemplate template;
@@ -47,7 +48,7 @@ public class OrderJdbcDao implements OrderDao {
     @Override
     public Order create(String productName, String buyerName, String buyerSurname,
                         String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                        Integer amount, float price, LocalDateTime dateTime) {
+                        Integer amount, float price, LocalDateTime dateTime, String message) {
         final Map<String, Object> values = new HashMap<>();
         values.put("productName", productName);
         values.put("buyerName", buyerName);
@@ -59,9 +60,10 @@ public class OrderJdbcDao implements OrderDao {
         values.put("amount", amount);
         values.put("price", price);
         values.put("datetime", dateTime);
+        values.put("message", message);
         final Number orderId = insert.executeAndReturnKey(values);
         return new Order(orderId.longValue(), productName, buyerName, buyerSurname, buyerEmail,
-                sellerName, sellerSurname, sellerEmail, amount, price, dateTime);
+                sellerName, sellerSurname, sellerEmail, amount, price, dateTime, message);
     }
 
     @Override

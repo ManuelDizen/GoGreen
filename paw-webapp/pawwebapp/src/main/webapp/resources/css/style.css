@@ -1,7 +1,7 @@
 /* General CSS rules for every view */
 
 *{
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     font-family: 'Manrope';
 }
 
@@ -677,11 +677,22 @@ ALL CREDITS TO @andrewsims
     color:white;
 }
 
-.login-form-container div, .login-register-container div, .register-form-container div{
+.register-form-container div, .login-form-container div, .login-register-container div{
     width:100%;
     display:flex;
     justify-content: space-around;
-    margin-bottom: 4vh;
+}
+
+.login-form-container div, .login-register-container div{
+    margin-bottom:4vh;
+}
+
+.register-form-container div .errors{
+    margin: 0 0 auto;
+}
+
+.label-container{
+    margin-top:2vh;
 }
 
 .login-form-container div label, .register-form-container div label{

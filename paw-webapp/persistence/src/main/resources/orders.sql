@@ -11,3 +11,5 @@ create table if not exists orders(
     price integer not null,
     datetime timestamp not null
     );
+
+alter table products add column if not exists message VARCHAR(1024) default null;

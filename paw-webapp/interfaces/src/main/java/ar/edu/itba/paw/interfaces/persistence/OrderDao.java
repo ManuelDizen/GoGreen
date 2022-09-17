@@ -10,7 +10,7 @@ public interface OrderDao {
 
     Order create(String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, float price, LocalDateTime dateTime);
+                 Integer amount, float price, LocalDateTime dateTime, String message);
 
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);

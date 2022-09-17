@@ -14,10 +14,11 @@ public class Order {
     private Integer amount;
     private float price;
     private LocalDateTime dateTime;
+    private String message;
 
     public Order(long id, String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, float price, LocalDateTime dateTime) {
+                 Integer amount, float price, LocalDateTime dateTime, String message) {
         this.id = id;
         this.productName = productName;
         this.buyerName = buyerName;
@@ -29,6 +30,7 @@ public class Order {
         this.amount = amount;
         this.price = price;
         this.dateTime = dateTime;
+        this.message = message;
     }
 
     public long getId() {
@@ -117,5 +119,13 @@ public class Order {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
