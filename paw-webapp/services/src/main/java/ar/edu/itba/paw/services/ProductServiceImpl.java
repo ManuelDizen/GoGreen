@@ -62,4 +62,8 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> filter(String name, String category, float maxPrice) {
         return productDao.filter(name, category, maxPrice);
     }
+    @Override
+    public List<Product> getRecent(int amount){
+        return productDao.getRecent(amount);
+    }
 }

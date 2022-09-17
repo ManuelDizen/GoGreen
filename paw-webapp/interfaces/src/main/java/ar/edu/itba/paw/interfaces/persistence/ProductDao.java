@@ -19,4 +19,6 @@ public interface ProductDao {
 
     List<Product> filter(String name, String category, float maxPrice);
 
+    List<Product> getRecent(int amount);
+
 }

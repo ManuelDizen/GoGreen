@@ -112,4 +112,11 @@ public class ProductJdbcDao implements ProductDao {
         }
         return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
     }
+
+    @Override
+    public List<Product> getRecent(int amount) {
+        List<Product> products = template.query("SELECT * FROM products ORDER BY id DESC",
+                PRODUCT_ROW_MAPPER);
+        return products.subList(0, amount);
+    }
 }

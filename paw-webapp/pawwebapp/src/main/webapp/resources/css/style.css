@@ -88,7 +88,7 @@ nav {
     display:flex;
     flex-direction: column;
     justify-content:center;
-    margin-top:2vh;
+    margin-top:10vh;
     height:fit-content;
     width:100%;
 }
@@ -100,7 +100,23 @@ nav {
 
 .landing-page-title{
     text-align:center;
-    font-size: 30px;
+}
+
+.landing-recent-product-container{
+    height:fit-content;
+}
+
+.landing-recent-product-container .card .card-image img{
+    height: 200px;
+    object-fit: cover;
+}
+
+.landing-recent-product-container .card .card-image img .card-content{
+    max-height:initial;
+}
+
+.landing-recent-product-container .card .card-content{
+    min-height:35%;
 }
 
 .introduction-container{

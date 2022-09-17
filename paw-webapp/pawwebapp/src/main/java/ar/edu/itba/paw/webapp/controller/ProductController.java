@@ -160,7 +160,7 @@ public class ProductController {
             throw new RuntimeException(e);
         }
 
-        // UPDATE: Category is hardcoded. Discuss.
+        // TODO: Category is hardcoded. Discuss.
 
         Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
