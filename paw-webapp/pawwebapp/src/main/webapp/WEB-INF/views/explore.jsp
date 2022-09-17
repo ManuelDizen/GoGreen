@@ -64,10 +64,6 @@
                                 <c:if test="${product.imageId == 0}">
                                     <img style="border-radius: 10px 10px 0;" src="<c:url value="/resources/images/logo.png"/>">
                                 </c:if>
-                                <!--<a class="btn-floating halfway-fab waves-effect waves-light light-green"
-                                   href="<c:url value="/product/${product.productId}"/>">
-                                    <i class="material-icons">arrow_forward</i>
-                                </a>-->
                             </div>
                             <div class="card-content">
                                 <span class="card-title"><c:out value="${product.name}"/></span>
