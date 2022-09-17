@@ -35,7 +35,7 @@ public class EcotagServiceImpl implements EcotagService {
         List<Ecotag> toReturn = new ArrayList<>();
         for(int i=0; i<ecotags.length; i++) {
             if(ecotags[i])
-                toReturn.add(Ecotag.getById(i));
+                toReturn.add(Ecotag.getById(i+1));
         }
         return toReturn;
     }
