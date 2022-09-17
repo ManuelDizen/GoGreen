@@ -95,7 +95,7 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, String category, float maxPrice) {
+    public List<Product> filter(String name, String category, List<Long> tags, float maxPrice) {
         StringBuilder query = new StringBuilder("SELECT * from products where ");
         List<Object> args = new ArrayList<>();
         if(name != null){
@@ -105,6 +105,12 @@ public class ProductJdbcDao implements ProductDao {
         if(category != null){
             query.append("AND categoryId IN (SELECT id from category where LOWER(name) like ?) ");
             args.add('%' + category.toLowerCase() + '%');
+        }
+        if(tags.size() != 0){
+            for(long tag : tags) {
+                query.append("AND id IN (SELECT productId from tags_to_products WHERE tag = ?)");
+                args.add(tag);
+            }
         }
         if(maxPrice != -1.0){
            query.append("AND price <= ?");

@@ -3,11 +3,13 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
+import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +61,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> filter(String name, String category, float maxPrice) {
-        return productDao.filter(name, category, maxPrice);
+    public List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice) {
+        List<Long> ecotags = new ArrayList<>();
+        for(Ecotag tag : tags) {
+            ecotags.add(tag.getId());
+        }
+
+        return productDao.filter(name, category, ecotags, maxPrice);
     }
 }
