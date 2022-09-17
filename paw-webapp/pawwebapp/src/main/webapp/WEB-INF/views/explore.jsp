@@ -57,33 +57,31 @@
             <c:if test="${products.size() != 0}">
                 <c:forEach items="${products}" var="product">
                     <div class="card product-card" style="margin:10px auto;">
-                            <div class="card-image">
-                                <c:if test="${product.imageId != 0}">
-                                    <img style="border-radius: 10px 10px 0;" src="<c:url value="/image/${product.imageId}"/>">
-                                </c:if>
-                                <c:if test="${product.imageId == 0}">
-                                    <img style="border-radius: 10px 10px 0;" src="<c:url value="/resources/images/logo.png"/>">
-                                </c:if>
+                        <div class="card-image">
+                            <c:if test="${product.imageId != 0}">
+                                <img style="border-radius: 10px 10px 0;" src="<c:url value="/image/${product.imageId}"/>">
+                            </c:if>
+                            <c:if test="${product.imageId == 0}">
+                                <img style="border-radius: 10px 10px 0;" src="<c:url value="/resources/images/logo.png"/>">
+                            </c:if>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title"><c:out value="${product.name}"/></span>
+                            <div style="margin-top: 2vh; margin-bottom: 8vh;">
+                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                             </div>
-                            <div class="card-content">
-                                <span class="card-title"><c:out value="${product.name}"/></span>
-                                <div style="margin-top: 2vh; margin-bottom: 8vh;">
-                                    <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
-                                </div>
-                                <div>
-                                    <a class="waves-effect waves-light btn standard-button"
-                                       href="<c:url value="/product/${product.productId}"/>"
-                                        style="text-align: center;">
-                                        <spring:message code="explore.product.goto"/>
-                                    </a>
-                                </div>
+                            <div>
+                                <a class="waves-effect waves-light btn standard-button"
+                                   href="<c:url value="/product/${product.productId}"/>"
+                                    style="text-align: center;">
+                                    <spring:message code="explore.product.goto"/>
+                                </a>
                             </div>
                             </c:forEach>
                             <div class="go-corner" href="#">
                                 <div class="go-arrow">
                                     →
                                 </div>
-                            </a>
                         </div>
                     </div>
                 </c:forEach>

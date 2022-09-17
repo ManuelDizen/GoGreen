@@ -35,7 +35,10 @@
         </div>
         <div class="landing-recent-product-container animate glow delay-2" style="margin-top:10vh;">
             <div class="row">
-                <c:if test="${!recent.empty()}">
+                <c:if test="${recernt.size() == 0}">
+                    <h4>No hay productos!</h4>
+                </c:if>
+                <c:if test="${recent.size() != 0}">
                     <div class="col s12">
                         <hr class="landing-separator">
                         <h4 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="landing.discoverproducts"/></h4>
@@ -46,10 +49,10 @@
                             <div class="card" style="margin:4vh auto;">
                                 <div class="card-image">
                                     <c:if test="${product.imageId != 0}">
-                                        <img style="border-radius: 10px 10px 0;" src="<c:url value="/image/${product.imageId}"/>">
+                                        <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
                                     </c:if>
                                     <c:if test="${product.imageId == 0}">
-                                        <img style="border-radius: 10px 10px 0;" src="<c:url value="/resources/images/logo.png"/>">
+                                        <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
                                     </c:if>
                                     <a class="btn-floating halfway-fab waves-effect waves-light light-green"
                                        href="<c:url value="/product/${product.productId}"/>">
