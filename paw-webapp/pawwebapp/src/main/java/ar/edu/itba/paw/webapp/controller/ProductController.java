@@ -64,6 +64,12 @@ public class ProductController {
 
         List<Product> products = ps.filter(name, category, tagsToFilter, maxPrice);
 
+        boolean isEmpty = false;
+        if(products.isEmpty())
+            isEmpty = true;
+
+        mav.addObject("isEmpty", isEmpty);
+
         List<List<Ecotag>> productTags = new ArrayList<>();
         for(Product product : products) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));

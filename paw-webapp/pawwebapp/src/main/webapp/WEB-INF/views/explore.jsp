@@ -54,6 +54,13 @@
 
         </div>
         <div class="explore-products">
+            <c:if test="${isEmpty}">
+                <div class="center">
+                    <h4><spring:message code="explore.noproducts"/></h4>
+                    <img style="width:30%; position:relative;" src="<c:url value="/resources/images/landingImage1.png"/>" alt="Sustainability for all!">
+                    <h4><spring:message code="explore.comeback"/></h4>
+                </div>
+            </c:if>
             <c:forEach items="${products}" var="product">
                 <div class="product-card-holder">
                     <!-- TODO: Me da toda la sensación que esta mal, pero el return default
