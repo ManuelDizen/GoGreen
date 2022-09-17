@@ -56,27 +56,32 @@
         <div class="explore-products">
             <c:if test="${products.size() != 0}">
                 <c:forEach items="${products}" var="product">
-                    <div class="product-card-holder">
-                        <!-- TODO: Me da toda la sensación que esta mal, pero el return default
-                                para los products con columna null de imageId es 0.-->
-
-                    <div class="explore-product-image-container">
-                        <c:if test="${product.imageId != 0}">
-                            <img src="<c:url value="/image/${product.imageId}"/>" alt="">
-                        </c:if>
-                    </div>
-                    <div class="pccontainer">
-                        <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
-                            <h3>${product.name}</h3>
-                            <p class="small">${product.description}</p>
-                            <p class="small">
-                                <spring:message code="explore.products.price"/>${product.price}
-                            </p>
-                            <c:forEach items="${product.tagList}" var="ecotag">
-                                <div class="${ecotag.color} white-text chip">
-                                    <i class="tiny material-icons">${ecotag.icon}</i>
-                                        ${ecotag.tag}
+                    <div class="card product-card" style="margin:10px auto;">
+                            <div class="card-image">
+                                <c:if test="${product.imageId != 0}">
+                                    <img style="border-radius: 10px 10px 0;" src="<c:url value="/image/${product.imageId}"/>">
+                                </c:if>
+                                <c:if test="${product.imageId == 0}">
+                                    <img style="border-radius: 10px 10px 0;" src="<c:url value="/resources/images/logo.png"/>">
+                                </c:if>
+                                <!--<a class="btn-floating halfway-fab waves-effect waves-light light-green"
+                                   href="<c:url value="/product/${product.productId}"/>">
+                                    <i class="material-icons">arrow_forward</i>
+                                </a>-->
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title"><c:out value="${product.name}"/></span>
+                                <div style="margin-top: 2vh; margin-bottom: 8vh;">
+                                    <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                                 </div>
+                                <div>
+                                    <a class="waves-effect waves-light btn standard-button"
+                                       href="<c:url value="/product/${product.productId}"/>"
+                                        style="text-align: center;">
+                                        <spring:message code="explore.product.goto"/>
+                                    </a>
+                                </div>
+                            </div>
                             </c:forEach>
                             <div class="go-corner" href="#">
                                 <div class="go-arrow">
@@ -91,6 +96,12 @@
                 <h4><spring:message code="explore.noproducts"/></h4>
                 <sec:authorize access="hasRole('SELLER')">
                     <div><spring:message code="explore.noproducts.sellermsg"/></div>
+                    <div>
+                        <a class="waves-effect waves-light btn standard-button"
+                           href="<c:url value="/createProduct"/>">
+                            <spring:message code="explore.createproduct"/>
+                        </a>
+                    </div>
                 </sec:authorize>
             </c:if>
         </div>
