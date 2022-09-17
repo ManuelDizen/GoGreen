@@ -53,17 +53,25 @@ public class ProductController {
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="") final String category,
+            @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
+            @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
+            @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
-        List<Product> products = ps.filter(name, category, maxPrice);
+        List<Ecotag> tagsToFilter = ecos.filterByTags(new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy});
+
+        List<Product> products = ps.filter(name, category, tagsToFilter, maxPrice);
 
         List<List<Ecotag>> productTags = new ArrayList<>();
         for(Product product : products) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
         }
 
+        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
+
+        mav.addObject("ecotagList", ecotagList);
         mav.addObject("products", products);
         return mav;
     }

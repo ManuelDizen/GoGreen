@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title><spring:message code="explore.title"/></title>
@@ -32,6 +33,13 @@
                     <tr>
                         <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
                         <td><input name="category" type="text"/><td>
+                    </tr>
+                    <tr>
+                        <td class="filter-inputlabel">Ecotag</td>
+                        <c:forEach items="${ecotagList}" var="ecotag">
+                            <td><input name="${ecotag.path}" type="checkbox" id="ecotag">
+                                <label for="ecotag">${ecotag.tag}</label> </td>
+                        </c:forEach>
                     </tr>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
