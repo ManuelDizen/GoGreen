@@ -43,7 +43,7 @@
                 Registrarse</a>
         </div>
         <div class="col s6" style="text-align:center;">
-            <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>" style="text-align:center; margin-top:5vh;">
+            <a class="waves-effect waves-light btn" href="<c:url value="/registerseller"/>" style="text-align:center; margin-top:5vh;">
                 Registrarse</a>
         </div>
     </div>
