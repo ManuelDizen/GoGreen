@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.OrderService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
-import ar.edu.itba.paw.interfaces.services.SellerService;
-import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Order;
+import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +23,16 @@ public class UserController {
     private final SecurityService securityService;
 
     private final OrderService orderService;
+    private final ProductService productService;
 
     @Autowired
     public UserController(final UserService userService, final SellerService sellerService,
-                          final SecurityService securityService, final OrderService orderService) {
+                          final SecurityService securityService, final OrderService orderService, ProductService productService) {
         this.userService = userService;
         this.sellerService = sellerService;
         this.securityService = securityService;
         this.orderService = orderService;
+        this.productService = productService;
     }
 
     @RequestMapping(value="profile")
@@ -68,6 +68,7 @@ public class UserController {
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
+        List<Product> products = productService.findBySeller(seller.get().getId());
 
         // TODO: Acá faltaría además buscar los productos que vende un seller,
         //  y las órdenes que tiene pendientes (para esto hay que agrandar la BDD)
@@ -75,6 +76,7 @@ public class UserController {
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
         mav.addObject("orders", orders);
+        mav.addObject("products", products);
         return mav;
     }
 }
