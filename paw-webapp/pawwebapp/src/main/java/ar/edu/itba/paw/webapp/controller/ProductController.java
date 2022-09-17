@@ -56,11 +56,8 @@ public class ProductController {
     ){
         final ModelAndView mav = new ModelAndView("explore");
         List<Product> productList = ps.filter(name, category, maxPrice);
-        boolean isEmpty = false;
-        if(productList.isEmpty())
-            isEmpty = true;
         mav.addObject("products", productList);
-        mav.addObject("isEmpty", isEmpty);
+        mav.addObject("isEmpty", productList.isEmpty());
         return mav;
     }
 
