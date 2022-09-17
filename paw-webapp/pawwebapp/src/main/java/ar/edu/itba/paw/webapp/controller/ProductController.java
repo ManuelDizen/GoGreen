@@ -23,26 +23,33 @@ import java.util.Optional;
 @Controller
 public class ProductController {
 
-    @Autowired
-    private ProductService ps;
+
+    private final ProductService ps;
+
+    private final SellerService sellerService;
+
+    private final EmailService es;
+
+    private final ImageService is;
+
+    private final UserService us;
+
+    private final SecurityService securityService;
+
+    private final OrderService os;
 
     @Autowired
-    private SellerService sellerService;
-
-    @Autowired
-    private EmailService es;
-
-    @Autowired
-    private ImageService is;
-
-    @Autowired
-    private UserService us;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private OrderService os;
+    public ProductController(final ProductService ps, final SellerService sellerService,
+                             final EmailService es, final ImageService is, final UserService us,
+                             final SecurityService securityService, final OrderService os) {
+        this.ps = ps;
+        this.sellerService = sellerService;
+        this.es = es;
+        this.is = is;
+        this.us = us;
+        this.securityService = securityService;
+        this.os = os;
+    }
 
 
     @RequestMapping(value="/explore")

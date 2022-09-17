@@ -17,15 +17,21 @@ import java.util.List;
 @Controller
 public class BasicController {
 
-    @Autowired
-    private UserService us;
-    @Autowired
-    private FAQService faqService;
-    @Autowired
-    private ProductService ps;
+    // Leave the constructor, as it prevents dependency injection (https://stackoverflow.com/questions/40620000/spring-autowire-on-properties-vs-constructor)
 
+    private final UserService us;
 
-    //    @RequestMapping(value = "/", method = RequestMethod.GET, headers = ..., consumes = ..., produces = ...)
+    private final FAQService faqService;
+
+    private final ProductService ps;
+
+    @Autowired
+    public BasicController(final UserService us, final FAQService faqService, final ProductService ps) {
+        this.us = us;
+        this.faqService = faqService;
+        this.ps = ps;
+    }
+
     @RequestMapping("/")
     public ModelAndView helloWorld() {
         List<Product> recent = ps.getRecent(3);
