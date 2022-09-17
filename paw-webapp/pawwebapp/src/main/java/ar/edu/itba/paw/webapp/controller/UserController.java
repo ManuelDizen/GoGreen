@@ -8,9 +8,7 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,17 +18,22 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final SellerService sellerService;
+
+    private final SecurityService securityService;
+
+    private final OrderService orderService;
 
     @Autowired
-    private SellerService sellerService;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private OrderService orderService;
+    public UserController(final UserService userService, final SellerService sellerService,
+                          final SecurityService securityService, final OrderService orderService) {
+        this.userService = userService;
+        this.sellerService = sellerService;
+        this.securityService = securityService;
+        this.orderService = orderService;
+    }
 
     @RequestMapping(value="profile")
     public ModelAndView profile(){

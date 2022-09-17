@@ -20,14 +20,18 @@ import java.util.Map;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
+
+    private final SpringTemplateEngine templateEngine;
+
+    private final MessageSource messageSource;
 
     @Autowired
-    private SpringTemplateEngine templateEngine;
-
-    @Autowired
-    private MessageSource messageSource;
+    public EmailServiceImpl(final JavaMailSender mailSender, final SpringTemplateEngine templateEngine, final MessageSource messageSource) {
+        this.mailSender = mailSender;
+        this.templateEngine = templateEngine;
+        this.messageSource = messageSource;
+    }
 
     private void sendThymeleafMail(String to, String template, Map<String, Object> data, String subject) {
         Locale locale = LocaleContextHolder.getLocale();

@@ -28,28 +28,32 @@ import java.util.*;
 public class ProductController {
 
     @Autowired
-    private ProductService ps;
+    private final ProductService ps;
+    
+    @Autowired
+    private final SellerService sellerService;
+    
+    @Autowired
+    private final EmailService es;
+    
+    @Autowired
+    private final ImageService is;
 
     @Autowired
-    private SellerService sellerService;
-
-    @Autowired
-    private EmailService es;
-
-    @Autowired
-    private ImageService is;
-
-    @Autowired
-    private UserService us;
-
+    private final UserService us;
+    
     @Autowired
     private SecurityService securityService;
     private final EcotagService ecos;
+
+    private final SecurityService securityService;
+
 
     private final AuthenticationController authController;
 
     @Autowired
     private OrderService os;
+    
     public ProductController(final ProductService ps, final SellerService sellerService,
                              final EmailService es, final ImageService is, final UserService us, final EcotagService ecos, AuthenticationController authController, OrderService os){
         this.ps = ps;
@@ -59,6 +63,19 @@ public class ProductController {
         this.us = us;
         this.ecos = ecos;
         this.authController = authController;
+        this.os = os;
+    }
+    
+    @Autowired
+    public ProductController(final ProductService ps, final SellerService sellerService,
+                             final EmailService es, final ImageService is, final UserService us,
+                             final SecurityService securityService, final OrderService os) {
+        this.ps = ps;
+        this.sellerService = sellerService;
+        this.es = es;
+        this.is = is;
+        this.us = us;
+        this.securityService = securityService;
         this.os = os;
     }
 

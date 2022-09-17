@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,20 +29,27 @@ import java.util.Optional;
 @Controller
 public class RegisterController {
 
-    @Autowired
-    private SellerService sellerService;
+    private final SellerService sellerService;
+
+    private final UserService userService;
+
+    private final RoleService roleService;
+
+
+    private final UserRoleService userRoleService;
+
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserRoleService userRoleService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    public RegisterController(final SellerService sellerService, final UserService userService,
+                              final RoleService roleService, final UserRoleService userRoleService,
+                              final AuthenticationManager authenticationManager) {
+        this.sellerService = sellerService;
+        this.userService = userService;
+        this.roleService = roleService;
+        this.userRoleService = userRoleService;
+        this.authenticationManager = authenticationManager;
+    }
 
     @RequestMapping(value= "/register", method= RequestMethod.GET)
     public ModelAndView register(){
