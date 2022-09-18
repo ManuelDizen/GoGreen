@@ -12,7 +12,9 @@
 <html>
 <head>
     <title><spring:message code="createproduct.title"/></title>
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
@@ -43,6 +45,15 @@
             <form:errors path="stock" element="p" cssClass="error"/>
             <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
             <form:input path="stock"/>
+        </div>
+        <div class="input-field">
+            <form:label path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
+            <form:select path="ecotag" multiple="true">
+                <c:forEach items="${tagList}" var="ecotag">
+                    <form:option value="${ecotag.id}"><c:out value="${ecotag.tag}"/></form:option>
+                </c:forEach>
+            </form:select>
+            <form:errors path="ecotag" element="p" cssClass="error"/>
         </div>
         <div>
             <form:errors path="image" element="p" cssClass="error"/>

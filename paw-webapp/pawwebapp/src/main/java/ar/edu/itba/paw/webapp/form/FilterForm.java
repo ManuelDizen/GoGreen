@@ -13,6 +13,12 @@ public class FilterForm {
     @Size(max = 50)
     private String category;
 
+    private boolean ecotagRecycle;
+
+    private boolean ecotagForest;
+
+    private boolean ecotagEnergy;
+
     //private String category;
 
     public String getName() {
@@ -38,4 +44,33 @@ public class FilterForm {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public boolean isEcotagRecycle() {
+        return ecotagRecycle;
+    }
+
+    public void setEcotagRecycle(boolean ecotagRecycle) {
+        this.ecotagRecycle = ecotagRecycle;
+    }
+
+    public boolean isEcotagForest() {
+        return ecotagForest;
+    }
+
+    public void setEcotagForest(boolean ecotagForest) {
+        this.ecotagForest = ecotagForest;
+    }
+
+    public boolean isEcotagEnergy() {
+        return ecotagEnergy;
+    }
+
+    public void setEcotagEnergy(boolean ecotagEnergy) {
+        this.ecotagEnergy = ecotagEnergy;
+    }
+
+
+
+
+
 }

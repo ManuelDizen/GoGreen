@@ -2,10 +2,10 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+
 
 @Controller
 public class ProductController {
@@ -32,6 +33,8 @@ public class ProductController {
 
     private final UserService us;
 
+    private final EcotagService ecos;
+
     private final AuthenticationController authController;
 
 
@@ -39,12 +42,13 @@ public class ProductController {
 
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
-                             final EmailService es, final ImageService is, UserService us, AuthenticationController authController){
+                             final EmailService es, final ImageService is, final UserService us, final EcotagService ecos, AuthenticationController authController){
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
         this.is = is;
         this.us = us;
+        this.ecos = ecos;
         this.authController = authController;
     }
 
@@ -52,12 +56,28 @@ public class ProductController {
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="") final String category,
+            @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
+            @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
+            @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
-        List<Product> productList = ps.filter(name, category, maxPrice);
+
+        List<Ecotag> tagsToFilter = ecos.filterByTags(new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy});
+
+        List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
+
+        List<List<Ecotag>> productTags = new ArrayList<>();
+        for(Product product : productList) {
+            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+        }
+
+        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
+
+        mav.addObject("ecotagList", ecotagList);
         mav.addObject("products", productList);
         mav.addObject("isEmpty", productList.isEmpty());
+
         return mav;
     }
 
@@ -75,7 +95,9 @@ public class ProductController {
 
         final ModelAndView mav = new ModelAndView("productPage");
         final Optional<Product> product = ps.getById(productId);
-        if(!product.isPresent()) throw new ProductNotFoundException();
+
+        //TODO ojo esta excepción
+        //if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
         mav.addObject("product", productObj);
 
@@ -96,7 +118,8 @@ public class ProductController {
             return productPage(prodId, form, false, true);
         }
         final Optional<Product> product = ps.getById(prodId);
-        if(!product.isPresent()) throw new ProductNotFoundException();
+        //TODO ojo esta excepción
+        //if(!product.isPresent()) throw new ProductNotFoundException();
 
         final Optional<User> user = us.findByEmail(authController.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
@@ -124,7 +147,9 @@ public class ProductController {
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)
     public ModelAndView createProduct(@ModelAttribute("productForm") final ProductForm form) {
+        List<Ecotag> tagList = Arrays.asList(Ecotag.values());
         final ModelAndView mav = new ModelAndView("createProducts");
+        mav.addObject("tagList", tagList);
         return mav;
     }
 
@@ -154,6 +179,11 @@ public class ProductController {
         Product product = ps.create(seller.get().getId(),
                 1, form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
+
+        for(long id : form.getEcotag()) {
+            ecos.addTag(Ecotag.getById(id), product.getProductId());
+        }
+
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }
 

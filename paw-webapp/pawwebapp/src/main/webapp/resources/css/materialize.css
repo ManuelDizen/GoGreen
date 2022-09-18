@@ -5560,7 +5560,6 @@ button.btn-floating {
 .dropdown-content {
   background-color: #fff;
   margin: 0;
-  display: none;
   min-width: 100px;
   overflow-y: auto;
   opacity: 0;
@@ -6855,12 +6854,7 @@ textarea.materialize-textarea {
 /* Checkboxes
    ========================================================================== */
 /* Remove default checkbox */
-[type="checkbox"]:not(:checked),
-[type="checkbox"]:checked {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
+
 
 [type="checkbox"] {
   /* checkbox aspect */
@@ -7152,9 +7146,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 
 /* Select Field
    ========================================================================== */
-select {
-  display: none;
-}
+
 
 select.browser-default {
   display: block;

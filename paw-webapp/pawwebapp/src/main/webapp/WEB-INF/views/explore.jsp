@@ -8,10 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title><spring:message code="explore.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
@@ -30,6 +33,13 @@
                     <tr>
                         <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
                         <td><input name="category" type="text"/><td>
+                    </tr>
+                    <tr>
+                        <td class="filter-inputlabel">Ecotag</td>
+                        <c:forEach items="${ecotagList}" var="ecotag">
+                            <td><input name="${ecotag.path}" type="checkbox" id="ecotag">
+                                <label for="ecotag">${ecotag.tag}</label> </td>
+                        </c:forEach>
                     </tr>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
@@ -67,6 +77,12 @@
                             <p class="small">
                                 <spring:message code="explore.products.price"/>${product.price}
                             </p>
+                            <c:forEach items="${product.tagList}" var="ecotag">
+                                <div class="${ecotag.color} white-text chip">
+                                    <i class="tiny material-icons">${ecotag.icon}</i>
+                                        ${ecotag.tag}
+                                </div>
+                            </c:forEach>
                             <div class="go-corner" href="#">
                                 <div class="go-arrow">
                                     →
