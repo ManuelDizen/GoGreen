@@ -28,23 +28,29 @@
                     <tr>
                         <!--<td><label path="name">Name</label></td>-->
                         <td class="filter-inputlabel"><spring:message code="explore.filterform.name"/></td>
-                        <td><input name="name" type="text"/></td>
+                        <td><input name="name" value="${name}" type="text"/></td>
                     </tr>
                     <tr>
                         <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
-                        <td><input name="category" type="text"/><td>
-                    </tr>
-                    <tr>
-                        <td class="filter-inputlabel">Ecotag</td>
-                        <c:forEach items="${ecotagList}" var="ecotag">
-                            <td><input name="${ecotag.path}" type="checkbox" id="ecotag">
-                                <label for="ecotag">${ecotag.tag}</label> </td>
-                        </c:forEach>
+                        <td><input name="category" value="${category}" type="text"/><td>
                     </tr>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
                         <td class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></td>
-                        <td><input name="maxPrice" type="number"/></td>
+                        <td><input name="maxPrice" value="${maxPrice}" type="number"/></td>
+                    </tr>
+                    <tr>
+                        <td class="filter-inputlabel">Ecotag</td>
+                        <c:forEach items="${ecotagList}" var="ecotag">
+                            <c:if test="${boolTags[ecotag.id-1]}">
+                                <td><input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
+                                    <label for="ecotag">${ecotag.tag}</label> </td>
+                            </c:if>
+                            <c:if test="${!boolTags[ecotag.id-1]}">
+                                <td><input name="${ecotag.path}" type="checkbox" id="ecotag2">
+                                    <label for="ecotag2">${ecotag.tag}</label> </td>
+                            </c:if>
+                        </c:forEach>
                     </tr>
                 </table>
                 <div style="display:flex;justify-content: space-around;margin-top:5vh;">
@@ -67,8 +73,26 @@
                         </div>
                         <div class="card-content">
                             <span class="card-title"><c:out value="${product.name}"/></span>
-                            <div style="margin-top: 2vh; margin-bottom: 8vh;">
+                            <div style="margin-top: 2vh; margin-bottom: 2vh;">
                                 <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
+                            </div>
+                            <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                                <c:set var="count" value="0"/>
+                                <c:forEach items="${product.tagList}" var="ecotag">
+                                    <c:if test="${count lt 3}">
+                                        <div class="${ecotag.color} white-text chip">
+                                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                                ${ecotag.tag}
+                                        </div>
+                                        <c:set var="count" value="${count + 1}"/>
+                                    </c:if>
+                                    <c:if test="${count == 3}">
+                                        <div class="grey black-text chip">
+                                            <spring:message code="explore.products.andmore"/>
+                                        </div>
+                                        <c:set var="count" value="${count + 1}"/>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                             <div>
                                 <a class="waves-effect waves-light btn standard-button"

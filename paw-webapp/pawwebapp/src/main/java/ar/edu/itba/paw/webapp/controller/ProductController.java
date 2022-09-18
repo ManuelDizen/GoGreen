@@ -69,7 +69,9 @@ public class ProductController {
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
-        List<Ecotag> tagsToFilter = ecos.filterByTags(new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy});
+        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy};
+
+        List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
 
@@ -79,6 +81,14 @@ public class ProductController {
         }
 
         List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
+
+        mav.addObject("boolTags", boolTags);
+        mav.addObject("name", name);
+        mav.addObject("category", category);
+        if(maxPrice > -1.0)
+            mav.addObject("maxPrice", maxPrice);
+        else
+            mav.addObject("maxPrice", null);
 
         mav.addObject("ecotagList", ecotagList);
         mav.addObject("products", productList);

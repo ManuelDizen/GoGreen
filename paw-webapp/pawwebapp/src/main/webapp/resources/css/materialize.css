@@ -5963,13 +5963,13 @@ body.keyboard-focused .dropdown-content li:focus {
 
 .chip {
   display: inline-block;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
+  height: 28px;
+  font-size: 10px;
+  font-weight: 300;
   color: rgba(0, 0, 0, 0.6);
-  line-height: 32px;
-  padding: 0 12px;
-  border-radius: 16px;
+  line-height: 24px;
+  padding: 5 12px;
+  border-radius: 12px;
   background-color: #e4e4e4;
   margin-bottom: 5px;
   margin-right: 5px;
