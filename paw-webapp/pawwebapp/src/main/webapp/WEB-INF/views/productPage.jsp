@@ -38,14 +38,6 @@
             <div style="height:2vh; width:100%;"></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
-<%--                <div style="height:fit-content; margin:0; padding: 1px;">--%>
-<%--                    <span><spring:message code="productpage.prodinfo.sellername"/></span>--%>
-<%--                    <span><c:out value="${seller.name}"/></span>--%>
-<%--                </div>--%>
-<%--                <div style="height:fit-content;">--%>
-<%--                    <span><spring:message code="productpage.prodinfo.sellermail"/></span>--%>
-<%--                    <span><c:out value="${seller.mail}"/></span>--%>
-<%--                </div>--%>
                 <div style="height:fit-content;">
                     <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
                     <span><c:out value="${seller.address}"/></span>
@@ -57,42 +49,40 @@
             </div>
         </div>
         <div class="product-info-container">
-            <h4><spring:message code="productpage.orderform.title"/></h4>
-            <c:url value="/process/${product.productId}" var="process"/>
-            <form:form modelAttribute="orderForm" action="${process}" method="post">
-                <table>
-                    <tr style="margin:0px; padding:1px;">
-                        <td><form:label path="name"><spring:message code="productpage.orderform.name"/></form:label></td>
-                        <td><form:input path="name"/></td>
-                    </tr>
-                    <tr>
-                        <td><form:label path="mail"><spring:message code="productpage.orderform.mail"/></form:label></td>
-                        <td><form:input type="email" path="mail"/></td>
-                    </tr>
-                    <tr>
-                        <td><form:label path="phone"><spring:message code="productpage.orderform.phone"/></form:label></td>
-                        <td><form:input path="phone"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><form:errors path="phone" cssClass="error" element="p"/></td>
-                    </tr>
-                    <tr>
-                        <td><form:label path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label></td>
-                        <td><form:textarea path="message"/></td>
-                    </tr>
-                    <tr>
-                        <td><form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label></td>
-                        <td><form:input path="amount"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><button type="submit" class="waves-effect waves-light btn"><spring:message code="productpage.orderform.submit"/></button>
-                        </td>
-                    </tr>
-                </table>
-            </form:form>
+            <sec:authorize access="hasRole('USER')">
+                <h4><spring:message code="productpage.orderform.title"/></h4>
+                <c:url value="/process/${product.productId}" var="process"/>
+                <form:form modelAttribute="orderForm" action="${process}" method="post">
+                    <table>
+                        <tr>
+                            <td><form:label path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label></td>
+                            <td><form:textarea path="message"/></td>
+                        </tr>
+                        <tr>
+                            <td><form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label></td>
+                            <td><form:input path="amount"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="submit" class="waves-effect waves-light btn">
+                                    <spring:message code="productpage.orderform.submit"/>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </form:form>
+            </sec:authorize>
+            <sec:authorize access="hasRole('SELLER')">
+                <h4><spring:message code="productpage.orderform.loggedasseller"/></h4>
+            </sec:authorize>
+            <c:if test="${pageContext.request.userPrincipal.name == null}">
+                <h4 style="margin: 20px auto auto;">
+                    <spring:message code="productpage.orderform.notauthenticated"/>
+                </h4>
+            </c:if>
         </div>
     </div>
     <%@ include file="footer.jsp"%>
