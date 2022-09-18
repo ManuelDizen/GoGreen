@@ -22,7 +22,7 @@
         border-bottom: 1px solid #EDFA8B;
         height: 100px;">
             <div class="nav-wrapper">
-                <a href="<c:url value="/"/>" class="brand-logo" style="margin-left:4vw; width:fit-content;">
+                <a href="<c:url value="/"/>" class="brand-logo" style="margin-left:4vw; width:fit-content; line-height:90px;">
                     <img src="<c:url value="/resources/images/logo.png"/>" height="50"
                          style="vertical-align: middle;" class="circle z-depth-2" alt="Logo">
                     <span class="custom-title"><spring:message code="navbar.companyname"/></span>

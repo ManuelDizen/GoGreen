@@ -46,7 +46,7 @@
                     </div>
                     <c:forEach items="${recent}" var="product">
                         <div class="col s4">
-                            <div class="card" style="margin:4vh auto;">
+                            <div class="card" style="margin:4vh auto; border-radius:10px;">
                                 <div class="card-image">
                                     <c:if test="${product.imageId != 0}">
                                         <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
