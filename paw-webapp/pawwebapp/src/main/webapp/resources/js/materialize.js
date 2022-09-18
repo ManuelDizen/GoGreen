@@ -1123,6 +1123,17 @@ document.addEventListener('keydown', docHandleKeydown, true);
 document.addEventListener('keyup', docHandleKeyup, true);
 document.addEventListener('focus', docHandleFocus, true);
 document.addEventListener('blur', docHandleBlur, true);
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var instances = M.Dropdown.init(elems, options);
+});
+$(document).ready(function() {
+  $('input#input_text, textarea#textarea1').characterCounter();
+});
+
+$(document).ready(function() {
+  $('select').material_select();
+});
 
 /**
  * Initialize jQuery wrapper for plugin

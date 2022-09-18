@@ -1,13 +1,15 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
-import ar.edu.itba.paw.interfaces.persistence.UserDao;
+import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
+import ar.edu.itba.paw.models.Ecotag;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,15 +17,22 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
+    private final ImageService imageService;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao){
+    public ProductServiceImpl(final ProductDao productDao, ImageService imageService){
         this.productDao = productDao;
+        this.imageService = imageService;
     }
 
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description, int stock, float price) {
-        return productDao.create(sellerId, categoryId, name, description, stock, price);
+    public Product create(long sellerId, long categoryId, String name, String description,
+                          int stock, float price, byte[] image) {
+        Image img = imageService.create(image);
+        if(img == null){
+            throw new IllegalArgumentException("Error en creación de imagen");
+        }
+        return productDao.create(sellerId, categoryId, name, description, stock, price, img.getId());
     }
 
     @Override
@@ -49,5 +58,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAll() {
         return productDao.getAll();
+    }
+
+    @Override
+    public List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice) {
+        List<Long> ecotags = new ArrayList<>();
+        for(Ecotag tag : tags) {
+            ecotags.add(tag.getId());
+        }
+
+        return productDao.filter(name, category, ecotags, maxPrice);
     }
 }

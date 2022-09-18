@@ -11,10 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductJdbcDao implements ProductDao {
@@ -27,16 +24,16 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getString("name"),
                     resultSet.getString("description"),
                     resultSet.getInt("stock"),
-                    resultSet.getFloat("price")
+                    resultSet.getFloat("price"),
+                    resultSet.getLong("imageId")
             );
 
     private static final RowMapper<Seller> SELLER_ROW_MAPPER =
             (resultSet, rowNum) -> new Seller(
                     resultSet.getLong("id"),
-                    resultSet.getString("mail"),
+                    resultSet.getLong("userid"),
                     resultSet.getString("phone"),
-                    resultSet.getString("address"),
-                    resultSet.getString("name")
+                    resultSet.getString("address")
             );
 
 
@@ -54,7 +51,8 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description, int stock, float price) {
+    public Product create(long sellerId, long categoryId, String name, String description,
+                          int stock, float price, long imageId) {
         final Map<String, Object> values = new HashMap<>();
         values.put("sellerId", sellerId);
         values.put("categoryId", categoryId);
@@ -62,8 +60,10 @@ public class ProductJdbcDao implements ProductDao {
         values.put("description", description);
         values.put("stock", stock);
         values.put("price", price);
+        values.put("imageId", imageId);
         final Number productId = insert.executeAndReturnKey(values);
-        return new Product(productId.longValue(), sellerId, categoryId, name, description, stock, price);
+        return new Product(productId.longValue(), sellerId, categoryId, name, description, stock, price,
+                imageId);
     }
 
     @Override
@@ -92,5 +92,30 @@ public class ProductJdbcDao implements ProductDao {
     public List<Product> getAll() {
         return template.query("SELECT * FROM products",
         PRODUCT_ROW_MAPPER);
+    }
+
+    @Override
+    public List<Product> filter(String name, String category, List<Long> tags, float maxPrice) {
+        StringBuilder query = new StringBuilder("SELECT * from products where ");
+        List<Object> args = new ArrayList<>();
+        if(name != null){
+            query.append("LOWER(name) like ? ");
+            args.add('%' + name.toLowerCase() + '%');
+        }
+        if(category != null){
+            query.append("AND categoryId IN (SELECT id from category where LOWER(name) like ?) ");
+            args.add('%' + category.toLowerCase() + '%');
+        }
+        if(tags.size() != 0){
+            for(long tag : tags) {
+                query.append("AND id IN (SELECT productId from tags_to_products WHERE tag = ?)");
+                args.add(tag);
+            }
+        }
+        if(maxPrice != -1.0){
+           query.append("AND price <= ?");
+           args.add(maxPrice);
+        }
+        return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
     }
 }

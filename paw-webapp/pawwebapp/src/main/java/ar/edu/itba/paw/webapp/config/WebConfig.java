@@ -2,10 +2,12 @@ package ar.edu.itba.paw.webapp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -15,6 +17,7 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -24,6 +27,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
 
@@ -43,8 +47,11 @@ public class WebConfig {
     @Value("classpath:products.sql")
     private Resource productsSql;
 
-    @Value("classpath:schemes.sql")
-    private Resource schemaSql;
+    @Value("classpath:roles.sql")
+    private Resource rolesSql;
+
+    @Value("classpath:faqs.sql")
+    private Resource faqsSql;
 
     @Bean
     public ViewResolver viewResolver() {
@@ -60,9 +67,11 @@ public class WebConfig {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
         ds.setUrl("jdbc:postgresql://localhost/postgres");
-        //El username y la password son aquellos establecidos en la creación de la BD PostgreSQL.
         ds.setUsername("postgres");
         ds.setPassword("docker");
+        //ds.setUrl(environment.getProperty("database.path"));
+        //ds.setUsername(environment.getProperty("database.username"));
+        //ds.setPassword(environment.getProperty("database.password"));
         return ds;
     }
 
@@ -77,8 +86,9 @@ public class WebConfig {
 
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-        dbp.addScript(schemaSql);
         dbp.addScript(productsSql);
+        dbp.addScript(rolesSql);
+        dbp.addScript(faqsSql);
         return dbp;
     }
 
@@ -106,6 +116,8 @@ public class WebConfig {
     public ResourceBundleMessageSource emailMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("mailing/i18n/mailing");
+        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+        messageSource.setCacheSeconds(5);
         return messageSource;
     }
 
@@ -127,9 +139,19 @@ public class WebConfig {
         return templateEngine;
     }
 
+    @Bean
+    public MessageSource messageSource() {
+        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:i18n/messages");
+        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+        messageSource.setCacheSeconds(5);
+        return messageSource;
+    }
 
-
-
-
-
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        // multipartResolver.setMaxUploadSize(100000);
+        return multipartResolver;
+    }
 }

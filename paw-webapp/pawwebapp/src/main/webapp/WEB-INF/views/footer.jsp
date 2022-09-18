@@ -19,9 +19,13 @@
 <body style="bottom:0;">
     <footer class="page-footer">
         <div class="footer-copyright">
-            <div class="container">
-                © 2022 - PAW - Grupo 2
-                <!--<a class="grey-text text-lighten-4 right" href="#!">More Links</a>-->
+            <div class="container" style="display:flex; justify-content:space-around;">
+                <spring:message code="footer.signature"/>
+            </div>
+            <div class="container" style="display: flex; justify-content: space-around; color: white;">
+                <a style="color:white" href="<c:url value="/faq"/>">
+                    <spring:message code="footer.faq"/>
+                </a>
             </div>
         </div>
     </footer>

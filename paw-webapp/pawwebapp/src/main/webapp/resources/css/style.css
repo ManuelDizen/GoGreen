@@ -1,7 +1,7 @@
 /* General CSS rules for every view */
 
 *{
-    /*border: 1px solid red;*/
+    border: 1px solid red;
     font-family: 'Manrope';
 }
 
@@ -80,7 +80,6 @@ nav {
 
 .landing-image{
     display:block;
-    position:auto;
     width: 50%;
     height:50%;
 }
@@ -105,25 +104,26 @@ nav {
 }
 
 .introduction-container{
-    width:75%;
+    width:100%;
     display:flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
     margin: 0 auto;
     position:center;
-    background-color: #407056;
-    color: #ADE28A;
-    border: 1px solid #EDFA8B;
     text-align:center;
     border-radius: 10px;
     margin-bottom: 10vh;
 
     align-items: center;
+
+    background-color:transparent;
+    color: white;
+
 }
 
 .introduction-box{
     justify-content: center;
-    width:80%;
+    width:100%;
 }
 
 .introduction-title{
@@ -171,6 +171,13 @@ nav {
     animation-delay: 0.6s;
 }
 
+.delay-4{
+    animation-delay: 0.7s;
+}
+.delay-5{
+    animation-delay:0.8s;
+}
+
 /*                  */
 
 .product-card-title{
@@ -185,6 +192,36 @@ nav {
 }
 
 .product-card-link-container{
+    margin-top: 3px;
+    width:100%;
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.product-card-price{
+    font-size: xx-large;
+}
+
+.product-card-goto{
+    color: #ADE28A;
+    text-decoration: underline #ADE28A;
+}
+
+.product-card-holder{
+    display:inline-flex;
+}
+
+.explore-product-image-container{
+    left:0;
+    top:0;
+    flex:20%;
+    height:auto;
+    width:auto;
+    margin-left: 10%;
+}
+
+.product-card-holder img{
+    height:100%;
     width:100%;
 }
 
@@ -228,7 +265,7 @@ nav {
     zoom: 1;
 }
 
-.column1{
+.column1, .column3{
     margin-left: 10vh;
 }
 
@@ -263,8 +300,21 @@ nav {
 .product-page-container{
     display:flex;
     width:100%;
-    height: 100%;
-    overflow-y:auto;
+    height: fit-content;
+}
+
+.productpage-image-container{
+    display:flex;
+    align-content: space-around;
+    height: 30%;
+    width: 100%;
+}
+
+.productpage-image-container img{
+    border-radius: 50px;
+    max-height:50%;
+    max-width:50%;
+    flex:40%;
 }
 
 .product-info-container{
@@ -272,13 +322,37 @@ nav {
     text-align: center;
     height: fit-content;
     flex:50%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 10px 5px;
+    padding-bottom: 10px;
     background-color: #EDF8AB;
     border-radius: 10px;
     color: #1E425E;
+}
+
+.product-info-container table tr{
+    border-bottom: transparent;
+}
+
+.product-info-container table tr td{
+    text-align:center;
+    border: transparent;
+    padding: 5px 5px;
+}
+
+.errorTr{
+    width: 100%;
+    height:fit-content;
+    color: white;
+    background:red;
+}
+
+.errorTr td{
+
+}
+
+#amount.errors, #phone.errors{
+    font-size: medium;
+    color: inherit;
 }
 
 .process-page-title{
@@ -293,6 +367,18 @@ nav {
     margin:auto;
     border-radius: 10px;
     text-align: center;
+    margin-bottom: 10px;
+}
+
+.order-failure{
+    background-color: #FC100D;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    width:80%;
+    margin:auto;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .explore-title{
@@ -306,8 +392,7 @@ nav {
 
 .explore-container{
     display:grid;
-    /*grid-template-columns: 1fr 3fr;*/
-    /* TODO: IMPORTANTISIMO REINSTAURAR ESTO CUANDO QUERAMOS PONER LOS FILTROS*/
+    grid-template-columns: 1fr 3fr;
     width:100%;
     min-height: 100%;
     height:fit-content;
@@ -323,13 +408,29 @@ nav {
     color: #1E425E;
     border-radius: 20px;
     height:fit-content; /*TODO: Armado hasta que se haga una implementación correcta*/
-    display:none;
+}
+
+.filter-inputlabel{
+    color: #1E425E;
+}
+
+/* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
+to remove automatic appearance of increment and decrement bar
+ */
+
+.explore-filter input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.explore-filter input[type=number]{
+    -moz-appearance: textfield;
 }
 
 .explore-products{
     display:flex;
     flex-direction: column;
-    align-items: center;
+    /*align-items: center;*/
     /*justify-content: center;*/
 }
 
@@ -351,4 +452,130 @@ nav {
     margin-left: 5px;
     margin-right: 5px;
 
+}
+
+/*
+PRODUCT CARD DESIGN RETRIEVED FROM: https://codepen.io/andrewsims/pen/mQoYwz
+ALL CREDITS TO @andrewsims
+ */
+
+.pccontainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.pccontainer h3 {
+    color: white;
+    font-size: 30px;
+    line-height: 1.6;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align:center;
+    margin-top: 1px;
+
+}
+
+.pccontainer p {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    color: white;
+}
+.pccontainer p .small {
+     font-size: 14px;
+ }
+
+.go-corner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    border-radius: 0 4px 0 32px;
+}
+
+.go-arrow {
+    margin-top: -4px;
+    margin-right: -4px;
+    color: black;
+}
+
+.pccard1 {
+    display: block;
+    position: relative;
+    width:80%;
+    background-color: #407056;
+    border-radius: 4px;
+    padding: 10px 24px;
+    margin: 12px;
+    text-decoration: none;
+    z-index: 0;
+    overflow: hidden;
+    border: 1px solid #EDFA8B;
+    color:white;
+}
+
+.pccard1:before {
+     content: "";
+     position: absolute;
+     z-index: -1;
+     top: -16px;
+     right: -16px;
+     background: #EDFA8B;
+     height: 50px;
+     width: 50px;
+     border-radius: 32px;
+     transform: scale(1);
+     transform-origin: 50% 50%;
+     transition: transform 0.25s ease-out;
+ }
+
+.pccard1:hover:before {
+     transform: scale(50);
+ }
+
+.pccard1:hover p{
+    transition: all 0.3s ease-out;
+    color:black;
+}
+
+.pccard1:hover h3 {
+    transition: all 0.3s ease-out;
+    color: black;
+}
+
+
+/*
+    REGISTER PAGE
+*/
+
+.register-container{
+    width:100%;
+    height: fit-content;
+    display:flex;
+}
+
+.register-seller-container, .register-buyer-container{
+    align-content: center;
+    text-align: center;
+    height: fit-content;
+    flex:50%;
+    margin: 10px 5px;
+    padding-bottom: 10px;
+    /*background-color: #EDF8AB;*/
+    border-radius: 10px;
+    color: white;
+}
+
+.register-seller-form-container{
+    color:white;
 }

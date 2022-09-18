@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,13 +26,17 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Autowired
+    private MessageSource messageSource;
+
     private void sendThymeleafMail(String to, String template, Map<String, Object> data, String subject) {
         Locale locale = LocaleContextHolder.getLocale();
         final Context ctx = new Context(locale);
         ctx.setVariables(data);
         String htmlBody = templateEngine.process(template, ctx);
+        String sbj = messageSource.getMessage(subject, null, locale);
         try {
-            sendMail(to, htmlBody, subject);
+            sendMail(to, htmlBody, sbj);
         } catch(MessagingException mex) {
             System.out.println("error"); //TODO exception management
         }
@@ -59,12 +64,13 @@ public class EmailServiceImpl implements EmailService {
         data.put("sellerName", sellerName);
         data.put("sellerPhone", sellerPhone);
         data.put("sellerMail", sellerMail);
-        sendThymeleafMail(buyerEmail, "productPurchase", data, "Se completó tu compra!");
+        sendThymeleafMail(buyerEmail, "productPurchase", data,
+                "subject.userMailTitle");
     }
 
     @Override
     public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
-                         String buyerName, String buyerEmail, String buyerPhone) {
+                         String buyerName, String buyerEmail, String buyerMessage) {
         Map<String, Object> data = new HashMap<>();
         data.put("seller", seller);
         data.put("product", product.getName());
@@ -72,10 +78,10 @@ public class EmailServiceImpl implements EmailService {
         data.put("price", price);
         data.put("buyerName", buyerName);
         data.put("buyerEmail", buyerEmail);
-        data.put("buyerPhone", buyerPhone);
+        data.put("buyerMessage", buyerMessage);
 
         // TODO: FIX THIS HARDCODE (to paramter), ONLY FOR TESTING PURPOSES
-        // TODO: Fix hardcoding of email subjects
-        sendThymeleafMail("mdizenhaus@itba.edu.ar", "sellerPurchase", data, "Completaste una venta!");
+        sendThymeleafMail(sellerEmail, "sellerPurchase", data,
+                "subject.buyerMailTitle");
     }
 }
