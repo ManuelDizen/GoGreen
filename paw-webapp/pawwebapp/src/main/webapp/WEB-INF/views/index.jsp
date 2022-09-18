@@ -22,7 +22,7 @@
             <hr class = "landing-separator">
             <div style="display:flex; justify-content:center; margin-top:1vh; width: 100%;">
                 <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/login"/>">
+                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
                         <spring:message code="landing.discover"/>
                     </a>
                 </c:if>
