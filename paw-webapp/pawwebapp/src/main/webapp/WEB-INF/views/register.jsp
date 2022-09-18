@@ -40,11 +40,11 @@
     <div class="row">
         <div class="col s6" style="text-align:center;">
             <a class="waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>" style="margin-top:5vh;">
-                Registrarse</a>
+                <spring:message code="register.userbutton"/></a>
         </div>
         <div class="col s6" style="text-align:center;">
             <a class="waves-effect waves-light btn" href="<c:url value="/registerseller"/>" style="text-align:center; margin-top:5vh;">
-                Registrarse</a>
+                <spring:message code="register.sellerbutton"/></a>
         </div>
     </div>
     <%@ include file="footer.jsp"%>
