@@ -619,7 +619,7 @@ ALL CREDITS TO @andrewsims
 
 /* ------ SELLER PROFILE ------ */
 
-.seller-profile-main-body-container{
+.seller-profile-main-body-container, .buyer-profile-main-body-container{
     display:flex;
     margin: 10vh 5vh;
 
@@ -629,15 +629,17 @@ ALL CREDITS TO @andrewsims
     margin-top:0;
 }
 
-.seller-profile-main-body-container-information{
+.seller-profile-main-body-container-information, .buyer-profile-main-body-container-information{
     display:flex;
     flex-direction: column;
     justify-content:space-around;
     height:fit-content;
     margin:0;
-    flex:33%;
 }
 
+.seller-profile-main-body-container-information{
+    flex:33%;
+}
 
 .seller-profile-container{
     display: flex;
@@ -779,4 +781,19 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     100% {
         opacity: 1;
     }
+}
+
+/* ------ USER PROFILE VIEW ---------- */
+.buyer-profile-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    background-color: #EDF8AB;
+    color: #407056;
+    align-content: center;
+    width:40%;
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
 }

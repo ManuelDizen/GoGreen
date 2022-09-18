@@ -65,10 +65,10 @@
                     <div class="card product-card" style="margin:10px auto;">
                         <div class="card-image">
                             <c:if test="${product.imageId != 0}">
-                                <img style="border-radius: 10px 10px 0;" src="<c:url value="/image/${product.imageId}"/>">
+                                <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
                             </c:if>
                             <c:if test="${product.imageId == 0}">
-                                <img style="border-radius: 10px 10px 0;" src="<c:url value="/resources/images/logo.png"/>">
+                                <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
                             </c:if>
                         </div>
                         <div class="card-content">
