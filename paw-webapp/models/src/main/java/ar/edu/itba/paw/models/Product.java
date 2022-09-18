@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.List;
+
 public class Product {
 
     private long productId;
@@ -9,6 +11,7 @@ public class Product {
     private String description;
     private int stock;
     private float price;
+    private List<Ecotag> tagList;
 
     private long imageId;
 
@@ -78,4 +81,13 @@ public class Product {
     public void setImageId(long imageId) {
         this.imageId = imageId;
     }
+
+    public List<Ecotag> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<Ecotag> tagList) {
+        this.tagList = tagList;
+    }
+
 }

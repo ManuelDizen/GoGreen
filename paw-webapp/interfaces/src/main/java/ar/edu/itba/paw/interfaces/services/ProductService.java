@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 
@@ -17,7 +18,7 @@ public interface ProductService {
     Optional<Product> getById(long productId);
     List<Product> getAll();
 
-    List<Product> filter(String name, String category, float maxPrice);
 
     List<Product> getRecent(int amount);
+    List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice);
 }

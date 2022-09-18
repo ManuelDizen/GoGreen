@@ -9,7 +9,6 @@ create table if not exists orders(
     buyerEmail varchar(255) not null,
     amount integer not null,
     price integer not null,
-    datetime timestamp not null
+    datetime timestamp not null,
+    message varchar(1024)
     );
-
-alter table products add column if not exists message VARCHAR(1024) default null;
