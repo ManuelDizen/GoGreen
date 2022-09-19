@@ -10,10 +10,13 @@
     --palette-color-secondary: #407056;
     --palette-color-light: #E0E0E0;
     --palette-color-dark: #6A7152;
+
     --text-color-light: #E0E0E0;
     --text-color-dark: #424242;
+
     --back-gradient-light: #44A08D;
     --back-gradient-dark: #093637;
+
     --palette-details-light: #EDFA8B;
 }
 
@@ -50,6 +53,16 @@ main {
     padding-left: 2vw;
     font-size: 18px;
     color: #ADE28A;
+}
+
+.form-title{
+    color: var(--text-color-light);
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-body{
+    color: var(--text-color-light);
 }
 
 .custom-footer{
@@ -801,7 +814,7 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction: column;
     justify-content: space-around;
-    color:white;
+    color:var(--text-color-light);
     font-size: 18px;
 }
 
