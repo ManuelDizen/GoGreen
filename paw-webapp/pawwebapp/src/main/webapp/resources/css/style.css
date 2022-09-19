@@ -867,3 +867,17 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     align-self: center;
     text-align: center;
 }
+
+.noproducts-container {
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    background-color: #EDF8AB;
+    color: #407056;
+    width:100%;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    text-align: center;
+}

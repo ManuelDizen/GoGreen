@@ -74,7 +74,11 @@ public class ProductController {
 
         List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
 
+        //TODO: mejorar forma de filtrar por ecotags
+        //TODO: filtro por categorías
+
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
+        List<Product> allProducts = ps.getAll();
 
         List<List<Ecotag>> productTags = new ArrayList<>();
         for(Product product : productList) {
@@ -93,7 +97,7 @@ public class ProductController {
 
         mav.addObject("ecotagList", ecotagList);
         mav.addObject("products", productList);
-        mav.addObject("isEmpty", productList.isEmpty());
+        mav.addObject("isEmpty", allProducts.isEmpty());
 
         return mav;
     }

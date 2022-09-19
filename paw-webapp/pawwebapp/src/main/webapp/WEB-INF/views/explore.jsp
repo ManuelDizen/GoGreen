@@ -27,7 +27,7 @@
                 <table>
                     <tr>
                         <!--<td><label path="name">Name</label></td>-->
-                        <label class="filter-inputlabel"><spring:message code="explore.filterform.name"/></label>
+                        <p class="filter-inputlabel"><spring:message code="explore.filterform.name"/></p>
                         <input name="name" value="${name}" type="text" class="validate"/>
                     </tr>
 <%--                    <tr>--%>
@@ -36,13 +36,12 @@
 <%--                    </tr>--%>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
-                        <label class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></label>
+                        <p class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></p>
                         <input name="maxPrice" value="${maxPrice}" type="number"/>
                     </tr>
                     <tr>
-                        <label class="filter-inputlabel">Ecotags:</label>
+                        <p class="filter-inputlabel">Ecotags:</p>
                         <c:forEach items="${ecotagList}" var="ecotag">
-                            <br>
                             <c:if test="${boolTags[ecotag.id-1]}">
                                 <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
                                     <label for="ecotag">${ecotag.tag}</label>
@@ -51,6 +50,7 @@
                                 <input name="${ecotag.path}" type="checkbox" id="ecotag2">
                                     <label for="ecotag2">${ecotag.tag}</label>
                             </c:if>
+                            <br>
                         </c:forEach>
                     </tr>
                 </table>
@@ -61,6 +61,18 @@
 
         </div>
         <div class="explore-products">
+            <c:if test="${isEmpty}">
+                <h4><spring:message code="explore.noproducts"/></h4>
+                <sec:authorize access="hasRole('SELLER')">
+                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
+                    <div>
+                        <a class="waves-effect waves-light btn standard-button"
+                           href="<c:url value="/createProduct"/>">
+                            <spring:message code="explore.createproduct"/>
+                        </a>
+                    </div>
+                </sec:authorize>
+            </c:if>
             <c:if test="${products.size() != 0}">
                 <c:forEach items="${products}" var="product">
                     <div class="card product-card" style="margin:10px auto;">
@@ -107,16 +119,18 @@
                 </c:forEach>
             </c:if>
             <c:if test="${products.size() == 0}">
-                <h4><spring:message code="explore.noproducts"/></h4>
-                <sec:authorize access="hasRole('SELLER')">
-                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
-                    <div>
-                        <a class="waves-effect waves-light btn standard-button"
-                           href="<c:url value="/createProduct"/>">
-                            <spring:message code="explore.createproduct"/>
-                        </a>
+                <div class="noproducts-container">
+                    <h4><spring:message code="explore.noproductsfilter"/></h4>
+                    <div class="circle">
+                        <img src="<c:url value="/resources/images/logo.png"/>" height="200" width="200"
+                             alt="Logo">
                     </div>
-                </sec:authorize>
+                    <div style="margin-bottom: 15px">
+                        <div>
+                            <button class="waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="explore.cleanfilters"/></button>
+                        </div>
+                    </div>
+                </div>
             </c:if>
         </div>
     </div>
