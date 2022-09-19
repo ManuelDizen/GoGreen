@@ -121,9 +121,12 @@ public class ProductController {
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
         if(!seller.isPresent()) throw new RuntimeException("Seller not found");
         //Should never have that exception, the product exists and sellerID is FK
+
+        List<Ecotag> ecotags = ecos.getTagFromProduct(productObj.getProductId());
         mav.addObject("seller", seller.get());
         mav.addObject("formSuccess", formSuccess);
         mav.addObject("formFailure", formFailure);
+        mav.addObject("ecotags", ecotags);
         return mav;
     }
 

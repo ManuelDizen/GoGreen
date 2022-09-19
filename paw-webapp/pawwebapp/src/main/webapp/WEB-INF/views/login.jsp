@@ -6,11 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
+    <%@ include file="header.jsp"%>
     <title><spring:message code="login.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
@@ -42,7 +41,7 @@
                 </div>
                 <div style="display:flex; align-content: center;" id="login-checkbox">
                     <label>
-                        <input type="checkbox" name="remember-me">
+                        <input name="remember-me" type="checkbox" class="filled-in" checked="checked"/>
                         <span><spring:message code="loginpage.rememberme"/></span>
                     </label>
                 </div>

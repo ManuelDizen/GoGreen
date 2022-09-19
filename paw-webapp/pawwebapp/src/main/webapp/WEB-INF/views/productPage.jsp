@@ -36,6 +36,14 @@
                 </div>
             </c:if>
             <div><c:out value="${product.description}"/></div>
+            <c:forEach items="${ecotags}" var="ecotag">
+                <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                        <div class="${ecotag.color} white-text chip">
+                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                ${ecotag.tag}
+                        </div>
+                </div>
+            </c:forEach>
             <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
             <div style="height:2vh; width:100%;"></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
