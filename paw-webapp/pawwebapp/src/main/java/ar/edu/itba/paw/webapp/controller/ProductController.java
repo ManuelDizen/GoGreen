@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,8 +114,7 @@ public class ProductController {
         final ModelAndView mav = new ModelAndView("productPage");
         final Optional<Product> product = ps.getById(productId);
 
-        //TODO ojo esta excepción
-        //if(!product.isPresent()) throw new ProductNotFoundException();
+        if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
         mav.addObject("product", productObj);
 
@@ -141,8 +141,8 @@ public class ProductController {
             return productPage(prodId, form, false, true);
         }
         final Optional<Product> product = ps.getById(prodId);
-        //TODO ojo esta excepción
-        //if(!product.isPresent()) throw new ProductNotFoundException();
+
+        if(!product.isPresent()) throw new ProductNotFoundException();
 
         final Product p = product.get();
 
