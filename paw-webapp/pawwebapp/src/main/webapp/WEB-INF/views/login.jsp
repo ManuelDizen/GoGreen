@@ -15,15 +15,6 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-
-    <div class="container">
-        <c:if test="${param.failure}">
-            <div class="error">
-                <spring:message code="loginpage.error"/>
-            </div>
-        </c:if>
-    </div>
-
     <div class="container">
         <c:url value="/login" var="postUrl"/>
         <div class="login">
@@ -58,8 +49,12 @@
                         </button>
                     </div>
                 </form>
+                <c:if test="${param.failure}">
+                    <div class="error">
+                        <spring:message code="loginpage.error"/>
+                    </div>
+                </c:if>
             </div>
-
         </div>
     </div>
 

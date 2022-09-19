@@ -839,6 +839,14 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     100% {
         opacity: 1;
     }
+
+}
+
+.login .error{
+    color:red;
+    text-align:center;
+    font-size:18px;
+    margin-top:5vh;
 }
 
 /* ------ USER PROFILE VIEW ---------- */
