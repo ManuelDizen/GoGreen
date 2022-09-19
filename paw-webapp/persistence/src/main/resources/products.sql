@@ -20,13 +20,6 @@ create table if not exists category(
     name varchar(255) unique not null
 );
 
-create table if not exists tags_to_products(
-    id serial primary key,
-    tag integer,
-    productId integer,
-    foreign key (productId) references products(id) on delete cascade
-    );
-
 create table if not exists products(
     id serial primary key,
     sellerId integer not null,
@@ -37,6 +30,13 @@ create table if not exists products(
     price integer not null,
     foreign key (sellerId) references sellers(id),
     foreign key (categoryId) references category(id)
+    );
+
+create table if not exists tags_to_products(
+                                               id serial primary key,
+                                               tag integer,
+                                               productId integer,
+                                               foreign key (productId) references products(id) on delete cascade
     );
 
 create table if not exists images(
