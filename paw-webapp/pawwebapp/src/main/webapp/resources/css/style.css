@@ -5,11 +5,21 @@
     font-family: 'Manrope';
 }
 
+:root{
+    --palette-color-primary: #63D471;
+    --palette-color-secondary: #63A46C;
+    --palette-color-light: #E0E0E0;
+    --palette-color-dark: #6A7152;
+    --text-color-light: #E0E0E0;
+    --text-color-dark: #424242;
+}
+
 body{
     min-height:100vh;
-    /*background-color: #256670;*/
-    background-image: linear-gradient(to bottom right, #44A08D, #093637);
-    color: white;
+    /*background-color: #256670;
+    background-image: linear-gradient(to bottom right, #44A08D, #093637);*/
+    background-image: linear-gradient(to bottom right, var(--palette-color-light), var(--palette-color-primary));
+    color: var(--text-color-dark);
     display: flex;
     flex-direction: column;
 }
@@ -21,14 +31,19 @@ main {
 /* Navbar CSS rules (joined with materialize standards)*/
 
 .custom-nav{
-    background-color: #407056;
-    color: #ADE28A;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom: 1px solid #EDFA8B;
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-light);
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-bottom: 2px solid var(--palette-color-secondary);
     vertical-align: middle;
-    overflow: hidden;
+    padding: 0px 20px;
 }
+
+.sidenav {
+    background-color: var(--palette-color-primary);
+}
+
 
 .custom-title{
     padding-left: 2vw;
@@ -37,10 +52,9 @@ main {
 }
 
 .custom-footer{
-    background-color: #407056;
-    color: #ADE28A;
+    background-color: var(--palette-color-dark);
+    color: var(--text-color-light);
     overflow: hidden;
-    min-height: 50px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -53,8 +67,12 @@ main {
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: 5px 0px;
+    padding: 5px 10px;
+    position: relative;
     bottom:0;
+    width: 100%;
+    min-height: 50px;
+    margin-top: auto;
 }
 
 nav {
@@ -314,9 +332,19 @@ nav {
 }
 
 .standard-button{
-    background-color: #EDF8AB;
-    color: #1E425E;
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
     border-radius: 10px;
+}
+
+.decision-button {
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-dark);
+    font-size: large;
+}
+
+.decision-button:hover {
+    background-color: var(--palette-color-primary);
 }
 
 /* PRODUCT PAGE */
@@ -713,6 +741,21 @@ ALL CREDITS TO @andrewsims
 }
 
 /* -------- LOGIN VIEW ------- */
+
+.login{
+    max-width: 500px;
+    padding: 20px 35px 20px 35px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4em auto;
+    border-color: var(--palette-color-secondary);
+    background: white;
+    border-width: medium;
+    color: var(--text-color-dark);
+}
 
 .login-form-container, .login-register-container, .register-form-container{
     height:fit-content;

@@ -14,8 +14,56 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
-<%@ include file="navbar.jsp"%>
-    <div class="login-page-container">
+    <%@ include file="navbar.jsp"%>
+
+    <div class="container">
+        <c:if test="${param.failure}">
+            <div class="error">
+                <spring:message code="loginpage.error"/>
+            </div>
+        </c:if>
+    </div>
+
+    <div class="container">
+        <c:url value="/login" var="postUrl"/>
+        <div class="login">
+            <div class="row">
+                <form method="post" action="${postUrl}" id="login_form">
+                    <div class="login-container" style="text-align: center">
+                        <h3><spring:message code="loginpage.title"/></h3>
+                    </div>
+                    <div class="input-field col s12">
+                        <label><spring:message code="loginpage.email"/></label>
+                        <input type="email" class="validate" id="email_input"/>
+                    </div>
+                    <div class="input-field col s12">
+                        <label><spring:message code="loginpage.password"/></label>
+                        <input type="password" name="password" id="password_input" class="validate"/>
+                    </div>
+                    <div class="col s12" style="align-content: center;">
+                        <label>
+                            <input type="checkbox" name="remember-me">
+                            <span><spring:message code="loginpage.rememberme"/></span>
+                        </label>
+                    </div>
+                    <div class="col s12" style="padding-top: 1em; padding-bottom: 1em; text-align: right;">
+                        <span><spring:message code="loginpage.redirectregister"/></span>
+                        <a href="<c:url value="/register"/>">
+                            <span><spring:message code="loginpage.registerbutton"/></span>
+                        </a>
+                    </div>
+                    <div class="col s12 center">
+                        <button type="submit" class="waves-effect waves-light btn decision-button">
+                            <spring:message code="loginpage.submit"/>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <%--div class="login-page-container">
         <c:if test="${param.failure}">
             <div class="error" style="font-size:20px; width:60%; margin: 5vh auto; text-align:center;">
                 <spring:message code="loginpage.error"/>
@@ -62,7 +110,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div--%>
     <%@ include file="footer.jsp"%>
 </body>
 </html>
