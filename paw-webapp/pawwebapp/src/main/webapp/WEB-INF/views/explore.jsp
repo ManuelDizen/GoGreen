@@ -79,16 +79,16 @@
                             <div style="margin-top: 1vh; margin-bottom: 1vh;">
                                 <c:set var="count" value="0"/>
                                 <c:forEach items="${product.tagList}" var="ecotag">
+                                    <c:if test="${count == 3}">
+                                        <div class="grey black-text chip">
+                                            <spring:message code="explore.products.andmore"/>
+                                        </div>
+                                        <c:set var="count" value="${count + 1}"/>
+                                    </c:if>
                                     <c:if test="${count lt 3}">
                                         <div class="${ecotag.color} white-text chip">
                                             <i class="tiny material-icons">${ecotag.icon}</i>
                                                 ${ecotag.tag}
-                                        </div>
-                                        <c:set var="count" value="${count + 1}"/>
-                                    </c:if>
-                                    <c:if test="${count == 3}">
-                                        <div class="grey black-text chip">
-                                            <spring:message code="explore.products.andmore"/>
                                         </div>
                                         <c:set var="count" value="${count + 1}"/>
                                     </c:if>
