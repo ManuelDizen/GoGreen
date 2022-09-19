@@ -52,9 +52,7 @@
                             </li>
                             <li style="padding-right: 2vw; display:flex; flex-direction: column; justify-content: space-around; height:100%;">
                                 <a href="<c:url value="/logout"/>">
-                                    <button type="submit" class="waves-effect waves-light btn">
-                                        <spring:message code="logout"/>
-                                    </button>
+                                    <i class="material-icons">logout</i>
                                 </a>
                             </li>
                         </c:if>
@@ -63,6 +61,13 @@
             </nav>
         </div>
         <ul id="menu-responsive" class="sidenav">
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <li>
+                <a href="<c:url value="/profile"/>">
+                <i class="material-icons">account_circle</i>
+                </a>
+                </li>
+            </c:if>
             <li>
                 <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
             </li>
@@ -79,15 +84,8 @@
 
             <c:if test="${pageContext.request.userPrincipal.name != null}">
                 <li>
-                    <a href="<c:url value="/profile"/>">
-                        <i class="material-icons">account_circle</i>
-                    </a>
-                </li>
-                <li>
                     <a href="<c:url value="/logout"/>">
-                        <button type="submit" class="waves-effect waves-light btn">
-                            <spring:message code="logout"/>
-                        </button>
+                        <i class="material-icons">logout</i>
                     </a>
                 </li>
             </c:if>

@@ -358,6 +358,7 @@ nav {
 
 .decision-button:hover {
     background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
 }
 
 /* PRODUCT PAGE */
