@@ -72,7 +72,7 @@
                             </c:if>
                         </div>
                         <div class="card-content">
-                            <span class="card-title"><c:out value="${product.name}"/></span>
+                            <span class="card-title product-card-title"><c:out value="${product.name}"/></span>
                             <div style="margin-top: 2vh; margin-bottom: 2vh;">
                                 <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                             </div>

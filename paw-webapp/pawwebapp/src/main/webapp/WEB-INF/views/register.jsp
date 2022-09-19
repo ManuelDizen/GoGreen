@@ -37,7 +37,7 @@
                     <spring:message code="register.sellerbutton"/></a>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom:5vh;">
             <div class="col s6">
                 <div style="height:30vh; text-align:center;">
                     <img class="responsive-img" src="<c:url value="/resources/images/BuyerImage.png"/>" alt="Buyers" style="object-fit:contain; height: 100%; margin:4vh auto;">

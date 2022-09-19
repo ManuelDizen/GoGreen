@@ -19,11 +19,11 @@
 <body>
     <footer class="page-footer custom-footer">
         <div class="container">
-            <div class="container" style="display: flex; justify-content: space-around;">
+            <!--<div class="container" style="display: flex; justify-content: space-around;">
                 <a style="color:white" href="<c:url value="/faq"/>">
                     <spring:message code="footer.faq"/>
                 </a>
-            </div>
+            </div>-->
             <div class="footer-copyright">
                 <spring:message code="footer.signature"/>
             </div>

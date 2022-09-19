@@ -6,20 +6,21 @@
 }
 
 :root{
-    --palette-color-primary: #63D471;
-    --palette-color-secondary: #63A46C;
+    --palette-color-primary: #ADE28A;
+    --palette-color-secondary: #407056;
     --palette-color-light: #E0E0E0;
     --palette-color-dark: #6A7152;
     --text-color-light: #E0E0E0;
     --text-color-dark: #424242;
+    --back-gradient-light: #44A08D;
+    --back-gradient-dark: #093637;
+    --palette-details-light: #EDFA8B;
 }
 
 body{
     min-height:100vh;
-    /*background-color: #256670;
-    background-image: linear-gradient(to bottom right, #44A08D, #093637);*/
-    background-image: linear-gradient(to bottom right, var(--palette-color-light), var(--palette-color-primary));
-    color: var(--text-color-dark);
+    background-image: linear-gradient(to bottom right, #44A08D, #093637);
+    color: var(--text-color-light);
     display: flex;
     flex-direction: column;
 }
@@ -31,11 +32,11 @@ main {
 /* Navbar CSS rules (joined with materialize standards)*/
 
 .custom-nav{
-    background-color: var(--palette-color-primary);
+    background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border-bottom-right-radius: 40px;
     border-bottom-left-radius: 40px;
-    border-bottom: 2px solid var(--palette-color-secondary);
+    border-bottom: 2px solid var(--palette-details-light);
     vertical-align: middle;
     padding: 0px 20px;
 }
@@ -52,7 +53,7 @@ main {
 }
 
 .custom-footer{
-    background-color: var(--palette-color-dark);
+    background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     overflow: hidden;
     display: -webkit-box;
@@ -215,10 +216,9 @@ nav {
 /*                  */
 
 .product-card-title{
-    font-size: 25px;
-    text-align: center;
-    margin-top: 2px;
-    margin-bottom:2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description-container{
@@ -339,7 +339,7 @@ nav {
 
 .decision-button {
     background-color: var(--palette-color-secondary);
-    color: var(--text-color-dark);
+    color: var(--text-color-light);
     font-size: large;
 }
 
@@ -713,7 +713,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .explore-products .product-card .card-content{
-    height:220px;
+    height:250px;
 }
 
 .explore-products .card-image img{

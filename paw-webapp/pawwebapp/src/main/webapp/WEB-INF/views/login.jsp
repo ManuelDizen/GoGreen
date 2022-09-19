@@ -34,7 +34,7 @@
                     </div>
                     <div class="input-field col s12">
                         <label><spring:message code="loginpage.email"/></label>
-                        <input type="email" class="validate" id="email_input"/>
+                        <input type="email" name="email" class="validate" id="email_input"/>
                     </div>
                     <div class="input-field col s12">
                         <label><spring:message code="loginpage.password"/></label>

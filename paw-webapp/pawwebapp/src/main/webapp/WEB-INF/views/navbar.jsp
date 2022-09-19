@@ -18,7 +18,7 @@
     </head>
 
     <body>
-        <div class="navbar-fixed">
+        <div class="navbar">
             <nav class="custom-nav">
                 <div class="nav-wrapper">
                     <a href="<c:url value="/"/>" class="brand-logo" style="margin-left:4vw;">
