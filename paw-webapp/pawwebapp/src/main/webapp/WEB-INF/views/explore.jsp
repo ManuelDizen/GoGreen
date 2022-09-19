@@ -25,33 +25,34 @@
         <div class="explore-filter">
             <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
             <c:url value="/explore" var="explore"/>
-            <form action="${explore}" method="get" id="filter_form">
+            <form action="${explore}" method="get" id="filter_form" style="margin: 20px 20px 20px 20px">
                 <table>
                     <tr>
                         <!--<td><label path="name">Name</label></td>-->
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.name"/></td>
-                        <td><input name="name" value="${name}" type="text"/></td>
+                        <p class="filter-inputlabel"><spring:message code="explore.filterform.name"/></p>
+                        <input name="name" value="${name}" type="text" class="validate"/>
                     </tr>
-                    <tr>
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
-                        <td><input name="category" value="${category}" type="text"/><td>
-                    </tr>
+<%--                    <tr>--%>
+<%--                        <label class="filter-inputlabel"><spring:message code="explore.filterform.category"/>--%>
+<%--                        <input name="category" value="${category}" type="text"/>--%>
+<%--                    </tr>--%>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></td>
-                        <td><input name="maxPrice" value="${maxPrice}" type="number"/></td>
+                        <p class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></p>
+                        <input name="maxPrice" value="${maxPrice}" type="number"/>
                     </tr>
                     <tr>
-                        <td class="filter-inputlabel">Ecotag</td>
+                        <p class="filter-inputlabel">Ecotags:</p>
                         <c:forEach items="${ecotagList}" var="ecotag">
                             <c:if test="${boolTags[ecotag.id-1]}">
-                                <td><input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
-                                    <label for="ecotag">${ecotag.tag}</label> </td>
+                                <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
+                                    <label for="ecotag">${ecotag.tag}</label>
                             </c:if>
                             <c:if test="${!boolTags[ecotag.id-1]}">
-                                <td><input name="${ecotag.path}" type="checkbox" id="ecotag2">
-                                    <label for="ecotag2">${ecotag.tag}</label> </td>
+                                <input name="${ecotag.path}" type="checkbox" id="ecotag2">
+                                    <label for="ecotag2">${ecotag.tag}</label>
                             </c:if>
+                            <br>
                         </c:forEach>
                     </tr>
                 </table>
@@ -62,6 +63,18 @@
 
         </div>
         <div class="explore-products">
+            <c:if test="${isEmpty}">
+                <h4><spring:message code="explore.noproducts"/></h4>
+                <sec:authorize access="hasRole('SELLER')">
+                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
+                    <div>
+                        <a class="waves-effect waves-light btn standard-button"
+                           href="<c:url value="/createProduct"/>">
+                            <spring:message code="explore.createproduct"/>
+                        </a>
+                    </div>
+                </sec:authorize>
+            </c:if>
             <c:if test="${products.size() != 0}">
                 <c:forEach items="${products}" var="product">
                     <div class="card product-card" style="margin:10px auto;">
@@ -81,16 +94,16 @@
                             <div style="margin-top: 1vh; margin-bottom: 1vh;">
                                 <c:set var="count" value="0"/>
                                 <c:forEach items="${product.tagList}" var="ecotag">
+                                    <c:if test="${count == 3}">
+                                        <div class="grey black-text chip">
+                                            <spring:message code="explore.products.andmore"/>
+                                        </div>
+                                        <c:set var="count" value="${count + 1}"/>
+                                    </c:if>
                                     <c:if test="${count lt 3}">
                                         <div class="${ecotag.color} white-text chip">
                                             <i class="tiny material-icons">${ecotag.icon}</i>
                                                 ${ecotag.tag}
-                                        </div>
-                                        <c:set var="count" value="${count + 1}"/>
-                                    </c:if>
-                                    <c:if test="${count == 3}">
-                                        <div class="grey black-text chip">
-                                            <spring:message code="explore.products.andmore"/>
                                         </div>
                                         <c:set var="count" value="${count + 1}"/>
                                     </c:if>
@@ -108,16 +121,18 @@
                 </c:forEach>
             </c:if>
             <c:if test="${products.size() == 0}">
-                <h4><spring:message code="explore.noproducts"/></h4>
-                <sec:authorize access="hasRole('SELLER')">
-                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
-                    <div>
-                        <a class="waves-effect waves-light btn standard-button"
-                           href="<c:url value="/createProduct"/>">
-                            <spring:message code="explore.createproduct"/>
-                        </a>
+                <div class="noproducts-container">
+                    <h4><spring:message code="explore.noproductsfilter"/></h4>
+                    <div class="circle">
+                        <img src="<c:url value="/resources/images/logo.png"/>" height="200" width="200"
+                             alt="Logo">
                     </div>
-                </sec:authorize>
+                    <div style="margin-bottom: 15px">
+                        <div>
+                            <button class="waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="explore.cleanfilters"/></button>
+                        </div>
+                    </div>
+                </div>
             </c:if>
         </div>
     </div>

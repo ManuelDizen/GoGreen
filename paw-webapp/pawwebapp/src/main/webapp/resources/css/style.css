@@ -473,12 +473,15 @@ nav {
     background-color: #ade28a;
     color: #1E425E;
     border-radius: 20px;
-    height:fit-content; /*TODO: Armado hasta que se haga una implementación correcta*/
+    height:fit-content;
+    /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
 .filter-inputlabel{
     color: #1E425E;
 }
+
+
 
 /* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
 to remove automatic appearance of increment and decrement bar
@@ -876,6 +879,44 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     border-radius: 10px;
     border: 1px solid #407056;
     align-self: center;
+}
+
+/* ------ ERROR VIEW -------- */
+.error-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    align-self: center;
+}
+
+.error-container-block{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    background-color: #EDF8AB;
+    color: #407056;
+    width:100%;
+    margin: 50px;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
+    text-align: center;
+}
+
+.noproducts-container {
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    background-color: #EDF8AB;
+    color: #407056;
+    width:100%;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    text-align: center;
 }
 
 /* ----- some features ----- */
