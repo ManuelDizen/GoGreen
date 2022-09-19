@@ -23,32 +23,33 @@
         <div class="explore-filter">
             <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
             <c:url value="/explore" var="explore"/>
-            <form action="${explore}" method="get" id="filter_form">
+            <form action="${explore}" method="get" id="filter_form" style="margin: 20px 20px 20px 20px">
                 <table>
                     <tr>
                         <!--<td><label path="name">Name</label></td>-->
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.name"/></td>
-                        <td><input name="name" value="${name}" type="text"/></td>
+                        <label class="filter-inputlabel"><spring:message code="explore.filterform.name"/></label>
+                        <input name="name" value="${name}" type="text" class="validate"/>
                     </tr>
-                    <tr>
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
-                        <td><input name="category" value="${category}" type="text"/><td>
-                    </tr>
+<%--                    <tr>--%>
+<%--                        <label class="filter-inputlabel"><spring:message code="explore.filterform.category"/>--%>
+<%--                        <input name="category" value="${category}" type="text"/>--%>
+<%--                    </tr>--%>
                     <tr>
                         <!--<td><label path="price">Max price</label></td>-->
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></td>
-                        <td><input name="maxPrice" value="${maxPrice}" type="number"/></td>
+                        <label class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></label>
+                        <input name="maxPrice" value="${maxPrice}" type="number"/>
                     </tr>
                     <tr>
-                        <td class="filter-inputlabel">Ecotag</td>
+                        <label class="filter-inputlabel">Ecotags:</label>
                         <c:forEach items="${ecotagList}" var="ecotag">
+                            <br>
                             <c:if test="${boolTags[ecotag.id-1]}">
-                                <td><input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
-                                    <label for="ecotag">${ecotag.tag}</label> </td>
+                                <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
+                                    <label for="ecotag">${ecotag.tag}</label>
                             </c:if>
                             <c:if test="${!boolTags[ecotag.id-1]}">
-                                <td><input name="${ecotag.path}" type="checkbox" id="ecotag2">
-                                    <label for="ecotag2">${ecotag.tag}</label> </td>
+                                <input name="${ecotag.path}" type="checkbox" id="ecotag2">
+                                    <label for="ecotag2">${ecotag.tag}</label>
                             </c:if>
                         </c:forEach>
                     </tr>

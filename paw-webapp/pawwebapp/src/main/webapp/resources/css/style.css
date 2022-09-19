@@ -459,12 +459,15 @@ nav {
     background-color: #ade28a;
     color: #1E425E;
     border-radius: 20px;
-    height:fit-content; /*TODO: Armado hasta que se haga una implementación correcta*/
+    height:fit-content;
+    /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
 .filter-inputlabel{
     color: #1E425E;
 }
+
+
 
 /* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
 to remove automatic appearance of increment and decrement bar
