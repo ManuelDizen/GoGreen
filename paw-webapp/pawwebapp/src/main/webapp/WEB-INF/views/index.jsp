@@ -11,6 +11,7 @@
         <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
 
         <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+        <script src="<c:url value="/resources/js/materialize.js"/>"></script>
 
         <title><spring:message code="navbar.companyname"/></title>
     </head>

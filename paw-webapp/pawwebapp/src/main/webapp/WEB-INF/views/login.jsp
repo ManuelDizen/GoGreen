@@ -12,6 +12,9 @@
     <%@ include file="header.jsp"%>
     <title><spring:message code="login.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link rel="stylesheet" href="<c:url value="/resources/css/materialize.css"/>" type="text/css"
+          media="screen,projection">
+    <script src="<c:url value="/resources/js/materialize.js"/>"></script>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
@@ -31,7 +34,7 @@
                         <label><spring:message code="loginpage.password"/></label>
                         <input type="password" name="password" id="password_input" class="validate"/>
                     </div>
-                    <div class="col s12" style="align-content: center;">
+                    <div class="col s12" style="align-content: center;" id="rememberme">
                         <label>
                             <input type="checkbox" name="remember-me">
                             <span><spring:message code="loginpage.rememberme"/></span>

@@ -12,7 +12,7 @@
 <html>
 <head>
     <title><spring:message code="createproduct.title"/></title>
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 </head>
@@ -55,7 +55,7 @@
                 </form:select>
                 <form:errors path="ecotag" element="p" cssClass="error"/>
             </div>
-            <div>
+            <div class="center">
                 <form:errors path="image" element="p" cssClass="error"/>
                 <form:label path="image"><spring:message code="createproduct.form.image"/></form:label>
                 <form:input path="image" type="file"/>
