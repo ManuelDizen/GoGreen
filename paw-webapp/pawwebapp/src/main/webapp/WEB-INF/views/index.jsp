@@ -34,11 +34,8 @@
             </div>
         </div>
         <div class="landing-recent-product-container animate glow delay-2" style="margin-top:10vh;">
-            <div class="row">
-                <c:if test="${recernt.size() == 0}">
-                    <h4>No hay productos!</h4>
-                </c:if>
-                <c:if test="${recent.size() != 0}">
+            <c:if test="${recent.size() != 0}">
+                <div class="row">
                     <div class="col s12">
                         <hr class="landing-separator">
                         <h4 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="landing.discoverproducts"/></h4>
@@ -69,14 +66,14 @@
                             </div>
                         </div>
                     </c:forEach>
-                </c:if>
-            </div>
-        </div>
-        <div class="animate glow delay-2"
-             style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
-            <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
-                <spring:message code="landing.explore"/>
-            </a>
+                </div>
+                <div class="animate glow delay-2"
+                     style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
+                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                        <spring:message code="landing.explore"/>
+                    </a>
+                </div>
+            </c:if>
         </div>
         <%@ include file="footer.jsp"%>
     </body>
