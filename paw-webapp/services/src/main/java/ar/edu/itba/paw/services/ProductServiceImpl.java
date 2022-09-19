@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ImageService imageService;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, ImageService imageService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService){
         this.productDao = productDao;
         this.imageService = imageService;
     }
@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<List<Product>> findBySeller(long sellerId) {
+    public List<Product> findBySeller(long sellerId) {
         return productDao.findBySeller(sellerId);
     }
 
@@ -68,5 +68,9 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return productDao.filter(name, category, ecotags, maxPrice);
+    }
+    @Override
+    public List<Product> getRecent(int amount){
+        return productDao.getRecent(amount);
     }
 }

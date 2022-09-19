@@ -9,6 +9,8 @@ public class User {
     private String username;
     private String password;
 
+    private long imageId;
+
     public User(long id, String firstName, String surname, String email, String username, String password){
         super();
         this.id = id;
@@ -36,5 +38,13 @@ public class User {
     }
     public long getId() {
         return id;
+    }
+
+    public long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
     }
 }

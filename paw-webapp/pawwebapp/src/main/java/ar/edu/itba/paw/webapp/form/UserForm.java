@@ -14,27 +14,27 @@ public class UserForm {
 
     @Size(max = 50)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Por favor, indicar su nombre.")
     private String firstName;
 
     @Size(max = 100)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Por favor, indicar su apellido.")
     private String surname;
 
     @Email
     @Size(min = 8, max = 50)
     @UniqueUserMail
-    @NotNull
+    @NotNull(message= "Por favor, indique si mail")
     private String email;
 
-    @NotNull
+    @NotNull(message="Por favor, indicar su usuario (entre 8 y 50 caracteres)")
     @NotEmpty
     @Size(min = 8, max = 50)
     private String username;
 
     @Password
-    @NotNull
+    @NotNull(message = "Por favor, indicar su contraseña")
     @NotEmpty
     private String password;
 

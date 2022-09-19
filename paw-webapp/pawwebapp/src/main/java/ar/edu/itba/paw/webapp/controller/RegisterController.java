@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,20 +29,27 @@ import java.util.Optional;
 @Controller
 public class RegisterController {
 
-    @Autowired
-    private SellerService sellerService;
+    private final SellerService sellerService;
+
+    private final UserService userService;
+
+    private final RoleService roleService;
+
+
+    private final UserRoleService userRoleService;
+
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserRoleService userRoleService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    public RegisterController(final SellerService sellerService, final UserService userService,
+                              final RoleService roleService, final UserRoleService userRoleService,
+                              final AuthenticationManager authenticationManager) {
+        this.sellerService = sellerService;
+        this.userService = userService;
+        this.roleService = roleService;
+        this.userRoleService = userRoleService;
+        this.authenticationManager = authenticationManager;
+    }
 
     @RequestMapping(value= "/register", method= RequestMethod.GET)
     public ModelAndView register(){
@@ -72,6 +78,8 @@ public class RegisterController {
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent())
             throw new IllegalStateException("No se encontró el rol.");
+
+        // TODO: This call could potentially be included in the userService.register() call
         userRoleService.create(user.getId(), role.get().getId());
 
         authWithAuthManager(request, form.getEmail(), form.getPassword());
@@ -96,6 +104,7 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
+        //TODO: All this logic could go into sellerService.create() method
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getUsername(), form.getPassword());
         if(user == null){

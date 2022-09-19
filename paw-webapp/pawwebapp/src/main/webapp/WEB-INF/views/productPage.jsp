@@ -30,11 +30,21 @@
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
-            <div class = "productpage-image-container">
-            <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
-            </div>
+            <c:if test="${product.imageId != 0}">
+                <div class = "productpage-image-container">
+                    <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                </div>
+            </c:if>
             <div><c:out value="${product.description}"/></div>
-            <div><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
+            <c:forEach items="${ecotags}" var="ecotag">
+                <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                        <div class="${ecotag.color} white-text chip">
+                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                ${ecotag.tag}
+                        </div>
+                </div>
+            </c:forEach>
+            <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
             <div style="height:2vh; width:100%;"></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
@@ -66,7 +76,7 @@
                             <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="2" class="confirm">
                                 <button type="submit" class="waves-effect waves-light btn">
                                     <spring:message code="productpage.orderform.submit"/>
                                 </button>

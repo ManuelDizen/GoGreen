@@ -67,8 +67,9 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public Optional<List<Product>> findBySeller(long sellerId) {
-        return Optional.empty();
+    public List<Product> findBySeller(long sellerId) {
+        return template.query("SELECT * FROM products WHERE sellerId = ?", new Object[]{sellerId},
+                PRODUCT_ROW_MAPPER);
     }
 
     @Override
@@ -117,5 +118,13 @@ public class ProductJdbcDao implements ProductDao {
            args.add(maxPrice);
         }
         return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
+    }
+
+    @Override
+    public List<Product> getRecent(int amount) {
+        List<Product> products = template.query("SELECT * FROM products ORDER BY id DESC",
+                PRODUCT_ROW_MAPPER);
+        if(products.size() < amount) return products;
+        return products.subList(0, amount);
     }
 }

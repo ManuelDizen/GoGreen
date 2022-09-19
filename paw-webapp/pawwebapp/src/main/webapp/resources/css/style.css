@@ -1,15 +1,26 @@
 /* General CSS rules for every view */
 
 *{
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     font-family: 'Manrope';
+}
+
+:root{
+    --palette-color-primary: #ADE28A;
+    --palette-color-secondary: #407056;
+    --palette-color-light: #E0E0E0;
+    --palette-color-dark: #6A7152;
+    --text-color-light: #E0E0E0;
+    --text-color-dark: #424242;
+    --back-gradient-light: #44A08D;
+    --back-gradient-dark: #093637;
+    --palette-details-light: #EDFA8B;
 }
 
 body{
     min-height:100vh;
-    /*background-color: #256670;*/
     background-image: linear-gradient(to bottom right, #44A08D, #093637);
-    color: white;
+    color: var(--text-color-light);
     display: flex;
     flex-direction: column;
 }
@@ -21,14 +32,19 @@ main {
 /* Navbar CSS rules (joined with materialize standards)*/
 
 .custom-nav{
-    background-color: #407056;
-    color: #ADE28A;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom: 1px solid #EDFA8B;
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-bottom: 2px solid var(--palette-details-light);
     vertical-align: middle;
-    overflow: hidden;
+    padding: 0px 20px;
 }
+
+.sidenav {
+    background-color: var(--palette-color-primary);
+}
+
 
 .custom-title{
     padding-left: 2vw;
@@ -37,10 +53,9 @@ main {
 }
 
 .custom-footer{
-    background-color: #407056;
-    color: #ADE28A;
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
     overflow: hidden;
-    min-height: 50px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -53,8 +68,12 @@ main {
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: 5px 0px;
+    padding: 5px 10px;
+    position: relative;
     bottom:0;
+    width: 100%;
+    min-height: 50px;
+    margin-top: auto;
 }
 
 nav {
@@ -88,7 +107,7 @@ nav {
     display:flex;
     flex-direction: column;
     justify-content:center;
-    margin-top:2vh;
+    margin-top:10vh;
     height:fit-content;
     width:100%;
 }
@@ -100,7 +119,23 @@ nav {
 
 .landing-page-title{
     text-align:center;
-    font-size: 30px;
+}
+
+.landing-recent-product-container{
+    height:fit-content;
+}
+
+.landing-recent-product-container .card .card-image img{
+    height: 200px;
+    object-fit: cover;
+}
+
+.landing-recent-product-container .card .card-image img .card-content{
+    max-height:initial;
+}
+
+.landing-recent-product-container .card .card-content{
+    height:40%;
 }
 
 .introduction-container{
@@ -181,10 +216,9 @@ nav {
 /*                  */
 
 .product-card-title{
-    font-size: 25px;
-    text-align: center;
-    margin-top: 2px;
-    margin-bottom:2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description-container{
@@ -216,13 +250,21 @@ nav {
     top:0;
     flex:20%;
     height:auto;
-    width:auto;
-    margin-left: 10%;
+    width:100%;
+    margin-left:10%;
 }
+
+.explore-product-image-container img{
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+
 
 .product-card-holder img{
     height:100%;
     width:100%;
+    border-radius:10px;
 }
 
 .card-container{
@@ -290,9 +332,19 @@ nav {
 }
 
 .standard-button{
-    background-color: #EDF8AB;
-    color: #1E425E;
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
     border-radius: 10px;
+}
+
+.decision-button {
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    font-size: large;
+}
+
+.decision-button:hover {
+    background-color: var(--palette-color-primary);
 }
 
 /* PRODUCT PAGE */
@@ -305,16 +357,16 @@ nav {
 
 .productpage-image-container{
     display:flex;
-    align-content: space-around;
+    justify-content: space-around;
     height: 30%;
     width: 100%;
+    margin: 10px auto;
 }
 
 .productpage-image-container img{
-    border-radius: 50px;
-    max-height:50%;
-    max-width:50%;
-    flex:40%;
+    width:80%;
+    object-fit:cover;
+    text-align:center;
 }
 
 .product-info-container{
@@ -322,8 +374,8 @@ nav {
     text-align: center;
     height: fit-content;
     flex:50%;
-    margin: 10px 5px;
-    padding-bottom: 10px;
+    margin: 10px 20px 20px 20px;
+    padding-bottom: 20px;
     background-color: #EDF8AB;
     border-radius: 10px;
     color: #1E425E;
@@ -381,7 +433,7 @@ nav {
     margin-bottom: 10px;
 }
 
-.explore-title{
+.generic-title{
     width:100%;
     text-align: center;
     font-size: 40px;
@@ -429,9 +481,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .explore-products{
     display:flex;
-    flex-direction: column;
-    /*align-items: center;*/
-    /*justify-content: center;*/
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .explore-filter-title{
@@ -509,6 +561,8 @@ ALL CREDITS TO @andrewsims
     color: black;
 }
 
+
+
 .pccard1 {
     display: block;
     position: relative;
@@ -564,10 +618,21 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
+.register-title{
+    font-size: 20px;
+    margin: 2vh auto;
+}
+
+.register-textbody{
+    width:100%;
+    padding: 2vh 4vw;
+    font-size: 15px;
+}
+
 .register-seller-container, .register-buyer-container{
     align-content: center;
     text-align: center;
-    height: fit-content;
+    height: 100%;
     flex:50%;
     margin: 10px 5px;
     padding-bottom: 10px;
@@ -578,4 +643,200 @@ ALL CREDITS TO @andrewsims
 
 .register-seller-form-container{
     color:white;
+}
+
+/* ------ SELLER PROFILE ------ */
+
+.seller-profile-main-body-container, .buyer-profile-main-body-container{
+    display:flex;
+    margin: 10vh 5vh;
+
+}
+
+.seller-profile-main-body-container h4{
+    margin-top:0;
+}
+
+.seller-profile-main-body-container-information, .buyer-profile-main-body-container-information{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-around;
+    height:fit-content;
+    margin:0;
+}
+
+.seller-profile-main-body-container-information{
+    flex:33%;
+}
+
+.seller-profile-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    background-color: #EDF8AB;
+    color: #407056;
+    align-content: center;
+    width:80%;
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
+}
+
+.seller-profile-container img, .card-image img{
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+.seller-profile-container img{
+    max-height: 100px;
+}
+
+.product-card{
+    width: 40%;
+    background: transparent;
+    box-shadow:none;
+    transition: 0.3s;
+}
+
+.product-card:hover{
+    transform: translate(0, -10px);
+}
+
+.product-card .card-image{
+    background:white;
+    border-radius:10px 10px 0 0;
+}
+
+.product-card .card-content{
+    border-radius: 0 0 10px 10px;
+}
+
+.explore-products .product-card .card-content{
+    height:250px;
+}
+
+.explore-products .card-image img{
+    max-height:150px;
+    object-fit:cover;
+}
+
+.seller-profile-container .profile-row{
+    display:flex;
+    justify-content: space-around;
+    margin: 10px;
+}
+.seller-profile-container-orders, .seller-profile-container-products, .seller-profile-published-products{
+    flex: 33%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ------- REGISTER VIEWS ------- */
+
+.register-form-row{
+    display:flex;
+    justify-content: space-around;
+}
+
+/* -------- LOGIN VIEW ------- */
+
+.login{
+    max-width: 500px;
+    padding: 20px 35px 20px 35px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4em auto;
+    border-color: var(--palette-color-secondary);
+    background: white;
+    border-width: medium;
+    color: var(--text-color-dark);
+}
+
+.login-form-container, .login-register-container, .register-form-container{
+    height:fit-content;
+    width:60%;
+    margin:auto;
+    color:white;
+}
+
+.register-form-container div, .login-form-container div, .login-register-container div{
+    width:100%;
+    display:flex;
+    justify-content: space-around;
+}
+
+.login-form-container div, .login-register-container div{
+    margin-bottom:4vh;
+}
+
+.register-form-container div .errors{
+    margin: 0 0 auto;
+}
+
+.label-container{
+    margin-top:2vh;
+}
+
+.login-form-container div label, .register-form-container div label{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color:white;
+    font-size: 18px;
+}
+
+.login-form-container input{
+    color:white;
+    font-family: 'Manrope';
+    margin-bottom: 0;
+    margin-left: 4vw;
+    width: 60%;
+    align-self: end;
+}
+
+.login-page-container .error{
+    font-size:20px;
+}
+
+.form-input{
+margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
+    color:white;
+}
+
+/* Extracted from https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/ */
+.login-page-container {
+    width:100%;
+    height:fit-content;
+    animation: fadeInAnimation ease 1.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ------ USER PROFILE VIEW ---------- */
+.buyer-profile-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    background-color: #EDF8AB;
+    color: #407056;
+    align-content: center;
+    width:40%;
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
 }

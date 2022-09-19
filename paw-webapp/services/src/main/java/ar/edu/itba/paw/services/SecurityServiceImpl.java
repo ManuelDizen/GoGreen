@@ -1,31 +1,29 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.jws.soap.SOAPBinding;
 import java.util.Optional;
 
-@Controller
-public class AuthenticationController {
+@Service
+public class SecurityServiceImpl implements SecurityService {
+
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
+    public SecurityServiceImpl(final UserService userService){
+        this.userService = userService;
+    }
 
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
-
-    //TODO: All this logic should be in a security service, no logic should be on controller
 
     public User getLoggedUser(){
         Authentication auth = getAuthentication();
@@ -36,8 +34,6 @@ public class AuthenticationController {
         return null;
     }
 
-    @RequestMapping(value="/email", method = RequestMethod.GET)
-    @ResponseBody
     public String getLoggedEmail(){
         Authentication auth = getAuthentication();
         if(auth != null) {
@@ -51,7 +47,6 @@ public class AuthenticationController {
         return null;
     }
 
-    @RequestMapping(value="/firstName", method = RequestMethod.GET)
     public String getLoggedFirstName(){
         Authentication auth = getAuthentication();
         Optional<User> user = userService.findByEmail(auth.getName());
@@ -61,7 +56,6 @@ public class AuthenticationController {
         return user.get().getFirstName();
     }
 
-    @RequestMapping(value="/surname", method = RequestMethod.GET)
     public String getLoggedSurname(){
         Authentication auth = getAuthentication();
         Optional<User> user = userService.findByEmail(auth.getName());
