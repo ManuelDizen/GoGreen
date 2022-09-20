@@ -6,11 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
+    <%@ include file="header.jsp"%>
     <title><c:out value="${product.name}"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
@@ -65,13 +64,13 @@
                 <form:form modelAttribute="orderForm" action="${process}" method="post">
                     <div class="row">
                         <div class="input-field col s12">
-                            <form:textarea id="textarea1" class="materialize-textarea" path="message"/>
+                            <form:textarea id="textarea1" class="materialize-textarea" path="message" data-length="300"/>
                             <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <form:input id="amount" type="number" path="amount"/>
+                            <form:input id="amount" type="number" path="amount" />
                             <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                         </div>
                     </div>
@@ -97,5 +96,9 @@
 <script>
     $('#textarea1').val('New Text');
     M.textareaAutoResize($('#textarea1'));
+
+    $(document).ready(function() {
+        $('input#input_text, textarea#textarea2').characterCounter();
+    });
 </script>
 </html>
