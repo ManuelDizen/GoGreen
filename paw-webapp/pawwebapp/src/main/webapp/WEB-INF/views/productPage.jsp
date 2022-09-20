@@ -66,7 +66,9 @@
                     <table>
                         <tr>
                             <td><form:label path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label></td>
-                            <td><form:textarea path="message"/></td>
+                            <td>
+                                <form:textarea id="textarea1" class="materialize-textarea" path="message"/>
+                            </td>
                         </tr>
                         <tr>
                             <td><form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label></td>
@@ -97,4 +99,8 @@
     </div>
     <%@ include file="footer.jsp"%>
 </body>
+<script>
+    $('#textarea1').val('New Text');
+    M.textareaAutoResize($('#textarea1'));
+</script>
 </html>

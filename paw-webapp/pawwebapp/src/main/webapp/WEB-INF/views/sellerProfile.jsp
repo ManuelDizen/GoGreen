@@ -48,10 +48,26 @@
         </c:if>
         <c:if test="${orders.size() != 0}">
             <c:forEach items="${orders}" var="order">
-                <div class="seller-profile-order-card">
-                    <div>${order.productName}</div>
-                    <div>${order.price} - ${order.amount}</div>
-                    <div>${order.dateTime}</div>
+                <div class="seller-profile-card">
+                    <div class="seller-profile-card-title">
+                            <c:out value="${order.productName}"/>
+                    </div>
+                    <div class="seller-profile-card-content">
+                            <spring:message code="sellerprofile.orders.price"/>
+                            <c:out value="${order.price}"/>
+                    </div>
+                    <div class="seller-profile-card-content">
+                            <spring:message code="sellerprofile.orders.amount"/>
+                            <c:out value="${order.amount}"/>
+                    </div>
+                    <div class="seller-profile-card-content">
+                        <spring:message code="sellerprofile.orders.time"/>
+                            <c:out value="${order.dateTime}"/>
+                    </div>
+                    <div>
+                        <spring:message code="sellerprofile.orders.buyer"/>
+                        <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                    </div>
                 </div>
             </c:forEach>
         </c:if>
@@ -69,9 +85,12 @@
         </c:if>
         <c:if test="${products.size() != 0}">
             <c:forEach items="${products}" var="product">
-                <div class="seller-profile-product-card">
-                    <div><c:out value="${product.name}"/></div>
-                    <div><c:out value="${product.price}"/></div>
+                <div class="seller-profile-card">
+                    <div class="seller-profile-card-title"><c:out value="${product.name}"/></div>
+                    <div class="seller-profile-card-content">
+                        <spring:message code="sellerprofile.orders.price"/>
+                        <c:out value="${product.price}"/>
+                    </div>
                 </div>
             </c:forEach>
         </c:if>
