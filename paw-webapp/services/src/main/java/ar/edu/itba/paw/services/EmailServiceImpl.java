@@ -7,6 +7,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -56,6 +57,7 @@ public class EmailServiceImpl implements EmailService {
         this.mailSender.send(mimeMessage);
     }
 
+    @Async
     @Override
     public void purchase(String buyerEmail, String buyer, Product product, int amount, float price,
                          String sellerName, String sellerPhone, String sellerMail) {
@@ -72,6 +74,7 @@ public class EmailServiceImpl implements EmailService {
                 "subject.userMailTitle");
     }
 
+    @Async
     @Override
     public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
                          String buyerName, String buyerEmail, String buyerMessage) {
