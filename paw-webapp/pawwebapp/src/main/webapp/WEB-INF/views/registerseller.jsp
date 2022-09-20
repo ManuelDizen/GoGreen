@@ -18,7 +18,9 @@
     <c:url value="/registersellerprocess" var="postUrl"/>
     <form:form modelAttribute="sellerForm" method="post" action="${postUrl}" id="user_form">
         <div style="margin:5vh auto; display:block;">
-            <h4 style="margin:4vh auto; text-align: center;"><spring:message code="registerseller.title"/></h4>
+            <h4 style="margin:4vh auto; text-align: center; text-decoration: underline;">
+                <spring:message code="registerseller.title"/>
+            </h4>
         </div>
         <div class="row">
             <div class="input-field col s12">

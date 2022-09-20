@@ -802,6 +802,16 @@ ALL CREDITS TO @andrewsims
     margin: 5px 0 0 0;
 }
 
+.register-form-container div label, .login-form-container div label,
+.login-register-container div label{
+    font-size:10px;
+}
+
+.register-form-container div input, .login-form-container div input,
+.login-register-container div input{
+    color:white;
+}
+
 .login-form-container div, .login-register-container div{
     margin-bottom:4vh;
 }
