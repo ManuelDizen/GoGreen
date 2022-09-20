@@ -55,10 +55,16 @@
                 <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
                 <form:errors path="ecotag" element="p" cssClass="error"/>
             </div>
-            <div class="center">
-                <form:errors path="image" element="p" cssClass="error"/>
-                <form:label path="image"><spring:message code="createproduct.form.image"/></form:label>
-                <form:input path="image" type="file"/>
+            <div class="row">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span><spring:message code="createproduct.form.image"/></span>
+                        <form:input path="image" type="file"/>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
             </div>
             <div class="center" style="padding-top: 1em;">
                 <button type="submit" class="decision-button waves-effect waves-light btn">
