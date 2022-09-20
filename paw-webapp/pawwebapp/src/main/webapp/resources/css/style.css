@@ -309,6 +309,11 @@ nav {
     width: 100%;
 }
 
+.explore-filter .row{
+    margin-top:1vh;
+    margin-bottom:0 ;
+}
+
 .column {
     text-align:justify;
     width:44%;
@@ -933,6 +938,19 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 #product_form .select-wrapper select, .login #login_form #rememberme input,
 #product_form .input-field .select-wrapper ul li input{
     display: none;
+}
+
+/* https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
 }
 
 

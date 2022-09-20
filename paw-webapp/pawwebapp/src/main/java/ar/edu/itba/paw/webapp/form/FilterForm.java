@@ -1,13 +1,15 @@
 package ar.edu.itba.paw.webapp.form;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 public class FilterForm {
-    @Size(max = 50)
+    @Size(max = 50, message="Please, respect max length (50 characters) for name.")
     private String name;
 
     @Max(value=100000, message="Price must be equal or less to $100.000")
+    @Min(value=1, message="Min price must be equal or greater to $1")
     private Integer price;
 
 //    @Size(max = 50)
