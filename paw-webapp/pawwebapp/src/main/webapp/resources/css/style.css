@@ -937,7 +937,8 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 /* ----- some features ----- */
 #product_form .select-wrapper select, .login #login_form #rememberme input,
 #product_form .input-field .select-wrapper ul li input,
-.container #product_form .input-field .select-wrapper ul{
+.container #product_form .input-field .select-wrapper ul,
+.container #product_form .row .input-field .btn .character-counter{
     display: none;
 }
 
