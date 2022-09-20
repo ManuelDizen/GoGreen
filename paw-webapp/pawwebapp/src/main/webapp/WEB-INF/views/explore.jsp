@@ -102,10 +102,10 @@
                                     <c:set var="count" value="${count + 1}"/>
                                 </c:if>
                                 <c:if test="${count lt 2}">
-                                    <div class="${ecotag.color} white-text chip">
+                                    <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
                                         <i class="tiny material-icons">${ecotag.icon}</i>
                                             ${ecotag.tag}
-                                    </div>
+                                    </a>
                                     <c:set var="count" value="${count + 1}"/>
                                 </c:if>
                             </c:forEach>
@@ -126,10 +126,10 @@
                         </div>
                         <p><c:out value="${product.description}"/></p>
                         <c:forEach items="${product.tagList}" var="ecotag">
-                            <div class="${ecotag.color} white-text chip">
+                            <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                    ${ecotag.tag}
-                            </div>
+                                ${ecotag.tag}
+                            </a>
                             <br>
                         </c:forEach>
                         <div class="submit-button">
