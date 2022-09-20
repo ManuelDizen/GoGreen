@@ -96,9 +96,9 @@
                             <c:forEach items="${product.tagList}" var="ecotag">
                                 <c:if test="${count == 2}">
                                     <br>
-                                    <div class="yellow-card black-text chip activator">
+                                    <a class="yellow-card black-text chip activator">
                                         <i class="tiny material-icons">more_horiz</i>
-                                    </div>
+                                    </a>
                                     <c:set var="count" value="${count + 1}"/>
                                 </c:if>
                                 <c:if test="${count lt 2}">

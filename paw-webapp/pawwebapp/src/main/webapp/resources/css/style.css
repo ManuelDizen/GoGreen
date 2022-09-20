@@ -939,3 +939,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: none;
 }
 
+.explore-products .product-card .card-content a {
+    cursor: pointer;
+}
