@@ -63,28 +63,23 @@
                 <h4><spring:message code="productpage.orderform.title"/></h4>
                 <c:url value="/process/${product.productId}" var="process"/>
                 <form:form modelAttribute="orderForm" action="${process}" method="post">
-                    <table>
-                        <tr>
-                            <td><form:label path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label></td>
-                            <td>
-                                <form:textarea id="textarea1" class="materialize-textarea" path="message"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label></td>
-                            <td><form:input path="amount"/></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="confirm">
-                                <button type="submit" class="waves-effect waves-light btn">
-                                    <spring:message code="productpage.orderform.submit"/>
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <form:textarea id="textarea1" class="materialize-textarea" path="message"/>
+                            <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <form:input id="amount" type="number" path="amount"/>
+                            <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align:center;">
+                        <button type="submit" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.orderform.submit"/>
+                        </button>
+                    </div>
                 </form:form>
             </sec:authorize>
             <sec:authorize access="hasRole('SELLER')">
