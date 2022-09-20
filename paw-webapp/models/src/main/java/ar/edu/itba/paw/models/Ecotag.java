@@ -4,7 +4,9 @@ public enum Ecotag {
 
     ECOTAG_RECYCLE("Productos reciclados", 1, "recycling", "blue", "ecotagRecycle"),
     ECOTAG_FOREST("Sin deforestación", 2, "forest", "green", "ecotagForest"),
-    ECOTAG_ENERGY("Energías renovables", 3, "wind_power", "grey", "ecotagEnergy");
+    ECOTAG_ENERGY("Energías renovables", 3, "wind_power", "grey", "ecotagEnergy"),
+    ECOTAG_ANIMALS("No testeado en animales", 4, "pets", "brown", "ecotagAnimals"),
+    ECOTAG_TRANSPORT("Transporte responsable", 5, "local_shipping", "yellow", "ecotagTransport");
 
     private final String tag;
     private final long id;

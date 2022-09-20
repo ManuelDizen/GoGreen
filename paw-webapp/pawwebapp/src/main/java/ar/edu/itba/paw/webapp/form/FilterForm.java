@@ -19,6 +19,10 @@ public class FilterForm {
 
     private boolean ecotagEnergy;
 
+    private boolean ecotagAnimals;
+
+    private boolean ecotagTransport;
+
     //private String category;
 
     public String getName() {
@@ -69,8 +73,19 @@ public class FilterForm {
         this.ecotagEnergy = ecotagEnergy;
     }
 
+    public boolean isEcotagAnimals() {
+        return ecotagAnimals;
+    }
 
+    public void setEcotagAnimals(boolean ecotagAnimals) {
+        this.ecotagAnimals = ecotagAnimals;
+    }
 
+    public boolean isEcotagTransport() {
+        return ecotagTransport;
+    }
 
-
+    public void setEcotagTransport(boolean ecotagTransport) {
+        this.ecotagTransport = ecotagTransport;
+    }
 }

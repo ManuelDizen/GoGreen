@@ -66,11 +66,13 @@ public class ProductController {
             @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
             @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
             @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
+            @RequestParam(name="ecotagAnimals", defaultValue="false") final boolean ecotagAnimals,
+            @RequestParam(name="ecotagTransport", defaultValue="false") final boolean ecotagTransport,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
-        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy};
+        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy, ecotagAnimals, ecotagTransport};
 
         List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
 
