@@ -55,6 +55,14 @@ public class UserController {
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
         mav.addObject("user", user.get());
+        List<Order> orders = orderService.getBuBuyerEmail(user.get().getEmail());
+        for(Order o : orders) {
+            System.out.println(o.getBuyerName());
+            System.out.println(o.getBuyerSurname());
+
+        }
+
+        mav.addObject("orders", orders);
         return mav;
     }
 

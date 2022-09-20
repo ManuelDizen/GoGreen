@@ -72,7 +72,7 @@ public class SellerServiceImpl implements SellerService {
         Optional<User> maybeUser = ud.findById(userid);
         if(maybeUser.isPresent()) {
             User user = maybeUser.get();
-            return user.getUsername();
+            return user.getFirstName();
         }
         return null;
     }

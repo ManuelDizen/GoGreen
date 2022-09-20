@@ -61,10 +61,10 @@
         <div id="test2" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
                 <div class="seller-profile-container-orders-2">
-                    <h4><spring:message code="sellerprofile.orders"/></h4>
+                    <h4><spring:message code="userprofile.orders"/></h4>
                     <c:if test="${orders.size() == 0}">
                         <div style="margin-top:5vh;">
-                            <div style="text-align: center;"><spring:message code="sellerprofile.noorders"/></div>
+                            <div style="text-align: center;"><spring:message code="userprofile.noorders"/></div>
                         </div>
                     </c:if>
                     <c:if test="${orders.size() != 0}">
@@ -86,8 +86,8 @@
                                     <c:out value="${order.dateTime}"/>
                                 </div>
                                 <div>
-                                    <spring:message code="sellerprofile.orders.buyer"/>
-                                    <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                    <spring:message code="userprofile.orders.seller"/>
+                                    <c:out value="${order.sellerName}${' '}${order.sellerSurname}"/>
                                 </div>
                             </div>
                         </c:forEach>
