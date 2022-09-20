@@ -19,7 +19,7 @@
 <div class="seller-profile-main-body-container">
     <div class="row">
         <div class="col s12">
-            <ul class="tabs" id="sellerprofile_tabs">
+            <ul class="tabs tabs-fixed-width" id="sellerprofile_tabs">
                 <li class="tab col s3"><a href="#test1"><spring:message code="sellerprofile.information"/></a></li>
                 <li class="tab col s3"><a class="active" href="#test2"><spring:message code="sellerprofile.productos"/></a></li>
                 <li class="tab col s3"><a href="#test3"><spring:message code="sellerprofile.orderstitle"/></a></li>
