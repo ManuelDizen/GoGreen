@@ -47,12 +47,12 @@
                 <form:input path="stock"/>
             </div>
             <div class="input-field">
-                <form:label path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
                 <form:select path="ecotag" multiple="true">
                     <c:forEach items="${tagList}" var="ecotag">
                         <form:option value="${ecotag.id}"><c:out value="${ecotag.tag}"/></form:option>
                     </c:forEach>
                 </form:select>
+                <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
                 <form:errors path="ecotag" element="p" cssClass="error"/>
             </div>
             <div class="center">

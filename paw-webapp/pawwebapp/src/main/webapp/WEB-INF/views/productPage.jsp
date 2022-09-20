@@ -97,8 +97,12 @@
     $('#textarea1').val('New Text');
     M.textareaAutoResize($('#textarea1'));
 
-    $(document).ready(function() {
-        $('input#input_text, textarea#textarea2').characterCounter();
+    document.addEventListener('DOMContentLoaded', function () {
+        var textNeedCount = document.querySelectorAll('#textarea1');
+        M.CharacterCounter.init(textNeedCount);
     });
+
+    $('textarea#textarea1').characterCounter();
+
 </script>
 </html>
