@@ -666,7 +666,8 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-main-body-container, .buyer-profile-main-body-container{
     display:flex;
-    margin: 10vh 5vh;
+    margin: 3vh 5vh 0vh;
+    flex-direction: column;
 
 }
 
@@ -758,7 +759,7 @@ ALL CREDITS TO @andrewsims
     align-self: center;
 
     padding-bottom:2vh;
-    margin-bottom:2vh;
+    margin: 2vh auto;
 }
 .seller-profile-card-title{
     font-size:20px;
@@ -925,3 +926,107 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: none;
 }
 
+
+
+/* --------- TESTING PURPOSES ------- */
+
+.seller-profile-container-2, .seller-profile-container-2-lower, .seller-profile-container-2-bis,
+.seller-profile-container-2-lower-bis{
+    height:fit-content;
+    background:var(--palette-color-secondary);
+    color:white;
+    display:flex;
+    justify-content: space-around;
+    align-self: center;
+    padding-top:6vh;
+    padding-bottom:5vh;
+    border-left: 1px solid var(--palette-details-light);
+    border-right: 1px solid var(--palette-details-light);
+    border-bottom: 1px solid var(--palette-details-light);
+}
+
+.seller-profile-container-2, .seller-profile-container-2-lower{
+    width:80%;
+}
+
+.seller-profile-container-2-lower{
+    margin-top: 2vh;
+    background:transparent;
+}
+
+#sellerprofile_tabs{
+    background-color: var(--palette-color-secondary);
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-top: 1px solid white;
+}
+
+#sellerprofile_tabs li a{
+    color: white;
+}
+
+#sellerprofile_tabs .indicator{
+    color:white;
+    background-color:white;
+}
+
+.seller-profile-container-orders-2{
+
+}
+
+.seller-inner-div-1, .seller-inner-div-2{
+    height:100%;
+    flex:50%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+}
+
+.seller-profile-pic-container img{
+    border-radius: 50%;
+    height: auto;
+    max-height: 200px;
+    align-self:center;
+}
+
+.seller-profile-pic-container{
+    width:100%;
+    overflow: hidden;
+    text-align:center;
+}
+
+
+.text-center{
+    text-align:center;
+}
+
+.seller-profile-products-2, .seller-profile-orders-2{
+    flex:48%;
+    text-align:center;
+}
+
+.seller-profile-orders-2{
+    display:flex;
+    flex-direction:column;
+    background-color: var(--palette-color-secondary);
+}
+
+.seller-profile-products-2-bis, .seller-profile-container-orders-2{
+    flex:100%;
+    text-align:center;
+}
+
+.seller-profile-product-card{
+    width:100%;
+    vertical-align: center;
+    margin:3vh auto;
+}
+
+.seller-profile-product-card-info{
+    text-align:center;
+}
+
+.seller-profile-product-card-info a{
+    color:white;
+}
