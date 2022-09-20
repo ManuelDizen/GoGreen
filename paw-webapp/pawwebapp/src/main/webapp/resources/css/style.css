@@ -919,6 +919,20 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     text-align: center;
 }
 
+.submit-button {
+    position: absolute;
+    bottom: 5%;
+}
+
+.two-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.yellow-card {
+    background: #EDFA8B;
+}
+
 /* ----- some features ----- */
 #product_form .select-wrapper select, .login #login_form #rememberme input,
 #product_form .input-field .select-wrapper ul li input{
