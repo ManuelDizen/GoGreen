@@ -40,7 +40,7 @@ main {
     border-bottom-right-radius: 40px;
     border-bottom-left-radius: 40px;
     border-bottom: 2px solid var(--palette-details-light);
-    vertical-align: middle;
+    /*vertical-align: middle;*/
     padding: 0px 20px;
 }
 
@@ -90,11 +90,11 @@ main {
 }
 
 nav {
-    height: 15vh;
     margin: 0;
     padding: 0;
+    max-height: 30em;
     background-color:transparent;
-    color:#ADE28A;
+    color: var(--text-color-light);
     align-content: center;
     border-bottom:transparent;
     box-shadow:none;
