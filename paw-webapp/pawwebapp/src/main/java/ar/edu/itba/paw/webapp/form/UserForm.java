@@ -28,11 +28,6 @@ public class UserForm {
     @NotNull(message= "Por favor, indique si mail")
     private String email;
 
-    @NotNull(message="Por favor, indicar su usuario (entre 8 y 50 caracteres)")
-    @NotEmpty
-    @Size(min = 8, max = 50)
-    private String username;
-
     @Password
     @NotNull(message = "Por favor, indicar su contraseña")
     @NotEmpty
@@ -60,14 +55,6 @@ public class UserForm {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserDao {
 
-    User create(String firstName, String surname, String email, String username, String password);
+    User create(String firstName, String surname, String email, String password);
 
     void updateImage(long userId, long imageId);
 
