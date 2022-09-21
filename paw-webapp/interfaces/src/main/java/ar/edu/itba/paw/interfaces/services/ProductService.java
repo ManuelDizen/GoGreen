@@ -17,6 +17,7 @@ public interface ProductService {
     Optional<List<Product>> getByCategory(long categoryId);
     Optional<Product> getById(long productId);
     List<Product> getAll();
+    List<List<Product>> divideIntoPages(List<Product> list);
 
 
     List<Product> getRecent(int amount);

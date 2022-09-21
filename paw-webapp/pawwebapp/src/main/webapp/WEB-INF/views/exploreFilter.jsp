@@ -12,17 +12,17 @@
 </head>
 <body>
 <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
-<c:url value="/explore/1" var="explore"/>
+<c:url value="/explore" var="explore"/>
 <form action="${explore}" method="get" id="filter_form" style="margin: 0 20px 20px 20px">
     <div class="row">
         <div class="input-field col s12">
-            <input id="name" type="text" class="validate" value="${name}">
+            <input id="name" name="name" type="text" class="validate" value="${name}">
             <label for="name"><spring:message code="explore.filterform.name"/></label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <input id="maxPrice" type="number" class="validate" value="${maxPrice}">
+            <input id="maxPrice" name="maxPrice" type="number" class="validate" value="${maxPrice}">
             <label for="maxPrice"><spring:message code="explore.filterform.maxprice"/></label>
         </div>
     </div>

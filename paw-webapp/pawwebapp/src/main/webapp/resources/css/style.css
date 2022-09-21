@@ -933,11 +933,24 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     background: #EDFA8B;
 }
 
+.enabled {
+    color: #EDFA8B;
+}
+
 
 .pagin {
     display: flex;
     flex-grow: 1;
     justify-content: center;
+}
+
+.toto {
+    color: black;
+}
+
+.toto2 {
+    color: white;
+    background: black;
 }
 
 /* ----- some features ----- */

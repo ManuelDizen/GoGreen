@@ -18,6 +18,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
     private final ImageService imageService;
+    private static final int PAGE_SIZE = 4;
 
     @Autowired
     public ProductServiceImpl(final ProductDao productDao, final ImageService imageService){
@@ -58,6 +59,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAll() {
         return productDao.getAll();
+    }
+
+    @Override
+    public List<List<Product>> divideIntoPages(List<Product> list) {
+        List<List<Product>> pageList = new ArrayList<>();
+
+        int aux = 1;
+        while(aux <= list.size()/PAGE_SIZE) {
+            pageList.add(list.subList((aux-1)*PAGE_SIZE, aux*PAGE_SIZE));
+            aux++;
+        }
+        if(list.size() % PAGE_SIZE != 0)
+            pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        return pageList;
     }
 
     @Override
