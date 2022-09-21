@@ -1,15 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.RoleService;
-import ar.edu.itba.paw.interfaces.services.SellerService;
-import ar.edu.itba.paw.interfaces.services.UserRoleService;
-import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -39,16 +38,19 @@ public class RegisterController {
     private final UserRoleService userRoleService;
 
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
     @Autowired
     public RegisterController(final SellerService sellerService, final UserService userService,
                               final RoleService roleService, final UserRoleService userRoleService,
-                              final AuthenticationManager authenticationManager) {
+                              final AuthenticationManager authenticationManager,
+                              final EmailService emailService) {
         this.sellerService = sellerService;
         this.userService = userService;
         this.roleService = roleService;
         this.userRoleService = userRoleService;
         this.authenticationManager = authenticationManager;
+        this.emailService = emailService;
     }
 
     @RequestMapping(value= "/register", method= RequestMethod.GET)
@@ -74,13 +76,15 @@ public class RegisterController {
             return registerBuyer(form);
         }
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
-                form.getPassword());
+                form.getPassword(), LocaleContextHolder.getLocale());
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent())
             throw new IllegalStateException("No se encontró el rol.");
 
         // TODO: This call could potentially be included in the userService.register() call
         userRoleService.create(user.getId(), role.get().getId());
+
+        emailService.registration(user, LocaleContextHolder.getLocale());
 
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
@@ -106,7 +110,7 @@ public class RegisterController {
         }
         //TODO: All this logic could go into sellerService.create() method
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
-                form.getPassword());
+                form.getPassword(), LocaleContextHolder.getLocale());
         if(user == null){
             throw new IllegalArgumentException("Usuario no pudo ser creado");
         }

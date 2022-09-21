@@ -168,13 +168,13 @@ public class ProductController {
         es.purchase(u.getEmail(), u.getFirstName(),
                 p, form.getAmount(),
                 p.getPrice(), sellerService.getName(s.getUserId()),
-                s.getPhone(), sellerService.getEmail(s.getUserId()));
+                s.getPhone(), sellerService.getEmail(s.getUserId()), u.getLocale());
 
         es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()),
                 p,
                 form.getAmount(), p.getPrice(),
                 u.getFirstName(), u.getEmail(),
-                form.getMessage());
+                form.getMessage(), sellerService.getLocale(s.getUserId()));
 
         LocalDateTime dateTime = LocalDateTime.now();
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -83,6 +84,16 @@ public class SellerServiceImpl implements SellerService {
         if(maybeUser.isPresent()) {
             User user = maybeUser.get();
             return user.getSurname();
+        }
+        return null;
+    }
+
+    @Override
+    public Locale getLocale(long userid) {
+        Optional<User> maybeUser = ud.findById(userid);
+        if(maybeUser.isPresent()){
+            User user = maybeUser.get();
+            return user.getLocale();
         }
         return null;
     }

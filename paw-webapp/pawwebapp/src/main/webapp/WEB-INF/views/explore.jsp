@@ -28,7 +28,7 @@
             <form action="${explore}" method="get" id="filter_form" style="margin: 0 20px 20px 20px">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input name="name" id="name" type="text" data-length="50">
+                        <input name="name" id="name" type="text">
                         <label for="name"><spring:message code="explore.filterform.name"/></label>
                     </div>
                 </div>

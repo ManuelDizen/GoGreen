@@ -3,7 +3,8 @@ create table if not exists users(
     firstName varchar(255) not null,
     surname varchar(255) not null,
     email varchar(255) unique not null,
-    password varchar(255) not null
+    password varchar(255) not null,
+    locale varchar(5) default 'es'
     );
 
 create table if not exists sellers(
@@ -49,5 +50,5 @@ alter table products add foreign key (imageId) references images(id) on delete s
 alter table users add column if not exists imageId integer default null;
 alter table users add foreign key (imageId) references images(id) on delete set null;
 
-ALTER TABLE users
-DROP COLUMN IF EXISTS username;
+ALTER TABLE users DROP COLUMN IF EXISTS username;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS locale varchar(5) default 'es';

@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Locale;
+
 public class User {
 
     private long id;
@@ -10,13 +12,16 @@ public class User {
 
     private long imageId;
 
-    public User(long id, String firstName, String surname, String email, String password){
+    private Locale locale;
+
+    public User(long id, String firstName, String surname, String email, String password, Locale locale){
         super();
         this.id = id;
         this.firstName = firstName;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.locale = locale;
     }
 
     public String getFirstName() {
@@ -63,5 +68,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 }
