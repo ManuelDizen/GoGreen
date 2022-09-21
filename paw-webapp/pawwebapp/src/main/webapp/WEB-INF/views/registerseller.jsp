@@ -54,16 +54,6 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <form:input path="username" id="username" type="text"/>
-                <label for="username"><spring:message code="registerbuyer.form.username"/>
-                    <spring:message code="forms.obligatorysign"/></label>
-            </div>
-        </div>
-        <div class="errors">
-            <form:errors path="username" element="p" cssClass="error"/>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
                 <form:input path="password" id="password" type="password"/>
                 <label for="password"><spring:message code="registerbuyer.form.password"/>
                     <spring:message code="forms.obligatorysign"/></label>

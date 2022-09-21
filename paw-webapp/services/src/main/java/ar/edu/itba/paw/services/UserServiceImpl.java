@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
         this.encoder = encoder;
     }
     @Override
-    public User register(String firstName, String surname, String email, String username, String password) {
-        return userDao.create(firstName, surname, email, username, encoder.encode(password));
+    public User register(String firstName, String surname, String email, String password) {
+        return userDao.create(firstName, surname, email, encoder.encode(password));
     }
 
     @Override

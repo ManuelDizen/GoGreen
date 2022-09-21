@@ -31,11 +31,6 @@ public class SellerForm {
     private String password;
 
     @NotNull
-    @NotEmpty(message="Por favor, indicar su nombre de usuario")
-    @Size(min = 8, max = 50, message="El nombre de usuario debe tener entre 8 y 50 caracteres")
-    private String username;
-
-    @NotNull
     @NotEmpty(message="Por favor, indicar su dirección")
     @Size(max = 100, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
     private String address;
@@ -83,14 +78,6 @@ public class SellerForm {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {

@@ -24,7 +24,6 @@ public class UserJdbcDao implements UserDao {
                     resultSet.getString("firstName"),
                     resultSet.getString("surname"),
                     resultSet.getString("email"),
-                    resultSet.getString("username"),
                     resultSet.getString("password"));
 
     private final JdbcTemplate template;
@@ -42,15 +41,14 @@ public class UserJdbcDao implements UserDao {
     }
 
     @Override
-    public User create(final String name, final String surname, final String email, final String username, final String password) {
+    public User create(final String name, final String surname, final String email, final String password) {
         final Map<String, Object> values = new HashMap<>();
         values.put("firstName", name);
         values.put("surname", surname);
         values.put("email", email);
-        values.put("username", username);
         values.put("password", password);
         final Number userId = insert.executeAndReturnKey(values);
-        return new User(userId.longValue(), name, surname, email, username, password);
+        return new User(userId.longValue(), name, surname, email, password);
     }
 
     @Override

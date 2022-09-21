@@ -74,7 +74,7 @@ public class RegisterController {
             return registerBuyer(form);
         }
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
-                form.getUsername(), form.getPassword());
+                form.getPassword());
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent())
             throw new IllegalStateException("No se encontró el rol.");
@@ -106,7 +106,7 @@ public class RegisterController {
         }
         //TODO: All this logic could go into sellerService.create() method
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
-                form.getUsername(), form.getPassword());
+                form.getPassword());
         if(user == null){
             throw new IllegalArgumentException("Usuario no pudo ser creado");
         }

@@ -55,6 +55,8 @@ public class UserController {
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
         mav.addObject("user", user.get());
+
+        //TODO: Typo
         List<Order> orders = orderService.getBuBuyerEmail(user.get().getEmail());
         for(Order o : orders) {
             System.out.println(o.getBuyerName());
