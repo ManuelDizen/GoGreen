@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body style="font-family: 'Manrope'">
+<div style="height:500px; width:100%; background-image:linear-gradient(to bottom right, #44A08D, #093637);">
+    <div style="height:20%;
+        width:100%; color:white; background-color:#407056;
+        border:1px solid #EDFA8B;
+        display:flex;
+        justify-content:center;">
+        <h3 th:text="#{greetingRegister(${name})}"></h3>
+    </div>
+    <div style="margin-top:5vh; width:100%; height:available;">
+        <div style=" display:flex; justify-content:center; width:100%; color:white;
+text-align:center;"
+             th:text="#{welcomeMessage(${name}, ${surname})}"></div>
+
+    </div>
+    <div style="width:100%; text-align:center;">
+        <a style="align-self:center;
+    text-align:center" href="http://pawserver.it.itba.edu.ar/paw-2022b-2/login"
+           class="waves-effect waves-light btn">¡Comencemos!</a>
+    </div>
+</div>
+</body>
+</html>

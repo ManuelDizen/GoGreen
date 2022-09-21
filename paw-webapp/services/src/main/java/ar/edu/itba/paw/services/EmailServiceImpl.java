@@ -88,7 +88,6 @@ public class EmailServiceImpl implements EmailService {
         data.put("buyerEmail", buyerEmail);
         data.put("buyerMessage", buyerMessage);
 
-        // TODO: FIX THIS HARDCODE (to paramter), ONLY FOR TESTING PURPOSES
         sendThymeleafMail(sellerEmail, "sellerPurchase", data,
                 "subject.buyerMailTitle", locale);
     }
