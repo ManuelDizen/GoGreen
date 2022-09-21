@@ -59,7 +59,7 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value="/explore")
+    @RequestMapping(value="/explore/{page}")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="") final String category,
@@ -68,7 +68,8 @@ public class ProductController {
             @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
             @RequestParam(name="ecotagAnimals", defaultValue="false") final boolean ecotagAnimals,
             @RequestParam(name="ecotagTransport", defaultValue="false") final boolean ecotagTransport,
-            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
+            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
+            @PathVariable final int page
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
@@ -87,8 +88,16 @@ public class ProductController {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
         }
 
+        List<Product> pageProducts = productList.subList((page-1)*4, page*4);
+
+
+        int pages = productList.size() / 4;
+
+        System.out.println(pages);
+
         List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
 
+        mav.addObject("currentPage", page);
         mav.addObject("boolTags", boolTags);
         mav.addObject("name", name);
         mav.addObject("category", category);
@@ -98,8 +107,11 @@ public class ProductController {
             mav.addObject("maxPrice", null);
 
         mav.addObject("ecotagList", ecotagList);
-        mav.addObject("products", productList);
+        mav.addObject("products", pageProducts);
+
         mav.addObject("isEmpty", allProducts.isEmpty());
+
+        mav.addObject("pages", pages);
 
         return mav;
     }

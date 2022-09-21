@@ -79,7 +79,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         http.sessionManagement().
                 invalidSessionUrl("/").and()
                 .authorizeRequests()
-                    .antMatchers("/", "/explore", "/productpage/**").permitAll()
+                    .antMatchers("/", "/explore/**", "/productpage/**").permitAll()
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
                     .antMatchers("/userProfile").hasRole("USER")
                     .antMatchers("/sellerProfile").hasRole("SELLER")
@@ -87,7 +87,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/explore", false)
+                    .defaultSuccessUrl("/explore/1", false)
                     .failureUrl("/login?failure=true")
                     .loginPage("/login")
                 .and().rememberMe()

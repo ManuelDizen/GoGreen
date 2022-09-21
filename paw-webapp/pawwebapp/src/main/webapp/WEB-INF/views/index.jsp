@@ -23,7 +23,7 @@
             <hr class = "landing-separator">
             <div style="display:flex; justify-content:center; margin-top:1vh; width: 100%;">
                 <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore/1"/>">
                         <spring:message code="landing.discover"/>
                     </a>
                 </c:if>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="animate glow delay-2"
                      style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore/1"/>">
                         <spring:message code="landing.explore"/>
                     </a>
                 </div>

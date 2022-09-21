@@ -31,7 +31,7 @@
                 </a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down" style="padding-right:2vw; display:flex;">
                     <li style="padding-right:2vw; display:flex; flex-direction: column;">
-                        <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
+                        <a href="<c:url value="/explore/1"/>"><spring:message code="navbar.explore"/></a>
                     </li>
                     <sec:authorize access="hasRole('SELLER')">
                         <li style="padding-right:2vw; display:flex; flex-direction: column;">
@@ -68,7 +68,7 @@
                 </li>
             </c:if>
             <li>
-                <a href="<c:url value="/explore"/>"><spring:message code="navbar.explore"/></a>
+                <a href="<c:url value="/explore/1"/>"><spring:message code="navbar.explore"/></a>
             </li>
             <sec:authorize access="hasRole('SELLER')">
                 <li>
