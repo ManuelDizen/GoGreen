@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.FieldMatch;
 import ar.edu.itba.paw.webapp.validations.Password;
 
 import ar.edu.itba.paw.webapp.validations.UniqueUserMail;
@@ -10,6 +11,11 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@FieldMatch(
+        first = "password",
+        matching = "confirmationPassword",
+        message="Contraseñas deben coincidir"
+)
 public class UserForm {
 
     @Size(max = 50)
@@ -32,6 +38,9 @@ public class UserForm {
     @NotNull(message = "Por favor, indicar su contraseña")
     @NotEmpty
     private String password;
+
+    @NotNull
+    private String confirmationPassword;
 
     public String getFirstName() {
         return firstName;
@@ -65,4 +74,11 @@ public class UserForm {
         this.password = password;
     }
 
+    public String getConfirmationPassword() {
+        return confirmationPassword;
+    }
+
+    public void setConfirmationPassword(String confirmationPassword) {
+        this.confirmationPassword = confirmationPassword;
+    }
 }

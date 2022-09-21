@@ -1,13 +1,19 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.FieldMatch;
 import ar.edu.itba.paw.webapp.validations.Password;
 import ar.edu.itba.paw.webapp.validations.UniqueUserMail;
+import ar.edu.itba.paw.webapp.validations.ValidPhone;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@FieldMatch(
+        first = "password",
+        matching = "confirmationPassword"
+)
 public class SellerForm {
     @Size(max = 50)
     @NotNull
@@ -31,13 +37,16 @@ public class SellerForm {
     private String password;
 
     @NotNull
+    private String confirmationPassword;
+
+    @NotNull
     @NotEmpty(message="Por favor, indicar su dirección")
     @Size(max = 100, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
     private String address;
 
     @NotNull
     @NotEmpty(message="Por favor, indicar su teléfono")
-    @Size(min = 8, max = 11, message="Indique su teléfono sin espacios ni código de area. Ejemplo: 1100001111, o 11112222")
+    @ValidPhone
     private String phone;
 
     public String getSurname() {
@@ -62,6 +71,14 @@ public class SellerForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmationPassword() {
+        return confirmationPassword;
+    }
+
+    public void setConfirmationPassword(String confirmationPassword) {
+        this.confirmationPassword = confirmationPassword;
     }
 
     public String getAddress() {

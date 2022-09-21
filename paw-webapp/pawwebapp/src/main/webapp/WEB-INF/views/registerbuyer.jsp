@@ -65,6 +65,16 @@
             <div class="errors">
                 <form:errors path="password" element="p" cssClass="error"/>
             </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <form:input path="confirmationPassword" id="confirmationPassword" type="password"/>
+                    <label for="password"><spring:message code="registerbuyer.form.confirmpassword"/>
+                        <spring:message code="forms.obligatorysign"/></label>
+                </div>
+            </div>
+            <div class="errors">
+                <form:errors path="confirmationPassword" element="p" cssClass="error"/>
+            </div>
             <div style="display:flex;">
                 <button type="submit" class="waves-effect waves-light btn">
                     <spring:message code="registerbuyer.form.submit"/>

@@ -68,11 +68,13 @@
                         </div>
                     </c:forEach>
                 </div>
-                <div class="animate glow delay-2"
-                     style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
-                        <spring:message code="landing.explore"/>
-                    </a>
+                <div class="row">
+                    <div class="animate glow delay-2"
+                         style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
+                        <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                            <spring:message code="landing.explore"/>
+                        </a>
+                    </div>
                 </div>
             </c:if>
         </div>
