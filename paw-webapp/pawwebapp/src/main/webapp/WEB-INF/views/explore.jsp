@@ -53,7 +53,7 @@
                     </c:forEach>
                 </div>
                 <div style="display:flex;justify-content: space-around;margin-top:5vh;">
-                    <button type="submit" class="waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
+                    <button type="submit" class="decision-button waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
                 </div>
             </form>
 
@@ -64,7 +64,7 @@
                 <sec:authorize access="hasRole('SELLER')">
                     <div><spring:message code="explore.noproducts.sellermsg"/></div>
                     <div>
-                        <a class="waves-effect waves-light btn standard-button"
+                        <a class="decision-button waves-effect waves-light btn standard-button"
                            href="<c:url value="/createProduct"/>">
                             <spring:message code="explore.createproduct"/>
                         </a>
@@ -125,7 +125,7 @@
                     </div>
                     <div style="margin-bottom: 15px">
                         <div>
-                            <button class="waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="explore.cleanfilters"/></button>
+                            <button class="decision-button waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="explore.cleanfilters"/></button>
                         </div>
                     </div>
                 </div>

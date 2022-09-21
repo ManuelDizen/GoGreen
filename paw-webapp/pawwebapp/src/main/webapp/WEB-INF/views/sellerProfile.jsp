@@ -38,7 +38,7 @@
                         </c:if>
                     </div>
                     <div style="width:100%;" class="text-center">
-                        <a class="waves-effect waves-light btn standard-button">
+                        <a class="decision-button waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changepic"/>
                         </a>
                     </div>
@@ -53,7 +53,7 @@
                         </ul>
                     </div>
                     <div>
-                        <a class="waves-effect waves-light btn standard-button">
+                        <a class="decision-button waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changeinfo"/>
                         </a>
                     </div>
@@ -67,7 +67,7 @@
                     <c:if test="${products.size() == 0}">
                         <div><spring:message code="sellerprofile.noproducts"/></div>
                         <div style="margin-top:5vh;">
-                            <a style="margin-top:5vh;" class="waves-effect waves-light btn standard-button"
+                            <a style="margin-top:5vh;" class="decision-button waves-effect waves-light btn standard-button"
                                href="<c:url value="/createProduct"/>">
                                 <spring:message code="explore.createproduct"/>
                             </a>
