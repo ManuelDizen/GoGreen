@@ -38,13 +38,13 @@
                     <li id="back" class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
                 </c:if>
                 <c:if test="${currentPage > 1}">
-                    <li id="back"><a href=""><i class="material-icons">navigate_before</i></a></li>
+                    <li id="back" class="enabled"><a href=""><i class="material-icons">navigate_before</i></a></li>
                     <li id="${previousPage}" class="disabled"><a href="">${previousPage}</a></li>
                 </c:if>
                 <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
                 <c:if test="${currentPage < pages.size()}">
                     <li id="${nextPage}" class="disabled"><a href="">${nextPage}</a></li>
-                    <li id="forward"><a href=""><i class="material-icons">navigate_next</i></a></li>
+                    <li id="forward" class="enabled"><a href=""><i class="material-icons">navigate_next</i></a></li>
                 </c:if>
                 <c:if test="${currentPage >= pages.size()}">
                     <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
@@ -59,7 +59,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         let argsString = window.location.search;
         const args = new URLSearchParams(argsString);
-        var current = parseInt(args.get("page"));
+        var current = args.get("page");
+        if (current == null) current = "1";
+        current = parseInt(current);
         var previous = current-1;
         var next = current+1;
         var backPaginator = document.getElementById("back");
@@ -72,14 +74,6 @@
             args.set("page", next.toString());
             nextPaginator.children.item(0).attributes.getNamedItem("href").value = "?" + args;
         }
-        // for (let aux = 1; aux <= cantPages; aux++) {
-        //     paginator = document.getElementById(aux.toString());
-        //     paginator.onclick = function (aux) {
-        //         args.set("page", aux);
-        //         args.set("ecotagRecycle", "true");
-        //         paginator.children.item(0).attributes.getNamedItem("href").value = "?" + args;
-        //     }
-        // }
     });
 </script>
 </html>
