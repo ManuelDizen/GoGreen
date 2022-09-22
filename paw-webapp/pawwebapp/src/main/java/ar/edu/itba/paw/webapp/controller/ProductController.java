@@ -115,7 +115,6 @@ public class ProductController {
         logged user. If not, throwing a random /deleteProduct/{prodId} would
         be enough to destroy the application
          */
-
         Boolean bool = ps.attemptDelete(prodId);
 
         ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
@@ -153,52 +152,23 @@ public class ProductController {
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
 
-        //TODO: Change ALL this logic to service.
-
         if(errors.hasErrors()){
             return productPage(prodId, form, false, true);
         }
+
         final Optional<Product> product = ps.getById(prodId);
-
         if(!product.isPresent()) throw new ProductNotFoundException();
-
         final Product p = product.get();
 
         final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
-
         final User u = user.get();
 
         final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
-
         final Seller s = seller.get();
 
-        /* TODO: Move es.purchase(), es.itemsold(), and os.create() to service logic
-        *   Idea: Move everything to new method es.createAndNotify() where order is persisted
-        *   and emails are sent (yet less logic in controller)*/
-        //  es.sendOrderConfirmationMails(/*TODO: fill arguments*/);
-
-        es.purchase(u.getEmail(), u.getFirstName(),
-                p, form.getAmount(),
-                p.getPrice(), sellerService.getName(s.getUserId()),
-                s.getPhone(), sellerService.getEmail(s.getUserId()), u.getLocale());
-
-        es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()),
-                p,
-                form.getAmount(), p.getPrice(),
-                u.getFirstName(), u.getEmail(),
-                form.getMessage(), sellerService.getLocale(s.getUserId()));
-
-        LocalDateTime dateTime = LocalDateTime.now();
-
-        Order order = os.create(p.getName(), u.getFirstName(),
-                u.getSurname(), u.getEmail(), sellerService.getName(s.getUserId()),
-                sellerService.getSurname(s.getUserId()),
-        sellerService.getEmail(s.getUserId()), form.getAmount(), p.getPrice(), dateTime,
-                form.getMessage());
-
-        if(order == null) throw new IllegalStateException("No se instanció la orden");
+        os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
         mav.addObject("formSuccess", true);
