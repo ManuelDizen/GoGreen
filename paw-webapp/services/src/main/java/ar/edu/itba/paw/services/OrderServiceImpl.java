@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
+import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.OrderService;
+import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
@@ -20,13 +22,16 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     final static int PAGE_SIZE = 2;
-    private OrderDao orderDao;
-    private EmailService emailService;
-    private SellerService sellerService;
+    private final OrderDao orderDao;
+    private final ProductService productService;
+    private final EmailService emailService;
+    private final SellerService sellerService;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, EmailService emailService, SellerService sellerService) {
+    public OrderServiceImpl(OrderDao orderDao, ProductService productService,
+                            EmailService emailService, SellerService sellerService) {
         this.orderDao = orderDao;
+        this.productService = productService;
         this.emailService = emailService;
         this.sellerService = sellerService;
     }
@@ -74,6 +79,8 @@ public class OrderServiceImpl implements OrderService {
                 sellerService.getSurname(seller.getUserId()),
                 sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
                 message);
+
+        productService.updateStock(product.getProductId(), amount);
 
         if(order == null) throw new IllegalStateException("No se instanció la orden");
     }

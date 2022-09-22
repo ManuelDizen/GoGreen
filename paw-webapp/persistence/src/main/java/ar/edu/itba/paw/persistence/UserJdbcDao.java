@@ -55,7 +55,7 @@ public class UserJdbcDao implements UserDao {
 
     @Override
     public void updateImage(long userId, long imageId) {
-        template.query("UPDATE users SET imageId = ? WHERE id = ?",
+        template.update("UPDATE users SET imageId = ? WHERE id = ?",
                 new Object[]{imageId, userId}, USER_ROW_MAPPER);
     }
 

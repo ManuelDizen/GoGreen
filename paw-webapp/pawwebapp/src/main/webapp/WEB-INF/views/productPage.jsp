@@ -29,11 +29,6 @@
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
-            <c:if test="${product.imageId != 0}">
-                <div class = "productpage-image-container">
-                    <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
-                </div>
-            </c:if>
             <div><c:out value="${product.description}"/></div>
             <c:forEach items="${ecotags}" var="ecotag">
                 <div style="margin-top: 1vh; margin-bottom: 1vh;">
@@ -44,7 +39,8 @@
                 </div>
             </c:forEach>
             <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
-            <div style="height:2vh; width:100%;"></div>
+            <div style="font-size: 20px; height:2vh; width:100%;"><spring:message code="productpage.prodinfo.stock"/>
+            <c:out value="${' '}${product.stock}"/></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
                 <div style="height:fit-content;">
@@ -56,6 +52,11 @@
                     <span><c:out value="${seller.phone}"/></span>
                 </div>
             </div>
+            <c:if test="${product.imageId != 0}">
+                <div class = "productpage-image-container">
+                    <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                </div>
+            </c:if>
         </div>
         <div class="product-info-container">
             <sec:authorize access="hasRole('USER')">
@@ -68,11 +69,17 @@
                             <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                         </div>
                     </div>
+                    <div class="errors">
+                        <form:errors path="message" element="p" cssClass="error"/>
+                    </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <form:input id="amount" type="number" path="amount" />
                             <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                         </div>
+                    </div>
+                    <div class="errors">
+                        <form:errors path="amount" element="p" cssClass="error"/>
                     </div>
                     <div class="row" style="text-align:center;">
                         <button type="submit" class="waves-effect waves-light btn">

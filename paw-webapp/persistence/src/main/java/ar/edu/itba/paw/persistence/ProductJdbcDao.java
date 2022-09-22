@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -98,6 +97,13 @@ public class ProductJdbcDao implements ProductDao {
     @Override
     public void deleteProduct(long productId) {
         template.update("DELETE FROM products WHERE id = ?", new Object[]{productId});
+    }
+
+    @Override
+    public void updateStock(long productId, int amount) {
+        String query = "UPDATE products SET stock = ? WHERE id = ?";
+        Object[] args = new Object[]{amount, productId};
+        template.update(query, args);
     }
 
     @Override

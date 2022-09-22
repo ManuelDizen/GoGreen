@@ -7,6 +7,7 @@ import ar.edu.itba.paw.webapp.validations.FileType;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,13 +26,15 @@ public class ProductForm {
     @NotNull
     private Integer price;
 
+    @Min(value=1, message="Por favor, introduzca un stock válido")
+    @Max(value=10000, message="El máximo para publicar son 10000 unidades.")
     private Integer stock;
 
-    @FileType(types = {"image/png", "image/jpeg"})
-    @FileSize(bytes = (10*1024*1024))
+    @FileType(types = {"image/png", "image/jpeg"}, message="Por favor, use archivos de extensión .png o .jpeg.")
+    @FileSize(bytes = (10*1024*1024), message="El archivo pasa los 10MB.")
     private MultipartFile image;
 
-    @NotNull
+    @NotNull(message="Por favor, escoja al menos una categoría")
     private long[] ecotag;
 
     // Falta category!!! Que habría que pasar a un enum dado que es estático.

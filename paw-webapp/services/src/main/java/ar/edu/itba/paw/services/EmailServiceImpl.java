@@ -41,6 +41,7 @@ public class EmailServiceImpl implements EmailService {
         ctx.setVariables(data);
         String htmlBody = templateEngine.process(template, ctx);
         String sbj = messageSource.getMessage(subject, null, locale);
+        System.out.println(sbj);
         try {
             sendMail(to, htmlBody, sbj);
         } catch(MessagingException mex) {
@@ -72,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("sellerPhone", sellerPhone);
         data.put("sellerMail", sellerMail);
         sendThymeleafMail(buyerEmail, "productPurchase", data,
-                "subject.userMailTitle", locale);
+                "subject.sellerMailTitle", locale);
     }
 
     @Async

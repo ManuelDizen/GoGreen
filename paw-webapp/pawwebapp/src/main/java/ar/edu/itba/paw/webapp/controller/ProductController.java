@@ -13,6 +13,7 @@ import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -160,13 +161,23 @@ public class ProductController {
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
 
-        if(errors.hasErrors()){
+        /* TODO: Check how to workaroung in OrderForm the amount @NotNull annotation
+            I tried setting it and app crashed
+         */
+        if(errors.hasErrors() || form.getAmount() == null){
             return productPage(prodId, form, false, true);
         }
-
         final Optional<Product> product = ps.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product p = product.get();
+
+        Boolean enough = ps.checkForAvailableStock(p, form.getAmount());
+        if(!enough){
+            errors.addError(new ObjectError("amount",
+                    "El stock disponible es insuficiente para su pedido. Por favor, reviselo" +
+                            "e intente nuevamente"));
+            return productPage(prodId, form, false, true);
+        }
 
         final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
