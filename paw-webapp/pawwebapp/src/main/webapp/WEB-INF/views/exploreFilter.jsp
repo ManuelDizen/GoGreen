@@ -44,9 +44,20 @@
             <br>
         </c:forEach>
     </div>
-    <div style="display:flex;justify-content: space-around;margin-top:5vh;">
+    <div id="submitForm" style="display:flex;justify-content: space-around;margin-top:5vh;">
         <button type="submit" class="waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
     </div>
 </form>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let argsString = window.location.search;
+        const args = new URLSearchParams(argsString);
+        var submitForm = document.getElementById("submitForm");
+        submitForm.onclick = function () {
+            args.set("page", "1");
+            submitForm.children.item(0).attributes.getNamedItem("href").value = "?" + args;
+        }
+    });
+</script>
 </html>

@@ -38,13 +38,13 @@
                     <li id="back" class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
                 </c:if>
                 <c:if test="${currentPage > 1}">
-                    <li id="back" class="enabled"><a href=""><i class="material-icons">navigate_before</i></a></li>
-                    <li id="${previousPage}" class="disabled"><a href="">${previousPage}</a></li>
+                    <li id="back"><a href=""><i class="material-icons">navigate_before</i></a></li>
+                    <%--<li id="back"><a href="">${previousPage}</a></li>--%>
                 </c:if>
                 <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
                 <c:if test="${currentPage < pages.size()}">
-                    <li id="${nextPage}" class="disabled"><a href="">${nextPage}</a></li>
-                    <li id="forward" class="enabled"><a href=""><i class="material-icons">navigate_next</i></a></li>
+                    <%--<li id="forward"><a href="">${nextPage}</a></li>--%>
+                    <li id="forward"><a href=""><i class="material-icons">navigate_next</i></a></li>
                 </c:if>
                 <c:if test="${currentPage >= pages.size()}">
                     <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
@@ -66,13 +66,13 @@
         var next = current+1;
         var backPaginator = document.getElementById("back");
         var nextPaginator = document.getElementById("forward");
-        backPaginator.onclick = function () {
-            args.set("page", previous.toString());
-            backPaginator.children.item(0).attributes.getNamedItem("href").value = "?" + args;
-        }
         nextPaginator.onclick = function () {
             args.set("page", next.toString());
             nextPaginator.children.item(0).attributes.getNamedItem("href").value = "?" + args;
+        }
+        backPaginator.onclick = function () {
+            args.set("page", previous.toString());
+            backPaginator.children.item(0).attributes.getNamedItem("href").value = "?" + args;
         }
     });
 </script>
