@@ -124,6 +124,29 @@
                     </c:if>
                 </div>
             </div>
+            <div class="pagin">
+                <c:set var="nextPage" value="${currentPageP+1}"/>
+                <c:set var="previousPage" value="${currentPageP-1}"/>
+                <div>
+                    <ul class="pagination">
+                        <c:if test="${currentPageP <= 1}">
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPageP > 1}">
+                            <li id="back"><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons">navigate_before</i></a></li>
+                            <%--<li id="back"><a href="">${previousPage}</a></li>--%>
+                        </c:if>
+                        <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                        <c:if test="${currentPageP < productPages.size()}">
+                            <%--<li id="forward"><a href="">${nextPage}</a></li>--%>
+                            <li id="forward"><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons">navigate_next</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPageP >= productPages.size()}">
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
+                        </c:if>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="test3" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
@@ -159,6 +182,29 @@
                             </div>
                         </c:forEach>
                     </c:if>
+                </div>
+            </div>
+            <div class="pagin">
+                <c:set var="nextPage" value="${currentPageO+1}"/>
+                <c:set var="previousPage" value="${currentPageO-1}"/>
+                <div>
+                    <ul class="pagination">
+                        <c:if test="${currentPageO <= 1}">
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPageO > 1}">
+                            <li id="back"><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons">navigate_before</i></a></li>
+                            <%--<li id="back"><a href="">${previousPage}</a></li>--%>
+                        </c:if>
+                        <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                        <c:if test="${currentPageO < orderPages.size()}">
+                            <%--<li id="forward"><a href="">${nextPage}</a></li>--%>
+                            <li id="forward"><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons">navigate_next</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPageO >= orderPages.size()}">
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
+                        </c:if>
+                    </ul>
                 </div>
             </div>
         </div>

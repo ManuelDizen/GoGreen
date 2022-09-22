@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private final static int PAGE_SIZE = 6;
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SecurityService securityService;
@@ -72,6 +73,21 @@ public class ProductServiceImpl implements ProductService {
 
         return productDao.filter(name, category, ecotags, maxPrice);
     }
+
+    @Override
+    public List<List<Product>> divideIntoPages(List<Product> list) {
+        List<List<Product>> pageList = new ArrayList<>();
+
+        int aux = 1;
+        while(aux <= list.size()/PAGE_SIZE) {
+            pageList.add(list.subList((aux-1)*PAGE_SIZE, aux*PAGE_SIZE));
+            aux++;
+        }
+        if(list.size() % PAGE_SIZE != 0)
+            pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        return pageList;
+    }
+
 
     @Override
     public void deleteProduct(long productId) {

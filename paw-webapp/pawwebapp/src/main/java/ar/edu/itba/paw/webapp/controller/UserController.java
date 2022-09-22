@@ -76,7 +76,8 @@ public class UserController {
     }
 
     @RequestMapping(value="/sellerProfile")
-    public ModelAndView sellerProfile(){
+    public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
+                                      @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
@@ -86,15 +87,21 @@ public class UserController {
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
+        List<List<Order>> orderPages = orderService.divideIntoPages(orders);
         List<Product> products = productService.findBySeller(seller.get().getId());
+        List<List<Product>> productPages = productService.divideIntoPages(products);
 
         // TODO: Acá faltaría además buscar los productos que vende un seller,
         //  y las órdenes que tiene pendientes (para esto hay que agrandar la BDD)
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
-        mav.addObject("orders", orders);
-        mav.addObject("products", products);
+        mav.addObject("currentPageP", pageP);
+        mav.addObject("currentPageO", pageO);
+        mav.addObject("productPages", productPages);
+        mav.addObject("orderPages", orderPages);
+        mav.addObject("orders", orderPages.get(pageO-1));
+        mav.addObject("products", productPages.get(pageP-1));
         return mav;
     }
 
