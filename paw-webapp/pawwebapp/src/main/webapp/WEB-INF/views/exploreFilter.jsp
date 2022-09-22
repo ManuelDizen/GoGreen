@@ -22,6 +22,27 @@
     </div>
     <div class="row">
         <div class="input-field col s12">
+            <select name="category" style="display: none">
+                <c:if test="${chosenCategory != 0}">
+                    <option value="" disabled>Seleccione</option>
+                </c:if>
+                <c:if test="${chosenCategory == 0}">
+                    <option value="" disabled selected>Seleccione</option>
+                </c:if>
+                <c:forEach items="${categories}" var="category">
+                    <c:if test="${chosenCategory != category.id}">
+                        <option value="${category.id}">${category.name}</option>
+                    </c:if>
+                    <c:if test="${chosenCategory == category.id}">
+                        <option selected value="${category.id}">${category.name}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
+            <label>Categoría</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
             <input id="maxPrice" name="maxPrice" type="text">
             <label for="maxPrice"><spring:message code="explore.filterform.maxprice"/></label>
         </div>
@@ -45,4 +66,11 @@
     </div>
 </form>
 </body>
+<script>
+    $(document).ready(function(){
+        $('select').formSelect();
+    });
+
+</script>
 </html>
+

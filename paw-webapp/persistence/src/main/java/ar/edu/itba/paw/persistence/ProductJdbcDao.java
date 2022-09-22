@@ -107,16 +107,16 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, String category, List<Long> tags, float maxPrice) {
+    public List<Product> filter(String name, long category, List<Long> tags, float maxPrice) {
         StringBuilder query = new StringBuilder("SELECT * from products where ");
         List<Object> args = new ArrayList<>();
         if(name != null){
             query.append("LOWER(name) like ? ");
             args.add('%' + name.toLowerCase() + '%');
         }
-        if(category != null){
-            query.append("AND categoryId IN (SELECT id from category where LOWER(name) like ?) ");
-            args.add('%' + category.toLowerCase() + '%');
+        if(category != 0){
+            query.append("AND categoryId = ? ");
+            args.add(category);
         }
         if(tags.size() != 0){
             for(long tag : tags) {

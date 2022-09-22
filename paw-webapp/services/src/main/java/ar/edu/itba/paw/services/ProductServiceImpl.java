@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice) {
+    public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());

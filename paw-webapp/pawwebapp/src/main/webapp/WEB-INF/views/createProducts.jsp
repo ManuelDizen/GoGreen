@@ -41,6 +41,15 @@
                 <form:input path="price"/>
                 <form:errors path="price" element="p" cssClass="error"/>
             </div>
+            <div class="input-field">
+                <form:select path="category">
+                    <c:forEach items="${categories}" var="category">
+                        <form:option value="${category.id}"><c:out value="${category.name}"/></form:option>
+                    </c:forEach>
+                </form:select>
+                <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
+                <form:errors path="category" element="p" cssClass="error"/>
+            </div>
             <div>
                 <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
                 <form:input path="stock"/>

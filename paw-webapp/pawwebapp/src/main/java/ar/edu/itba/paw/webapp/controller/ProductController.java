@@ -2,11 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Ecotag;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
@@ -45,11 +41,13 @@ public class ProductController {
 
     private final OrderService os;
 
+    private final CategoryService cs;
+
     
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
                              final EmailService es, final ImageService is, final UserService us,
-                             final SecurityService securityService, EcotagService ecos, final OrderService os) {
+                             final SecurityService securityService, EcotagService ecos, final OrderService os, final CategoryService cs) {
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
@@ -58,13 +56,14 @@ public class ProductController {
         this.securityService = securityService;
         this.ecos = ecos;
         this.os = os;
+        this.cs = cs;
     }
 
 
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
-            @RequestParam(name="category", defaultValue="") final String category,
+            @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
             @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
             @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
@@ -80,7 +79,7 @@ public class ProductController {
         List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
 
         //TODO: mejorar forma de filtrar por ecotags
-        //TODO: filtro por categorías
+        //TODO: filtro por categorías -> hecho, pero hay un bug de materialize (revisar)
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
         List<Product> allProducts = ps.getAll();
@@ -89,25 +88,34 @@ public class ProductController {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
         }
 
+        List<Category> categories = cs.getAllCategories();
+
         List<List<Product>> productPages = ps.divideIntoPages(productList);
 
         List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
 
+
         mav.addObject("currentPage", page);
         mav.addObject("boolTags", boolTags);
         mav.addObject("name", name);
-        mav.addObject("category", category);
+        mav.addObject("categories", categories);
+        mav.addObject("chosenCategory", category);
         if(maxPrice > -1.0)
             mav.addObject("maxPrice", maxPrice);
         else
             mav.addObject("maxPrice", null);
 
         mav.addObject("ecotagList", ecotagList);
-        mav.addObject("products", productPages.get(page-1));
+        if(productPages.size() != 0)
+            mav.addObject("products", productPages.get(page-1));
+        else
+            mav.addObject("products", new ArrayList<>());
 
         mav.addObject("isEmpty", allProducts.isEmpty());
 
         mav.addObject("pages", productPages);
+
+        mav.addObject("selected", true);
 
         return mav;
     }
@@ -241,6 +249,7 @@ public class ProductController {
         List<Ecotag> tagList = Arrays.asList(Ecotag.values());
         final ModelAndView mav = new ModelAndView("createProducts");
         mav.addObject("tagList", tagList);
+        mav.addObject("categories", cs.getAllCategories());
         return mav;
     }
 
@@ -258,7 +267,7 @@ public class ProductController {
             throw new RuntimeException(e);
         }
 
-        // TODO: Category is hardcoded. Discuss.
+
 
         Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if (!user.isPresent()) throw new IllegalStateException("No se encntró user");
@@ -267,7 +276,7 @@ public class ProductController {
         if (!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         Product product = ps.create(seller.get().getId(),
-                1, form.getName(), form.getDescription(),
+                form.getCategory(), form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
 
         for (long id : form.getEcotag()) {

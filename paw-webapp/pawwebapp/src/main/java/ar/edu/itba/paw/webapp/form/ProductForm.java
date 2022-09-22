@@ -38,7 +38,7 @@ public class ProductForm {
     @NotNull(message="Por favor, escoja al menos una categoría")
     private long[] ecotag;
 
-    // Falta category!!! Que habría que pasar a un enum dado que es estático.
+    private long category;
 
 
     public MultipartFile getImage() {
@@ -88,4 +88,13 @@ public class ProductForm {
     public void setEcotag(long[] ecotag) {
         this.ecotag = ecotag;
     }
+
+    public long getCategory() {
+        return category;
+    }
+
+    public void setCategory(long category) {
+        this.category = category;
+    }
+
 }
