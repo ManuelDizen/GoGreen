@@ -66,11 +66,14 @@ public class ProductController {
             @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
             @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
             @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
-            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
+            @RequestParam(name="ecotagAnimals", defaultValue="false") final boolean ecotagAnimals,
+            @RequestParam(name="ecotagTransport", defaultValue="false") final boolean ecotagTransport,
+            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
+            @RequestParam(name="page", defaultValue = "1") final int page
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
-        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy};
+        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy, ecotagAnimals, ecotagTransport};
 
         List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
 
@@ -80,13 +83,15 @@ public class ProductController {
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
         List<Product> allProducts = ps.getAll();
 
-        List<List<Ecotag>> productTags = new ArrayList<>();
         for(Product product : productList) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
         }
 
+        List<List<Product>> productPages = ps.divideIntoPages(productList);
+
         List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
 
+        mav.addObject("currentPage", page);
         mav.addObject("boolTags", boolTags);
         mav.addObject("name", name);
         mav.addObject("category", category);
@@ -96,8 +101,11 @@ public class ProductController {
             mav.addObject("maxPrice", null);
 
         mav.addObject("ecotagList", ecotagList);
-        mav.addObject("products", productList);
+        mav.addObject("products", productPages.get(page-1));
+
         mav.addObject("isEmpty", allProducts.isEmpty());
+
+        mav.addObject("pages", productPages);
 
         return mav;
     }

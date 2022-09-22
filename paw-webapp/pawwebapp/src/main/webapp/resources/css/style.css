@@ -37,8 +37,10 @@ main {
 .custom-nav{
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
     border-bottom: 2px solid var(--palette-details-light);
-    vertical-align: middle;
+    /*vertical-align: middle;*/
     padding: 0px 20px;
 }
 
@@ -88,15 +90,18 @@ main {
 }
 
 nav {
-    height: 10vh;
+    max-height: 30em;
     margin: 0;
     padding: 0;
     background-color:transparent;
-    color:#ADE28A;
+    color: var(--text-color-light);
     align-content: center;
     border-bottom:transparent;
     box-shadow:none;
 }
+
+
+
 
 .main-container{
     flex-wrap: nowrap;
