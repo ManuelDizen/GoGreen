@@ -116,6 +116,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Boolean checkForAvailableStock(Product p, int amount) {
+        return p.getStock() >= amount;
+    }
+
+    @Override
+    public void updateStock(long prodId, int amount) {
+        Optional<Product> product = productDao.getById(prodId);
+        if(!product.isPresent()) return;
+        productDao.updateStock(prodId, (product.get().getStock()-amount));
+    }
+
+    @Override
     public List<Product> getRecent(int amount){
         return productDao.getRecent(amount);
     }

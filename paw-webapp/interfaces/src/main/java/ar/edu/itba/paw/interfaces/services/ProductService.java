@@ -26,4 +26,8 @@ public interface ProductService {
 
     void deleteProduct(long productId);
     Boolean attemptDelete(long productId);
+
+    Boolean checkForAvailableStock(Product p, int amount);
+
+    void updateStock(long prodId, int amount);
 }
