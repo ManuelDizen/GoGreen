@@ -995,9 +995,9 @@ input[type=number] {
 
 #sellerprofile_tabs{
     background-color: var(--palette-color-secondary);
-    border-left: 1px solid white;
-    border-right: 1px solid white;
-    border-top: 1px solid white;
+    border-left: 1px solid var(--palette-details-light);
+    border-right: 1px solid var(--palette-details-light);
+    border-top: 1px solid var(--palette-details-light);
 }
 
 #sellerprofile_tabs li a{
