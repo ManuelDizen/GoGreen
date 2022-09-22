@@ -855,6 +855,16 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     color:white;
 }
 
+.container #product_form div label,
+.container #product_form div input{
+    color:white;
+
+}
+
+.container #product_form .input-field ul li span label{
+    color:var(--palette-color-secondary)
+}
+
 /* Extracted from https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/ */
 .login-page-container {
     width:100%;
