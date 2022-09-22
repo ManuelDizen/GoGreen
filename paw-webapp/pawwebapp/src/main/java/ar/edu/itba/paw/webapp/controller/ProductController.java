@@ -108,6 +108,20 @@ public class ProductController {
         momento no se me ocurre algo mejor.
      */
 
+    @RequestMapping(value = "/deleteProduct/{prodId}", method = RequestMethod.GET)
+    public ModelAndView deleteProduct(@PathVariable final long prodId){
+
+        /* We need to validate that the product is in fact ownership of the
+        logged user. If not, throwing a random /deleteProduct/{prodId} would
+        be enough to destroy the application
+         */
+
+        Boolean bool = ps.attemptDelete(prodId);
+
+        ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
+        return mav;
+    }
+
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
@@ -202,31 +216,30 @@ public class ProductController {
     @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
     public ModelAndView createProductPost(
             @Valid @ModelAttribute("productForm") final ProductForm form,
-            final BindingResult errors){
-        if(errors.hasErrors())
+            final BindingResult errors) {
+        if (errors.hasErrors())
             return createProduct(form);
         //llamada al backend
         byte[] image;
         try {
             image = form.getImage().getBytes();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // TODO: Category is hardcoded. Discuss.
 
         Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
+        if (!user.isPresent()) throw new IllegalStateException("No se encntró user");
 
         Optional<Seller> seller = sellerService.findByUserId(user.get().getId());
-        if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
+        if (!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         Product product = ps.create(seller.get().getId(),
                 1, form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
 
-        for(long id : form.getEcotag()) {
+        for (long id : form.getEcotag()) {
             ecos.addTag(Ecotag.getById(id), product.getProductId());
         }
 

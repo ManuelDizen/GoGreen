@@ -21,4 +21,6 @@ public interface ProductDao {
 
     List<Product> getRecent(int amount);
 
+    void deleteProduct(long productId);
+
 }

@@ -13,6 +13,9 @@
     <%@ include file="header.jsp"%>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
@@ -91,14 +94,28 @@
                                             <c:out value="${product.price}"/>
                                             </span>
                                         </a>
-                                        <span style="margin-right:1vw;">
-                                <a href="">
-                                    <i class="material-icons">edit</i>
-                                </a>
-                                <a href="">
-                                    <i class="material-icons">delete_forever</i>
-                                </a>
+                                <span style="margin-right:1vw;">
+                                    <a href="">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <a class="modal-trigger" href="#modal${product.productId}">
+                                        <i class="material-icons">delete_forever</i>
+                                    </a>
                                 </span>
+                                    </div>
+                                </div>
+                                <div id="modal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                    <div class="modal-content">
+                                        <h3 style="text-decoration: underline"><spring:message code="sellerprofile.delete.confirm"/></h3>
+                                        <h4><c:out value="${product.name}"/></h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">
+                                            <spring:message code="sellerprofile.delete.cancel"/>
+                                        </a>
+                                        <a class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>
+                                            <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                                        </a>
                                     </div>
                                 </div>
                                 <c:set var="count" value="${count + 1}"/>
@@ -157,6 +174,12 @@
     });
 
     var instance = M.Tabs.init(el, options);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, options);
+    });
+
 
 </script>
 </html>

@@ -96,6 +96,11 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
+    public void deleteProduct(long productId) {
+        template.update("DELETE FROM products WHERE id = ?", new Object[]{productId});
+    }
+
+    @Override
     public List<Product> filter(String name, String category, List<Long> tags, float maxPrice) {
         StringBuilder query = new StringBuilder("SELECT * from products where ");
         List<Object> args = new ArrayList<>();
@@ -124,7 +129,7 @@ public class ProductJdbcDao implements ProductDao {
     public List<Product> getRecent(int amount) {
         List<Product> products = template.query("SELECT * FROM products ORDER BY id DESC",
                 PRODUCT_ROW_MAPPER);
-        if(products.size() < amount) return products;
+        if (products.size() < amount) return products;
         return products.subList(0, amount);
     }
 }
