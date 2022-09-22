@@ -26,12 +26,13 @@ public class ProductForm {
     @NotNull
     private Integer price;
 
+    @NotNull
     @Min(value=1, message="Por favor, introduzca un stock válido")
     @Max(value=10000, message="El máximo para publicar son 10000 unidades.")
     private Integer stock;
 
     @FileType(types = {"image/png", "image/jpeg"}, message="Por favor, use archivos de extensión .png o .jpeg.")
-    @FileSize(bytes = (10*1024*1024), message="El archivo pasa los 10MB.")
+    @FileSize(bytes = (10*1024*1024))
     private MultipartFile image;
 
     @NotNull(message="Por favor, escoja al menos una categoría")

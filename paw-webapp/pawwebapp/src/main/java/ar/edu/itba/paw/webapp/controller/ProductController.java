@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -111,12 +112,6 @@ public class ProductController {
         return mav;
     }
 
-    /* TODO: Discutir sobre esta solución (doble boolean). Explicación para acordarme
-        cuando lo charlemos: 3 estados posibles, consulta de página, form falló, form exitoso.
-        No me alcanza con un solo boolean, pero siento que es ineficiente dos variables, aunque de
-        momento no se me ocurre algo mejor.
-     */
-
     @RequestMapping(value = "/deleteProduct/{prodId}", method = RequestMethod.GET)
     public ModelAndView deleteProduct(@PathVariable final long prodId){
 
@@ -129,6 +124,53 @@ public class ProductController {
         ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
         return mav;
     }
+
+    /*@RequestMapping(value="/editProduct/{prodId:[0-9]+")
+    public ModelAndView editProduct(@PathVariable final long prodId){
+        List<Product> recent = ps.getRecent(3);
+        final ModelAndView mav = new ModelAndView("index");
+        mav.addObject("recent", recent);
+        return mav;
+    }
+
+    @RequestMapping("/editProduct/{prodId:[0-9]+}")
+    public ModelAndView editProduct(@PathVariable final long prodId,
+                                    @Valid @ModelAttribute("productForm") final ProductForm form,
+                                    final BindingResult errors){
+        Boolean isOwner = ps.checkForOwnership(prodId);
+        if(!isOwner) return new ModelAndView("redirect:/");
+        /*
+        On the method "checkForOwnership": As with deleting, it is important to check that
+        it is in fact the logged user who is attempting to impact the DB and not a random user
+        who noticed how to play with the links. That is why the method is needed.
+
+        On a side note, one should never be able to edit a product that is not of their
+        ownership by browsing unless they type in the URL, which would lead to them being redirected
+        to homepage.
+
+        Optional<Product> product = ps.getById(prodId);
+        if(!product.isPresent()) throw new IllegalStateException();
+        ModelAndView mav = new ModelAndView("editProduct");
+        List<Ecotag> tagList = Arrays.asList(Ecotag.values());
+        mav.addObject("tagList", tagList);
+        mav.addObject("product", product.get());
+        System.out.println("No error in rendering");
+        return mav;
+    }*/
+
+    /*@RequestMapping(value="/editProduct/{prodId:[0-9]+}", method = RequestMethod.POST)
+    public ModelAndView editProduct(@PathVariable("prodId") final long prodId,
+                                    @Valid @ModelAttribute("productForm") final ProductForm form,
+                                    final BindingResult errors){
+        if(errors.hasErrors()){
+            return editProduct(prodId, form);
+        }
+        *//*Boolean worked = ps.attemptEdit(prodId, ...Insert parameters here...);
+        if(!worked) throw new IllegalStateException();*//*
+
+        ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
+        return mav;
+    }*/
 
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(

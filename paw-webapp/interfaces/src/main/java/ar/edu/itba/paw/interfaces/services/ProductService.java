@@ -28,6 +28,6 @@ public interface ProductService {
     Boolean attemptDelete(long productId);
 
     Boolean checkForAvailableStock(Product p, int amount);
-
+    Boolean checkForOwnership(long prodId);
     void updateStock(long prodId, int amount);
 }

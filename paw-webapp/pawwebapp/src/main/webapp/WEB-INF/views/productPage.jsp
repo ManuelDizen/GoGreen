@@ -74,7 +74,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <form:input id="amount" type="number" path="amount" />
+                            <form:input id="amount" path="amount"/>
                             <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                         </div>
                     </div>

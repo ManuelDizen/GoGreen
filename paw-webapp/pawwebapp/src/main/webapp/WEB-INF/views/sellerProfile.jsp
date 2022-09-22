@@ -95,7 +95,7 @@
                                             </span>
                                         </a>
                                 <span style="margin-right:1vw;">
-                                    <a href="">
+                                    <a href="<c:url value="/editProduct/${product.productId}"/>">
                                         <i class="material-icons">edit</i>
                                     </a>
                                     <a class="modal-trigger" href="#modal${product.productId}">
@@ -110,7 +110,7 @@
                                         <h4><c:out value="${product.name}"/></h4>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">
+                                        <a class="modal-close waves-effect waves-green btn-flat">
                                             <spring:message code="sellerprofile.delete.cancel"/>
                                         </a>
                                         <a class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>

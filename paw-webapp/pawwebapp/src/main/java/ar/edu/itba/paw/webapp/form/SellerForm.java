@@ -41,7 +41,7 @@ public class SellerForm {
 
     @NotNull
     @NotEmpty(message="Por favor, indicar su dirección")
-    @Size(max = 100, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
+    @Size(max = 50, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
     private String address;
 
     @NotNull

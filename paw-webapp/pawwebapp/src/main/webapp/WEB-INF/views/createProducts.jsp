@@ -25,26 +25,26 @@
                 <h4><spring:message code="createproduct.title"/></h4>
             </div>
             <div>
-                <form:errors path="name" element="p" cssClass="error"/>
                 <form:label path="name"><spring:message code="createproduct.form.name"/>
                     <spring:message code="forms.obligatorysign"/></form:label>
                 <form:input path="name" type="text"/>
+                <form:errors path="name" element="p" cssClass="error"/>
             </div>
             <div>
-                <form:errors path="description" element="p" cssClass="error"/>
                 <form:label path="description"><spring:message code="createproduct.form.description"/></form:label>
                 <form:input path="description" type="text"/>
+                <form:errors path="description" element="p" cssClass="error"/>
             </div>
             <div>
-                <form:errors path="price" element="p" cssClass="error"/>
                 <form:label path="price"><spring:message code="createproduct.form.price"/>
                     <spring:message code="forms.obligatorysign"/></form:label>
                 <form:input path="price"/>
+                <form:errors path="price" element="p" cssClass="error"/>
             </div>
             <div>
-                <form:errors path="stock" element="p" cssClass="error"/>
                 <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
                 <form:input path="stock"/>
+                <form:errors path="stock" element="p" cssClass="error"/>
             </div>
             <div class="input-field">
                 <form:select path="ecotag" multiple="true">
@@ -65,6 +65,7 @@
                         <input class="file-path validate" type="text">
                     </div>
                 </div>
+                <form:errors path="image" element="p" cssClass="error"/>
             </div>
             <div class="center" style="padding-top: 1em;">
                 <button type="submit" class="decision-button waves-effect waves-light btn">

@@ -96,21 +96,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Boolean attemptDelete(long productId) {
-        User user = securityService.getLoggedUser();
-        if(user == null) throw new IllegalStateException();
-        /* TODO: Exceptions!!! */
-        Optional<Product> prodToDelete = getById(productId);
-        if(prodToDelete.isPresent()){
-            Product prod = prodToDelete.get();
-            Optional<Seller> prodOwner = sellerService.findById(prod.getSellerId());
-            if(!prodOwner.isPresent()) throw new IllegalStateException();
-            Optional<User> userProdOwner = userService.findById(prodOwner.get().getUserId());
-            if(!userProdOwner.isPresent()) throw new IllegalStateException();
-
-            if(userProdOwner.get().getEmail().equals(user.getEmail())){
-                deleteProduct(productId);
-                return true;
-            }
+        if(checkForOwnership(productId)){
+            deleteProduct(productId);
+            return true;
         }
         return false;
     }
@@ -118,6 +106,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean checkForAvailableStock(Product p, int amount) {
         return p.getStock() >= amount;
+    }
+
+    @Override
+    public Boolean checkForOwnership(long prodId) {
+        User user = securityService.getLoggedUser();
+        if(user == null) throw new IllegalStateException();
+        /* TODO: Exceptions!!! */
+        Optional<Product> prodToDelete = getById(prodId);
+        if(prodToDelete.isPresent()){
+            Product prod = prodToDelete.get();
+            Optional<Seller> prodOwner = sellerService.findById(prod.getSellerId());
+            if(!prodOwner.isPresent()) throw new IllegalStateException();
+            Optional<User> userProdOwner = userService.findById(prodOwner.get().getUserId());
+            if(!userProdOwner.isPresent()) throw new IllegalStateException();
+
+            return userProdOwner.get().getEmail().equals(user.getEmail());
+        }
+        return false;
+
+
     }
 
     @Override
