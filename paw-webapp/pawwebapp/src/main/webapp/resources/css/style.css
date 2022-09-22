@@ -1069,3 +1069,17 @@ input[type=number] {
 .seller-profile-product-card-info a{
     color:white;
 }
+
+.yellow-card {
+    background: #EDFA8B;
+}
+
+.enabled {
+    color: #EDFA8B;
+}
+
+.pagin {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -49,22 +50,28 @@ public class UserController {
         return new ModelAndView("redirect:/userProfile");
     }
 
+
     @RequestMapping(value="/userProfile")
-    public ModelAndView buyerProfile(){
+    public ModelAndView buyerProfile( @RequestParam(name="page", defaultValue = "1") final int page){
         final ModelAndView mav = new ModelAndView("userProfile");
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
         mav.addObject("user", user.get());
 
+        System.out.println(page);
         //TODO: Typo
         List<Order> orders = orderService.getBuBuyerEmail(user.get().getEmail());
         for(Order o : orders) {
             System.out.println(o.getBuyerName());
             System.out.println(o.getBuyerSurname());
-
         }
 
-        mav.addObject("orders", orders);
+        List<List<Order>> orderPages = orderService.divideIntoPages(orders);
+
+        mav.addObject("currentPage", page);
+        mav.addObject("pages", orderPages);
+
+        mav.addObject("orders", orderPages.get(page-1));
         return mav;
     }
 

@@ -12,23 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    final static int PAGE_SIZE = 2;
     private OrderDao orderDao;
     private EmailService emailService;
     private SellerService sellerService;
-    private OrderService orderService;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, EmailService emailService, SellerService sellerService, OrderService orderService) {
+    public OrderServiceImpl(OrderDao orderDao, EmailService emailService, SellerService sellerService) {
         this.orderDao = orderDao;
         this.emailService = emailService;
         this.sellerService = sellerService;
-        this.orderService = orderService;
     }
 
     @Override
@@ -69,12 +69,27 @@ public class OrderServiceImpl implements OrderService {
 
         LocalDateTime dateTime = LocalDateTime.now();
 
-        Order order = orderService.create(product.getName(), user.getFirstName(),
+        Order order = orderDao.create(product.getName(), user.getFirstName(),
                 user.getSurname(), user.getEmail(), sellerService.getName(seller.getUserId()),
                 sellerService.getSurname(seller.getUserId()),
                 sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
                 message);
 
         if(order == null) throw new IllegalStateException("No se instanció la orden");
+    }
+
+    @Override
+    public List<List<Order>> divideIntoPages(List<Order> list) {
+        List<List<Order>> pageList = new ArrayList<>();
+
+        int aux = 1;
+        while(aux <= list.size()/PAGE_SIZE) {
+            pageList.add(list.subList((aux-1)*PAGE_SIZE, aux*PAGE_SIZE));
+            aux++;
+        }
+        if(list.size() % PAGE_SIZE != 0)
+            pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        return pageList;
+
     }
 }

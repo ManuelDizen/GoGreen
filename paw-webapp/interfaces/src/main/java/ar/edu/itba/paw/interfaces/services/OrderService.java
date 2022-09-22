@@ -20,4 +20,6 @@ public interface OrderService {
     List<Order> getBuBuyerEmail(String buyerEmail);
     void createAndNotify(Product product, User user, Seller seller, int amount,
                          String message);
+
+    List<List<Order>> divideIntoPages(List<Order> list);
 }
