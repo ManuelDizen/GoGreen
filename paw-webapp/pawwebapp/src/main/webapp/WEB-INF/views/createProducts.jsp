@@ -41,6 +41,15 @@
                     <spring:message code="forms.obligatorysign"/></form:label>
                 <form:input path="price"/>
             </div>
+            <div class="input-field">
+                <form:select path="category">
+                    <c:forEach items="${categories}" var="category">
+                        <form:option value="${category.id}"><c:out value="${category.name}"/></form:option>
+                    </c:forEach>
+                </form:select>
+                <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
+                <form:errors path="category" element="p" cssClass="error"/>
+            </div>
             <div>
                 <form:errors path="stock" element="p" cssClass="error"/>
                 <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>

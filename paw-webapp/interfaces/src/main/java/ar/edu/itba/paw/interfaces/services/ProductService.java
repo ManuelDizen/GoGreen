@@ -20,7 +20,7 @@ public interface ProductService {
 
 
     List<Product> getRecent(int amount);
-    List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice);
+    List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice);
 
     List<List<Product>> divideIntoPages(List<Product> list);
 
