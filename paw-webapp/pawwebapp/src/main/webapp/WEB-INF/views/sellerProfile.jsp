@@ -194,7 +194,7 @@
                         </c:if>
                         <c:if test="${currentPageO > 1}">
                             <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons">navigate_before</i></a></li>
-                            <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>--%>
+                            <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>
                         </c:if>
                         <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
                         <c:if test="${currentPageO < orderPages.size()}">
