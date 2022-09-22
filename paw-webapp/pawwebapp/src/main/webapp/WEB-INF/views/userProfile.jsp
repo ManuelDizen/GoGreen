@@ -103,13 +103,13 @@
                             <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
                         </c:if>
                         <c:if test="${currentPage > 1}">
-                            <li id="back"><a href="?page=${currentPage-1}#test2"><i class="material-icons">navigate_before</i></a></li>
-                            <%--<li id="back"><a href="">${previousPage}</a></li>--%>
+                            <li><a href="?page=${currentPage-1}#test2"><i class="material-icons">navigate_before</i></a></li>
+                            <li class="waves-effect"><a href="?page=${currentPage-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
                         </c:if>
                         <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
                         <c:if test="${currentPage < pages.size()}">
-                            <%--<li id="forward"><a href="">${nextPage}</a></li>--%>
-                            <li id="forward"><a href="?page=${currentPage+1}#test2"><i class="material-icons">navigate_next</i></a></li>
+                            <li class="waves-effect"><a href="?page=${currentPage+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
+                            <li><a href="?page=${currentPage+1}#test2"><i class="material-icons">navigate_next</i></a></li>
                         </c:if>
                         <c:if test="${currentPage >= pages.size()}">
                             <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
