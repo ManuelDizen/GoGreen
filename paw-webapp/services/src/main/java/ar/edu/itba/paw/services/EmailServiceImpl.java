@@ -107,8 +107,14 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void noMoreStock(Product product, Seller seller, User user) {
-
+    public void noMoreStock(Product product, String sellerEmail, String sellerName,
+                            String sellerSurname, Locale locale) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", product.getName());
+        data.put("name", sellerName);
+        data.put("surname", sellerSurname);
+        sendThymeleafMail(sellerEmail, "noMoreStock", data,
+                "subject.noMoreStock", locale);
     }
 
 

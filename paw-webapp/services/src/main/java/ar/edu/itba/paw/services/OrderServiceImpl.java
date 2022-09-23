@@ -14,21 +14,23 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    final static int PAGE_SIZE = 2;
+    final static int PAGE_SIZE = 3;
     private final OrderDao orderDao;
     private final ProductService productService;
     private final EmailService emailService;
     private final SellerService sellerService;
     private final SecurityService securityService;
+    private final UserService userService;
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ProductService productService,
-                            EmailService emailService, SellerService sellerService, SecurityService securityService) {
+                            EmailService emailService, SellerService sellerService, SecurityService securityService, UserService userService) {
         this.orderDao = orderDao;
         this.productService = productService;
         this.emailService = emailService;
         this.sellerService = sellerService;
         this.securityService = securityService;
+        this.userService = userService;
     }
 
     @Override
@@ -80,8 +82,12 @@ public class OrderServiceImpl implements OrderService {
         Optional<Product> modified = productService.getById(product.getProductId());
         if(!modified.isPresent()) throw new IllegalStateException("Product not found");
         if(modified.get().getStock() == 0){
-            /* Notify via mail the seller */
-            emailService.noMoreStock(modified.get(), seller, user);
+            /* Notify the seller via mail*/
+            Optional<User> seller2 = userService.findById(seller.getUserId());
+            if(!seller2.isPresent()) throw new IllegalStateException();
+            User u = seller2.get();
+            emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
+                    u.getSurname(), u.getLocale());
         }
         if(order == null) throw new IllegalStateException("No se instanció la orden");
     }

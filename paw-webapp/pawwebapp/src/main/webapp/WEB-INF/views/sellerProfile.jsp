@@ -79,13 +79,6 @@
                     <c:if test="${products.size() != 0}">
                         <c:set var="count" value="0"/>
                         <c:forEach items="${products}" var="product">
-                            <c:if test="${count == 3}">
-                                <a class="waves-effect waves-light btn standard-button"
-                                   href="<c:url value="/sellerProfile/products"/>">
-                                    <spring:message code="sellerprofile.moreproducts"/>
-                                </a>
-                                <c:set var="count" value="${count + 1}"/>
-                            </c:if>
                             <c:if test="${count lt 3}">
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">

@@ -32,11 +32,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
                           int stock, float price, byte[] image) {
-        Image img = imageService.create(image);
-        if(img == null){
-            throw new IllegalArgumentException("Error en creación de imagen");
+        long imgId = 0;
+        if(image != null && image.length > 0){
+            imgId = imageService.create(image).getId();
         }
-        return productDao.create(sellerId, categoryId, name, description, stock, price, img.getId());
+        return productDao.create(sellerId, categoryId, name, description, stock, price, imgId);
     }
 
     @Override

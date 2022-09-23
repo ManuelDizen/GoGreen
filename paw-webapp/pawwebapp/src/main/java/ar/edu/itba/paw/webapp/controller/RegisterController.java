@@ -124,6 +124,8 @@ public class RegisterController {
         }
         userRoleService.create(user.getId(), role.get().getId());
 
+        emailService.registration(user, user.getLocale());
+
         // Para setear al usuario recién creado como activo
         // (Una convención, podríamos preguntar si es apropiado)
         // (Fuente: https://www.baeldung.com/spring-security-auto-login-user-after-registration)
