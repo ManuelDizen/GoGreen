@@ -90,7 +90,7 @@
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
-                                            <a id="stockless" class="waves-effect waves-light btn orange darken-3" href="">
+                                            <a id="stockless" class="btn orange darken-3" style="cursor:default;">
                                                 <i class="material-icons">warning</i>
                                                 <spring:message code="sellerprofile.warning.nostock"/>
                                             </a>
