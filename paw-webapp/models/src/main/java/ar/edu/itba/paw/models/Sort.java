@@ -2,8 +2,9 @@ package ar.edu.itba.paw.models;
 
 public enum Sort {
 
-    SORT_PRICE(0, "sortbyprice"),
-    SORT_ALPHABETIC(1, "sortalphabetic");
+    SORT_PRICE(2, "sortbyprice"),
+    SORT_ALPHABETIC(1, "sortalphabetic"),
+    SORT_CHRONOLOGIC(0, "sortchronos");
 
     private final int id;
     private final String name;

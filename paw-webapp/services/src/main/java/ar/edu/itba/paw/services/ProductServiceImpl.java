@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
         productList.sort(new Comparator<Product>() {
             @Override
             public int compare(Product o1, Product o2) {
-                if(sort == 0) {
+                if(sort == 2) {
                     if(direction == 0) {
                         return (int) (o1.getPrice() - o2.getPrice());
                     } else {
@@ -94,6 +94,13 @@ public class ProductServiceImpl implements ProductService {
                         return o1.getName().compareTo(o2.getName());
                     } else {
                         return o2.getName().compareTo(o1.getName());
+                    }
+                }
+                else if(sort == 0) {
+                    if(direction == 0)
+                        return (int) (o1.getProductId() - o2.getProductId());
+                    else {
+                        return (int) (o2.getProductId() - o1.getProductId());
                     }
                 }
                 return 0;
