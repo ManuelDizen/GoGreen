@@ -15,6 +15,12 @@ public class ValidPhoneValidator implements ConstraintValidator<ValidPhone, Stri
                     "([0-9]{1,4}[ \\-]*){2,4}\\s?"
     );
 
+    final Pattern patternSuggestion = Pattern.compile(
+            "^\\s?(\\+[0-9]{1,3}[ \\-]*)?" +
+            "(([0-9]{1,3}[ \\-]*){1,2})?"+
+            "(([0-9]{3,4}[ \\-]*){2})\\s?"
+    );
+
 
     @Override
     public void initialize(ValidPhone validPhone) {}
