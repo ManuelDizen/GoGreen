@@ -16,6 +16,7 @@ public interface ProductService {
     Optional<List<Product>> getByMaxPrice(float price);
     Optional<List<Product>> getByCategory(long categoryId);
     Optional<Product> getById(long productId);
+    Optional<Product> getByName(String name);
     List<Product> getAll();
 
 
@@ -30,4 +31,6 @@ public interface ProductService {
     Boolean checkForAvailableStock(Product p, int amount);
     Boolean checkForOwnership(long prodId);
     void updateStock(long prodId, int amount);
+
+    Boolean addStock(String prodName, int amount);
 }

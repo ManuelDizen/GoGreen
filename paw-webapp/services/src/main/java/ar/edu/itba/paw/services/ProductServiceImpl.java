@@ -60,6 +60,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Optional<Product> getByName(String name) {
+        return productDao.getByName(name);
+    }
+
+    @Override
     public List<Product> getAll() {
         return productDao.getAll();
     }
@@ -124,8 +129,6 @@ public class ProductServiceImpl implements ProductService {
             return userProdOwner.get().getEmail().equals(user.getEmail());
         }
         return false;
-
-
     }
 
     @Override
@@ -133,6 +136,14 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) return;
         productDao.updateStock(prodId, (product.get().getStock()-amount));
+    }
+
+    @Override
+    public Boolean addStock(String prodName, int amount) {
+        System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
+        Optional<Product> prod = getByName(prodName);
+        if(!prod.isPresent()) throw new IllegalStateException();
+        return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
     @Override

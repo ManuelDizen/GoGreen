@@ -179,6 +179,34 @@
                                     <spring:message code="sellerprofile.orders.buyer"/>
                                     <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
                                 </div>
+                                <div style="margin:5vh auto 2vh auto;">
+                                    <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
+                                    <spring:message code="sellerprofile.cancelorder"/></a>
+                                </div>
+                            </div>
+                            <div id="ordermodal${order.id}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                <div class="modal-content">
+                                    <h3 style="text-decoration: underline"><spring:message code="sellerprofile.deleteorder.confirm"/></h3>
+                                    <div>
+                                        <h4><c:out value="${order.productName}"/></h4>
+                                        <ul>
+                                            <li>
+                                                <spring:message code="sellerprofile.deleteorder.buyer"/>
+                                                <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                                <spring:message code="sellerprofile.deleteorder.amount"/>
+                                                <c:out value="${order.amount}"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="modal-close waves-effect waves-green btn-flat">
+                                        <spring:message code="sellerprofile.delete.cancel"/>
+                                    </a>
+                                    <a class="waves-effect waves-light btn  red accent-4" href="<c:url value="/deleteOrder/${order.id}"/>">
+                                        <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                                    </a>
+                                </div>
                             </div>
                         </c:forEach>
                     </c:if>

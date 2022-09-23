@@ -22,4 +22,8 @@ public interface OrderService {
                          String message);
 
     List<List<Order>> divideIntoPages(List<Order> list);
+
+    Boolean checkForOrderOwnership(long orderId);
+
+    Boolean deleteOrder(long orderId);
 }

@@ -267,8 +267,6 @@ public class ProductController {
             throw new RuntimeException(e);
         }
 
-
-
         Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if (!user.isPresent()) throw new IllegalStateException("No se encntró user");
 

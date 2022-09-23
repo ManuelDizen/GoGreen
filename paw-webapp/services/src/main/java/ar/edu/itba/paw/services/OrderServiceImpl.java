@@ -1,15 +1,8 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
-import ar.edu.itba.paw.interfaces.persistence.ProductDao;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.OrderService;
-import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.SellerService;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +19,16 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
     private final EmailService emailService;
     private final SellerService sellerService;
+    private final SecurityService securityService;
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ProductService productService,
-                            EmailService emailService, SellerService sellerService) {
+                            EmailService emailService, SellerService sellerService, SecurityService securityService) {
         this.orderDao = orderDao;
         this.productService = productService;
         this.emailService = emailService;
         this.sellerService = sellerService;
+        this.securityService = securityService;
     }
 
     @Override
@@ -98,5 +93,38 @@ public class OrderServiceImpl implements OrderService {
             pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
         return pageList;
 
+    }
+
+    @Override
+    public Boolean checkForOrderOwnership(long orderId) {
+        User user = securityService.getLoggedUser();
+        if(user == null) return false;
+            /*List<Role> roles = securityService.getLoggedUserRoles();
+        boolean isSeller = false;
+        for(Role role:roles){
+            if (role.getName().equals("SELLER")) {
+                isSeller = true;
+                break;
+            }
+        }
+        if(!isSeller) return false;*/
+        Optional<Order> maybeOrder = getById(orderId);
+        if(maybeOrder.isPresent()){
+            Order order = maybeOrder.get();
+            System.out.println("Entre a order.get");
+            System.out.println("Seller email: " + order.getSellerEmail() + " userEmail: " + user.getEmail());
+            return order.getSellerEmail().equals(user.getEmail());
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean deleteOrder(long orderId) {
+        /* Primero, borro instancia de orden. Después, reestablezo stock */
+        Optional<Order> order = orderDao.getById(orderId);
+        if(!order.isPresent()) throw new IllegalStateException();
+        Boolean delete = orderDao.deleteOrder(orderId);
+        if(!delete) throw new RuntimeException("No volví de deleted");
+        return productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
 }

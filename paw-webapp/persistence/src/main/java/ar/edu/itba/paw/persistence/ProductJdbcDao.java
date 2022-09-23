@@ -10,9 +10,11 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.*;
 
 @Repository
+
 public class ProductJdbcDao implements ProductDao {
 
     private static final RowMapper<Product> PRODUCT_ROW_MAPPER =
@@ -89,6 +91,13 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
+    public Optional<Product> getByName(String name) {
+        List<Product> product = template.query("SELECT * FROM products WHERE name = ?",
+                new Object[]{name}, PRODUCT_ROW_MAPPER);
+        return product.stream().findFirst();
+    }
+
+    @Override
     public List<Product> getAll() {
         return template.query("SELECT * FROM products",
         PRODUCT_ROW_MAPPER);
@@ -104,6 +113,13 @@ public class ProductJdbcDao implements ProductDao {
         String query = "UPDATE products SET stock = ? WHERE id = ?";
         Object[] args = new Object[]{amount, productId};
         template.update(query, args);
+    }
+
+    @Override
+    public Boolean addStock(String name, int amount) {
+        String query = "UPDATE products SET stock = ? WHERE name = ?";
+        Object[] args = new Object[]{amount, name};
+        return template.update(query, args) == 1;
     }
 
     @Override
