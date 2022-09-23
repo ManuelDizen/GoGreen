@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getBuBuyerEmail(String buyerEmail) {
+    public List<Order> getByBuyerEmail(String buyerEmail) {
         return orderDao.getByBuyerEmail(buyerEmail);
     }
 
