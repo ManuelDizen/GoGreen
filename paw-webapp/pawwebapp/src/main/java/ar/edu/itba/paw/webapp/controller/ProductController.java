@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 
 @Controller
 public class ProductController {
@@ -64,19 +66,25 @@ public class ProductController {
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="0") final long category,
-            @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
-            @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
-            @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
-            @RequestParam(name="ecotagAnimals", defaultValue="false") final boolean ecotagAnimals,
-            @RequestParam(name="ecotagTransport", defaultValue="false") final boolean ecotagTransport,
+            @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
             @RequestParam(name="page", defaultValue = "1") final int page
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
-        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy, ecotagAnimals, ecotagTransport};
+        mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
 
-        List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
+        final boolean[] boolTags = new boolean[Ecotag.values().length];
+
+        List<Ecotag> tagsToFilter = new ArrayList<>();
+
+        if(!strings[0].equals("null")) {
+            for(String s : strings) {
+                tagsToFilter.add(Ecotag.getById(parseInt(s)));
+                boolTags[parseInt(s)-1] = true;
+            }
+        }
+
 
         //TODO: mejorar forma de filtrar por ecotags
         //TODO: filtro por categorías -> hecho, pero hay un bug de materialize (revisar)

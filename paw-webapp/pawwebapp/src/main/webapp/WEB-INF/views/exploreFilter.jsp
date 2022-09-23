@@ -16,7 +16,7 @@
 <form action="${explore}" method="get" id="filter_form" style="margin: 0 20px 20px 20px">
     <div class="row">
         <div class="input-field col s12">
-            <input name="name" id="name" type="text">
+            <input name="name" id="name" type="text" value="${name}">
             <label for="name"><spring:message code="explore.filterform.name"/></label>
         </div>
     </div>
@@ -43,7 +43,7 @@
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <input id="maxPrice" name="maxPrice" type="text">
+            <input id="maxPrice" name="maxPrice" type="text" value="${maxPrice}">
             <label for="maxPrice"><spring:message code="explore.filterform.maxprice"/></label>
         </div>
     </div>
@@ -51,16 +51,12 @@
         <p class="filter-inputlabel">Ecotags:</p>
         <c:forEach items="${ecotagList}" var="ecotag">
             <c:if test="${boolTags[ecotag.id-1]}">
-                <label>
-                    <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag" />
-                    <span><c:out value="${ecotag.tag}"/></span>
-                </label>
+                <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
+                <label for="ecotag ${ecotag.id}">${ecotag.tag}</label>
             </c:if>
             <c:if test="${!boolTags[ecotag.id-1]}">
-                <label>
-                    <input name="${ecotag.path}" type="checkbox" id="ecotag2" />
-                    <span><c:out value="${ecotag.tag}"/></span>
-                </label>
+                <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
+                <label for="ecotag ${ecotag.id}">${ecotag.tag}</label>
             </c:if>
             <br>
         </c:forEach>
