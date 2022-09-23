@@ -87,11 +87,17 @@
                                                 <i class="material-icons">warning</i>
                                                 <spring:message code="sellerprofile.warning.nostock"/>
                                             </a>
+                                            <a id="productinfo" style="margin-right:2vw;">
+                                                <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
+                                                <c:out value="${product.price}"/>
+                                            </a>
                                         </c:if>
-                                        <a id="productinfo" style="margin-right:2vw;" href="<c:url value="/product/${product.productId}"/>">
-                                            <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
-                                            <c:out value="${product.price}"/>
-                                        </a>
+                                        <c:if test="${product.stock != 0}">
+                                            <a id="productinfo" style="margin-right:2vw;" href="<c:url value="/product/${product.productId}"/>">
+                                                <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
+                                                <c:out value="${product.price}"/>
+                                            </a>
+                                        </c:if>
                                         <span style="margin-right:1vw;">
                                             <a id="edit" class="waves-effect waves-light btn blue darken-3" href="<c:url value="/editProduct/${product.productId}"/>">
                                                 <i class="material-icons">edit</i>
