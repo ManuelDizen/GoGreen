@@ -69,7 +69,7 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public List<Product> findBySeller(long sellerId) {
-        return template.query("SELECT * FROM products WHERE sellerId = ?", new Object[]{sellerId},
+        return template.query("SELECT * FROM products WHERE sellerId = ? ORDER BY id DESC", new Object[]{sellerId},
                 PRODUCT_ROW_MAPPER);
     }
 
@@ -85,14 +85,14 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public Optional<Product> getById(long productId) {
-        List<Product> product =  template.query("SELECT * from products where id = ?",
+        List<Product> product =  template.query("SELECT * FROM products WHERE id = ? ORDER BY id DESC",
                 new Object[]{productId}, PRODUCT_ROW_MAPPER);
         return product.stream().findFirst();
     }
 
     @Override
     public Optional<Product> getByName(String name) {
-        List<Product> product = template.query("SELECT * FROM products WHERE name = ?",
+        List<Product> product = template.query("SELECT * FROM products WHERE name = ? ORDER BY id DESC",
                 new Object[]{name}, PRODUCT_ROW_MAPPER);
         return product.stream().findFirst();
     }
@@ -130,7 +130,7 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public List<Product> filter(String name, long category, List<Long> tags, float maxPrice) {
-        StringBuilder query = new StringBuilder("SELECT * from products where ");
+        StringBuilder query = new StringBuilder("SELECT * FROM products WHERE ");
         List<Object> args = new ArrayList<>();
         if(name != null){
             query.append("LOWER(name) like ? ");
@@ -150,6 +150,7 @@ public class ProductJdbcDao implements ProductDao {
            query.append("AND price <= ?");
            args.add(maxPrice);
         }
+        query.append("AND stock <> 0 ORDER BY id DESC");
         return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
     }
 

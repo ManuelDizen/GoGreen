@@ -196,7 +196,7 @@ public class ProductController {
         if(productObj.getStock() == 0){
             return new ModelAndView("redirect:/404");
         }
-        
+
         mav.addObject("product", productObj);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
