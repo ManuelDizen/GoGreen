@@ -75,8 +75,14 @@ public class OrderServiceImpl implements OrderService {
                 sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
                 message);
 
+        /* TODO: Get updateStock() to return the modified tuple in order to save an invocation */
         productService.updateStock(product.getProductId(), amount);
-
+        Optional<Product> modified = productService.getById(product.getProductId());
+        if(!modified.isPresent()) throw new IllegalStateException("Product not found");
+        if(modified.get().getStock() == 0){
+            /* Notify via mail the seller */
+            emailService.noMoreStock(modified.get(), seller, user);
+        }
         if(order == null) throw new IllegalStateException("No se instanció la orden");
     }
 

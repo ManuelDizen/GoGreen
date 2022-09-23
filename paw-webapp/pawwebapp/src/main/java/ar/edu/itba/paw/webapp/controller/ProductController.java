@@ -218,6 +218,9 @@ public class ProductController {
 
         /* TODO: Check how to workaroung in OrderForm the amount @NotNull annotation
             I tried setting it and app crashed
+                23/9: Creo que el problema era que el input estaba declarado como number.
+                Después revisar si efectivamente era así, o si hace falta mantener este controllerside
+                check.
          */
         if(errors.hasErrors() || form.getAmount() == null){
             return productPage(prodId, form, false, true);

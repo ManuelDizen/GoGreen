@@ -772,6 +772,38 @@ ALL CREDITS TO @andrewsims
     margin-top: 2vh;
 }
 
+.seller-profile-product-card,
+.seller-profile-product-card-info{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.seller-profile-product-card-info #stockless{
+    margin:auto 1vw auto 1vw;
+    align-items:center;
+    display:flex;
+}
+
+.seller-profile-product-card-info #stockless i,
+.seller-profile-product-card-info #edit i,
+.seller-profile-product-card-info #delete i{
+    margin-right:10px;
+}
+
+.seller-profile-product-card-info #productinfo{
+    margin: auto 1vw auto 1vw;
+    display:flex;
+    align-items:center;
+}
+
+.seller-profile-product-card-info #edit,
+.seller-profile-product-card-info #delete{
+    margin: auto 1vw auto 1vw;
+    display:inline-flex;
+    align-items:center;
+}
+
 /* ------- REGISTER VIEWS ------- */
 
 .register-form-row{
