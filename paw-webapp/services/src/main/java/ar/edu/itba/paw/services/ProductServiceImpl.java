@@ -70,6 +70,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAvailable(){return productDao.getAvailable();}
+
+    @Override
     public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {

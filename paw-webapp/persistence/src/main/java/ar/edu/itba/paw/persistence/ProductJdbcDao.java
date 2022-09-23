@@ -104,6 +104,12 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
+    public List<Product> getAvailable() {
+        return template.query("SELECT * FROM products WHERE stock <> 0 ORDER BY id DESC",
+                PRODUCT_ROW_MAPPER);
+    }
+
+    @Override
     public void deleteProduct(long productId) {
         template.update("DELETE FROM products WHERE id = ?", new Object[]{productId});
     }
