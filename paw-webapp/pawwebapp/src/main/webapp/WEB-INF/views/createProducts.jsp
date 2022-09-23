@@ -58,7 +58,7 @@
             <div class="input-field">
                 <form:select path="ecotag" multiple="true">
                     <c:forEach items="${tagList}" var="ecotag">
-                        <form:option value="${ecotag.id}"><c:out value="${ecotag.tag}"/></form:option>
+                        <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
                     </c:forEach>
                 </form:select>
                 <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>

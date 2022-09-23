@@ -52,11 +52,11 @@
         <c:forEach items="${ecotagList}" var="ecotag">
             <c:if test="${boolTags[ecotag.id-1]}">
                 <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
-                <label for="ecotag ${ecotag.id}">${ecotag.tag}</label>
+                <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
             </c:if>
             <c:if test="${!boolTags[ecotag.id-1]}">
                 <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
-                <label for="ecotag ${ecotag.id}">${ecotag.tag}</label>
+                <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
             </c:if>
             <br>
         </c:forEach>
