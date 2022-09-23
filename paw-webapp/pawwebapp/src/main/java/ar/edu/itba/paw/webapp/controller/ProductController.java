@@ -82,7 +82,7 @@ public class ProductController {
         //TODO: filtro por categorías -> hecho, pero hay un bug de materialize (revisar)
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
-        List<Product> allProducts = ps.getAll();
+        List<Product> allProducts = ps.getAvailable();
 
         for(Product product : productList) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
@@ -192,6 +192,11 @@ public class ProductController {
 
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
+
+        if(productObj.getStock() == 0){
+            return new ModelAndView("redirect:/404");
+        }
+        
         mav.addObject("product", productObj);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
