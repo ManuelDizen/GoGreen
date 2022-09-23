@@ -898,6 +898,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: flex;
     flex-direction: row-reverse;
     margin-right: 50px;
+    margin-bottom: 20px;
 }
 
 /* ------ USER PROFILE VIEW ---------- */

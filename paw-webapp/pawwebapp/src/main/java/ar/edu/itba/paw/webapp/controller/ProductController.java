@@ -71,13 +71,21 @@ public class ProductController {
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "0") final int direction
-    ){
+    ) {
         final ModelAndView mav = new ModelAndView("explore");
 
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
         mav.addObject("direction", direction);
         mav.addObject("sort", sort);
+        mav.addObject("sortName", Sort.getById(sort).getName());
 
+        StringBuilder str = new StringBuilder("");
+        for(String s : strings) {
+            System.out.println(s);
+            str.append("&strings=").append(s);
+        }
+        System.out.println(str);
+        mav.addObject("path", str.toString());
 
         mav.addObject("sorting", Sort.values());
 

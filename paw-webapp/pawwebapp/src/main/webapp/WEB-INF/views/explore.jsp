@@ -23,18 +23,18 @@
     </div>
     <div class="sort">
         <c:if test="${direction == 0}">
-            <a class="chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&sort=${sort}&direction=1"><i class="tiny material-icons">north</i></a>
+            <a class="chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=1"><i class="tiny material-icons">north</i></a>
         </c:if>
         <c:if test="${direction == 1}">
-            <a class="chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&sort=${sort}&direction=0"><i class="tiny material-icons">south</i></a>
+            <a class="chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=0"><i class="tiny material-icons">south</i></a>
         </c:if>
         <!-- Dropdown Trigger -->
-        <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+        <a class='dropdown-trigger btn waves-effect waves-light btn standard-button' href='#' data-target='dropdown1'>${sortName}</a>
 
         <!-- Dropdown Structure -->
         <ul id='dropdown1' class='dropdown-content'>
             <c:forEach items="${sorting}" var="sortVal">
-                <li><a href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&sort=${sortVal.id}&direction=${direction}">${sortVal.name}</a></li>
+                <li><a href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sortVal.id}&direction=${direction}">${sortVal.name}</a></li>
             </c:forEach>
         </ul>
     </div>
