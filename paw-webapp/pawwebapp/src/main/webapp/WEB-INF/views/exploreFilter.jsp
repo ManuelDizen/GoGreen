@@ -51,12 +51,16 @@
         <p class="filter-inputlabel">Ecotags:</p>
         <c:forEach items="${ecotagList}" var="ecotag">
             <c:if test="${boolTags[ecotag.id-1]}">
-                <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
-                <label for="ecotag">${ecotag.tag}</label>
+                <label>
+                    <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag" />
+                    <span><c:out value="${ecotag.tag}"/></span>
+                </label>
             </c:if>
             <c:if test="${!boolTags[ecotag.id-1]}">
-                <input name="${ecotag.path}" type="checkbox" id="ecotag2">
-                <label for="ecotag2">${ecotag.tag}</label>
+                <label>
+                    <input name="${ecotag.path}" type="checkbox" id="ecotag2" />
+                    <span><c:out value="${ecotag.tag}"/></span>
+                </label>
             </c:if>
             <br>
         </c:forEach>
