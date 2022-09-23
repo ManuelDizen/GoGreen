@@ -99,15 +99,7 @@ public class OrderServiceImpl implements OrderService {
     public Boolean checkForOrderOwnership(long orderId) {
         User user = securityService.getLoggedUser();
         if(user == null) return false;
-            /*List<Role> roles = securityService.getLoggedUserRoles();
-        boolean isSeller = false;
-        for(Role role:roles){
-            if (role.getName().equals("SELLER")) {
-                isSeller = true;
-                break;
-            }
-        }
-        if(!isSeller) return false;*/
+        if(!securityService.loggedUserIsSeller()) throw new IllegalStateException();
         Optional<Order> maybeOrder = getById(orderId);
         if(maybeOrder.isPresent()){
             Order order = maybeOrder.get();

@@ -87,4 +87,17 @@ public class SecurityServiceImpl implements SecurityService {
         }
         return roles;
     }
+
+    @Override
+    public Boolean loggedUserIsSeller() {
+        List<Role> roles = getLoggedUserRoles();
+        boolean isSeller = false;
+        for(Role role:roles){
+            if (role.getName().equals("SELLER")) {
+                isSeller = true;
+                break;
+            }
+        }
+        return isSeller;
+    }
 }

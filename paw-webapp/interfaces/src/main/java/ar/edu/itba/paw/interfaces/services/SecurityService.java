@@ -12,4 +12,5 @@ public interface SecurityService {
     public String getLoggedSurname();
 
     public List<Role> getLoggedUserRoles();
+    public Boolean loggedUserIsSeller();
 }

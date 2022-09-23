@@ -117,6 +117,7 @@ public class ProductServiceImpl implements ProductService {
     public Boolean checkForOwnership(long prodId) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new IllegalStateException();
+        if(!securityService.loggedUserIsSeller()) throw new IllegalStateException();
         /* TODO: Exceptions!!! */
         Optional<Product> prodToDelete = getById(prodId);
         if(prodToDelete.isPresent()){
