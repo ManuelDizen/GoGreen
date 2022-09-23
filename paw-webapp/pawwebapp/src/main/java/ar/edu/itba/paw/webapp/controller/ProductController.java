@@ -68,11 +68,18 @@ public class ProductController {
             @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
-            @RequestParam(name="page", defaultValue = "1") final int page
+            @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="sort", defaultValue = "0") final int sort,
+            @RequestParam(name="direction", defaultValue = "0") final int direction
     ){
         final ModelAndView mav = new ModelAndView("explore");
 
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
+        mav.addObject("direction", direction);
+        mav.addObject("sort", sort);
+
+
+        mav.addObject("sorting", Sort.values());
 
         final boolean[] boolTags = new boolean[Ecotag.values().length];
 
@@ -91,6 +98,9 @@ public class ProductController {
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
         List<Product> allProducts = ps.getAll();
+
+        ps.sortProducts(productList, sort, direction);
+
 
         for(Product product : productList) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));

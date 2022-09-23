@@ -894,6 +894,12 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     margin-top:5vh;
 }
 
+.sort {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 50px;
+}
+
 /* ------ USER PROFILE VIEW ---------- */
 .buyer-profile-container{
     display: flex;
