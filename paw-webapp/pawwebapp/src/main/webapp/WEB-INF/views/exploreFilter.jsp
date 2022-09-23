@@ -31,10 +31,10 @@
                 </c:if>
                 <c:forEach items="${categories}" var="category">
                     <c:if test="${chosenCategory != category.id}">
-                        <option value="${category.id}">${category.name}</option>
+                        <option value="${category.id}"><spring:message code="${category.name}"/></option>
                     </c:if>
                     <c:if test="${chosenCategory == category.id}">
-                        <option selected value="${category.id}">${category.name}</option>
+                        <option selected value="${category.id}"><spring:message code="${category.name}"/></option>
                     </c:if>
                 </c:forEach>
             </select>

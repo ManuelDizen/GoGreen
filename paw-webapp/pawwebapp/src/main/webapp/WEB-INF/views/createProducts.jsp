@@ -44,7 +44,7 @@
             <div class="input-field">
                 <form:select path="category">
                     <c:forEach items="${categories}" var="category">
-                        <form:option value="${category.id}"><c:out value="${category.name}"/></form:option>
+                        <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>
                     </c:forEach>
                 </form:select>
                 <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
