@@ -43,13 +43,12 @@ public class ProductController {
 
     private final OrderService os;
 
-    private final CategoryService cs;
 
     
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
                              final EmailService es, final ImageService is, final UserService us,
-                             final SecurityService securityService, EcotagService ecos, final OrderService os, final CategoryService cs) {
+                             final SecurityService securityService, EcotagService ecos, final OrderService os) {
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
@@ -58,7 +57,6 @@ public class ProductController {
         this.securityService = securityService;
         this.ecos = ecos;
         this.os = os;
-        this.cs = cs;
     }
 
 
@@ -117,10 +115,6 @@ public class ProductController {
         mav.addObject("sortName", Sort.getById(sort).getName());
         mav.addObject("sorting", Sort.values());
 
-        //Categories
-
-        List<Category> categories = cs.getAllCategories();
-
         //Pagination
 
         List<List<Product>> productPages = ps.divideIntoPages(productList);
@@ -135,7 +129,7 @@ public class ProductController {
 
         //Parameters for filter
         mav.addObject("name", name);
-        mav.addObject("categories", categories);
+        mav.addObject("categories", Category.values());
         mav.addObject("chosenCategory", category);
         if(maxPrice > -1.0)
             mav.addObject("maxPrice", maxPrice);
@@ -274,7 +268,7 @@ public class ProductController {
         List<Ecotag> tagList = Arrays.asList(Ecotag.values());
         final ModelAndView mav = new ModelAndView("createProducts");
         mav.addObject("tagList", tagList);
-        mav.addObject("categories", cs.getAllCategories());
+        mav.addObject("categories", Category.values());
         return mav;
     }
 

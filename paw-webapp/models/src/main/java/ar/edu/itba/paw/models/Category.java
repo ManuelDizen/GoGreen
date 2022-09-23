@@ -1,41 +1,15 @@
 package ar.edu.itba.paw.models;
 
-public class Category {
+public enum Category {
 
-    private final long id;
-    private final String name;
-    private final long imageId;
-
-    public Category(long id, String name, long imageId) {
-        this.id = id;
-        this.name = name;
-        this.imageId = imageId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getImageId() {
-        return imageId;
-    }
-
-    //    HYGIENE(1, "Higiene", "category.hygiene"),
-//    HEALTH(2, "Salud", "category.health"),
-//    SKINCARE(3, "Cuidado de la piel", "category.skincare");
-//
 //    private final long id;
 //    private final String name;
-//    private final String path;
+//    private final long imageId;
 //
-//    Category(long id, String name, String path) {
+//    public Category(long id, String name, long imageId) {
 //        this.id = id;
 //        this.name = name;
-//        this.path = path;
+//        this.imageId = imageId;
 //    }
 //
 //    public long getId() {
@@ -46,14 +20,37 @@ public class Category {
 //        return name;
 //    }
 //
-//    public String getPath() { return path; }
-//
-//    public static Category getById(long id) {
-//        for(Category category : Category.values()) {
-//            if(category.getId() == id)
-//                return category;
-//        }
-//        return null;
+//    public long getImageId() {
+//        return imageId;
 //    }
+
+    HYGIENE(1, "higiene"),
+    HEALTH(2, "salud"),
+    SKINCARE(3, "cuidadopiel");
+
+    private final long id;
+    private final String name;
+
+
+    Category(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static Category getById(long id) {
+        for(Category category : Category.values()) {
+            if(category.getId() == id)
+                return category;
+        }
+        return null;
+    }
 
 }
