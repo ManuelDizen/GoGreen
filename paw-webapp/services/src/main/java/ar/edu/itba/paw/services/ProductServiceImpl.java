@@ -90,6 +90,7 @@ public class ProductServiceImpl implements ProductService {
         }
         if(list.size() % PAGE_SIZE != 0)
             pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        if(list.size() == 0) pageList.add(new ArrayList<>());
         return pageList;
     }
 
@@ -117,7 +118,6 @@ public class ProductServiceImpl implements ProductService {
     public Boolean checkForOwnership(long prodId) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new IllegalStateException();
-        if(!securityService.loggedUserIsSeller()) throw new IllegalStateException();
         /* TODO: Exceptions!!! */
         Optional<Product> prodToDelete = getById(prodId);
         if(prodToDelete.isPresent()){

@@ -91,6 +91,7 @@ public class OrderServiceImpl implements OrderService {
         }
         if(list.size() % PAGE_SIZE != 0)
             pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        if(list.size() == 0) pageList.add(new ArrayList<>());
         return pageList;
 
     }
@@ -99,7 +100,6 @@ public class OrderServiceImpl implements OrderService {
     public Boolean checkForOrderOwnership(long orderId) {
         User user = securityService.getLoggedUser();
         if(user == null) return false;
-        if(!securityService.loggedUserIsSeller()) throw new IllegalStateException();
         Optional<Order> maybeOrder = getById(orderId);
         if(maybeOrder.isPresent()){
             Order order = maybeOrder.get();
