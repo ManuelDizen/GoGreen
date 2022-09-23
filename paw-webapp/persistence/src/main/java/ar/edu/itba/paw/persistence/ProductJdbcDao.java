@@ -99,7 +99,7 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public List<Product> getAll() {
-        return template.query("SELECT * FROM products",
+        return template.query("SELECT * FROM products ORDER BY id DESC",
         PRODUCT_ROW_MAPPER);
     }
 
