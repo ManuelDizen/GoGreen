@@ -182,6 +182,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public String buildPath(String[] strings) {
+        StringBuilder str = new StringBuilder("");
+        for(String s : strings) {
+            str.append("&strings=").append(s);
+        }
+        return str.toString();
+    }
+
+    @Override
     public List<Product> getRecent(int amount){
         return productDao.getRecent(amount);
     }

@@ -74,20 +74,10 @@ public class ProductController {
     ) {
         final ModelAndView mav = new ModelAndView("explore");
 
+        //Ecotag management
+
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
-        mav.addObject("direction", direction);
-        mav.addObject("sort", sort);
-        mav.addObject("sortName", Sort.getById(sort).getName());
-
-        StringBuilder str = new StringBuilder("");
-        for(String s : strings) {
-            System.out.println(s);
-            str.append("&strings=").append(s);
-        }
-        System.out.println(str);
-        mav.addObject("path", str.toString());
-
-        mav.addObject("sorting", Sort.values());
+        mav.addObject("path", ps.buildPath(strings));
 
         final boolean[] boolTags = new boolean[Ecotag.values().length];
 
@@ -100,29 +90,50 @@ public class ProductController {
             }
         }
 
+        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
 
-        //TODO: mejorar forma de filtrar por ecotags
-        //TODO: filtro por categorías -> hecho, pero hay un bug de materialize (revisar)
+        mav.addObject("ecotagList", ecotagList);
+        mav.addObject("boolTags", boolTags);
+
+        //Product filter
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
         List<Product> allProducts = ps.getAll();
 
-        ps.sortProducts(productList, sort, direction);
+        mav.addObject("isEmpty", allProducts.isEmpty());
 
 
         for(Product product : productList) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
         }
 
+        //Sorting
+
+        mav.addObject("sort", sort);
+        mav.addObject("direction", direction);
+
+        ps.sortProducts(productList, sort, direction);
+
+        mav.addObject("sortName", Sort.getById(sort).getName());
+        mav.addObject("sorting", Sort.values());
+
+        //Categories
+
         List<Category> categories = cs.getAllCategories();
+
+        //Pagination
 
         List<List<Product>> productPages = ps.divideIntoPages(productList);
 
-        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
-
-
         mav.addObject("currentPage", page);
-        mav.addObject("boolTags", boolTags);
+        if(productPages.size() != 0)
+            mav.addObject("products", productPages.get(page-1));
+        else
+            mav.addObject("products", new ArrayList<>());
+
+        mav.addObject("pages", productPages);
+
+        //Parameters for filter
         mav.addObject("name", name);
         mav.addObject("categories", categories);
         mav.addObject("chosenCategory", category);
@@ -130,18 +141,6 @@ public class ProductController {
             mav.addObject("maxPrice", maxPrice);
         else
             mav.addObject("maxPrice", null);
-
-        mav.addObject("ecotagList", ecotagList);
-        if(productPages.size() != 0)
-            mav.addObject("products", productPages.get(page-1));
-        else
-            mav.addObject("products", new ArrayList<>());
-
-        mav.addObject("isEmpty", allProducts.isEmpty());
-
-        mav.addObject("pages", productPages);
-
-        mav.addObject("selected", true);
 
         return mav;
     }

@@ -901,6 +901,17 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     margin-bottom: 20px;
 }
 
+.check {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+}
+
+
+
 /* ------ USER PROFILE VIEW ---------- */
 .buyer-profile-container{
     display: flex;
