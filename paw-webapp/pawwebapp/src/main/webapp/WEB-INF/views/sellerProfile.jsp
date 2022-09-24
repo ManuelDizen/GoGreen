@@ -83,7 +83,7 @@
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
-                                            <a id="stockless" class="btn orange darken-3" style="cursor:default;">
+                                            <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
                                                 <i class="material-icons">warning</i>
                                                 <spring:message code="sellerprofile.warning.nostock"/>
                                             </a>
@@ -91,11 +91,36 @@
                                                 <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
                                                 <c:out value="${product.price}"/>
                                             </a>
+                                            <div id="stockModal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                                <div class="modal-content">
+                                                    <h3 style="text-decoration: underline"><spring:message code="sellerprofile.nostock.message"/>:
+                                                    <c:out value="${product.name}"/></h3>
+                                                </div>
+                                                <c:url value="/updateStock/${product.productId}" var="updateStockUrl"/>
+                                                <form action="${updateStockUrl}" method="get" id="update_form">
+                                                    <div class="col s12">
+                                                        <div class="input-field col s12">
+                                                            <input path="newStock" name="newStock" id="newStock" type="text" class="validate">
+                                                            <label for="newStock"><spring:message code="sellerprofile.newstock"/></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row s12" style="display:flex; justify-content: center;">
+                                                        <a class="modal-close waves-effect waves-green btn-flat">
+                                                            <spring:message code="sellerprofile.delete.cancel"/>
+                                                        </a>
+                                                        <button class="btn waves-effect waves-light green accent-4" type="submit" name="newStock">
+                                                            <spring:message code="sellerprofile.update.button"/>
+                                                            <i class="material-icons right">check</i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </c:if>
                                         <c:if test="${product.stock != 0}">
                                             <a id="productinfo" style="margin-right:2vw;" href="<c:url value="/product/${product.productId}"/>">
                                                 <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
-                                                <c:out value="${product.price}"/>
+                                                <c:out value="${product.price}"/> - <spring:message code="sellerprofile.stock"/>
+                                                <c:out value="${product.stock}"/>
                                             </a>
                                         </c:if>
                                         <span style="margin-right:1vw;">

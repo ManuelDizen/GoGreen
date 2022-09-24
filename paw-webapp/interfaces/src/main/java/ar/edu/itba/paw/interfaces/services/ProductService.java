@@ -28,10 +28,12 @@ public interface ProductService {
 
     void deleteProduct(long productId);
     Boolean attemptDelete(long productId);
+    Boolean attemptUpdate(long productId, int amount);
 
     Boolean checkForAvailableStock(Product p, int amount);
     Boolean checkForOwnership(long prodId);
     void updateStock(long prodId, int amount);
 
     Boolean addStock(String prodName, int amount);
+    Boolean addStock(long prodId, int amount);
 }

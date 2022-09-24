@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
+import ar.edu.itba.paw.webapp.form.StockForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +60,15 @@ public class ProductController {
         this.cs = cs;
     }
 
+    @RequestMapping(value="/updateStock/{prodId:[0-9]+}")
+    public ModelAndView updateStock(
+            @PathVariable("prodId") final long prodId,
+            @RequestParam(name="newStock", defaultValue="0") final int newStock
+    ){
+        Boolean success = ps.attemptUpdate(prodId, newStock);
+        if(!success) throw new IllegalStateException("Stock update could not go through");
+        return new ModelAndView("redirect:/sellerProfile");
+    }
 
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
@@ -291,7 +301,5 @@ public class ProductController {
 
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }
-
-
 
 }
