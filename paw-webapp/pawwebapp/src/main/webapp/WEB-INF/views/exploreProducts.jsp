@@ -43,13 +43,14 @@
                     <div style="margin-top: 3vh; margin-bottom: 1vh;">
                         <c:set var="count" value="0"/>
                         <c:forEach items="${product.tagList}" var="ecotag">
-                            <c:if test="${count == 2}">
+                            <%--<c:if test="${count == 2}">
                                 <br>
                                 <a class="yellow-card black-text chip activator">
                                     <i class="tiny material-icons">more_horiz</i>
                                 </a>
                                 <c:set var="count" value="${count + 1}"/>
-                            </c:if>
+                            </c:if>--%>
+
                             <c:if test="${count lt 2}">
                                 <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
                                 <i class="tiny material-icons">${ecotag.icon}</i>

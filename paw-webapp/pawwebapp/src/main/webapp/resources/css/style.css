@@ -507,6 +507,7 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    width:100%;
 }
 
 .explore-filter-title{
@@ -717,10 +718,11 @@ ALL CREDITS TO @andrewsims
 }
 
 .product-card{
-    width: 40%;
+    width: 30%;
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
+    height:fit-content;
 }
 
 .product-card:hover{
@@ -1096,10 +1098,16 @@ input[type=number] {
     width:100%;
     vertical-align: center;
     margin:3vh auto;
+    height:30%;
 }
 
 .seller-profile-product-card-info{
     text-align:center;
+    background-color:var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    border-radius: 10px;
+    height:100%;
+    width:80%;
 }
 
 .seller-profile-product-card-info a{
