@@ -23,6 +23,8 @@ import java.util.Optional;
 
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 
 @Controller
 public class ProductController {
@@ -42,13 +44,12 @@ public class ProductController {
 
     private final OrderService os;
 
-    private final CategoryService cs;
 
     
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
                              final EmailService es, final ImageService is, final UserService us,
-                             final SecurityService securityService, EcotagService ecos, final OrderService os, final CategoryService cs) {
+                             final SecurityService securityService, EcotagService ecos, final OrderService os) {
         this.ps = ps;
         this.sellerService = sellerService;
         this.es = es;
@@ -57,7 +58,6 @@ public class ProductController {
         this.securityService = securityService;
         this.ecos = ecos;
         this.os = os;
-        this.cs = cs;
     }
 
     @RequestMapping(value="/updateStock/{prodId:[0-9]+}")
@@ -74,58 +74,77 @@ public class ProductController {
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="0") final long category,
-            @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
-            @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
-            @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
-            @RequestParam(name="ecotagAnimals", defaultValue="false") final boolean ecotagAnimals,
-            @RequestParam(name="ecotagTransport", defaultValue="false") final boolean ecotagTransport,
+            @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
-            @RequestParam(name="page", defaultValue = "1") final int page
-    ){
+            @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="sort", defaultValue = "0") final int sort,
+            @RequestParam(name="direction", defaultValue = "0") final int direction
+    ) {
         final ModelAndView mav = new ModelAndView("explore");
 
-        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy, ecotagAnimals, ecotagTransport};
+        //Ecotag management
 
-        List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
+        mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
+        mav.addObject("path", ps.buildPath(strings));
 
-        //TODO: mejorar forma de filtrar por ecotags
-        //TODO: filtro por categorías -> hecho, pero hay un bug de materialize (revisar)
+        final boolean[] boolTags = new boolean[Ecotag.values().length];
+
+        List<Ecotag> tagsToFilter = new ArrayList<>();
+
+        if(!strings[0].equals("null")) {
+            for(String s : strings) {
+                tagsToFilter.add(Ecotag.getById(parseInt(s)));
+                boolTags[parseInt(s)-1] = true;
+            }
+        }
+
+        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
+
+        mav.addObject("ecotagList", ecotagList);
+        mav.addObject("boolTags", boolTags);
+
+        //Product filter
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
         List<Product> allProducts = ps.getAvailable();
+
+        mav.addObject("isEmpty", allProducts.isEmpty());
+
 
         for(Product product : productList) {
             product.setTagList(ecos.getTagFromProduct(product.getProductId()));
         }
 
-        List<Category> categories = cs.getAllCategories();
+        //Sorting
+
+        mav.addObject("sort", sort);
+        mav.addObject("direction", direction);
+
+        ps.sortProducts(productList, sort, direction);
+
+        mav.addObject("sortName", Sort.getById(sort).getName());
+        mav.addObject("sorting", Sort.values());
+
+        //Pagination
 
         List<List<Product>> productPages = ps.divideIntoPages(productList);
 
-        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
-
-
         mav.addObject("currentPage", page);
-        mav.addObject("boolTags", boolTags);
-        mav.addObject("name", name);
-        mav.addObject("categories", categories);
-        mav.addObject("chosenCategory", category);
-        if(maxPrice > -1.0)
-            mav.addObject("maxPrice", maxPrice);
-        else
-            mav.addObject("maxPrice", null);
-
-        mav.addObject("ecotagList", ecotagList);
         if(productPages.size() != 0)
             mav.addObject("products", productPages.get(page-1));
         else
             mav.addObject("products", new ArrayList<>());
 
-        mav.addObject("isEmpty", allProducts.isEmpty());
-
         mav.addObject("pages", productPages);
 
-        mav.addObject("selected", true);
+        //Parameters for filter
+        mav.addObject("name", name);
+        mav.addObject("categories", Category.values());
+        mav.addObject("chosenCategory", category);
+        if(maxPrice > -1.0)
+            mav.addObject("maxPrice", maxPrice);
+        else
+            mav.addObject("maxPrice", null);
 
         return mav;
     }
@@ -267,7 +286,7 @@ public class ProductController {
         List<Ecotag> tagList = Arrays.asList(Ecotag.values());
         final ModelAndView mav = new ModelAndView("createProducts");
         mav.addObject("tagList", tagList);
-        mav.addObject("categories", cs.getAllCategories());
+        mav.addObject("categories", Category.values());
         return mav;
     }
 

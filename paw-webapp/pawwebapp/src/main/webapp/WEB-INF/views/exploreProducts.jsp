@@ -52,9 +52,9 @@
                             </c:if>--%>
 
                             <c:if test="${count lt 2}">
-                                <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
+                                <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>"/>
                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                ${ecotag.tag}
+                                <spring:message code="${ecotag.tag}"/>
                                 </a>
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
@@ -78,7 +78,7 @@
                     <c:forEach items="${product.tagList}" var="ecotag">
                         <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
                         <i class="tiny material-icons">${ecotag.icon}</i>
-                        ${ecotag.tag}
+                        <spring:message code="${ecotag.tag}"/>
                         </a>
                         <br>
                     </c:forEach>

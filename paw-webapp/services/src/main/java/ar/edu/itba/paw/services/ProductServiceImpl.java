@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,6 +82,58 @@ public class ProductServiceImpl implements ProductService {
 
         return productDao.filter(name, category, ecotags, maxPrice);
     }
+
+    @Override
+    public void sortProducts(List<Product> productList, int sort, int direction) {
+
+
+        productList.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                if(sort == 2) {
+                    if(direction == 0) {
+                        return (int) (o1.getPrice() - o2.getPrice());
+                    } else {
+                        return (int) (o2.getPrice() - o1.getPrice());
+                    }
+                }
+                else if(sort == 1) {
+                    if(direction == 0) {
+                        return o1.getName().compareTo(o2.getName());
+                    } else {
+                        return o2.getName().compareTo(o1.getName());
+                    }
+                }
+                else if(sort == 0) {
+                    if(direction == 0)
+                        return (int) (o1.getProductId() - o2.getProductId());
+                    else {
+                        return (int) (o2.getProductId() - o1.getProductId());
+                    }
+                }
+                return 0;
+            }
+        });
+
+//        switch (sort) {
+//            case 0:
+//                productList.sort(new Comparator<Product>() {
+//                    @Override
+//                    public int compare(Product o1, Product o2) {
+//                        return (int) (o2.getPrice() - o1.getPrice());
+//                    }
+//                });
+//            case 1:
+//                productList.sort(new Comparator<Product>() {
+//                    @Override
+//                    public int compare(Product o1, Product o2) {
+//                        return o2.getName().compareTo(o1.getName());
+//                    }
+//                });
+//        }
+
+    }
+
 
     @Override
     public List<List<Product>> divideIntoPages(List<Product> list) {
@@ -166,6 +219,15 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = getById(prodId);
         if(!product.isPresent()) return false;
         return addStock(product.get().getName(), amount);
+    }
+
+    @Override
+    public String buildPath(String[] strings) {
+        StringBuilder str = new StringBuilder("");
+        for(String s : strings) {
+            str.append("&strings=").append(s);
+        }
+        return str.toString();
     }
 
     @Override
