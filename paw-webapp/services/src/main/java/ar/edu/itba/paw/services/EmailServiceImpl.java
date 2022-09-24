@@ -2,11 +2,13 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -33,12 +35,13 @@ public class EmailServiceImpl implements EmailService {
         this.messageSource = messageSource;
     }
 
-    private void sendThymeleafMail(String to, String template, Map<String, Object> data, String subject) {
-        Locale locale = LocaleContextHolder.getLocale();
+    private void sendThymeleafMail(String to, String template, Map<String, Object> data,
+                                   String subject, Locale locale) {
         final Context ctx = new Context(locale);
         ctx.setVariables(data);
         String htmlBody = templateEngine.process(template, ctx);
         String sbj = messageSource.getMessage(subject, null, locale);
+        System.out.println(sbj);
         try {
             sendMail(to, htmlBody, sbj);
         } catch(MessagingException mex) {
@@ -56,9 +59,10 @@ public class EmailServiceImpl implements EmailService {
         this.mailSender.send(mimeMessage);
     }
 
+    @Async
     @Override
     public void purchase(String buyerEmail, String buyer, Product product, int amount, float price,
-                         String sellerName, String sellerPhone, String sellerMail) {
+                         String sellerName, String sellerPhone, String sellerMail, Locale locale) {
         Map<String, Object> data = new HashMap<>();
         data.put("buyer", buyer);
         data.put("product", product.getName());
@@ -69,12 +73,13 @@ public class EmailServiceImpl implements EmailService {
         data.put("sellerPhone", sellerPhone);
         data.put("sellerMail", sellerMail);
         sendThymeleafMail(buyerEmail, "productPurchase", data,
-                "subject.userMailTitle");
+                "subject.sellerMailTitle", locale);
     }
 
+    @Async
     @Override
     public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
-                         String buyerName, String buyerEmail, String buyerMessage) {
+                         String buyerName, String buyerEmail, String buyerMessage, Locale locale) {
         Map<String, Object> data = new HashMap<>();
         data.put("seller", seller);
         data.put("product", product.getName());
@@ -84,8 +89,18 @@ public class EmailServiceImpl implements EmailService {
         data.put("buyerEmail", buyerEmail);
         data.put("buyerMessage", buyerMessage);
 
-        // TODO: FIX THIS HARDCODE (to paramter), ONLY FOR TESTING PURPOSES
         sendThymeleafMail(sellerEmail, "sellerPurchase", data,
-                "subject.buyerMailTitle");
+                "subject.buyerMailTitle", locale);
+    }
+
+    @Async
+    @Override
+    public void registration(User user, Locale locale) {
+        Map<String,Object> data = new HashMap<>();
+        data.put("name", user.getFirstName());
+        data.put("surname", user.getSurname());
+        data.put("email", user.getEmail());
+        sendThymeleafMail(user.getEmail(), "userRegistration", data,
+                "subject.registerUserTitle", locale);
     }
 }

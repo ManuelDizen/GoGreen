@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -96,16 +95,28 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, String category, List<Long> tags, float maxPrice) {
+    public void deleteProduct(long productId) {
+        template.update("DELETE FROM products WHERE id = ?", new Object[]{productId});
+    }
+
+    @Override
+    public void updateStock(long productId, int amount) {
+        String query = "UPDATE products SET stock = ? WHERE id = ?";
+        Object[] args = new Object[]{amount, productId};
+        template.update(query, args);
+    }
+
+    @Override
+    public List<Product> filter(String name, long category, List<Long> tags, float maxPrice) {
         StringBuilder query = new StringBuilder("SELECT * from products where ");
         List<Object> args = new ArrayList<>();
         if(name != null){
             query.append("LOWER(name) like ? ");
             args.add('%' + name.toLowerCase() + '%');
         }
-        if(category != null){
-            query.append("AND categoryId IN (SELECT id from category where LOWER(name) like ?) ");
-            args.add('%' + category.toLowerCase() + '%');
+        if(category != 0){
+            query.append("AND categoryId = ? ");
+            args.add(category);
         }
         if(tags.size() != 0){
             for(long tag : tags) {
@@ -124,7 +135,7 @@ public class ProductJdbcDao implements ProductDao {
     public List<Product> getRecent(int amount) {
         List<Product> products = template.query("SELECT * FROM products ORDER BY id DESC",
                 PRODUCT_ROW_MAPPER);
-        if(products.size() < amount) return products;
+        if (products.size() < amount) return products;
         return products.subList(0, amount);
     }
 }

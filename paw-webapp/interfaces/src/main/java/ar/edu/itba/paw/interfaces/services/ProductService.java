@@ -20,5 +20,18 @@ public interface ProductService {
 
 
     List<Product> getRecent(int amount);
-    List<Product> filter(String name, String category, List<Ecotag> tags, float maxPrice);
+    List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice);
+
+    void sortProducts(List<Product> productList, int sort, int direction);
+
+    List<List<Product>> divideIntoPages(List<Product> list);
+
+    void deleteProduct(long productId);
+    Boolean attemptDelete(long productId);
+
+    Boolean checkForAvailableStock(Product p, int amount);
+    Boolean checkForOwnership(long prodId);
+    void updateStock(long prodId, int amount);
+
+    String buildPath(String[] strings);
 }

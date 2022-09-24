@@ -2,17 +2,15 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Ecotag;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +21,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 
 @Controller
@@ -43,6 +43,7 @@ public class ProductController {
 
     private final OrderService os;
 
+
     
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
@@ -62,51 +63,141 @@ public class ProductController {
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
-            @RequestParam(name="category", defaultValue="") final String category,
-            @RequestParam(name="ecotagRecycle", defaultValue="false") final boolean ecotagRecycle,
-            @RequestParam(name="ecotagForest", defaultValue="false") final boolean ecotagForest,
-            @RequestParam(name="ecotagEnergy", defaultValue="false") final boolean ecotagEnergy,
-            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice
-    ){
+            @RequestParam(name="category", defaultValue="0") final long category,
+            @RequestParam(name="strings", defaultValue = "null") final String[] strings,
+            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
+            @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="sort", defaultValue = "0") final int sort,
+            @RequestParam(name="direction", defaultValue = "0") final int direction
+    ) {
         final ModelAndView mav = new ModelAndView("explore");
 
-        final boolean[] boolTags = new boolean[]{ecotagRecycle, ecotagForest, ecotagEnergy};
+        //Ecotag management
 
-        List<Ecotag> tagsToFilter = ecos.filterByTags(boolTags);
+        mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
+        mav.addObject("path", ps.buildPath(strings));
 
-        //TODO: mejorar forma de filtrar por ecotags
-        //TODO: filtro por categorías
+        final boolean[] boolTags = new boolean[Ecotag.values().length];
 
-        List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
-        List<Product> allProducts = ps.getAll();
+        List<Ecotag> tagsToFilter = new ArrayList<>();
 
-        List<List<Ecotag>> productTags = new ArrayList<>();
-        for(Product product : productList) {
-            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+        if(!strings[0].equals("null")) {
+            for(String s : strings) {
+                tagsToFilter.add(Ecotag.getById(parseInt(s)));
+                boolTags[parseInt(s)-1] = true;
+            }
         }
 
         List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
 
+        mav.addObject("ecotagList", ecotagList);
         mav.addObject("boolTags", boolTags);
+
+        //Product filter
+
+        List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
+        List<Product> allProducts = ps.getAll();
+
+        mav.addObject("isEmpty", allProducts.isEmpty());
+
+
+        for(Product product : productList) {
+            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+        }
+
+        //Sorting
+
+        mav.addObject("sort", sort);
+        mav.addObject("direction", direction);
+
+        ps.sortProducts(productList, sort, direction);
+
+        mav.addObject("sortName", Sort.getById(sort).getName());
+        mav.addObject("sorting", Sort.values());
+
+        //Pagination
+
+        List<List<Product>> productPages = ps.divideIntoPages(productList);
+
+        mav.addObject("currentPage", page);
+        if(productPages.size() != 0)
+            mav.addObject("products", productPages.get(page-1));
+        else
+            mav.addObject("products", new ArrayList<>());
+
+        mav.addObject("pages", productPages);
+
+        //Parameters for filter
         mav.addObject("name", name);
-        mav.addObject("category", category);
+        mav.addObject("categories", Category.values());
+        mav.addObject("chosenCategory", category);
         if(maxPrice > -1.0)
             mav.addObject("maxPrice", maxPrice);
         else
             mav.addObject("maxPrice", null);
 
-        mav.addObject("ecotagList", ecotagList);
-        mav.addObject("products", productList);
-        mav.addObject("isEmpty", allProducts.isEmpty());
-
         return mav;
     }
 
-    /* TODO: Discutir sobre esta solución (doble boolean). Explicación para acordarme
-        cuando lo charlemos: 3 estados posibles, consulta de página, form falló, form exitoso.
-        No me alcanza con un solo boolean, pero siento que es ineficiente dos variables, aunque de
-        momento no se me ocurre algo mejor.
-     */
+    @RequestMapping(value = "/deleteProduct/{prodId}", method = RequestMethod.GET)
+    public ModelAndView deleteProduct(@PathVariable final long prodId){
+
+        /* We need to validate that the product is in fact ownership of the
+        logged user. If not, throwing a random /deleteProduct/{prodId} would
+        be enough to destroy the application
+         */
+        Boolean bool = ps.attemptDelete(prodId);
+
+        ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
+        return mav;
+    }
+
+    /*@RequestMapping(value="/editProduct/{prodId:[0-9]+")
+    public ModelAndView editProduct(@PathVariable final long prodId){
+        List<Product> recent = ps.getRecent(3);
+        final ModelAndView mav = new ModelAndView("index");
+        mav.addObject("recent", recent);
+        return mav;
+    }
+
+    @RequestMapping("/editProduct/{prodId:[0-9]+}")
+    public ModelAndView editProduct(@PathVariable final long prodId,
+                                    @Valid @ModelAttribute("productForm") final ProductForm form,
+                                    final BindingResult errors){
+        Boolean isOwner = ps.checkForOwnership(prodId);
+        if(!isOwner) return new ModelAndView("redirect:/");
+        /*
+        On the method "checkForOwnership": As with deleting, it is important to check that
+        it is in fact the logged user who is attempting to impact the DB and not a random user
+        who noticed how to play with the links. That is why the method is needed.
+
+        On a side note, one should never be able to edit a product that is not of their
+        ownership by browsing unless they type in the URL, which would lead to them being redirected
+        to homepage.
+
+        Optional<Product> product = ps.getById(prodId);
+        if(!product.isPresent()) throw new IllegalStateException();
+        ModelAndView mav = new ModelAndView("editProduct");
+        List<Ecotag> tagList = Arrays.asList(Ecotag.values());
+        mav.addObject("tagList", tagList);
+        mav.addObject("product", product.get());
+        System.out.println("No error in rendering");
+        return mav;
+    }*/
+
+    /*@RequestMapping(value="/editProduct/{prodId:[0-9]+}", method = RequestMethod.POST)
+    public ModelAndView editProduct(@PathVariable("prodId") final long prodId,
+                                    @Valid @ModelAttribute("productForm") final ProductForm form,
+                                    final BindingResult errors){
+        if(errors.hasErrors()){
+            return editProduct(prodId, form);
+        }
+        *//*Boolean worked = ps.attemptEdit(prodId, ...Insert parameters here...);
+        if(!worked) throw new IllegalStateException();*//*
+
+        ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
+        return mav;
+    }*/
 
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
@@ -139,52 +230,33 @@ public class ProductController {
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
 
-        //TODO: Change ALL this logic to service.
-
-        if(errors.hasErrors()){
+        /* TODO: Check how to workaroung in OrderForm the amount @NotNull annotation
+            I tried setting it and app crashed
+         */
+        if(errors.hasErrors() || form.getAmount() == null){
             return productPage(prodId, form, false, true);
         }
         final Optional<Product> product = ps.getById(prodId);
-
         if(!product.isPresent()) throw new ProductNotFoundException();
-
         final Product p = product.get();
+
+        Boolean enough = ps.checkForAvailableStock(p, form.getAmount());
+        if(!enough){
+            errors.addError(new ObjectError("amount",
+                    "El stock disponible es insuficiente para su pedido. Por favor, reviselo" +
+                            "e intente nuevamente"));
+            return productPage(prodId, form, false, true);
+        }
 
         final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("No hay un usuario loggeado");
-
         final User u = user.get();
 
         final Optional<Seller> seller = sellerService.findById(product.get().getSellerId());
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
-
         final Seller s = seller.get();
 
-        /* TODO: Move es.purchase(), es.itemsold(), and os.create() to service logic
-        *   Idea: Move everything to new method es.createAndNotify() where order is persisted
-        *   and emails are sent (yet less logic in controller)*/
-        //  es.sendOrderConfirmationMails(/*TODO: fill arguments*/);
-
-        es.purchase(u.getEmail(), u.getFirstName(),
-                p, form.getAmount(),
-                p.getPrice(), sellerService.getName(s.getUserId()),
-                s.getPhone(), sellerService.getEmail(s.getUserId()));
-
-        es.itemsold(sellerService.getEmail(s.getUserId()), sellerService.getName(s.getUserId()),
-                p,
-                form.getAmount(), p.getPrice(),
-                u.getFirstName(), u.getEmail(),
-                form.getMessage());
-
-        LocalDateTime dateTime = LocalDateTime.now();
-
-        Order order = os.create(p.getName(), u.getFirstName(),
-                u.getSurname(), u.getEmail(), sellerService.getName(s.getUserId()),
-                sellerService.getSurname(s.getUserId()),
-        sellerService.getEmail(s.getUserId()), form.getAmount(), p.getPrice(), dateTime,
-                form.getMessage());
-
-        if(order == null) throw new IllegalStateException("No se instanció la orden");
+        os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
 
         final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
         mav.addObject("formSuccess", true);
@@ -196,37 +268,37 @@ public class ProductController {
         List<Ecotag> tagList = Arrays.asList(Ecotag.values());
         final ModelAndView mav = new ModelAndView("createProducts");
         mav.addObject("tagList", tagList);
+        mav.addObject("categories", Category.values());
         return mav;
     }
 
     @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
     public ModelAndView createProductPost(
             @Valid @ModelAttribute("productForm") final ProductForm form,
-            final BindingResult errors){
-        if(errors.hasErrors())
+            final BindingResult errors) {
+        if (errors.hasErrors())
             return createProduct(form);
         //llamada al backend
         byte[] image;
         try {
             image = form.getImage().getBytes();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        // TODO: Category is hardcoded. Discuss.
+
 
         Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
+        if (!user.isPresent()) throw new IllegalStateException("No se encntró user");
 
         Optional<Seller> seller = sellerService.findByUserId(user.get().getId());
-        if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
+        if (!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
         Product product = ps.create(seller.get().getId(),
-                1, form.getName(), form.getDescription(),
+                form.getCategory(), form.getName(), form.getDescription(),
                 form.getStock(), form.getPrice(), image);
 
-        for(long id : form.getEcotag()) {
+        for (long id : form.getEcotag()) {
             ecos.addTag(Ecotag.getById(id), product.getProductId());
         }
 

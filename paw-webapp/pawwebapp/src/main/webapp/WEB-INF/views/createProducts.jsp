@@ -25,40 +25,56 @@
                 <h4><spring:message code="createproduct.title"/></h4>
             </div>
             <div>
-                <form:errors path="name" element="p" cssClass="error"/>
                 <form:label path="name"><spring:message code="createproduct.form.name"/>
                     <spring:message code="forms.obligatorysign"/></form:label>
                 <form:input path="name" type="text"/>
+                <form:errors path="name" element="p" cssClass="error"/>
             </div>
             <div>
-                <form:errors path="description" element="p" cssClass="error"/>
                 <form:label path="description"><spring:message code="createproduct.form.description"/></form:label>
                 <form:input path="description" type="text"/>
+                <form:errors path="description" element="p" cssClass="error"/>
             </div>
             <div>
-                <form:errors path="price" element="p" cssClass="error"/>
                 <form:label path="price"><spring:message code="createproduct.form.price"/>
                     <spring:message code="forms.obligatorysign"/></form:label>
                 <form:input path="price"/>
-            </div>
-            <div>
-                <form:errors path="stock" element="p" cssClass="error"/>
-                <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
-                <form:input path="stock"/>
+                <form:errors path="price" element="p" cssClass="error"/>
             </div>
             <div class="input-field">
-                <form:label path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
-                <form:select path="ecotag" multiple="true">
-                    <c:forEach items="${tagList}" var="ecotag">
-                        <form:option value="${ecotag.id}"><c:out value="${ecotag.tag}"/></form:option>
+                <form:select path="category">
+                    <c:forEach items="${categories}" var="category">
+                        <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>
                     </c:forEach>
                 </form:select>
-                <form:errors path="ecotag" element="p" cssClass="error"/>
+                <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
+                <form:errors path="category" element="p" cssClass="error"/>
             </div>
-            <div class="center">
+            <div>
+                <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
+                <form:input path="stock"/>
+                <form:errors path="stock" element="p" cssClass="error"/>
+            </div>
+            <div class="input-field">
+                <form:select path="ecotag" multiple="true">
+                    <c:forEach items="${tagList}" var="ecotag">
+                        <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
+                    </c:forEach>
+                </form:select>
+                <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
+                <form:errors path="ecotag" element= "p" cssClass="error"/>
+            </div>
+            <div class="row">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span><spring:message code="createproduct.form.image"/></span>
+                        <form:input path="image" type="file"/>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
                 <form:errors path="image" element="p" cssClass="error"/>
-                <form:label path="image"><spring:message code="createproduct.form.image"/></form:label>
-                <form:input path="image" type="file"/>
             </div>
             <div class="center" style="padding-top: 1em;">
                 <button type="submit" class="decision-button waves-effect waves-light btn">
@@ -69,4 +85,105 @@
     </div>
     <%@ include file="footer.jsp"%>
 </body>
+<script>
+    $(document).ready(function () {
+
+        var select = $('select[multiple]');
+        var options = select.find('option');
+
+        var div = $('<div />').addClass('selectMultiple');
+        var active = $('<div />');
+        var list = $('<ul />');
+        var placeholder = select.data('placeholder');
+
+        var span = $('<span />').text(placeholder).appendTo(active);
+
+        options.each(function () {
+            var text = $(this).text();
+            if ($(this).is(':selected')) {
+                active.append($('<a />').html('<em>' + text + '</em><i></i>'));
+                span.addClass('hide');
+            } else {
+                list.append($('<li />').html(text));
+            }
+        });
+
+        active.append($('<div />').addClass('arrow'));
+        div.append(active).append(list);
+
+        select.wrap(div);
+
+        $(document).on('click', '.selectMultiple ul li', function (e) {
+            var select = $(this).parent().parent();
+            var li = $(this);
+            if (!select.hasClass('clicked')) {
+                select.addClass('clicked');
+                li.prev().addClass('beforeRemove');
+                li.next().addClass('afterRemove');
+                li.addClass('remove');
+                var a = $('<a />').addClass('notShown').html('<em>' + li.text() + '</em><i></i>').hide().appendTo(select.children('div'));
+                a.slideDown(400, function () {
+                    setTimeout(function () {
+                        a.addClass('shown');
+                        select.children('div').children('span').addClass('hide');
+                        select.find('option:contains(' + li.text() + ')').prop('selected', true);
+                    }, 500);
+                });
+                setTimeout(function () {
+                    if (li.prev().is(':last-child')) {
+                        li.prev().removeClass('beforeRemove');
+                    }
+                    if (li.next().is(':first-child')) {
+                        li.next().removeClass('afterRemove');
+                    }
+                    setTimeout(function () {
+                        li.prev().removeClass('beforeRemove');
+                        li.next().removeClass('afterRemove');
+                    }, 200);
+
+                    li.slideUp(400, function () {
+                        li.remove();
+                        select.removeClass('clicked');
+                    });
+                }, 600);
+            }
+        });
+
+        $(document).on('click', '.selectMultiple > div a', function (e) {
+            var select = $(this).parent().parent();
+            var self = $(this);
+            self.removeClass().addClass('remove');
+            select.addClass('open');
+            setTimeout(function () {
+                self.addClass('disappear');
+                setTimeout(function () {
+                    self.animate({
+                        width: 0,
+                        height: 0,
+                        padding: 0,
+                        margin: 0
+                    }, 300, function () {
+                        var li = $('<li />').text(self.children('em').text()).addClass('notShown').appendTo(select.find('ul'));
+                        li.slideDown(400, function () {
+                            li.addClass('show');
+                            setTimeout(function () {
+                                select.find('option:contains(' + self.children('em').text() + ')').prop('selected', false);
+                                if (!select.find('option:selected').length) {
+                                    select.children('div').children('span').removeClass('hide');
+                                }
+                                li.removeClass();
+                            }, 400);
+                        });
+                        self.remove();
+                    })
+                }, 300);
+            }, 400);
+        });
+
+        $(document).on('click', '.selectMultiple > div .arrow, .selectMultiple > div span', function (e) {
+            $(this).parent().parent().toggleClass('open');
+        });
+
+    });
+</script>
 </html>

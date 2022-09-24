@@ -17,8 +17,11 @@ public interface ProductDao {
     Optional<Product> getById(long productId);
     List<Product> getAll();
 
-    List<Product> filter(String name, String category, List<Long> tags, float maxPrice);
+    List<Product> filter(String name, long category, List<Long> tags, float maxPrice);
 
     List<Product> getRecent(int amount);
+
+    void deleteProduct(long productId);
+    void updateStock(long productId, int amount);
 
 }

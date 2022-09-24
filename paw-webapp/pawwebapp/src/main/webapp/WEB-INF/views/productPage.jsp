@@ -6,11 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
+    <%@ include file="header.jsp"%>
     <title><c:out value="${product.name}"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
@@ -30,11 +29,6 @@
     <div class="product-page-container" style="height:available;">
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
-            <c:if test="${product.imageId != 0}">
-                <div class = "productpage-image-container">
-                    <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
-                </div>
-            </c:if>
             <div><c:out value="${product.description}"/></div>
             <c:forEach items="${ecotags}" var="ecotag">
                 <div style="margin-top: 1vh; margin-bottom: 1vh;">
@@ -45,7 +39,8 @@
                 </div>
             </c:forEach>
             <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
-            <div style="height:2vh; width:100%;"></div>
+            <div style="font-size: 20px; height:2vh; width:100%;"><spring:message code="productpage.prodinfo.stock"/>
+            <c:out value="${' '}${product.stock}"/></div>
             <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container">
                 <div style="height:fit-content;">
@@ -57,34 +52,40 @@
                     <span><c:out value="${seller.phone}"/></span>
                 </div>
             </div>
+            <c:if test="${product.imageId != 0}">
+                <div class = "productpage-image-container">
+                    <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                </div>
+            </c:if>
         </div>
         <div class="product-info-container">
             <sec:authorize access="hasRole('USER')">
                 <h4><spring:message code="productpage.orderform.title"/></h4>
                 <c:url value="/process/${product.productId}" var="process"/>
                 <form:form modelAttribute="orderForm" action="${process}" method="post">
-                    <table>
-                        <tr>
-                            <td><form:label path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label></td>
-                            <td>
-                                <form:textarea id="textarea1" class="materialize-textarea" path="message"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label></td>
-                            <td><form:input path="amount"/></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><form:errors path="amount" cssClass="error" element="p"/></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="confirm">
-                                <button type="submit" class="waves-effect waves-light btn">
-                                    <spring:message code="productpage.orderform.submit"/>
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <form:textarea id="textarea1" class="materialize-textarea" path="message" data-length="300"/>
+                            <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        </div>
+                    </div>
+                    <div class="errors">
+                        <form:errors path="message" element="p" cssClass="error"/>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <form:input id="amount" path="amount"/>
+                            <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                        </div>
+                    </div>
+                    <div class="errors">
+                        <form:errors path="amount" element="p" cssClass="error"/>
+                    </div>
+                    <div class="row" style="text-align:center;">
+                        <button type="submit" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.orderform.submit"/>
+                        </button>
+                    </div>
                 </form:form>
             </sec:authorize>
             <sec:authorize access="hasRole('SELLER')">
@@ -102,5 +103,13 @@
 <script>
     $('#textarea1').val('New Text');
     M.textareaAutoResize($('#textarea1'));
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var textNeedCount = document.querySelectorAll('#textarea1');
+        M.CharacterCounter.init(textNeedCount);
+    });
+
+    $('textarea#textarea1').characterCounter();
+
 </script>
 </html>

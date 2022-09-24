@@ -18,82 +18,81 @@
     <c:url value="/registersellerprocess" var="postUrl"/>
     <form:form modelAttribute="sellerForm" method="post" action="${postUrl}" id="user_form">
         <div style="margin:5vh auto; display:block;">
-            <hr class="landing-separator">
-            <h4 style="margin:4vh auto; text-align: center;"><spring:message code="registerseller.title"/></h4>
-            <hr class = "landing-separator">
+            <h4 style="margin:4vh auto; text-align: center; text-decoration: underline;">
+                <spring:message code="registerseller.title"/>
+            </h4>
         </div>
-        <div class="label-container">
-            <form:label style="color:white; width:fit-content;" path="firstName"><spring:message code="registerbuyer.form.name"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-        </div>
-        <div class="register-form-row">
-            <form:input path="firstName" type="text" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="firstName" id="firstName" type="text"/>
+                <label for="firstName"><spring:message code="registerbuyer.form.name"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
         <div class="errors">
             <form:errors path="firstName" element="p" cssClass="error"/>
         </div>
-        <div class="label-container">
-            <form:label style="color:white;" path="surname"><spring:message code="registerbuyer.form.surname"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-        </div>
-        <div class="register-form-row">
-            <form:input path="surname" type="text" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="surname" id="surname" type="text"/>
+                <label for="surname"><spring:message code="registerbuyer.form.surname"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
         <div class="errors">
             <form:errors path="surname" element="p" cssClass="error"/>
         </div>
-        <div class="label-container">
-            <form:label style="color:white;" path="email"><spring:message code="registerbuyer.form.email"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-        </div>
-        <div class="register-form-row">
-            <form:input path="email" type="text" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="email" id="email" type="text"/>
+                <label for="email"><spring:message code="registerbuyer.form.email"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
         <div class="errors">
             <form:errors path="email" element="p" cssClass="error"/>
         </div>
-        <div class="label-container">
-            <form:label style="color:white;" path="username"><spring:message code="registerbuyer.form.username"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-        </div>
-        <div class="register-form-row">
-            <form:errors element="p" cssClass="error"/>
-            <form:input path="username" type="text" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
-        </div>
-        <div class="errors">
-            <form:errors path="username" element="p" cssClass="error"/>
-        </div>
-        <div class="label-container">
-            <form:label style="color:white;" path="password"><spring:message code="registerbuyer.form.password"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-        </div>
-        <div class="register-form-row">
-            <form:input path="password" type="password" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="password" id="password" type="password"/>
+                <label for="password"><spring:message code="registerbuyer.form.password"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
         <div class="errors">
             <form:errors path="password" element="p" cssClass="error"/>
         </div>
-        <div class="label-container">
-            <form:label path="address"><spring:message code="registerbuyer.form.address"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="confirmationPassword" id="confirmationPassword" type="password"/>
+                <label for="password"><spring:message code="registerbuyer.form.confirmpassword"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
-        <div class="register-form-row">
-            <form:input path="address" type="text" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
+        <div class="errors">
+            <form:errors path="confirmationPassword" element="p" cssClass="error"/>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="address" id="address" type="text"/>
+                <label for="address"><spring:message code="registerbuyer.form.address"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
         <div class="errors">
             <form:errors path="address" element="p" cssClass="error"/>
         </div>
-        <div class="label-container">
-            <form:label path="phone"><spring:message code="registerbuyer.form.phone"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-        </div>
-        <div class="register-form-row">
-            <form:input path="phone" type="text" style="margin-bottom: 0; margin-left:4vw; align-self: center;"/>
+        <div class="row">
+            <div class="input-field col s12">
+                <form:input path="phone" id="phone" type="text"/>
+                <label for="phone"><spring:message code="registerbuyer.form.phone"/>
+                    <spring:message code="forms.obligatorysign"/></label>
+            </div>
         </div>
         <div class="errors">
             <form:errors path="phone" element="p" cssClass="error"/>
         </div>
-        <div style="display:flex; margin-top:5vh;">
+        <div style="display:flex; margin-top:3vh;">
             <button type="submit" class="waves-effect waves-light btn">
                 <spring:message code="registerbuyer.form.submit"/>
             </button>
