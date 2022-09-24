@@ -24,7 +24,7 @@
             </ul>
         </div>
         <div id="test1" class="col s12">
-            <div class="seller-profile-container-2-bis">
+            <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
                     <div class="text-center"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">

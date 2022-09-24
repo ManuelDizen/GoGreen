@@ -1012,8 +1012,9 @@ input[type=number] {
     height:fit-content;
     background:var(--palette-color-secondary);
     color:white;
-    display:flex;
-    justify-content: space-around;
+    /*display:flex;
+    justify-content: space-around;*/
+    display:block;
     align-self: center;
     padding-top:6vh;
     padding-bottom:5vh;
@@ -1098,7 +1099,7 @@ input[type=number] {
     width:100%;
     vertical-align: center;
     margin:3vh auto;
-    height:30%;
+    height:80px;
 }
 
 .seller-profile-product-card-info{
@@ -1107,7 +1108,7 @@ input[type=number] {
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
     height:100%;
-    width:80%;
+    width:95%;
 }
 
 .seller-profile-product-card-info a{
