@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
+import ar.edu.itba.paw.webapp.form.StockForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +60,15 @@ public class ProductController {
         this.os = os;
     }
 
+    @RequestMapping(value="/updateStock/{prodId:[0-9]+}")
+    public ModelAndView updateStock(
+            @PathVariable("prodId") final long prodId,
+            @RequestParam(name="newStock", defaultValue="0") final int newStock
+    ){
+        Boolean success = ps.attemptUpdate(prodId, newStock);
+        if(!success) throw new IllegalStateException("Stock update could not go through");
+        return new ModelAndView("redirect:/sellerProfile");
+    }
 
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
@@ -96,7 +106,7 @@ public class ProductController {
         //Product filter
 
         List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
-        List<Product> allProducts = ps.getAll();
+        List<Product> allProducts = ps.getAvailable();
 
         mav.addObject("isEmpty", allProducts.isEmpty());
 
@@ -211,6 +221,11 @@ public class ProductController {
 
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
+
+        if(productObj.getStock() == 0){
+            return new ModelAndView("redirect:/404");
+        }
+
         mav.addObject("product", productObj);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
@@ -232,6 +247,9 @@ public class ProductController {
 
         /* TODO: Check how to workaroung in OrderForm the amount @NotNull annotation
             I tried setting it and app crashed
+                23/9: Creo que el problema era que el input estaba declarado como number.
+                Después revisar si efectivamente era así, o si hace falta mantener este controllerside
+                check.
          */
         if(errors.hasErrors() || form.getAmount() == null){
             return productPage(prodId, form, false, true);
@@ -258,7 +276,7 @@ public class ProductController {
 
         os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
 
-        final ModelAndView mav = new ModelAndView("redirect:/product/" + prodId);
+        final ModelAndView mav = new ModelAndView("redirect:/userProfile");
         mav.addObject("formSuccess", true);
         return mav;
     }
@@ -286,8 +304,6 @@ public class ProductController {
             throw new RuntimeException(e);
         }
 
-
-
         Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
         if (!user.isPresent()) throw new IllegalStateException("No se encntró user");
 
@@ -304,7 +320,5 @@ public class ProductController {
 
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }
-
-
 
 }

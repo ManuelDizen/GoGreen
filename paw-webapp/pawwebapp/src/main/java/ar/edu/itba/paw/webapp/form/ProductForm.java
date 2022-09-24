@@ -5,6 +5,7 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.webapp.validations.FileSize;
 import ar.edu.itba.paw.webapp.validations.FileType;
 
+import ar.edu.itba.paw.webapp.validations.UniqueProductName;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
@@ -17,6 +18,7 @@ public class ProductForm {
 
     @Size(max = 50)
     @NotNull
+    @UniqueProductName
     private String name;
 
     @Size(max = 300)

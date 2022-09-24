@@ -1,24 +1,33 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.services.RoleService;
 import ar.edu.itba.paw.interfaces.services.SecurityService;
+import ar.edu.itba.paw.interfaces.services.UserRoleService;
 import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {
 
     private final UserService userService;
+    private final UserRoleService userRoleService;
+    private final RoleService roleService;
 
     @Autowired
-    public SecurityServiceImpl(final UserService userService){
+    public SecurityServiceImpl(final UserService userService, UserRoleService userRoleService, RoleService roleService){
         this.userService = userService;
+        this.userRoleService = userRoleService;
+        this.roleService = roleService;
     }
 
     public Authentication getAuthentication() {
@@ -63,5 +72,32 @@ public class SecurityServiceImpl implements SecurityService {
             throw new IllegalStateException("No se encontró usuario");
         }
         return user.get().getSurname();
+    }
+
+    @Override
+    public List<Role> getLoggedUserRoles() {
+        List<Role> roles = new ArrayList<>();
+        User user= getLoggedUser();
+        if(user == null) return roles;
+        long userId = user.getId();
+        for(UserRole ur : userRoleService.getById(userId)){
+            Optional<Role> role = roleService.getById(ur.getRoleId());
+            if(!role.isPresent()) throw new RuntimeException();
+            roles.add(role.get());
+        }
+        return roles;
+    }
+
+    @Override
+    public Boolean loggedUserIsSeller() {
+        List<Role> roles = getLoggedUserRoles();
+        boolean isSeller = false;
+        for(Role role:roles){
+            if (role.getName().equals("SELLER")) {
+                isSeller = true;
+                break;
+            }
+        }
+        return isSeller;
     }
 }

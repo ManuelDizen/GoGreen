@@ -1,15 +1,8 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
-import ar.edu.itba.paw.interfaces.persistence.ProductDao;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.OrderService;
-import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.SellerService;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,19 +14,23 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    final static int PAGE_SIZE = 2;
+    final static int PAGE_SIZE = 3;
     private final OrderDao orderDao;
     private final ProductService productService;
     private final EmailService emailService;
     private final SellerService sellerService;
+    private final SecurityService securityService;
+    private final UserService userService;
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ProductService productService,
-                            EmailService emailService, SellerService sellerService) {
+                            EmailService emailService, SellerService sellerService, SecurityService securityService, UserService userService) {
         this.orderDao = orderDao;
         this.productService = productService;
         this.emailService = emailService;
         this.sellerService = sellerService;
+        this.securityService = securityService;
+        this.userService = userService;
     }
 
     @Override
@@ -55,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getBuBuyerEmail(String buyerEmail) {
+    public List<Order> getByBuyerEmail(String buyerEmail) {
         return orderDao.getByBuyerEmail(buyerEmail);
     }
 
@@ -80,8 +77,18 @@ public class OrderServiceImpl implements OrderService {
                 sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
                 message);
 
+        /* TODO: Get updateStock() to return the modified tuple in order to save an invocation */
         productService.updateStock(product.getProductId(), amount);
-
+        Optional<Product> modified = productService.getById(product.getProductId());
+        if(!modified.isPresent()) throw new IllegalStateException("Product not found");
+        if(modified.get().getStock() == 0){
+            /* Notify the seller via mail*/
+            Optional<User> seller2 = userService.findById(seller.getUserId());
+            if(!seller2.isPresent()) throw new IllegalStateException();
+            User u = seller2.get();
+            emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
+                    u.getSurname(), u.getLocale());
+        }
         if(order == null) throw new IllegalStateException("No se instanció la orden");
     }
 
@@ -96,7 +103,32 @@ public class OrderServiceImpl implements OrderService {
         }
         if(list.size() % PAGE_SIZE != 0)
             pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        if(list.size() == 0) pageList.add(new ArrayList<>());
         return pageList;
 
+    }
+
+    @Override
+    public Boolean checkForOrderOwnership(long orderId) {
+        User user = securityService.getLoggedUser();
+        if(user == null) return false;
+        Optional<Order> maybeOrder = getById(orderId);
+        if(maybeOrder.isPresent()){
+            Order order = maybeOrder.get();
+            System.out.println("Entre a order.get");
+            System.out.println("Seller email: " + order.getSellerEmail() + " userEmail: " + user.getEmail());
+            return order.getSellerEmail().equals(user.getEmail());
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean deleteOrder(long orderId) {
+        /* Primero, borro instancia de orden. Después, reestablezo stock */
+        Optional<Order> order = orderDao.getById(orderId);
+        if(!order.isPresent()) throw new IllegalStateException();
+        Boolean delete = orderDao.deleteOrder(orderId);
+        if(!delete) throw new RuntimeException("No volví de deleted");
+        return productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
 }

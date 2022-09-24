@@ -58,19 +58,12 @@ public class UserController {
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
         mav.addObject("user", user.get());
 
-        System.out.println(page);
-        //TODO: Typo
-        List<Order> orders = orderService.getBuBuyerEmail(user.get().getEmail());
-        for(Order o : orders) {
-            System.out.println(o.getBuyerName());
-            System.out.println(o.getBuyerSurname());
-        }
+        List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
 
         List<List<Order>> orderPages = orderService.divideIntoPages(orders);
 
         mav.addObject("currentPage", page);
         mav.addObject("pages", orderPages);
-
         mav.addObject("orders", orderPages.get(page-1));
         return mav;
     }

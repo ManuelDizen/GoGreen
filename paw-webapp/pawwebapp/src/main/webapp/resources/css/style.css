@@ -800,6 +800,7 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    width:100%;
 }
 
 .explore-filter-title{
@@ -1010,10 +1011,11 @@ ALL CREDITS TO @andrewsims
 }
 
 .product-card{
-    width: 40%;
+    width: 30%;
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
+    height:fit-content;
 }
 
 .product-card:hover{
@@ -1063,6 +1065,38 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card-title{
     font-size:20px;
     margin-top: 2vh;
+}
+
+.seller-profile-product-card,
+.seller-profile-product-card-info{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.seller-profile-product-card-info #stockless{
+    margin:auto 1vw auto 1vw;
+    align-items:center;
+    display:flex;
+}
+
+.seller-profile-product-card-info #stockless i,
+.seller-profile-product-card-info #edit i,
+.seller-profile-product-card-info #delete i{
+    margin-right:10px;
+}
+
+.seller-profile-product-card-info #productinfo{
+    margin: auto 1vw auto 1vw;
+    display:flex;
+    align-items:center;
+}
+
+.seller-profile-product-card-info #edit,
+.seller-profile-product-card-info #delete{
+    margin: auto 1vw auto 1vw;
+    display:inline-flex;
+    align-items:center;
 }
 
 /* ------- REGISTER VIEWS ------- */
@@ -1295,8 +1329,9 @@ input[type=number] {
     height:fit-content;
     background:var(--palette-color-secondary);
     color:white;
-    display:flex;
-    justify-content: space-around;
+    /*display:flex;
+    justify-content: space-around;*/
+    display:block;
     align-self: center;
     padding-top:6vh;
     padding-bottom:5vh;
@@ -1381,10 +1416,16 @@ input[type=number] {
     width:100%;
     vertical-align: center;
     margin:3vh auto;
+    height:80px;
 }
 
 .seller-profile-product-card-info{
     text-align:center;
+    background-color:var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    border-radius: 10px;
+    height:100%;
+    width:95%;
 }
 
 .seller-profile-product-card-info a{

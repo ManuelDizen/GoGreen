@@ -13,9 +13,7 @@
     <%@ include file="header.jsp"%>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
@@ -29,7 +27,7 @@
             </ul>
         </div>
         <div id="test1" class="col s12">
-            <div class="seller-profile-container-2-bis">
+            <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
                     <div class="text-center"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
@@ -40,11 +38,11 @@
                             <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">
                         </c:if>
                     </div>
-                    <div style="width:100%;" class="text-center">
+                    <%--<div style="width:100%;" class="text-center">
                         <a class="decision-button waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changepic"/>
                         </a>
-                    </div>
+                    </div>--%>
                 </div>
                 <div class="seller-inner-div-2">
                     <div><spring:message code="sellerprofile.info"/>
@@ -55,11 +53,11 @@
                             <li><c:out value="${seller.phone}"/></li>
                         </ul>
                     </div>
-                    <div>
+                    <%--<div>
                         <a class="decision-button waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changeinfo"/>
                         </a>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
         </div>
@@ -79,44 +77,93 @@
                     <c:if test="${products.size() != 0}">
                         <c:set var="count" value="0"/>
                         <c:forEach items="${products}" var="product">
-                            <c:if test="${count == 3}">
-                                <a class="waves-effect waves-light btn standard-button"
-                                   href="<c:url value="/sellerProfile/products"/>">
-                                    <spring:message code="sellerprofile.moreproducts"/>
-                                </a>
-                                <c:set var="count" value="${count + 1}"/>
-                            </c:if>
                             <c:if test="${count lt 3}">
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">
-                                        <a style="margin-right:2vw;" href="<c:url value="/product/${product.productId}"/>">
-                                            <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
-                                            <c:out value="${product.price}"/>
-                                            </span>
-                                        </a>
-                                <span style="margin-right:1vw;">
-                                    <a href="<c:url value="/editProduct/${product.productId}"/>">
-                                        <i class="material-icons">edit</i>
-                                    </a>
-                                    <a class="modal-trigger" href="#modal${product.productId}">
-                                        <i class="material-icons">delete_forever</i>
-                                    </a>
-                                </span>
+                                        <c:if test="${product.stock == 0}">
+                                            <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
+                                                <i class="material-icons">warning</i>
+                                                <spring:message code="sellerprofile.warning.nostock"/>
+                                            </a>
+                                            <a id="productinfo" style="margin-right:2vw; font-size:18px;">
+                                                <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
+                                                <c:out value="${product.price}"/>
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${product.stock != 0}">
+                                            <a id="productinfo" style="margin-right:2vw; font-size:18px;" href="<c:url value="/product/${product.productId}"/>">
+                                                <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
+                                                <c:out value="${product.price}"/> - <spring:message code="sellerprofile.stock"/>
+                                                <c:out value="${product.stock}"/>
+                                            </a>
+                                        </c:if>
+                                        <div style="margin-right:1vw; display:inline-flex">
+                                            <a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}">
+                                                <i class="material-icons">check</i>
+                                                <spring:message code="sellerprofile.updatestock"/>
+                                            </a>
+                                            <a id="delete" class="waves-effect waves-light btn red accent-4 modal-trigger" href="#modal${product.productId}">
+                                                <i class="material-icons">delete_forever</i>
+                                                <spring:message code="sellerprofile.delete.confirmbutton"/>
+                                            </a>
+                                        </div>
                                     </div>
+                                </div>
+                                <div id="stockModal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                    <div class="modal-content">
+                                        <c:if test="${product.stock == 0}">
+                                            <h3 style="text-decoration: underline"><spring:message code="sellerprofile.nostock.message"/>:
+                                                <c:out value="${product.name}"/></h3>
+                                            <div style="text-align: center;">
+                                                <spring:message code="sellerprofile.updatestock.note"/>
+                                                <b><spring:message code="sellerprofile.updatestock.note2"/>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${product.stock != 0}">
+                                            <h3 style="text-decoration: underline"><spring:message code="sellerprofile.updatestock.message"/>:
+                                                <c:out value="${product.name}"/></h3>
+                                        </c:if>
+                                    </div>
+                                    <c:url value="/updateStock/${product.productId}" var="updateStockUrl"/>
+                                    <form action="${updateStockUrl}" method="get" id="update_form">
+                                        <div class="col s12">
+                                            <div class="input-field col s12">
+                                                <input path="newStock" name="newStock" id="newStock" type="text" class="validate">
+                                                <label for="newStock"><spring:message code="sellerprofile.newstock"/></label>
+                                            </div>
+                                        </div>
+                                        <div class="row s12" style="display:flex; justify-content: center;">
+                                            <a class="modal-close waves-effect waves-green btn-flat" style="color:white; margin-right:5px;">
+                                                <spring:message code="sellerprofile.delete.cancel"/>
+                                            </a>
+                                            <button class="btn waves-effect waves-light green accent-4" type="submit" name="newStock" style="margin-left:5px;">
+                                                <spring:message code="sellerprofile.update.button"/>
+                                                <i class="material-icons right">check</i>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div id="modal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
                                     <div class="modal-content">
                                         <h3 style="text-decoration: underline"><spring:message code="sellerprofile.delete.confirm"/></h3>
                                         <h4><c:out value="${product.name}"/></h4>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="row s12" style="display:flex; justify-content: center;">
+                                        <a class="modal-close waves-effect waves-green btn-flat" style="color:white; margin-right:1vw;">
+                                            <spring:message code="sellerprofile.delete.cancel"/>
+                                        </a>
+                                        <a style="margin-left:1vw;" class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>
+                                            <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                                        </a>
+                                    </div>
+                                    <%--<div class="modal-footer">
                                         <a class="modal-close waves-effect waves-green btn-flat">
                                             <spring:message code="sellerprofile.delete.cancel"/>
                                         </a>
                                         <a class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>
                                             <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
                                         </a>
-                                    </div>
+                                    </div>--%>
                                 </div>
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
@@ -173,11 +220,39 @@
                                 </div>
                                 <div class="seller-profile-card-content">
                                     <spring:message code="sellerprofile.orders.time"/>
-                                    <c:out value="${order.dateTime}"/>
+                                    <c:out value="${order.parsedDateTime}"/>
                                 </div>
                                 <div>
                                     <spring:message code="sellerprofile.orders.buyer"/>
                                     <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                </div>
+                                <div style="margin:5vh auto 2vh auto;">
+                                    <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
+                                    <spring:message code="sellerprofile.cancelorder"/></a>
+                                </div>
+                            </div>
+                            <div id="ordermodal${order.id}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                <div class="modal-content">
+                                    <h3 style="text-decoration: underline"><spring:message code="sellerprofile.deleteorder.confirm"/></h3>
+                                    <div>
+                                        <h4><c:out value="${order.productName}"/></h4>
+                                        <ul>
+                                            <li>
+                                                <spring:message code="sellerprofile.deleteorder.buyer"/>
+                                                <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                                <spring:message code="sellerprofile.deleteorder.amount"/>
+                                                <c:out value="${order.amount}"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="modal-close waves-effect waves-green btn-flat">
+                                        <spring:message code="sellerprofile.delete.cancel"/>
+                                    </a>
+                                    <a class="waves-effect waves-light btn  red accent-4" href="<c:url value="/deleteOrder/${order.id}"/>">
+                                        <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                                    </a>
                                 </div>
                             </div>
                         </c:forEach>

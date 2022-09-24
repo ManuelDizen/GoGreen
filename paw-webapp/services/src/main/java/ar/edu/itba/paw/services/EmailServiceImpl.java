@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -103,4 +104,18 @@ public class EmailServiceImpl implements EmailService {
         sendThymeleafMail(user.getEmail(), "userRegistration", data,
                 "subject.registerUserTitle", locale);
     }
+
+    @Async
+    @Override
+    public void noMoreStock(Product product, String sellerEmail, String sellerName,
+                            String sellerSurname, Locale locale) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", product.getName());
+        data.put("name", sellerName);
+        data.put("surname", sellerSurname);
+        sendThymeleafMail(sellerEmail, "noMoreStock", data,
+                "subject.noMoreStock", locale);
+    }
+
+
 }

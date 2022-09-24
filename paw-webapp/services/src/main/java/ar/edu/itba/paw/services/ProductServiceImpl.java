@@ -33,11 +33,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
                           int stock, float price, byte[] image) {
-        Image img = imageService.create(image);
-        if(img == null){
-            throw new IllegalArgumentException("Error en creación de imagen");
+        long imgId = 0;
+        if(image != null && image.length > 0){
+            imgId = imageService.create(image).getId();
         }
-        return productDao.create(sellerId, categoryId, name, description, stock, price, img.getId());
+        return productDao.create(sellerId, categoryId, name, description, stock, price, imgId);
     }
 
     @Override
@@ -61,9 +61,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Optional<Product> getByName(String name) {
+        return productDao.getByName(name);
+    }
+
+    @Override
     public List<Product> getAll() {
         return productDao.getAll();
     }
+
+    @Override
+    public List<Product> getAvailable(){return productDao.getAvailable();}
 
     @Override
     public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice) {
@@ -138,6 +146,7 @@ public class ProductServiceImpl implements ProductService {
         }
         if(list.size() % PAGE_SIZE != 0)
             pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        if(list.size() == 0) pageList.add(new ArrayList<>());
         return pageList;
     }
 
@@ -147,11 +156,20 @@ public class ProductServiceImpl implements ProductService {
         productDao.deleteProduct(productId);
     }
 
+    // TODO: This method's logic could be integrated to attemptUpdate()
     @Override
     public Boolean attemptDelete(long productId) {
         if(checkForOwnership(productId)){
             deleteProduct(productId);
             return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean attemptUpdate(long productId, int amount){
+        if(checkForOwnership(productId)){
+           return addStock(productId, amount);
         }
         return false;
     }
@@ -177,8 +195,6 @@ public class ProductServiceImpl implements ProductService {
             return userProdOwner.get().getEmail().equals(user.getEmail());
         }
         return false;
-
-
     }
 
     @Override
@@ -186,6 +202,23 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) return;
         productDao.updateStock(prodId, (product.get().getStock()-amount));
+    }
+
+
+
+    @Override
+    public Boolean addStock(String prodName, int amount) {
+        System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
+        Optional<Product> prod = getByName(prodName);
+        if(!prod.isPresent()) throw new IllegalStateException();
+        return productDao.addStock(prodName, (amount + prod.get().getStock()));
+    }
+
+    @Override
+    public Boolean addStock(long prodId, int amount){
+        Optional<Product> product = getById(prodId);
+        if(!product.isPresent()) return false;
+        return addStock(product.get().getName(), amount);
     }
 
     @Override

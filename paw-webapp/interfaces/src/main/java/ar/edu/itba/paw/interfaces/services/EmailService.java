@@ -14,4 +14,7 @@ public interface EmailService {
 
     void registration(User user, Locale locale);
 
+    void noMoreStock(Product product, String sellerEmail, String sellerName,
+                            String sellerSurname, Locale locale);
+
 }

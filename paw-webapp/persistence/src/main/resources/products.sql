@@ -46,6 +46,7 @@ create table if not exists images(
 
 alter table products add column if not exists imageId integer default null;
 alter table products add foreign key (imageId) references images(id) on delete set null;
+alter table products add unique (name);
 
 ALTER TABLE products ADD FOREIGN KEY (sellerId) REFERENCES sellers(id) ON DELETE CASCADE;
 

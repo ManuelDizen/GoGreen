@@ -16,7 +16,9 @@ public interface ProductService {
     Optional<List<Product>> getByMaxPrice(float price);
     Optional<List<Product>> getByCategory(long categoryId);
     Optional<Product> getById(long productId);
+    Optional<Product> getByName(String name);
     List<Product> getAll();
+    List<Product> getAvailable();
 
 
     List<Product> getRecent(int amount);
@@ -28,10 +30,14 @@ public interface ProductService {
 
     void deleteProduct(long productId);
     Boolean attemptDelete(long productId);
+    Boolean attemptUpdate(long productId, int amount);
 
     Boolean checkForAvailableStock(Product p, int amount);
     Boolean checkForOwnership(long prodId);
     void updateStock(long prodId, int amount);
+
+    Boolean addStock(String prodName, int amount);
+    Boolean addStock(long prodId, int amount);
 
     String buildPath(String[] strings);
 }
