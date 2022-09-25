@@ -276,7 +276,7 @@ public class ProductController {
 
         os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
 
-        final ModelAndView mav = new ModelAndView("redirect:/userProfile");
+        final ModelAndView mav = new ModelAndView("redirect:/userProfile#test2");
         mav.addObject("formSuccess", true);
         return mav;
     }
