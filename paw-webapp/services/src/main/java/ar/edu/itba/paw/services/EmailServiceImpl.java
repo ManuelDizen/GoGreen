@@ -113,7 +113,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("productName", product.getName());
         data.put("name", sellerName);
         data.put("surname", sellerSurname);
-        sendThymeleafMail(sellerEmail, "noMoreStock", data,
+        sendThymeleafMail(sellerEmail, "noStock", data,
                 "subject.noMoreStock", locale);
     }
 
