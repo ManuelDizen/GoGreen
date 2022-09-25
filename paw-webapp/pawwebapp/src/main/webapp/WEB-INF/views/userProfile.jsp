@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="seller-profile-card-content">
                                     <spring:message code="sellerprofile.orders.time"/>
-                                    <c:out value="${order.dateTime}"/>
+                                    <c:out value="${order.parsedDateTime}"/>
                                 </div>
                                 <div>
                                     <spring:message code="userprofile.orders.seller"/>

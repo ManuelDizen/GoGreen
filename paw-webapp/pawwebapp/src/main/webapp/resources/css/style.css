@@ -1303,7 +1303,9 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 .container #product_form .input-field .select-wrapper ul,
 .container #product_form .row .input-field .btn .character-counter,
 input#ecotag, input#ecotag2,
-.explore-container #filter_form .row .input-field .select-wrapper ul{
+.explore-container #filter_form .row .input-field .select-wrapper ul,
+.input-field .selectMultiple .select-wrapper,
+.sort ul{
     display: none;
 }
 
