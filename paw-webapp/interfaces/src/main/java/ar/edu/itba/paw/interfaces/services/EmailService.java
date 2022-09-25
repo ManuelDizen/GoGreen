@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
 
@@ -16,5 +17,7 @@ public interface EmailService {
 
     void noMoreStock(Product product, String sellerEmail, String sellerName,
                             String sellerSurname, Locale locale);
+
+    void orderCancelled(Order order, Locale buyerLocale, Locale sellerLocale);
 
 }

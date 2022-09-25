@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
@@ -23,6 +24,7 @@ import java.util.Map;
 @Service
 public class EmailServiceImpl implements EmailService {
 
+    
     private final JavaMailSender mailSender;
 
     private final SpringTemplateEngine templateEngine;
@@ -115,6 +117,38 @@ public class EmailServiceImpl implements EmailService {
         data.put("surname", sellerSurname);
         sendThymeleafMail(sellerEmail, "noStock", data,
                 "subject.noMoreStock", locale);
+    }
+
+    @Async
+    @Override
+    public void orderCancelled(Order order, Locale buyerLocale, Locale sellerLocale) {
+        notifyBuyerOrderCancelled(order.getProductName(), order.getBuyerEmail(), order.getBuyerName(),
+                order.getBuyerSurname(), order.getParsedDateTime(), order.getAmount(), buyerLocale);
+        notifySellerOrderCancelled(order.getProductName(), order.getSellerEmail(), order.getSellerName(),
+                order.getSellerSurname(), order.getAmount(), sellerLocale);
+    }
+
+    void notifyBuyerOrderCancelled(String productName, String buyerEmail, String buyerName, String buyerSurname,
+                                   String orderDateTime, Integer amount, Locale locale){
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", productName);
+        data.put("name", buyerName);
+        data.put("surname", buyerSurname);
+        data.put("datetime", orderDateTime);
+        data.put("amount", amount);
+        sendThymeleafMail(buyerEmail, "orderCancelledBuyer", data,
+                "subject.orderCancelledBuyer", locale); //TODO: HACE ESTA DECLARACIÓN
+    }
+
+    void notifySellerOrderCancelled(String productName, String sellerEmail, String sellerName, String sellerSurname,
+                                    Integer amount, Locale locale){
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", productName);
+        data.put("name", sellerName);
+        data.put("surname", sellerSurname);
+        data.put("amount", amount);
+        sendThymeleafMail(sellerEmail, "orderCancelledSeller", data,
+                "subject.orderCancelledSeller", locale);
     }
 
 
