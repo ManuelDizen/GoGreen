@@ -47,8 +47,6 @@
                         <ul>
                             <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
                             <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
-                            <li><spring:message code="sellerprofile.address"/>:<c:out value="${seller.address}"/></li>
-                            <li><spring:message code="sellerprofile.phone"/>:<c:out value="${seller.phone}"/></li>
                         </ul>
                     </div>
                     <%--iv>

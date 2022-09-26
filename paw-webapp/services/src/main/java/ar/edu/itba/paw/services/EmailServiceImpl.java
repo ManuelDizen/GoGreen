@@ -76,7 +76,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("sellerPhone", sellerPhone);
         data.put("sellerMail", sellerMail);
         sendThymeleafMail(buyerEmail, "productPurchase", data,
-                "subject.sellerMailTitle", locale);
+                "subject.buyerMailTitle", locale);
     }
 
     @Async
@@ -93,7 +93,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("buyerMessage", buyerMessage);
 
         sendThymeleafMail(sellerEmail, "sellerPurchase", data,
-                "subject.buyerMailTitle", locale);
+                "subject.sellerMailTitle", locale);
     }
 
     @Async

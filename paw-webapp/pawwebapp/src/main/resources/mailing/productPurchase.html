@@ -120,13 +120,12 @@
                                                         <tr style="border-collapse:collapse">
                                                             <td align="left" style="padding:0;Margin:0;padding-top:5px">
                                                                 <div style="align-items:center; text-align:center;">
-                                                                    <h3 th:text="#{greeting(${buyer})}"></h3>
-                                                                    <p th:text="#{purchase(${amount}, ${product}, ${price})}"></p>
-                                                                    <p style="font-weight: bold;" th:text="#{totalprice(${total})}"></p>
-                                                                    <h3 th:text="#{sellerInfo}"></h3>
-                                                                    <div th:text="#{sellerNameMsg(${sellerName})}"></div>
-                                                                    <div th:text="#{sellerEmailMsg(${sellerMail})}"></div>
-                                                                    <div th:text="#{sellerPhoneMsg(${sellerPhone})}"></div>
+                                                                    <p style="color:white;" th:text="#{purchase(${amount}, ${product}, ${price})}"></p>
+                                                                    <p style="font-weight: bold; color:white;" th:text="#{totalprice(${total})}"></p>
+                                                                    <h3 style="color:white;" th:text="#{sellerInfo}"></h3>
+                                                                    <div style="color:white;" th:text="#{sellerNameMsg(${sellerName})}"></div>
+                                                                    <div style="color:white;" th:text="#{sellerEmailMsg(${sellerMail})}"></div>
+                                                                    <div style="color:white;" th:text="#{sellerPhoneMsg(${sellerPhone})}"></div>
                                                                 </div>
                                                             </td>
                                                         </tr>
