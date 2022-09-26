@@ -124,11 +124,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean deleteOrder(long orderId) {
-        /* Primero, borro instancia de orden. Después, reestablezo stock */
+        /* Primero, borro instancia de orden. Después, reestablezo stock
+        *
+        * TODO: No me gusta la lógica de este método. Hay que pasarlo si o si a un trigger,
+        *  si falla agregando stock es un problema para el seller.
+        *
+        * */
         Optional<Order> order = orderDao.getById(orderId);
         if(!order.isPresent()) throw new IllegalStateException();
         Boolean delete = orderDao.deleteOrder(orderId);
         if(!delete) throw new RuntimeException("No volví de deleted");
+
+        /* Get locale of both buyer and seller from their mails*/
+        Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
+        if(!buyer.isPresent()) throw new RuntimeException("No encontre buyer de order");
+        Optional<User> seller = userService.findByEmail(order.get().getSellerEmail());
+        if(!seller.isPresent()) throw new RuntimeException("No encontre seller de order");
+
+        emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
         return productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
 }

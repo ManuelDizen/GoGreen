@@ -9,7 +9,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="profile.title"/>${user.firstName} ${user.surname}</title>
+    <title><spring:message code="profile.title"/> ${user.firstName} ${user.surname}</title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>
@@ -35,26 +35,27 @@
                             <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">
                         </c:if>
                     </div>
-                    <div style="width:100%;" class="text-center">
+                    <%--div style="width:100%;" class="text-center">
                         <a class="waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changepic"/>
                         </a>
-                    </div>
+                    </div--%>
                 </div>
                 <div class="seller-inner-div-2">
-                    <div><spring:message code="sellerprofile.info"/>
+                    <div>
+                        <div style="font-size: 20px;"><b><spring:message code="sellerprofile.info"/></b></div>
                         <ul>
-                            <li><c:out value="${user.firstName}${' '}${user.surname}"/></li>
-                            <li><c:out value="${user.email}"/></li>
-                            <li><c:out value="${seller.address}"/></li>
-                            <li><c:out value="${seller.phone}"/></li>
+                            <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
+                            <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
+                            <li><spring:message code="sellerprofile.address"/>:<c:out value="${seller.address}"/></li>
+                            <li><spring:message code="sellerprofile.phone"/>:<c:out value="${seller.phone}"/></li>
                         </ul>
                     </div>
-                    <div>
+                    <%--iv>
                         <a class="waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changeinfo"/>
                         </a>
-                    </div>
+                    </div--%>
                 </div>
             </div>
         </div>
@@ -83,7 +84,7 @@
                                 </div>
                                 <div class="seller-profile-card-content">
                                     <spring:message code="sellerprofile.orders.time"/>
-                                    <c:out value="${order.dateTime}"/>
+                                    <c:out value="${order.parsedDateTime}"/>
                                 </div>
                                 <div>
                                     <spring:message code="userprofile.orders.seller"/>

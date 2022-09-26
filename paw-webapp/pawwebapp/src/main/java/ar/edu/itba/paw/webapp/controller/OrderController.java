@@ -23,7 +23,7 @@ public class OrderController {
         if(!isOwner) throw new IllegalStateException();
         Boolean deleted = orderService.deleteOrder(orderId);
         if(!deleted) throw new RuntimeException("Volví de deleted");
-        ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
+        ModelAndView mav = new ModelAndView("redirect:/sellerProfile#test3");
         return mav;
     }
 }

@@ -34,7 +34,7 @@
                 <div style="margin-top: 1vh; margin-bottom: 1vh;">
                         <div class="${ecotag.color} white-text chip">
                             <i class="tiny material-icons">${ecotag.icon}</i>
-                                ${ecotag.tag}
+                            <spring:message code="${ecotag.tag}"/>
                         </div>
                 </div>
             </c:forEach>
