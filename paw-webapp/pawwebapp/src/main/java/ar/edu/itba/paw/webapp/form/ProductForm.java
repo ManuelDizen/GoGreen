@@ -23,13 +23,11 @@ public class ProductForm {
 
     @Min(value=1, message= "Por favor, introduzca un precio válido")
     @NotNull
-    @Pattern(regexp = "[0-9]+", message = "Introduzca un valor numérico apropiado, por favor.")
     private Integer price;
 
-    @NotNull
     @Min(value=1, message="Por favor, introduzca un stock válido")
     @Max(value=10000, message="El máximo para publicar son 10000 unidades.")
-    @Pattern(regexp = "[0-9]+", message = "Introduzca un valor numérico apropiado, por favor.")
+    @NotNull
     private Integer stock;
 
     @FileType(types = {"image/png", "image/jpeg"}, message="Por favor, use archivos de extensión .png o .jpeg.")

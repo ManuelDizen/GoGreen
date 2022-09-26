@@ -86,7 +86,7 @@
                                                 <spring:message code="sellerprofile.warning.nostock"/>
                                             </a>
                                             <a id="productinfo" style="margin-right:2vw; font-size:18px;">
-                                                <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
+                                                <br><b><c:out value="${product.name}"/></b>  - <spring:message code="sellerprofile.orders.price"/>
                                                 <c:out value="${product.price}"/>
                                             </a>
                                         </c:if>

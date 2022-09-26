@@ -11,7 +11,6 @@ public class OrderForm {
 
     @Min(value = 1, message = "Por favor, introduzca una cantidad válida (mínimo 1 unidad)")
     @Max(value = 5, message = "El límite de compra son 5 unidades.")
-    @Pattern(regexp = "[0-9]+", message="Por favor, introduzca un valor válido.")
     private Integer amount;
 
     public String getMessage() {

@@ -38,7 +38,7 @@
             <div>
                 <form:label path="price"><spring:message code="createproduct.form.price"/>
                     <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="price"/>
+                <form:input path="price" type="number"/>
                 <form:errors path="price" element="p" cssClass="error"/>
             </div>
             <div class="input-field">
@@ -51,11 +51,12 @@
                 <form:errors path="category" element="p" cssClass="error"/>
             </div>
             <div>
-                <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
-                <form:input path="stock"/>
+                <form:label path="stock"><spring:message code="createproduct.form.stock"/>
+                <spring:message code="forms.obligatorysign"/></form:label>
+                <form:input path="stock" type="number"/>
                 <form:errors path="stock" element="p" cssClass="error"/>
             </div>
-            <div class="input-field">
+            <div class="input-field" style="display:flex; justify-content: center;">
                 <form:select path="ecotag" multiple="true">
                     <c:forEach items="${tagList}" var="ecotag">
                         <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
