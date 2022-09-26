@@ -23,13 +23,23 @@
     </div>
     <div class="sort">
         <c:if test="${direction == 0}">
-            <a class="chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=1"><i class="tiny material-icons">north</i></a>
+            <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=1"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem; height:100%;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    color:white;">north</i></a>
         </c:if>
         <c:if test="${direction == 1}">
-            <a class="chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=0"><i class="tiny material-icons">south</i></a>
+            <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=0"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    color:white;">south</i></a>
         </c:if>
         <!-- Dropdown Trigger -->
-        <a class='dropdown-trigger btn waves-effect waves-light btn standard-button' href='#' data-target='dropdown1'><spring:message code="${sortName}"/></a>
+        <a class='dropdown-trigger btn waves-effect waves-light btn standard-button' href='#' data-target='dropdown1' style="align-self:center;"><spring:message code="${sortName}"/></a>
 
         <!-- Dropdown Structure -->
         <ul id='dropdown1' class='dropdown-content'>
@@ -52,19 +62,19 @@
             <div>
                 <ul class="pagination">
                     <c:if test="${currentPage <= 1}">
-                        <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
+                        <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                     </c:if>
                     <c:if test="${currentPage > 1}">
-                        <li><a href="?page=${previousPage}"><i class="material-icons">navigate_before</i></a></li>
+                        <li><a href="?page=${previousPage}"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                         <li class="waves-effect"><a href="?page=${previousPage}" style="color: #EDFA8B">${previousPage}</a></li>
                     </c:if>
                     <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
                     <c:if test="${currentPage < pages.size()}">
                         <li class="waves-effect"><a href="?page=${nextPage}" style="color: #EDFA8B">${nextPage}</a></li>
-                        <li><a href="?page=${nextPage}"><i class="material-icons">navigate_next</i></a></li>
+                        <li><a href="?page=${nextPage}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
                     <c:if test="${currentPage >= pages.size()}">
-                        <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
+                        <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
                 </ul>
             </div>

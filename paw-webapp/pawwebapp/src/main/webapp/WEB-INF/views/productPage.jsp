@@ -54,7 +54,7 @@
             </div>
             <c:if test="${product.imageId != 0}">
                 <div class = "productpage-image-container">
-                    <img src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                    <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
                 </div>
             </c:if>
         </div>
@@ -110,6 +110,11 @@
     });
 
     $('textarea#textarea1').characterCounter();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.materialboxed');
+        var instances = M.Materialbox.init(elems, options);
+    });
 
 </script>
 </html>

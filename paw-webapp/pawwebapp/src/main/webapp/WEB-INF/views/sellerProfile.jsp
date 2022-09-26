@@ -177,19 +177,19 @@
                 <div>
                     <ul class="pagination">
                         <c:if test="${currentPageP <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                         </c:if>
                         <c:if test="${currentPageP > 1}">
-                            <li><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons">navigate_before</i></a></li>
+                            <li><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                             <li class="waves-effect"><a href="?pageP=${currentPageP-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
                         </c:if>
                         <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
                         <c:if test="${currentPageP < productPages.size()}">
                             <li class="waves-effect"><a href="?pageP=${currentPageP+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons">navigate_next</i></a></li>
+                            <li><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                         </c:if>
                         <c:if test="${currentPageP >= productPages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                         </c:if>
                     </ul>
                 </div>
@@ -265,19 +265,19 @@
                 <div>
                     <ul class="pagination">
                         <c:if test="${currentPageO <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                         </c:if>
                         <c:if test="${currentPageO > 1}">
-                            <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons">navigate_before</i></a></li>
+                            <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                             <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>
                         </c:if>
                         <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
                         <c:if test="${currentPageO < orderPages.size()}">
                             <li class="waves-effect"><a href="?pageO=${currentPageO+1}#test3" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons">navigate_next</i></a></li>
+                            <li><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                         </c:if>
                         <c:if test="${currentPageO >= orderPages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                         </c:if>
                     </ul>
                 </div>

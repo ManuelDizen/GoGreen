@@ -418,10 +418,6 @@ nav {
     background:red;
 }
 
-.errorTr td{
-
-}
-
 #amount.errors, #phone.errors{
     font-size: medium;
     color: inherit;
@@ -487,7 +483,10 @@ nav {
     color: #1E425E;
 }
 
-
+.productpage-image-container .material-placeholder{
+    display:flex;
+    justify-content: center;
+}
 
 /* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
 to remove automatic appearance of increment and decrement bar
@@ -1225,7 +1224,26 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: flex;
     flex-direction: row-reverse;
     margin-right: 50px;
-    margin-bottom: 20px;
+    height:10%;
+}
+
+.custom-chip{
+    height:100%;
+    font-size:20px;
+    font-weight:300;
+    padding: 5px 12px;
+    border-radius:12px;
+    background-color: transparent;
+    color: white;
+}
+
+.sort-arrow{
+    height:100%;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    color:white;
 }
 
 .check {
@@ -1435,15 +1453,19 @@ input[type=number] {
 }
 
 .yellow-card {
-    background: #EDFA8B;
+    background: var(--palette-details-light);
 }
 
 .enabled {
-    color: #EDFA8B;
+    color: var(--palette-details-light);
 }
 
 .pagin {
     display: flex;
     flex-grow: 1;
     justify-content: center;
+}
+
+.pagination-arrow{
+    color:white;
 }

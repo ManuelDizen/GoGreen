@@ -26,7 +26,7 @@
         <div id="test1" class="col s12">
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
-                    <div class="text-center"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                    <div class="text-center" style="font-weight: bold; font-size: 20px;"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
                         <c:if test="${user.imageId == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
@@ -99,48 +99,24 @@
                 <div>
                     <ul class="pagination">
                         <c:if test="${currentPage <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                         </c:if>
                         <c:if test="${currentPage > 1}">
-                            <li><a href="?page=${currentPage-1}#test2"><i class="material-icons">navigate_before</i></a></li>
+                            <li><a href="?page=${currentPage-1}#test2"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
                             <li class="waves-effect"><a href="?page=${currentPage-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
                         </c:if>
                         <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
                         <c:if test="${currentPage < pages.size()}">
                             <li class="waves-effect"><a href="?page=${currentPage+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?page=${currentPage+1}#test2"><i class="material-icons">navigate_next</i></a></li>
+                            <li><a href="?page=${currentPage+1}#test2"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                         </c:if>
                         <c:if test="${currentPage >= pages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                         </c:if>
                     </ul>
                 </div>
             </div>
         </div>
-<%--    <div class="seller-profile-main-body-container-information">--%>
-<%--        <div class="seller-profile-container">--%>
-<%--            <h4 class="profile-row">${user.firstName} ${user.surname}</h4>--%>
-<%--            <c:if test="${user.imageId == 0}">--%>
-<%--                <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">--%>
-<%--            </c:if>--%>
-<%--            <c:if test="${user.imageId != 0}">--%>
-<%--                <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">--%>
-<%--            </c:if>--%>
-<%--            <div class="profile-row">--%>
-<%--                <span><spring:message code ="sellerprofile.mail"/> ${user.email}</span>--%>
-<%--            </div>--%>
-<%--            <div class="profile-row">--%>
-<%--                <span><spring:message code ="sellerprofile.name"/> ${user.firstName} ${user.surname}</span>--%>
-<%--            </div>--%>
-<%--            <div class="profile-row">--%>
-<%--                <a href="<c:url value="/logout"/>">--%>
-<%--                    <button type="submit" class="waves-effect waves-light btn">--%>
-<%--                        <spring:message code="logout"/>--%>
-<%--                    </button>--%>
-<%--                </a>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
     </div>
 </div>
 <%@ include file="footer.jsp"%>
