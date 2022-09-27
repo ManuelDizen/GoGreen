@@ -411,6 +411,19 @@ nav {
     justify-content: center;
 }
 
+.center-container{
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-radius: 0;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    flex: 38%;
+}
+
+.separating-fields{
+    margin-bottom:4vh;
+}
+
 .product-info-container table tr{
     border-bottom: transparent;
 }

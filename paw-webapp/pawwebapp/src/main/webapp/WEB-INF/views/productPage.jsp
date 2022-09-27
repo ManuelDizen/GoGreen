@@ -25,15 +25,16 @@
         <c:if test="${product.imageId != 0}">
             <div class="product-info-container" style="background-color:transparent;">
                     <div class = "productpage-image-container" style="margin-top:0;">
-                        <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                        <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}" style="border-radius:10px;border:2px solid var(--palette-color-secondary);">
                     </div>
             </div>
         </c:if>
-        <div class="product-info-container">
-            <h4 style="margin-top:0;"><c:out value="${product.name}"/></h4>
-            <div><c:out value="${product.description}"/></div>
+        <div class="product-info-container center-container">
+            <h4 style="margin-top:0; text-decoration:underline; font-size:40px;margin-bottom:4vh;">
+                <c:out value="${product.name}"/></h4>
+            <div class="separating-fields"><c:out value="${product.description}"/></div>
             <c:if test="${ecotags.size() != 0}">
-                <div class="productpage-ecotags">
+                <div class="productpage-ecotags separating-fields">
                     <c:forEach items="${ecotags}" var="ecotag">
                         <div style="margin-top: 1vh; margin-bottom: 1vh;">
                             <div class="${ecotag.color} white-text chip">
@@ -44,8 +45,8 @@
                     </c:forEach>
                 </div>
             </c:if>
-            <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
-            <div style="font-size: 20px; width:100%;"><spring:message code="productpage.prodinfo.stock"/>
+            <div style="font-size:25px; font-weight:bold;" class="separating-fields"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
+            <div style="font-size: 25px; width:100%; margin-bottom:0;"><spring:message code="productpage.prodinfo.stock"/>
             <c:out value="${' '}${product.stock}"/></div>
             <c:if test="${product.stock < 6}">
                 <div style="text-align:center; margin-top: 2vh;">
@@ -56,7 +57,7 @@
             </c:if>
         </div>
         <div class="product-info-container">
-            <h4 style="margin-top:0;"><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
+            <h4 style="margin-top:0; font-size:40px;"><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
             <div class="seller-details-container" style="margin-top:0; margin-bottom: 5vh;">
                 <div style="height:fit-content;">
                     <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
@@ -73,7 +74,8 @@
                 <form:form modelAttribute="orderForm" action="${process}" method="post">
                     <div class="row productpage-orderform">
                         <div class="input-field col s12">
-                            <form:textarea id="textarea1" class="materialize-textarea" path="message" data-length="300" style="color:white;"/>
+                            <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
+                            <form:textarea placeholder="${textareaMsg}" id="textarea1" class="materialize-textarea" path="message" data-length="300" style="color:white;"/>
                             <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                         </div>
                     </div>
@@ -82,7 +84,10 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <form:input id="amount" path="amount" type="number" style="color:white;"/>
+                            <spring:message var="placeholder1" code="productpage.orderform.amount.placeholder"/>
+                            <form:input id="amount" path="amount" type="number"
+                                        style="color:white;" placeholder="${placeholder1}"/>
+
                             <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                         </div>
                     </div>
