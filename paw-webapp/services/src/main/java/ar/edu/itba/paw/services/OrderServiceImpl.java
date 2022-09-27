@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void createAndNotify(Product product, User user, Seller seller, int amount, String message) {
+    public Boolean createAndNotify(Product product, User user, Seller seller, int amount, String message) {
 
         emailService.purchase(user.getEmail(), user.getFirstName(),
                 product, amount,
@@ -76,20 +76,20 @@ public class OrderServiceImpl implements OrderService {
                 sellerService.getSurname(seller.getUserId()),
                 sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
                 message);
+        if(order == null) return false;
 
         /* TODO: Get updateStock() to return the modified tuple in order to save an invocation */
         productService.updateStock(product.getProductId(), amount);
         Optional<Product> modified = productService.getById(product.getProductId());
-        if(!modified.isPresent()) throw new IllegalStateException("Product not found");
-        if(modified.get().getStock() == 0){
-            /* Notify the seller via mail*/
+        if (!modified.isPresent()) return false;
+        if (modified.get().getStock() == 0) {
             Optional<User> seller2 = userService.findById(seller.getUserId());
-            if(!seller2.isPresent()) throw new IllegalStateException();
+            if (!seller2.isPresent()) return false;
             User u = seller2.get();
             emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
                     u.getSurname(), u.getLocale());
         }
-        if(order == null) throw new IllegalStateException("No se instanció la orden");
+        return true;
     }
 
     @Override
@@ -130,17 +130,19 @@ public class OrderServiceImpl implements OrderService {
         *  si falla agregando stock es un problema para el seller.
         *
         * */
+        Boolean isOwner = checkForOrderOwnership(orderId);
+        if(!isOwner) return false;
+
         Optional<Order> order = orderDao.getById(orderId);
-        if(!order.isPresent()) throw new IllegalStateException();
+        if(!order.isPresent()) return false;
         Boolean delete = orderDao.deleteOrder(orderId);
-        if(!delete) throw new RuntimeException("No volví de deleted");
+        if(!delete) return false;
 
-        /* Get locale of both buyer and seller from their mails*/
+        /* Get locale of both buyer and seller for mails*/
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
-        if(!buyer.isPresent()) throw new RuntimeException("No encontre buyer de order");
+        if(!buyer.isPresent()) return false;
         Optional<User> seller = userService.findByEmail(order.get().getSellerEmail());
-        if(!seller.isPresent()) throw new RuntimeException("No encontre seller de order");
-
+        if(!seller.isPresent()) return false;
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
         return productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
