@@ -96,6 +96,11 @@
                 <h4 style="margin: 20px auto auto;">
                     <spring:message code="productpage.orderform.notauthenticated"/>
                 </h4>
+                <div class="row" style="text-align: center;">
+                    <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/login"/>">
+                        <spring:message code="login.title"/>
+                    </a>
+                </div>
             </c:if>
         </div>
     </div>
