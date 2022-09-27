@@ -493,6 +493,11 @@ nav {
     color: #1E425E;
 }
 
+.filterinputs{
+    margin-bottom:0;
+    margin-top:0;
+}
+
 .productpage-image-container .material-placeholder{
     display:flex;
     justify-content: center;

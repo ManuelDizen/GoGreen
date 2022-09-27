@@ -73,7 +73,7 @@
                 <form:form modelAttribute="orderForm" action="${process}" method="post">
                     <div class="row productpage-orderform">
                         <div class="input-field col s12">
-                            <form:textarea id="textarea1" class="materialize-textarea" path="message" data-length="300"/>
+                            <form:textarea id="textarea1" class="materialize-textarea" path="message" data-length="300" style="color:white;"/>
                             <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <form:input id="amount" path="amount" type="number"/>
+                            <form:input id="amount" path="amount" type="number" style="color:white;"/>
                             <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                         </div>
                     </div>
@@ -122,7 +122,9 @@
         M.CharacterCounter.init(textNeedCount);
     });
 
-    $('textarea#textarea1').characterCounter();
+    $(document).ready(function() {
+        $('textarea#textarea1').characterCounter();
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.materialboxed');
