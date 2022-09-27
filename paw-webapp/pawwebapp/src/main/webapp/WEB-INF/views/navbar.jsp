@@ -47,6 +47,7 @@
                 <li style="padding-right: 2vw; display:flex; flex-direction: column;">
                     <a href="<c:url value="/profile"/>">
                         <i class="material-icons">account_circle</i>
+                        <%-- TODO span><c:out value="${pageContext.request.userPrincipal.name}"/></span --%>
                     </a>
                 </li>
                 <li style="padding-right: 2vw; display:flex; flex-direction: column;">

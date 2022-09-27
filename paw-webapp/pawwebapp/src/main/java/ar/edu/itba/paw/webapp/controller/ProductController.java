@@ -213,7 +213,6 @@ public class ProductController {
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
             @Valid @ModelAttribute("orderForm") final OrderForm form,
-            @RequestParam(name="formSuccess", defaultValue = "false") final boolean formSuccess,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -234,7 +233,6 @@ public class ProductController {
 
         List<Ecotag> ecotags = ecos.getTagFromProduct(productObj.getProductId());
         mav.addObject("seller", seller.get());
-        mav.addObject("formSuccess", formSuccess);
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         return mav;
@@ -252,7 +250,7 @@ public class ProductController {
                 check.
          */
         if(errors.hasErrors() || form.getAmount() == null){
-            return productPage(prodId, form, false, true);
+            return productPage(prodId, form, true);
         }
         final Optional<Product> product = ps.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
@@ -263,7 +261,7 @@ public class ProductController {
             errors.addError(new ObjectError("amount",
                     "El stock disponible es insuficiente para su pedido. Por favor, reviselo" +
                             "e intente nuevamente"));
-            return productPage(prodId, form, false, true);
+            return productPage(prodId, form, true);
         }
 
         final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
@@ -277,7 +275,6 @@ public class ProductController {
         os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
 
         final ModelAndView mav = new ModelAndView("redirect:/userProfile#test2");
-        mav.addObject("formSuccess", true);
         return mav;
     }
 

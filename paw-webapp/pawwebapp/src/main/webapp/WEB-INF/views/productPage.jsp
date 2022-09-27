@@ -16,11 +16,6 @@
 <body>
     <%@ include file="navbar.jsp"%>
     <div style="height:5vh; width:100%;"></div>
-    <c:if test="${formSuccess}">
-        <div class="order-success">
-            <spring:message code="productpage.orderconfirm"/>
-        </div>
-    </c:if>
     <c:if test="${formFailure}">
         <div class="order-failure">
             <spring:message code="productpage.orderfail"/>
@@ -37,14 +32,18 @@
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
             <div><c:out value="${product.description}"/></div>
-            <c:forEach items="${ecotags}" var="ecotag">
-                <div style="margin-top: 1vh; margin-bottom: 1vh;">
-                        <div class="${ecotag.color} white-text chip">
-                            <i class="tiny material-icons">${ecotag.icon}</i>
-                            <spring:message code="${ecotag.tag}"/>
+            <c:if test="${ecotags.size() != 0}">
+                <div class="productpage-ecotags">
+                    <c:forEach items="${ecotags}" var="ecotag">
+                        <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                            <div class="${ecotag.color} white-text chip">
+                                <i class="tiny material-icons">${ecotag.icon}</i>
+                                <spring:message code="${ecotag.tag}"/>
+                            </div>
                         </div>
+                    </c:forEach>
                 </div>
-            </c:forEach>
+            </c:if>
             <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
             <div style="font-size: 20px; height:2vh; width:100%;"><spring:message code="productpage.prodinfo.stock"/>
             <c:out value="${' '}${product.stock}"/></div>
@@ -76,7 +75,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <form:input id="amount" path="amount"/>
+                            <form:input id="amount" path="amount" type="number"/>
                             <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                         </div>
                     </div>
