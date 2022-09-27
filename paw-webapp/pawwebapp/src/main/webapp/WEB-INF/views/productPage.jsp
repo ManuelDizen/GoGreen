@@ -27,6 +27,13 @@
         </div>
     </c:if>
     <div class="product-page-container" style="height:available;">
+        <c:if test="${product.imageId != 0}">
+            <div class="product-info-container" style="background-color:transparent;">
+                    <div class = "productpage-image-container">
+                        <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                    </div>
+            </div>
+        </c:if>
         <div class="product-info-container">
             <h4><c:out value="${product.name}"/></h4>
             <div><c:out value="${product.description}"/></div>
@@ -52,11 +59,6 @@
                     <span><c:out value="${seller.phone}"/></span>
                 </div>
             </div>
-            <c:if test="${product.imageId != 0}">
-                <div class = "productpage-image-container">
-                    <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
-                </div>
-            </c:if>
         </div>
         <div class="product-info-container">
             <sec:authorize access="hasRole('USER')">

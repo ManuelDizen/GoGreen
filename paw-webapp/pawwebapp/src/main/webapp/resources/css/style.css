@@ -393,12 +393,16 @@ nav {
     align-content: center;
     text-align: center;
     height: fit-content;
-    flex:50%;
+    flex:30%;
     margin: 10px 20px 20px 20px;
     padding-bottom: 20px;
-    background-color: #EDF8AB;
+    /*background-color: #EDF8AB;*/
     border-radius: 10px;
     color: #1E425E;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
 }
 
 .product-info-container table tr{

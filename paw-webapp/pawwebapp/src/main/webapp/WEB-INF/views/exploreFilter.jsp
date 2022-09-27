@@ -62,13 +62,13 @@
             <br>
         </c:forEach>
     </div>
-    <div class="row">
+    <div class="row" style="display:none;">
         <div class="input-field col s12">
             <input style="display: none" id="sort" name="sort" type="text" value="${sort}">
             <label style="display: none" for="sort"><spring:message code="explore.filterform.maxprice"/></label>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="display:none;">
         <div class="input-field col s12">
             <input style="display: none" id="direction" name="direction" type="text" value="${direction}">
             <label style="display: none" for="direction"><spring:message code="explore.filterform.maxprice"/></label>
