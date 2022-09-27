@@ -24,13 +24,13 @@
     <div class="product-page-container" style="height:available;">
         <c:if test="${product.imageId != 0}">
             <div class="product-info-container" style="background-color:transparent;">
-                    <div class = "productpage-image-container">
+                    <div class = "productpage-image-container" style="margin-top:0;">
                         <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
                     </div>
             </div>
         </c:if>
         <div class="product-info-container">
-            <h4><c:out value="${product.name}"/></h4>
+            <h4 style="margin-top:0;"><c:out value="${product.name}"/></h4>
             <div><c:out value="${product.description}"/></div>
             <c:if test="${ecotags.size() != 0}">
                 <div class="productpage-ecotags">
@@ -45,10 +45,19 @@
                 </div>
             </c:if>
             <div style="font-size:25px;"><spring:message code="productpage.prodinfo.price"/><c:out value="${product.price}"/></div>
-            <div style="font-size: 20px; height:2vh; width:100%;"><spring:message code="productpage.prodinfo.stock"/>
+            <div style="font-size: 20px; width:100%;"><spring:message code="productpage.prodinfo.stock"/>
             <c:out value="${' '}${product.stock}"/></div>
-            <h4><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
-            <div class="seller-details-container">
+            <c:if test="${product.stock < 6}">
+                <div style="text-align:center; margin-top: 2vh;">
+                    <a class="btn orange accent-4" style="cursor: default;">
+                        <spring:message code="productpage.orderform.lastunits"/>
+                    </a>
+                </div>
+            </c:if>
+        </div>
+        <div class="product-info-container">
+            <h4 style="margin-top:0;"><spring:message code="productpage.prodinfo.sellerdatatitle"/></h4>
+            <div class="seller-details-container" style="margin-top:0; margin-bottom: 5vh;">
                 <div style="height:fit-content;">
                     <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
                     <span><c:out value="${seller.address}"/></span>
@@ -58,13 +67,11 @@
                     <span><c:out value="${seller.phone}"/></span>
                 </div>
             </div>
-        </div>
-        <div class="product-info-container">
             <sec:authorize access="hasRole('USER')">
-                <h4><spring:message code="productpage.orderform.title"/></h4>
+                <div style="font-size: 20px;"><spring:message code="productpage.orderform.title"/></div>
                 <c:url value="/process/${product.productId}" var="process"/>
                 <form:form modelAttribute="orderForm" action="${process}" method="post">
-                    <div class="row">
+                    <div class="row productpage-orderform">
                         <div class="input-field col s12">
                             <form:textarea id="textarea1" class="materialize-textarea" path="message" data-length="300"/>
                             <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
