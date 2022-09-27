@@ -21,10 +21,10 @@
         <div class="input-field col s12 filterinputs" style="margin-top:2vh;">
             <select name="category" style="display: none">
                 <c:if test="${chosenCategory != 0}">
-                    <option value="" disabled>Seleccione</option>
+                    <option value="" disabled><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:if test="${chosenCategory == 0}">
-                    <option value="" disabled selected>Seleccione</option>
+                    <option value="" disabled selected><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:forEach items="${categories}" var="category">
                     <c:if test="${chosenCategory != category.id}">
