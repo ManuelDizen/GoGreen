@@ -52,12 +52,14 @@ public class UserController {
             // It's a seller
             return new ModelAndView("redirect:/sellerProfile#test1");
         }
-        return new ModelAndView("redirect:/userProfile#test1");
+        return new ModelAndView("redirect:/userProfile/false#test1");
     }
 
 
-    @RequestMapping(value="/userProfile")
-    public ModelAndView buyerProfile( @RequestParam(name="page", defaultValue = "1") final int page){
+    @RequestMapping(value="/userProfile/{fromSale}")
+    public ModelAndView buyerProfile(
+            @RequestParam(name="page", defaultValue = "1") final int page,
+            @PathVariable("fromSale") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
@@ -70,6 +72,7 @@ public class UserController {
         mav.addObject("currentPage", page);
         mav.addObject("pages", orderPages);
         mav.addObject("orders", orderPages.get(page-1));
+        mav.addObject("fromSale", fromSale);
         return mav;
     }
 

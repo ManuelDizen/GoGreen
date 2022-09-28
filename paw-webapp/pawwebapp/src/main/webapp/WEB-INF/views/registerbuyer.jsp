@@ -92,4 +92,22 @@
     </div>
     <%@ include file="footer.jsp"%>
 </body>
+
+
+<script>
+    function myFunction() {
+        var pass1 = document.getElementById("password").value;
+        var pass2 = document.getElementById("confirmationPassword").value;
+        if (pass1 !== pass2) {
+            alert("Passwords Do not match");
+            document.getElementById("pass1").style.borderColor = "#E34234";
+            document.getElementById("pass2").style.borderColor = "#E34234";
+        }
+        else {
+            alert("Passwords Match!!!");
+        }
+    }
+</script>
+
+
 </html>

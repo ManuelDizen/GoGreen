@@ -1358,8 +1358,12 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: grid;
 }
 
+.register-form-container .center {
+    margin-top: 40px;
+}
+
 .registerbody .row {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     max-height: 50px;
 }
 
@@ -1425,10 +1429,11 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 .userPurchase{
     text-align:center;
     display:flex;
-    flex-direction:column;
     justify-content: center;
+    flex-direction:column;
     margin:2vh auto;
 }
+
 
 
 /* ----- some features ----- */

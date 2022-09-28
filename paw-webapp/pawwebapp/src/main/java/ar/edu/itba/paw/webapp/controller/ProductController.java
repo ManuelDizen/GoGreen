@@ -206,7 +206,7 @@ public class ProductController {
         Boolean created = os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
         if(!created) throw new IllegalStateException();
 
-        final ModelAndView mav = new ModelAndView("redirect:/userProfile#test2");
+        final ModelAndView mav = new ModelAndView("redirect:/userProfile/true#test2");
         return mav;
     }
 
