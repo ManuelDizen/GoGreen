@@ -29,7 +29,7 @@
         <div id="test1" class="col s12">
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
-                    <div class="text-center"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                    <div class="text-center" style="font-size:20px;font-weight: bold;"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
                         <c:if test="${user.imageId == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
@@ -45,12 +45,12 @@
                     </div>--%>
                 </div>
                 <div class="seller-inner-div-2">
-                    <div><spring:message code="sellerprofile.info"/>
+                    <div><div style="font-size:20px; font-weight: bold;"><spring:message code="sellerprofile.info"/></div>
                         <ul>
-                            <li><c:out value="${user.firstName}${' '}${user.surname}"/></li>
-                            <li><c:out value="${user.email}"/></li>
-                            <li><c:out value="${seller.address}"/></li>
-                            <li><c:out value="${seller.phone}"/></li>
+                            <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
+                            <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
+                            <li><spring:message code="sellerprofile.address"/>:<c:out value="${seller.address}"/></li>
+                            <li><spring:message code="sellerprofile.phone"/>:<c:out value="${seller.phone}"/></li>
                         </ul>
                     </div>
                     <%--<div>
@@ -128,7 +128,8 @@
                                     <form:form modelAttribute="stockForm" action="${updateStockUrl}" method="post" id="update_form">
                                         <div class="col s12">
                                             <div class="input-field col s12">
-                                                <form:input path="newStock" name="newStock" id="newStock" type="number"/>
+                                                <spring:message code="sellerprofile.updatestock.placeholder" var="placeholder"/>
+                                                <form:input path="newStock" name="newStock" id="newStock" type="number" cssStyle="color:white;" placeholder="${placeholder}"/>
                                                 <form:label path="newStock"><spring:message code="sellerprofile.newstock"/></form:label>
                                             </div>
                                         </div>
@@ -232,14 +233,16 @@
                                             <li>
                                                 <spring:message code="sellerprofile.deleteorder.buyer"/>
                                                 <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                            </li>
+                                            <li>
                                                 <spring:message code="sellerprofile.deleteorder.amount"/>
                                                 <c:out value="${order.amount}"/>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <a class="modal-close waves-effect waves-green btn-flat">
+                                <div class="row s12" style="display:flex; justify-content: center;">
+                                    <a class="modal-close waves-effect waves-green btn-flat" style="color:white;">
                                         <spring:message code="sellerprofile.delete.cancel"/>
                                     </a>
                                     <a class="waves-effect waves-light btn  red accent-4" href="<c:url value="/deleteOrder/${order.id}"/>">
