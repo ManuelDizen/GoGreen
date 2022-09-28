@@ -20,14 +20,16 @@ public class ProductServiceImpl implements ProductService {
     private final SecurityService securityService;
     private final SellerService sellerService;
     private final UserService userService;
+    private final EcotagService ecos;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecos){
         this.productDao = productDao;
         this.imageService = imageService;
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.userService = userService;
+        this.ecos = ecos;
     }
 
     @Override
@@ -43,16 +45,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findBySeller(long sellerId) {
         return productDao.findBySeller(sellerId);
-    }
-
-    @Override
-    public Optional<List<Product>> getByMaxPrice(float price) {
-        return productDao.getByMaxPrice(price);
-    }
-
-    @Override
-    public Optional<List<Product>> getByCategory(long categoryId) {
-        return productDao.getByCategory(categoryId);
     }
 
     @Override
@@ -232,6 +224,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getRecent(int amount){
-        return productDao.getRecent(amount);
+
+        List<Product> recent =  productDao.getRecent(amount);
+
+        for(Product product : recent) {
+            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+        }
+        return recent;
     }
 }

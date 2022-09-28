@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.*;
 
 @Repository
@@ -41,8 +40,6 @@ public class ProductJdbcDao implements ProductDao {
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
 
-    //Esto le idnica a Spring que constructor debe usar cuando quiere crear
-    //instancias de este DAO.
     @Autowired
     public ProductJdbcDao(final DataSource ds){
         this.template = new JdbcTemplate(ds);
@@ -71,16 +68,6 @@ public class ProductJdbcDao implements ProductDao {
     public List<Product> findBySeller(long sellerId) {
         return template.query("SELECT * FROM products WHERE sellerId = ? ORDER BY id DESC", new Object[]{sellerId},
                 PRODUCT_ROW_MAPPER);
-    }
-
-    @Override
-    public Optional<List<Product>> getByMaxPrice(float price) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<List<Product>> getByCategory(long categoryId) {
-        return Optional.empty();
     }
 
     @Override

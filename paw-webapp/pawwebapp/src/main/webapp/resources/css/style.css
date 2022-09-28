@@ -823,7 +823,7 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: textfield;
 }
 
-.explore-products, .productpage-ecotags{
+.explore-products, .productpage-ecotags, .landing-products{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
