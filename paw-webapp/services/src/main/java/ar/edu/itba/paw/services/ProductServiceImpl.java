@@ -202,7 +202,10 @@ public class ProductServiceImpl implements ProductService {
     public Boolean addStock(String prodName, int amount) {
         System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
         Optional<Product> prod = getByName(prodName);
-        if(!prod.isPresent()) throw new IllegalStateException();
+        // TODO: Discutir esta implementación. Si uno borra el producto y luego cancela una orden,
+        //  esto va a tirar una excepción y no debería ser así. Pero tampoco debería poderse devolver
+        //  true si el producto no existe. Discutir.
+        if(!prod.isPresent()) return true;
         return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
