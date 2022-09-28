@@ -22,6 +22,7 @@ public class ProductForm {
     private String description;
 
     @Min(value=1, message= "Por favor, introduzca un precio válido")
+    @Max(value=999999, message="El precio debe ser menor a un millón")
     @NotNull
     private Integer price;
 
@@ -34,9 +35,10 @@ public class ProductForm {
     @FileSize(bytes = (10*1024*1024))
     private MultipartFile image;
 
-    @NotNull(message="Por favor, escoja al menos una categoría")
+
     private long[] ecotag;
 
+    @Min(value=1, message="Por favor, escoja al menos una categoría")
     private long category;
 
 

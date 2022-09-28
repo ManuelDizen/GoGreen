@@ -56,7 +56,7 @@
                         <form:input path="description" type="text"/>
                         <form:errors path="description" element="p" cssClass="error"/>
                     </div>
-                    <div class="col s4 input-field" style="margin-bottom: 20px">
+                    <div class="col s4 input-field">
                         <form:label path="price"><spring:message code="createproduct.form.price"/>
                             <spring:message code="forms.obligatorysign"/></form:label>
                         <form:input path="price" type="number"/>
