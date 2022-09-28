@@ -78,7 +78,7 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
-            @RequestParam(name="direction", defaultValue = "0") final int direction
+            @RequestParam(name="direction", defaultValue = "1") final int direction
     ) {
         final ModelAndView mav = new ModelAndView("explore");
 
