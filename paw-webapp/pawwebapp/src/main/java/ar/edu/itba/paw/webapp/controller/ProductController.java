@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.StockForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,7 +44,6 @@ public class ProductController {
     private final SecurityService securityService;
 
     private final OrderService os;
-
 
     
     @Autowired
@@ -235,6 +235,7 @@ public class ProductController {
             final BindingResult errors) {
         if (errors.hasErrors())
             return createProduct(form);
+
         //llamada al backend
         byte[] image;
         try {
@@ -249,9 +250,12 @@ public class ProductController {
         Optional<Seller> seller = sellerService.findByUserId(user.get().getId());
         if (!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
+        int stock = Integer.parseInt(form.getStock());
+        int price = Integer.parseInt(form.getPrice());
+
         Product product = ps.create(seller.get().getId(),
                 form.getCategory(), form.getName(), form.getDescription(),
-                form.getStock(), form.getPrice(), image);
+                stock, price, image);
 
         for (long id : form.getEcotag()) {
             ecos.addTag(Ecotag.getById(id), product.getProductId());

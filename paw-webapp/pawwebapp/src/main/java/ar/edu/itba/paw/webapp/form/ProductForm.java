@@ -21,15 +21,17 @@ public class ProductForm {
     @Size(max = 300)
     private String description;
 
-    @Min(value=1, message= "Por favor, introduzca un precio válido")
-    @Max(value=999999, message="El precio debe ser menor a un millón")
+    //@Min(value=1, message= "Por favor, introduzca un precio válido")
+    //@Max(value=999999, message="El precio debe ser menor a un millón")
+    @Size(min=1, max=6, message = "Precio no debe exceder un millón")
     @NotNull
-    private Integer price;
+    private String price;
 
-    @Min(value=1, message="Por favor, introduzca un stock válido")
-    @Max(value=10000, message="El máximo para publicar son 10000 unidades.")
+    //@Min(value=1, message="Por favor, introduzca un stock válido")
+    //@Max(value=10000, message="El máximo para publicar son 10000 unidades.")
+    @Size(min=1, max=4, message = "Máximo 10000 unidades")
     @NotNull
-    private Integer stock;
+    private String stock;
 
     @FileType(types = {"image/png", "image/jpeg"}, message="Por favor, use archivos de extensión .png o .jpeg.")
     @FileSize(bytes = (10*1024*1024))
@@ -66,19 +68,20 @@ public class ProductForm {
         this.description = description;
     }
 
-    public Integer getPrice() {
+
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public Integer getStock() {
+    public String getStock() {
         return stock;
     }
 
-    public void setStock(Integer stock) {
+    public void setStock(String stock) {
         this.stock = stock;
     }
 
