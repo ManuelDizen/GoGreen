@@ -10,8 +10,8 @@
     <%@ include file="navbar.jsp"%>
 
     <div class="container">
-        <h4 style="margin: 4vh auto;" class="generic-title"><spring:message code="register.title"/></h4>
-        <div class="row" style="text-align: center;">
+        <h4 style="margin: 4vh auto; margin-bottom:1vh;" class="generic-title"><spring:message code="register.title"/></h4>
+        <div class="row" style="text-align: center; margin-top:0; margin-bottom:0;">
             <div class="col s6">
                 <div class="register-title"><spring:message code="register.buyertitle"/></div>
             </div>
@@ -19,7 +19,7 @@
                 <div class="register-title"><spring:message code="register.sellertitle"/></div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom:0; margin-top:0;">
             <div class="col s6">
                 <div class="register-textbody"><spring:message code="register.buyerdescription"/></div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="register-textbody"><spring:message code="register.sellerdescription"/></div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-top:0; margin-bottom:1vh;">
             <div class="col s6" style="text-align:center;">
                 <a class="decision-button waves-effect waves-light btn" href="<c:url value="/registerbuyer"/>" style="margin-top:5vh;">
                     <spring:message code="register.userbutton"/></a>
@@ -37,7 +37,7 @@
                     <spring:message code="register.sellerbutton"/></a>
             </div>
         </div>
-        <div class="row" style="margin-bottom:5vh;">
+        <div class="row" style="margin-bottom:5vh; margin-top:0;">
             <div class="col s6">
                 <div style="height:30vh; text-align:center;">
                     <img class="responsive-img" src="<c:url value="/resources/images/BuyerImage.png"/>" alt="Buyers" style="object-fit:contain; height: 100%; margin:4vh auto;">

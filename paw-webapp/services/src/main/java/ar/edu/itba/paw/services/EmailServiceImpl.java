@@ -55,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
     private void sendMail(String to, String template, String subject) throws MessagingException {
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
-        message.setFrom("gogreen2022.contact@gmail.com");
+        message.setFrom("GoGreen Contact <gogreen2022.contact@gmail.com>");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(template, true);
@@ -76,7 +76,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("sellerPhone", sellerPhone);
         data.put("sellerMail", sellerMail);
         sendThymeleafMail(buyerEmail, "productPurchase", data,
-                "subject.sellerMailTitle", locale);
+                "subject.buyerMailTitle", locale);
     }
 
     @Async
@@ -93,7 +93,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("buyerMessage", buyerMessage);
 
         sendThymeleafMail(sellerEmail, "sellerPurchase", data,
-                "subject.buyerMailTitle", locale);
+                "subject.sellerMailTitle", locale);
     }
 
     @Async

@@ -29,7 +29,7 @@
         <div id="test1" class="col s12">
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
-                    <div class="text-center"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                    <div class="text-center" style="font-size:20px;font-weight: bold;"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
                         <c:if test="${user.imageId == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
@@ -45,12 +45,12 @@
                     </div>--%>
                 </div>
                 <div class="seller-inner-div-2">
-                    <div><spring:message code="sellerprofile.info"/>
+                    <div><div style="font-size:20px; font-weight: bold;"><spring:message code="sellerprofile.info"/></div>
                         <ul>
-                            <li><c:out value="${user.firstName}${' '}${user.surname}"/></li>
-                            <li><c:out value="${user.email}"/></li>
-                            <li><c:out value="${seller.address}"/></li>
-                            <li><c:out value="${seller.phone}"/></li>
+                            <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
+                            <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
+                            <li><spring:message code="sellerprofile.address"/>:<c:out value="${seller.address}"/></li>
+                            <li><spring:message code="sellerprofile.phone"/>:<c:out value="${seller.phone}"/></li>
                         </ul>
                     </div>
                     <%--<div>
@@ -86,7 +86,7 @@
                                                 <spring:message code="sellerprofile.warning.nostock"/>
                                             </a>
                                             <a id="productinfo" style="margin-right:2vw; font-size:18px;">
-                                                <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
+                                                <br><b><c:out value="${product.name}"/></b>  - <spring:message code="sellerprofile.orders.price"/>
                                                 <c:out value="${product.price}"/>
                                             </a>
                                         </c:if>
@@ -125,11 +125,13 @@
                                         </c:if>
                                     </div>
                                     <c:url value="/updateStock/${product.productId}" var="updateStockUrl"/>
-                                    <form action="${updateStockUrl}" method="get" id="update_form">
+                                    <form:form modelAttribute="stockForm" action="${updateStockUrl}" method="post" id="update_form">
                                         <div class="col s12">
                                             <div class="input-field col s12">
-                                                <input path="newStock" name="newStock" id="newStock" type="text" class="validate">
-                                                <label for="newStock"><spring:message code="sellerprofile.newstock"/></label>
+                                                <spring:message code="sellerprofile.updatestock.placeholder" var="placeholder"/>
+                                                <form:input path="newStock" name="newStock" id="newStock" type="number" cssStyle="color:white;" placeholder="${placeholder}"/>
+                                                <form:label path="newStock"><spring:message code="sellerprofile.newstock"/></form:label>
+                                                <form:errors path="newStock" element="p" cssClass="error"/>
                                             </div>
                                         </div>
                                         <div class="row s12" style="display:flex; justify-content: center;">
@@ -141,7 +143,7 @@
                                                 <i class="material-icons right">check</i>
                                             </button>
                                         </div>
-                                    </form>
+                                    </form:form>
                                 </div>
                                 <div id="modal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
                                     <div class="modal-content">
@@ -156,14 +158,6 @@
                                             <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
                                         </a>
                                     </div>
-                                    <%--<div class="modal-footer">
-                                        <a class="modal-close waves-effect waves-green btn-flat">
-                                            <spring:message code="sellerprofile.delete.cancel"/>
-                                        </a>
-                                        <a class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>
-                                            <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
-                                        </a>
-                                    </div>--%>
                                 </div>
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>
@@ -171,29 +165,31 @@
                     </c:if>
                 </div>
             </div>
-            <div class="pagin">
-                <c:set var="nextPage" value="${currentPageP+1}"/>
-                <c:set var="previousPage" value="${currentPageP-1}"/>
-                <div>
-                    <ul class="pagination">
-                        <c:if test="${currentPageP <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageP > 1}">
-                            <li><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons">navigate_before</i></a></li>
-                            <li class="waves-effect"><a href="?pageP=${currentPageP-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
-                        </c:if>
-                        <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
-                        <c:if test="${currentPageP < productPages.size()}">
-                            <li class="waves-effect"><a href="?pageP=${currentPageP+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons">navigate_next</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageP >= productPages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
-                        </c:if>
-                    </ul>
+            <c:if test="${productPages.size() > 1}">
+                <div class="pagin">
+                    <c:set var="nextPage" value="${currentPageP+1}"/>
+                    <c:set var="previousPage" value="${currentPageP-1}"/>
+                    <div>
+                        <ul class="pagination">
+                            <c:if test="${currentPageP <= 1}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageP > 1}">
+                                <li><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                                <li class="waves-effect"><a href="?pageP=${currentPageP-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
+                            </c:if>
+                            <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
+                            <c:if test="${currentPageP < productPages.size()}">
+                                <li class="waves-effect"><a href="?pageP=${currentPageP+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
+                                <li><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageP >= productPages.size()}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </c:if>
         </div>
         <div id="test3" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
@@ -240,14 +236,16 @@
                                             <li>
                                                 <spring:message code="sellerprofile.deleteorder.buyer"/>
                                                 <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                            </li>
+                                            <li>
                                                 <spring:message code="sellerprofile.deleteorder.amount"/>
                                                 <c:out value="${order.amount}"/>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <a class="modal-close waves-effect waves-green btn-flat">
+                                <div class="row s12" style="display:flex; justify-content: center;">
+                                    <a class="modal-close waves-effect waves-green btn-flat" style="color:white;">
                                         <spring:message code="sellerprofile.delete.cancel"/>
                                     </a>
                                     <a class="waves-effect waves-light btn  red accent-4" href="<c:url value="/deleteOrder/${order.id}"/>">
@@ -259,29 +257,31 @@
                     </c:if>
                 </div>
             </div>
-            <div class="pagin">
-                <c:set var="nextPage" value="${currentPageO+1}"/>
-                <c:set var="previousPage" value="${currentPageO-1}"/>
-                <div>
-                    <ul class="pagination">
-                        <c:if test="${currentPageO <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_before</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageO > 1}">
-                            <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons">navigate_before</i></a></li>
-                            <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>
-                        </c:if>
-                        <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
-                        <c:if test="${currentPageO < orderPages.size()}">
-                            <li class="waves-effect"><a href="?pageO=${currentPageO+1}#test3" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons">navigate_next</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageO >= orderPages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons">navigate_next</i></a></li>
-                        </c:if>
-                    </ul>
+            <c:if test="${orderPages.size() > 1}">
+                <div class="pagin">
+                    <c:set var="nextPage" value="${currentPageO+1}"/>
+                    <c:set var="previousPage" value="${currentPageO-1}"/>
+                    <div>
+                        <ul class="pagination">
+                            <c:if test="${currentPageO <= 1}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageO > 1}">
+                                <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                                <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>
+                            </c:if>
+                            <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
+                            <c:if test="${currentPageO < orderPages.size()}">
+                                <li class="waves-effect"><a href="?pageO=${currentPageO+1}#test3" style="color: #EDFA8B">${nextPage}</a></li>
+                                <li><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageO >= orderPages.size()}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </c:if>
         </div>
     </div>
 </div>

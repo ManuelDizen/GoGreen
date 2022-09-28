@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.services.EcotagService;
 import ar.edu.itba.paw.interfaces.services.FAQService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.UserService;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @Controller
 public class BasicController {
 
@@ -24,12 +27,14 @@ public class BasicController {
     private final FAQService faqService;
 
     private final ProductService ps;
+    private final EcotagService ecos;
 
     @Autowired
-    public BasicController(final UserService us, final FAQService faqService, final ProductService ps) {
+    public BasicController(final UserService us, final FAQService faqService, final ProductService ps, EcotagService ecos) {
         this.us = us;
         this.faqService = faqService;
         this.ps = ps;
+        this.ecos = ecos;
     }
 
     @RequestMapping("/")

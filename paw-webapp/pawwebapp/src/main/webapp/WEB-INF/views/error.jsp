@@ -26,7 +26,7 @@
         </div>
         <div style="margin-bottom: 15px">
             <div>
-                <button class="decision-button waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="error.goback"/></button>
+                <a class="decision-button waves-effect waves-light btn" href="<c:url value="/"/>"><spring:message code="error.goback"/></a>
             </div>
         </div>
     </div>

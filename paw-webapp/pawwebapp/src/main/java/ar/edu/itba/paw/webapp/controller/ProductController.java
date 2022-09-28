@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.StockForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +45,6 @@ public class ProductController {
 
     private final OrderService os;
 
-
     
     @Autowired
     public ProductController(final ProductService ps, final SellerService sellerService,
@@ -60,16 +60,6 @@ public class ProductController {
         this.os = os;
     }
 
-    @RequestMapping(value="/updateStock/{prodId:[0-9]+}")
-    public ModelAndView updateStock(
-            @PathVariable("prodId") final long prodId,
-            @RequestParam(name="newStock", defaultValue="0") final int newStock
-    ){
-        Boolean success = ps.attemptUpdate(prodId, newStock);
-        if(!success) throw new IllegalStateException("Stock update could not go through");
-        return new ModelAndView("redirect:/sellerProfile");
-    }
-
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
@@ -78,7 +68,7 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
-            @RequestParam(name="direction", defaultValue = "0") final int direction
+            @RequestParam(name="direction", defaultValue = "1") final int direction
     ) {
         final ModelAndView mav = new ModelAndView("explore");
 
@@ -151,69 +141,16 @@ public class ProductController {
 
     @RequestMapping(value = "/deleteProduct/{prodId}", method = RequestMethod.GET)
     public ModelAndView deleteProduct(@PathVariable final long prodId){
-
-        /* We need to validate that the product is in fact ownership of the
-        logged user. If not, throwing a random /deleteProduct/{prodId} would
-        be enough to destroy the application
-         */
         Boolean bool = ps.attemptDelete(prodId);
-
+        if(!bool) throw new IllegalStateException();
         ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
         return mav;
     }
-
-    /*@RequestMapping(value="/editProduct/{prodId:[0-9]+")
-    public ModelAndView editProduct(@PathVariable final long prodId){
-        List<Product> recent = ps.getRecent(3);
-        final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("recent", recent);
-        return mav;
-    }
-
-    @RequestMapping("/editProduct/{prodId:[0-9]+}")
-    public ModelAndView editProduct(@PathVariable final long prodId,
-                                    @Valid @ModelAttribute("productForm") final ProductForm form,
-                                    final BindingResult errors){
-        Boolean isOwner = ps.checkForOwnership(prodId);
-        if(!isOwner) return new ModelAndView("redirect:/");
-        /*
-        On the method "checkForOwnership": As with deleting, it is important to check that
-        it is in fact the logged user who is attempting to impact the DB and not a random user
-        who noticed how to play with the links. That is why the method is needed.
-
-        On a side note, one should never be able to edit a product that is not of their
-        ownership by browsing unless they type in the URL, which would lead to them being redirected
-        to homepage.
-
-        Optional<Product> product = ps.getById(prodId);
-        if(!product.isPresent()) throw new IllegalStateException();
-        ModelAndView mav = new ModelAndView("editProduct");
-        List<Ecotag> tagList = Arrays.asList(Ecotag.values());
-        mav.addObject("tagList", tagList);
-        mav.addObject("product", product.get());
-        System.out.println("No error in rendering");
-        return mav;
-    }*/
-
-    /*@RequestMapping(value="/editProduct/{prodId:[0-9]+}", method = RequestMethod.POST)
-    public ModelAndView editProduct(@PathVariable("prodId") final long prodId,
-                                    @Valid @ModelAttribute("productForm") final ProductForm form,
-                                    final BindingResult errors){
-        if(errors.hasErrors()){
-            return editProduct(prodId, form);
-        }
-        *//*Boolean worked = ps.attemptEdit(prodId, ...Insert parameters here...);
-        if(!worked) throw new IllegalStateException();*//*
-
-        ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
-        return mav;
-    }*/
 
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
             @Valid @ModelAttribute("orderForm") final OrderForm form,
-            @RequestParam(name="formSuccess", defaultValue = "false") final boolean formSuccess,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -234,7 +171,6 @@ public class ProductController {
 
         List<Ecotag> ecotags = ecos.getTagFromProduct(productObj.getProductId());
         mav.addObject("seller", seller.get());
-        mav.addObject("formSuccess", formSuccess);
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         return mav;
@@ -244,15 +180,8 @@ public class ProductController {
     public ModelAndView process(@PathVariable final long prodId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 final BindingResult errors){
-
-        /* TODO: Check how to workaroung in OrderForm the amount @NotNull annotation
-            I tried setting it and app crashed
-                23/9: Creo que el problema era que el input estaba declarado como number.
-                Después revisar si efectivamente era así, o si hace falta mantener este controllerside
-                check.
-         */
         if(errors.hasErrors() || form.getAmount() == null){
-            return productPage(prodId, form, false, true);
+            return productPage(prodId, form, true);
         }
         final Optional<Product> product = ps.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
@@ -263,7 +192,7 @@ public class ProductController {
             errors.addError(new ObjectError("amount",
                     "El stock disponible es insuficiente para su pedido. Por favor, reviselo" +
                             "e intente nuevamente"));
-            return productPage(prodId, form, false, true);
+            return productPage(prodId, form, true);
         }
 
         final Optional<User> user = us.findByEmail(securityService.getLoggedEmail());
@@ -274,10 +203,10 @@ public class ProductController {
         if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
         final Seller s = seller.get();
 
-        os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
+        Boolean created = os.createAndNotify(p, u, s, form.getAmount(), form.getMessage());
+        if(!created) throw new IllegalStateException();
 
-        final ModelAndView mav = new ModelAndView("redirect:/userProfile#test2");
-        mav.addObject("formSuccess", true);
+        final ModelAndView mav = new ModelAndView("redirect:/userProfile/true#test2");
         return mav;
     }
 
@@ -296,6 +225,7 @@ public class ProductController {
             final BindingResult errors) {
         if (errors.hasErrors())
             return createProduct(form);
+
         //llamada al backend
         byte[] image;
         try {
@@ -310,9 +240,12 @@ public class ProductController {
         Optional<Seller> seller = sellerService.findByUserId(user.get().getId());
         if (!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
 
+        int stock = Integer.parseInt(form.getStock());
+        int price = Integer.parseInt(form.getPrice());
+
         Product product = ps.create(seller.get().getId(),
                 form.getCategory(), form.getName(), form.getDescription(),
-                form.getStock(), form.getPrice(), image);
+                stock, price, image);
 
         for (long id : form.getEcotag()) {
             ecos.addTag(Ecotag.getById(id), product.getProductId());

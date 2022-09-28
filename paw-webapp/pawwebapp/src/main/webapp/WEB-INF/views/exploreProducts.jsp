@@ -102,7 +102,7 @@
             </div>
             <div style="margin-bottom: 15px">
                 <div>
-                    <button class="decision-button waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="explore.cleanfilters"/></button>
+                    <a class="decision-button waves-effect waves-light btn" href="<c:url value="/explore"/>"><spring:message code="explore.cleanfilters"/></a>
                 </div>
             </div>
         </div>

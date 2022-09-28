@@ -8,10 +8,7 @@ import ar.edu.itba.paw.webapp.validations.FileType;
 import ar.edu.itba.paw.webapp.validations.UniqueProductName;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 public class ProductForm {
@@ -24,22 +21,28 @@ public class ProductForm {
     @Size(max = 300)
     private String description;
 
-    @Min(value=1, message= "Por favor, introduzca un precio válido")
+    //@Min(value=1, message= "Por favor, introduzca un precio válido")
+    //@Max(value=999999, message="El precio debe ser menor a un millón")
     @NotNull
-    private Integer price;
+    @Size(max=6)
+    @Pattern(regexp = "[0-9]+")
+    private String price;
 
+    //@Min(value=1, message="Por favor, introduzca un stock válido")
+    //@Max(value=10000, message="El máximo para publicar son 10000 unidades.")
     @NotNull
-    @Min(value=1, message="Por favor, introduzca un stock válido")
-    @Max(value=10000, message="El máximo para publicar son 10000 unidades.")
-    private Integer stock;
+    @Size(max=4)
+    @Pattern(regexp = "[0-9]+")
+    private String stock;
 
-    @FileType(types = {"image/png", "image/jpeg"}, message="Por favor, use archivos de extensión .png o .jpeg.")
+    @FileType(types = {"image/png", "image/jpeg"})
     @FileSize(bytes = (10*1024*1024))
     private MultipartFile image;
 
-    @NotNull(message="Por favor, escoja al menos una categoría")
+
     private long[] ecotag;
 
+    @Min(value=1)
     private long category;
 
 
@@ -67,19 +70,20 @@ public class ProductForm {
         this.description = description;
     }
 
-    public Integer getPrice() {
+
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public Integer getStock() {
+    public String getStock() {
         return stock;
     }
 
-    public void setStock(Integer stock) {
+    public void setStock(String stock) {
         this.stock = stock;
     }
 

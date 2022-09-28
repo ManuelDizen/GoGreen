@@ -20,14 +20,16 @@ public class ProductServiceImpl implements ProductService {
     private final SecurityService securityService;
     private final SellerService sellerService;
     private final UserService userService;
+    private final EcotagService ecos;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecos){
         this.productDao = productDao;
         this.imageService = imageService;
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.userService = userService;
+        this.ecos = ecos;
     }
 
     @Override
@@ -43,16 +45,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findBySeller(long sellerId) {
         return productDao.findBySeller(sellerId);
-    }
-
-    @Override
-    public Optional<List<Product>> getByMaxPrice(float price) {
-        return productDao.getByMaxPrice(price);
-    }
-
-    @Override
-    public Optional<List<Product>> getByCategory(long categoryId) {
-        return productDao.getByCategory(categoryId);
     }
 
     @Override
@@ -210,7 +202,10 @@ public class ProductServiceImpl implements ProductService {
     public Boolean addStock(String prodName, int amount) {
         System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
         Optional<Product> prod = getByName(prodName);
-        if(!prod.isPresent()) throw new IllegalStateException();
+        // TODO: Discutir esta implementación. Si uno borra el producto y luego cancela una orden,
+        //  esto va a tirar una excepción y no debería ser así. Pero tampoco debería poderse devolver
+        //  true si el producto no existe. Discutir.
+        if(!prod.isPresent()) return true;
         return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
@@ -232,6 +227,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getRecent(int amount){
-        return productDao.getRecent(amount);
+
+        List<Product> recent =  productDao.getRecent(amount);
+
+        for(Product product : recent) {
+            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+        }
+        return recent;
     }
 }

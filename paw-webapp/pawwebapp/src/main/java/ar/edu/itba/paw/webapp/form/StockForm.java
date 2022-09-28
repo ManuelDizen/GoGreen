@@ -1,21 +1,19 @@
 package ar.edu.itba.paw.webapp.form;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 public class StockForm {
 
-    @Min(value=1,message="Por favor, introduzca una cantidad válida.")
-    @Max(value = 10000, message="El máximo stock permitido es de 10000 unidades.")
     @NotNull
-    private Integer newStock;
+    @Size(max=4)
+    @Pattern(regexp = "[0-9]+")
+    private String newStock;
 
-    public Integer getNewStock() {
+    public String getNewStock() {
         return newStock;
     }
 
-    public void setNewStock(Integer newStock) {
+    public void setNewStock(String newStock) {
         this.newStock = newStock;
     }
 }

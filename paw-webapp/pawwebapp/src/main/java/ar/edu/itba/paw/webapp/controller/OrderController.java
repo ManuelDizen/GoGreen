@@ -19,10 +19,8 @@ public class OrderController {
 
     @RequestMapping(value="/deleteOrder/{orderId:[0-9]+}")
     public ModelAndView deleteOrder(@PathVariable("orderId") final long orderId){
-        Boolean isOwner = orderService.checkForOrderOwnership(orderId);
-        if(!isOwner) throw new IllegalStateException();
         Boolean deleted = orderService.deleteOrder(orderId);
-        if(!deleted) throw new RuntimeException("Volví de deleted");
+        if(!deleted) throw new RuntimeException();
         ModelAndView mav = new ModelAndView("redirect:/sellerProfile#test3");
         return mav;
     }

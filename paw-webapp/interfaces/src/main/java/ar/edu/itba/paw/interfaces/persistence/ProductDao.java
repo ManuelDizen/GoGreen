@@ -12,8 +12,7 @@ public interface ProductDao {
                    float price, long imageId);
 
     List<Product> findBySeller(long sellerId);
-    Optional<List<Product>> getByMaxPrice(float price);
-    Optional<List<Product>> getByCategory(long categoryId);
+
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
     List<Product> getAll();

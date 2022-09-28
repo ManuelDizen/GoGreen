@@ -15,56 +15,66 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="container">
+    <div class="container createproducts" style="margin-top: 20px">
         <c:url value="/createProduct" var="postUrl"/>
         <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
-            <div class="center">
-                <h4><spring:message code="createproduct.title"/></h4>
+            <div class="center" style="margin-top: 25px; margin-bottom: 35px">
+                <h4 style="color: var(--palette-color-secondary)"><spring:message code="createproduct.title"/></h4>
             </div>
-            <div>
-                <form:label path="name"><spring:message code="createproduct.form.name"/>
-                    <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="name" type="text"/>
-                <form:errors path="name" element="p" cssClass="error"/>
+            <div class="createbody">
+                <div class="row">
+                    <div class="col s4 input-field">
+                        <form:label path="name"><spring:message code="createproduct.form.name"/>
+                            <spring:message code="forms.obligatorysign"/></form:label>
+                        <form:input path="name" type="text"/>
+                        <form:errors path="name" element="p" cssClass="error"/>
+                    </div>
+                    <div class="col s4 input-field" >
+                        <form:select path="category">
+                            <form:option value="0" disabled="true"><spring:message code="explore.select"/></form:option>
+                            <c:forEach items="${categories}" var="category">
+                                <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>
+                            </c:forEach>
+                        </form:select>
+                        <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
+                        <form:errors path="category" element="p" cssClass="error"/>
+                    </div>
+                    <div class="col s4 input-field">
+                        <form:label path="stock"><spring:message code="createproduct.form.stock"/>
+                            <spring:message code="forms.obligatorysign"/></form:label>
+                        <form:input path="stock" type="number"/>
+                        <form:errors path="stock" element="p" cssClass="error"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s4 input-field">
+                        <form:label path="description"><spring:message code="createproduct.form.description"/></form:label>
+                        <form:input path="description" type="text"/>
+                        <form:errors path="description" element="p" cssClass="error"/>
+                    </div>
+                    <div class="col s4 input-field">
+                        <form:label path="price"><spring:message code="createproduct.form.price"/>
+                            <spring:message code="forms.obligatorysign"/></form:label>
+                        <form:input path="price" type="number"/>
+                        <form:errors path="price" element="p" cssClass="error"/>
+                    </div>
+                    <div class="col s4 input-field" style="display:flex; justify-content: center;">
+                        <spring:message code="createproduct.form.taglist" var="placeholder"/>
+                        <form:select path="ecotag" multiple="true" data-placeholder="${placeholder}">
+                            <c:forEach items="${tagList}" var="ecotag">
+                                <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
+                            </c:forEach>
+                        </form:select>
+                        <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
+                        <form:errors path="ecotag" element= "p" cssClass="error"/>
+                    </div>
+                </div>
             </div>
-            <div>
-                <form:label path="description"><spring:message code="createproduct.form.description"/></form:label>
-                <form:input path="description" type="text"/>
-                <form:errors path="description" element="p" cssClass="error"/>
-            </div>
-            <div>
-                <form:label path="price"><spring:message code="createproduct.form.price"/>
-                    <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="price"/>
-                <form:errors path="price" element="p" cssClass="error"/>
-            </div>
-            <div class="input-field">
-                <form:select path="category">
-                    <c:forEach items="${categories}" var="category">
-                        <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>
-                    </c:forEach>
-                </form:select>
-                <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
-                <form:errors path="category" element="p" cssClass="error"/>
-            </div>
-            <div>
-                <form:label path="stock"><spring:message code="createproduct.form.stock"/></form:label>
-                <form:input path="stock"/>
-                <form:errors path="stock" element="p" cssClass="error"/>
-            </div>
-            <div class="input-field">
-                <form:select path="ecotag" multiple="true">
-                    <c:forEach items="${tagList}" var="ecotag">
-                        <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
-                    </c:forEach>
-                </form:select>
-                <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
-                <form:errors path="ecotag" element= "p" cssClass="error"/>
-            </div>
-            <div class="row">
+            <div class="createproduct_row" style="margin-top: 25px; margin-bottom: 10px">
                 <div class="file-field input-field">
                     <div class="btn">
                         <span><spring:message code="createproduct.form.image"/></span>
@@ -81,11 +91,83 @@
                     <spring:message code="createproduct.form.submit"/>
                 </button>
             </div>
+
+<%--            <div class="createbody">--%>
+<%--                <div class="createproduct_column">--%>
+<%--                    <div class="input-field">--%>
+<%--                        <form:label path="name"><spring:message code="createproduct.form.name"/>--%>
+<%--                            <spring:message code="forms.obligatorysign"/></form:label>--%>
+<%--                        <form:input path="name" type="text"/>--%>
+<%--                        <form:errors path="name" element="p" cssClass="error"/>--%>
+<%--                    </div>--%>
+<%--                    <div class="input-field">--%>
+<%--                        <form:label path="description"><spring:message code="createproduct.form.description"/></form:label>--%>
+<%--                        <form:input path="description" type="text"/>--%>
+<%--                        <form:errors path="description" element="p" cssClass="error"/>--%>
+<%--                    </div>--%>
+<%--                    <div class="input-field" >--%>
+<%--                        <form:select path="category">--%>
+<%--                            <form:option value="0" disabled="true"><spring:message code="explore.select"/></form:option>--%>
+<%--                            <c:forEach items="${categories}" var="category">--%>
+<%--                                <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>--%>
+<%--                                <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>--%>
+<%--                                <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </form:select>--%>
+<%--                        <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>--%>
+<%--                        <form:errors path="category" element="p" cssClass="error"/>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <div class="createproduct_column">--%>
+<%--                    <div class="input-field" style="display:flex; justify-content: center;">--%>
+<%--                        <spring:message code="createproduct.form.taglist" var="placeholder"/>--%>
+<%--                        <form:select path="ecotag" multiple="true" data-placeholder="${placeholder}">--%>
+<%--                            <c:forEach items="${tagList}" var="ecotag">--%>
+<%--                                <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </form:select>--%>
+<%--                        <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>--%>
+<%--                        <form:errors path="ecotag" element= "p" cssClass="error"/>--%>
+<%--                    </div>--%>
+<%--                    <div class="input-field" style="margin-bottom: 20px">--%>
+<%--                        <form:label path="price"><spring:message code="createproduct.form.price"/>--%>
+<%--                            <spring:message code="forms.obligatorysign"/></form:label>--%>
+<%--                        <form:input path="price" type="number"/>--%>
+<%--                        <form:errors path="price" element="p" cssClass="error"/>--%>
+<%--                    </div>--%>
+<%--                    <div class="input-field">--%>
+<%--                        <form:label path="stock"><spring:message code="createproduct.form.stock"/>--%>
+<%--                            <spring:message code="forms.obligatorysign"/></form:label>--%>
+<%--                        <form:input path="stock" type="number"/>--%>
+<%--                        <form:errors path="stock" element="p" cssClass="error"/>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="createproduct_row">--%>
+<%--                <div class="file-field input-field">--%>
+<%--                    <div class="btn">--%>
+<%--                        <span><spring:message code="createproduct.form.image"/></span>--%>
+<%--                        <form:input path="image" type="file"/>--%>
+<%--                    </div>--%>
+<%--                    <div class="file-path-wrapper">--%>
+<%--                        <input class="file-path validate" type="text">--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <form:errors path="image" element="p" cssClass="error"/>--%>
+<%--            </div>--%>
+<%--            <div class="center" style="padding-top: 1em;">--%>
+<%--                <button type="submit" class="decision-button waves-effect waves-light btn">--%>
+<%--                    <spring:message code="createproduct.form.submit"/>--%>
+<%--                </button>--%>
+<%--            </div>--%>
+
         </form:form>
     </div>
     <%@ include file="footer.jsp"%>
 </body>
 <script>
+
+
     $(document).ready(function () {
 
         var select = $('select[multiple]');
@@ -118,7 +200,7 @@
             var li = $(this);
             if (!select.hasClass('clicked')) {
                 select.addClass('clicked');
-                li.prev().addClass('beforeRemove');
+                li.prev().addClass('be|foreRemove');
                 li.next().addClass('afterRemove');
                 li.addClass('remove');
                 var a = $('<a />').addClass('notShown').html('<em>' + li.text() + '</em><i></i>').hide().appendTo(select.children('div'));
