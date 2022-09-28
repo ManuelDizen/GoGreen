@@ -18,6 +18,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Integer.parseInt;
+
 @Controller
 public class UserController {
 
@@ -123,7 +125,10 @@ public class UserController {
             //TODO: Display form errors
             return sellerProfile(1,1,form);
         }
-        Boolean success = productService.attemptUpdate(prodId, form.getNewStock());
+
+        int newStock = parseInt(form.getNewStock());
+
+        Boolean success = productService.attemptUpdate(prodId, newStock);
         if(!success) throw new IllegalStateException("Stock update could not go through");
         return new ModelAndView("redirect:/sellerProfile");
     }

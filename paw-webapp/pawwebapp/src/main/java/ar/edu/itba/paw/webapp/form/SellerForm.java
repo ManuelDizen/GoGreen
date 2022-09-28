@@ -17,35 +17,35 @@ import javax.validation.constraints.Size;
 public class SellerForm {
     @Size(max = 50)
     @NotNull
-    @NotEmpty(message="Por favor, indicar su nombre")
+    @NotEmpty
     private String firstName;
 
     @Size(max = 100)
     @NotNull
-    @NotEmpty(message = "Por favor, indicar su apellido")
+    @NotEmpty
     private String surname;
 
     @Email
-    @Size(min = 8, max = 50, message = "El mail debe tener como mínimo 8 caracteres y máximo 50.")
-    @UniqueUserMail(message = "Este email ya se encuenta registrado. Por favor, intente con otro.")
-    @NotNull(message = "Por favor, indicar su mail")
+    @Size(min = 8, max = 50)
+    @UniqueUserMail
+    @NotNull
     private String email;
 
     @Password
     @NotNull
-    @NotEmpty(message = "Por favor, indicar la contraseña")
+    @NotEmpty
     private String password;
 
     @NotNull
     private String confirmationPassword;
 
     @NotNull
-    @NotEmpty(message="Por favor, indicar su dirección")
-    @Size(max = 50, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
+    @NotEmpty
+    @Size(max = 50)
     private String address;
 
     @NotNull
-    @NotEmpty(message="Por favor, indicar su teléfono")
+    @NotEmpty
     @ValidPhone
     private String phone;
 

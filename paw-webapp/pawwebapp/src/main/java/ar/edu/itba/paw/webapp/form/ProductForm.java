@@ -24,23 +24,25 @@ public class ProductForm {
     //@Min(value=1, message= "Por favor, introduzca un precio válido")
     //@Max(value=999999, message="El precio debe ser menor a un millón")
     @NotNull
-    @Size(min=1, message = "No puede estar vacío")
+    @Size(max=6)
+    @Pattern(regexp = "[0-9]+")
     private String price;
 
     //@Min(value=1, message="Por favor, introduzca un stock válido")
     //@Max(value=10000, message="El máximo para publicar son 10000 unidades.")
     @NotNull
-    @Size(min=1, message = "No puede estar vacío")
+    @Size(max=4)
+    @Pattern(regexp = "[0-9]+")
     private String stock;
 
-    @FileType(types = {"image/png", "image/jpeg"}, message="Por favor, use archivos de extensión .png o .jpeg.")
+    @FileType(types = {"image/png", "image/jpeg"})
     @FileSize(bytes = (10*1024*1024))
     private MultipartFile image;
 
 
     private long[] ecotag;
 
-    @Min(value=1, message="Por favor, escoja al menos una categoría")
+    @Min(value=1)
     private long category;
 
 

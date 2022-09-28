@@ -9,8 +9,8 @@ public class OrderForm {
     @Size(max = 1023)
     private String message;
 
-    @Min(value = 1, message = "Por favor, introduzca una cantidad válida (mínimo 1 unidad)")
-    @Max(value = 5, message = "El límite de compra son 5 unidades.")
+    @Min(value = 1)
+    @Max(value = 5)
     private Integer amount;
 
     public String getMessage() {

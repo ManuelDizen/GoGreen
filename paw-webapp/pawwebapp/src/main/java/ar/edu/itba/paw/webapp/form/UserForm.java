@@ -13,33 +13,33 @@ import javax.validation.constraints.Size;
 
 @FieldMatch(
         first = "password",
-        matching = "confirmationPassword",
-        message="Contraseñas deben coincidir"
+        matching = "confirmationPassword"
 )
 public class UserForm {
 
     @Size(max = 50)
     @NotNull
-    @NotEmpty(message = "Por favor, indicar su nombre.")
+    @NotEmpty
     private String firstName;
 
     @Size(max = 100)
     @NotNull
-    @NotEmpty(message = "Por favor, indicar su apellido.")
+    @NotEmpty
     private String surname;
 
     @Email
     @Size(min = 8, max = 50)
     @UniqueUserMail
-    @NotNull(message= "Por favor, indique si mail")
+    @NotNull
     private String email;
 
     @Password
-    @NotNull(message = "Por favor, indicar su contraseña")
+    @NotNull
     @NotEmpty
     private String password;
 
     @NotNull
+    @NotEmpty
     private String confirmationPassword;
 
     public String getFirstName() {

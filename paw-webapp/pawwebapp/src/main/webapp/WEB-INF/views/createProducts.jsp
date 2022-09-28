@@ -46,7 +46,7 @@
                     <div class="col s4 input-field">
                         <form:label path="stock"><spring:message code="createproduct.form.stock"/>
                             <spring:message code="forms.obligatorysign"/></form:label>
-                        <form:input path="stock" type="number" min="0" max="10000"/>
+                        <form:input path="stock" type="number"/>
                         <form:errors path="stock" element="p" cssClass="error"/>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="col s4 input-field">
                         <form:label path="price"><spring:message code="createproduct.form.price"/>
                             <spring:message code="forms.obligatorysign"/></form:label>
-                        <form:input path="price" type="number" min="0" max="999999"/>
+                        <form:input path="price" type="number"/>
                         <form:errors path="price" element="p" cssClass="error"/>
                     </div>
                     <div class="col s4 input-field" style="display:flex; justify-content: center;">
