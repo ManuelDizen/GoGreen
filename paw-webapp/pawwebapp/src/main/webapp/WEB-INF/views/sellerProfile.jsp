@@ -131,6 +131,7 @@
                                                 <spring:message code="sellerprofile.updatestock.placeholder" var="placeholder"/>
                                                 <form:input path="newStock" name="newStock" id="newStock" type="number" cssStyle="color:white;" placeholder="${placeholder}"/>
                                                 <form:label path="newStock"><spring:message code="sellerprofile.newstock"/></form:label>
+                                                <form:errors path="newStock" element="p" cssClass="error"/>
                                             </div>
                                         </div>
                                         <div class="row s12" style="display:flex; justify-content: center;">
@@ -164,29 +165,31 @@
                     </c:if>
                 </div>
             </div>
-            <div class="pagin">
-                <c:set var="nextPage" value="${currentPageP+1}"/>
-                <c:set var="previousPage" value="${currentPageP-1}"/>
-                <div>
-                    <ul class="pagination">
-                        <c:if test="${currentPageP <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageP > 1}">
-                            <li><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
-                            <li class="waves-effect"><a href="?pageP=${currentPageP-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
-                        </c:if>
-                        <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
-                        <c:if test="${currentPageP < productPages.size()}">
-                            <li class="waves-effect"><a href="?pageP=${currentPageP+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageP >= productPages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
-                        </c:if>
-                    </ul>
+            <c:if test="${productPages.size() > 1}">
+                <div class="pagin">
+                    <c:set var="nextPage" value="${currentPageP+1}"/>
+                    <c:set var="previousPage" value="${currentPageP-1}"/>
+                    <div>
+                        <ul class="pagination">
+                            <c:if test="${currentPageP <= 1}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageP > 1}">
+                                <li><a href="?pageP=${currentPageP-1}#test2"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                                <li class="waves-effect"><a href="?pageP=${currentPageP-1}#test2" style="color: #EDFA8B">${previousPage}</a></li>
+                            </c:if>
+                            <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
+                            <c:if test="${currentPageP < productPages.size()}">
+                                <li class="waves-effect"><a href="?pageP=${currentPageP+1}#test2" style="color: #EDFA8B">${nextPage}</a></li>
+                                <li><a href="?pageP=${currentPageP+1}#test2"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageP >= productPages.size()}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </c:if>
         </div>
         <div id="test3" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
@@ -254,29 +257,31 @@
                     </c:if>
                 </div>
             </div>
-            <div class="pagin">
-                <c:set var="nextPage" value="${currentPageO+1}"/>
-                <c:set var="previousPage" value="${currentPageO-1}"/>
-                <div>
-                    <ul class="pagination">
-                        <c:if test="${currentPageO <= 1}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageO > 1}">
-                            <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
-                            <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>
-                        </c:if>
-                        <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
-                        <c:if test="${currentPageO < orderPages.size()}">
-                            <li class="waves-effect"><a href="?pageO=${currentPageO+1}#test3" style="color: #EDFA8B">${nextPage}</a></li>
-                            <li><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
-                        </c:if>
-                        <c:if test="${currentPageO >= orderPages.size()}">
-                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
-                        </c:if>
-                    </ul>
+            <c:if test="${orderPages.size() > 1}">
+                <div class="pagin">
+                    <c:set var="nextPage" value="${currentPageO+1}"/>
+                    <c:set var="previousPage" value="${currentPageO-1}"/>
+                    <div>
+                        <ul class="pagination">
+                            <c:if test="${currentPageO <= 1}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageO > 1}">
+                                <li><a href="?pageO=${currentPageO-1}#test3"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                                <li class="waves-effect"><a href="?pageO=${currentPageO-1}#test3" style="color: #EDFA8B">${previousPage}</a></li>
+                            </c:if>
+                            <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
+                            <c:if test="${currentPageO < orderPages.size()}">
+                                <li class="waves-effect"><a href="?pageO=${currentPageO+1}#test3" style="color: #EDFA8B">${nextPage}</a></li>
+                                <li><a href="?pageO=${currentPageO+1}#test3"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPageO >= orderPages.size()}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </c:if>
         </div>
     </div>
 </div>
