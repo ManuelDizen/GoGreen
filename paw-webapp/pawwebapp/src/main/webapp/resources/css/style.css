@@ -1329,6 +1329,10 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: none;
 }
 
+.file-path-wrapper {
+    max-width: 120px;
+}
+
 .dropdown-content {
     max-height: 200px;
 }
