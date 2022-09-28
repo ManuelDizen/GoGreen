@@ -19,7 +19,7 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="container createproducts" style="margin-top: 30px">
+    <div class="container createproducts" style="margin-top: 20px">
         <c:url value="/createProduct" var="postUrl"/>
         <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
             <div class="center" style="margin-top: 25px; margin-bottom: 35px">
@@ -46,7 +46,7 @@
                     <div class="col s4 input-field">
                         <form:label path="stock"><spring:message code="createproduct.form.stock"/>
                             <spring:message code="forms.obligatorysign"/></form:label>
-                        <form:input path="stock" type="number"/>
+                        <form:input path="stock" type="number" min="0" max="10000"/>
                         <form:errors path="stock" element="p" cssClass="error"/>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="col s4 input-field">
                         <form:label path="price"><spring:message code="createproduct.form.price"/>
                             <spring:message code="forms.obligatorysign"/></form:label>
-                        <form:input path="price" type="number"/>
+                        <form:input path="price" type="number" min="0" max="999999"/>
                         <form:errors path="price" element="p" cssClass="error"/>
                     </div>
                     <div class="col s4 input-field" style="display:flex; justify-content: center;">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <div class="createproduct_row" style="margin-top: 25px; margin-bottom: 20px">
+            <div class="createproduct_row" style="margin-top: 25px; margin-bottom: 10px">
                 <div class="file-field input-field">
                     <div class="btn">
                         <span><spring:message code="createproduct.form.image"/></span>
