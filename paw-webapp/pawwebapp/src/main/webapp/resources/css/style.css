@@ -1136,6 +1136,7 @@ ALL CREDITS TO @andrewsims
 
 /* -------- LOGIN VIEW ------- */
 
+
 .login{
     max-width: 500px;
     padding: 20px 35px 20px 35px;
@@ -1158,7 +1159,7 @@ ALL CREDITS TO @andrewsims
     color:white;
 }
 
-.register-form-container div, .login-form-container div, .login-register-container div{
+.login-form-container div, .login-register-container div{
     width:100%;
     display:flex;
     justify-content: space-around;
@@ -1179,9 +1180,18 @@ ALL CREDITS TO @andrewsims
     margin-bottom:4vh;
 }
 
-.register-form-container div .errors{
-    margin: 0 0 auto;
+.register-form-container div .errors .error{
+    font-size: 10px;
+    font-weight: bold;
+    color: red;
+    margin: 0 0 0 0;
 }
+
+.register-form-container div .input-field{
+    margin: 0 0 0 0;
+}
+
+
 
 .label-container{
     margin-top:2vh;
@@ -1320,7 +1330,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     justify-content: center;
 }
 
-.error {
+.createbody div .error {
     font-size: 10px;
     font-weight: bold;
     color: red;
@@ -1342,6 +1352,15 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 
 .dropdown-content {
     max-height: 200px;
+}
+
+.registerbody {
+    display: grid;
+}
+
+.registerbody .row {
+    margin-bottom: 20px;
+    max-height: 50px;
 }
 
 
