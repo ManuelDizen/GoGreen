@@ -5,15 +5,16 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.form.StockForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +75,8 @@ public class UserController {
 
     @RequestMapping(value="/sellerProfile")
     public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
-                                      @RequestParam(name="pageO", defaultValue="1") final int pageO){
+                                      @RequestParam(name="pageO", defaultValue="1") final int pageO,
+                                      @ModelAttribute("stockForm") final StockForm form){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
@@ -106,6 +108,21 @@ public class UserController {
     public ModelAndView sellerProducts(){
         final ModelAndView mav = new ModelAndView("/sellerProducts");
         return mav;
+    }
+
+    @RequestMapping(value="/updateStock/{prodId:[0-9]+}", method=RequestMethod.POST)
+    public ModelAndView updateStock(
+            @PathVariable("prodId") final long prodId,
+            @Valid @ModelAttribute("stockForm") final StockForm form,
+            final BindingResult errors
+    ){
+        if(errors.hasErrors()){
+            //TODO: Display form errors
+            return sellerProfile(1,1,form);
+        }
+        Boolean success = productService.attemptUpdate(prodId, form.getNewStock());
+        if(!success) throw new IllegalStateException("Stock update could not go through");
+        return new ModelAndView("redirect:/sellerProfile");
     }
 
 }

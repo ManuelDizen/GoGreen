@@ -60,16 +60,6 @@ public class ProductController {
         this.os = os;
     }
 
-    @RequestMapping(value="/updateStock/{prodId:[0-9]+}")
-    public ModelAndView updateStock(
-            @PathVariable("prodId") final long prodId,
-            @RequestParam(name="newStock", defaultValue="0") final int newStock
-    ){
-        Boolean success = ps.attemptUpdate(prodId, newStock);
-        if(!success) throw new IllegalStateException("Stock update could not go through");
-        return new ModelAndView("redirect:/sellerProfile");
-    }
-
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,
@@ -78,7 +68,7 @@ public class ProductController {
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
-            @RequestParam(name="direction", defaultValue = "0") final int direction
+            @RequestParam(name="direction", defaultValue = "1") final int direction
     ) {
         final ModelAndView mav = new ModelAndView("explore");
 

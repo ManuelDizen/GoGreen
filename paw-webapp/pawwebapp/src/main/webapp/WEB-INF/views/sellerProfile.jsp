@@ -125,11 +125,11 @@
                                         </c:if>
                                     </div>
                                     <c:url value="/updateStock/${product.productId}" var="updateStockUrl"/>
-                                    <form action="${updateStockUrl}" method="get" id="update_form">
+                                    <form:form modelAttribute="stockForm" action="${updateStockUrl}" method="post" id="update_form">
                                         <div class="col s12">
                                             <div class="input-field col s12">
-                                                <input path="newStock" name="newStock" id="newStock" type="text" class="validate">
-                                                <label for="newStock"><spring:message code="sellerprofile.newstock"/></label>
+                                                <form:input path="newStock" name="newStock" id="newStock" type="number"/>
+                                                <form:label path="newStock"><spring:message code="sellerprofile.newstock"/></form:label>
                                             </div>
                                         </div>
                                         <div class="row s12" style="display:flex; justify-content: center;">
@@ -141,7 +141,7 @@
                                                 <i class="material-icons right">check</i>
                                             </button>
                                         </div>
-                                    </form>
+                                    </form:form>
                                 </div>
                                 <div id="modal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
                                     <div class="modal-content">
@@ -156,14 +156,6 @@
                                             <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
                                         </a>
                                     </div>
-                                    <%--<div class="modal-footer">
-                                        <a class="modal-close waves-effect waves-green btn-flat">
-                                            <spring:message code="sellerprofile.delete.cancel"/>
-                                        </a>
-                                        <a class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>
-                                            <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
-                                        </a>
-                                    </div>--%>
                                 </div>
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>

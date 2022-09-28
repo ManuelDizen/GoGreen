@@ -13,14 +13,10 @@ public interface ProductService {
                    float price, byte[] image);
 
     List<Product> findBySeller(long sellerId);
-    Optional<List<Product>> getByMaxPrice(float price);
-    Optional<List<Product>> getByCategory(long categoryId);
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
     List<Product> getAll();
     List<Product> getAvailable();
-
-
     List<Product> getRecent(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice);
 
