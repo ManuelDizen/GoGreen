@@ -128,7 +128,8 @@
                                     <form:form modelAttribute="stockForm" action="${updateStockUrl}" method="post" id="update_form">
                                         <div class="col s12">
                                             <div class="input-field col s12">
-                                                <form:input path="newStock" name="newStock" id="newStock" type="number"/>
+                                                <spring:message code="sellerprofile.updatestock.placeholder" var="placeholder"/>
+                                                <form:input path="newStock" name="newStock" id="newStock" type="number" cssStyle="color:white;" placeholder="${placeholder}"/>
                                                 <form:label path="newStock"><spring:message code="sellerprofile.newstock"/></form:label>
                                             </div>
                                         </div>
@@ -232,14 +233,16 @@
                                             <li>
                                                 <spring:message code="sellerprofile.deleteorder.buyer"/>
                                                 <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                            </li>
+                                            <li>
                                                 <spring:message code="sellerprofile.deleteorder.amount"/>
                                                 <c:out value="${order.amount}"/>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <a class="modal-close waves-effect waves-green btn-flat">
+                                <div class="row s12" style="display:flex; justify-content: center;">
+                                    <a class="modal-close waves-effect waves-green btn-flat" style="color:white;">
                                         <spring:message code="sellerprofile.delete.cancel"/>
                                     </a>
                                     <a class="waves-effect waves-light btn  red accent-4" href="<c:url value="/deleteOrder/${order.id}"/>">
