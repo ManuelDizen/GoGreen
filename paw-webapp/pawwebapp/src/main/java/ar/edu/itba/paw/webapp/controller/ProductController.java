@@ -60,16 +60,6 @@ public class ProductController {
         this.os = os;
     }
 
-    @RequestMapping(value="/updateStock/{prodId:[0-9]+}")
-    public ModelAndView updateStock(
-            @PathVariable("prodId") final long prodId,
-            @RequestParam(name="newStock", defaultValue="0") final int newStock
-    ){
-        Boolean success = ps.attemptUpdate(prodId, newStock);
-        if(!success) throw new IllegalStateException("Stock update could not go through");
-        return new ModelAndView("redirect:/sellerProfile");
-    }
-
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
             @RequestParam(name="name", defaultValue="") final String name,

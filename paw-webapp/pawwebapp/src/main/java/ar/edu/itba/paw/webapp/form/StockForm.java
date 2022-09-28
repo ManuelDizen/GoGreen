@@ -8,7 +8,6 @@ public class StockForm {
 
     @Min(value=1,message="Por favor, introduzca una cantidad válida.")
     @Max(value = 10000, message="El máximo stock permitido es de 10000 unidades.")
-    @NotNull
     private Integer newStock;
 
     public Integer getNewStock() {
