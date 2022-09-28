@@ -29,7 +29,7 @@
         <div id="test1" class="col s12">
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
-                    <div class="text-center"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                    <div class="text-center" style="font-size:20px;font-weight: bold;"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
                         <c:if test="${user.imageId == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
@@ -45,12 +45,12 @@
                     </div>--%>
                 </div>
                 <div class="seller-inner-div-2">
-                    <div><spring:message code="sellerprofile.info"/>
+                    <div><div style="font-size:20px; font-weight: bold;"><spring:message code="sellerprofile.info"/></div>
                         <ul>
-                            <li><c:out value="${user.firstName}${' '}${user.surname}"/></li>
-                            <li><c:out value="${user.email}"/></li>
-                            <li><c:out value="${seller.address}"/></li>
-                            <li><c:out value="${seller.phone}"/></li>
+                            <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
+                            <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
+                            <li><spring:message code="sellerprofile.address"/>:<c:out value="${seller.address}"/></li>
+                            <li><spring:message code="sellerprofile.phone"/>:<c:out value="${seller.phone}"/></li>
                         </ul>
                     </div>
                     <%--<div>

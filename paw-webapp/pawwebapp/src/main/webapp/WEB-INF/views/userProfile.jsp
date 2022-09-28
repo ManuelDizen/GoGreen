@@ -68,7 +68,24 @@
                     </c:if>
                     <c:if test="${orders.size() != 0}">
                         <c:forEach items="${orders}" var="order">
-                            <div class="seller-profile-card">
+                            <div class="row" style="width:80%;border:1px solid var(--palette-details-light);display:inline-block;">
+                                <div class="col s6 userPurchase">
+                                    <div style="font-size: 20px;"><b><c:out value="${order.productName}"/></b></div>
+                                </div>
+                                <div class="col s6 userPurchase">
+                                    <div>
+                                        <spring:message code="sellerprofile.orders.time"/>
+                                        <c:out value="${order.parsedDateTime}"/>
+                                    </div>
+                                    <div>
+                                        <spring:message code="userprofile.orders.seller"/>
+                                        <c:out value="${order.sellerName}${' '}${order.sellerSurname}"/>
+                                    </div>
+                                    <div><spring:message code="sellerprofile.orders.price"/><c:out value="${order.price}"/></div>
+                                    <div><spring:message code="sellerprofile.orders.amount"/><c:out value="${order.amount}"/></div>
+                                </div>
+                            </div>
+                            <%--div class="seller-profile-card">
                                 <div class="seller-profile-card-title">
                                     <c:out value="${order.productName}"/>
                                 </div>
@@ -88,7 +105,7 @@
                                     <spring:message code="userprofile.orders.seller"/>
                                     <c:out value="${order.sellerName}${' '}${order.sellerSurname}"/>
                                 </div>
-                            </div>
+                            </div--%>
                         </c:forEach>
                     </c:if>
                 </div>
