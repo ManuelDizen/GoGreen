@@ -126,9 +126,9 @@ public class UserController {
             return sellerProfile(1,1,form);
         }
 
-        int newStock = parseInt(form.getNewStock());
+        //int newStock = parseInt(form.getNewStock());
 
-        Boolean success = productService.attemptUpdate(prodId, newStock);
+        Boolean success = productService.attemptUpdate(prodId, form.getNewStock());
         if(!success) throw new IllegalStateException("Stock update could not go through");
         return new ModelAndView("redirect:/sellerProfile");
     }
