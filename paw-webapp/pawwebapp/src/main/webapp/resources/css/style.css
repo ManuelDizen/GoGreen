@@ -1086,6 +1086,10 @@ ALL CREDITS TO @andrewsims
     background-color: var(--palette-color-secondary);
 }
 
+.product-card .card-content > a{
+    color: #ADE28A;
+}
+
 .explore-products .product-card .card-content{
     height:250px;
 }

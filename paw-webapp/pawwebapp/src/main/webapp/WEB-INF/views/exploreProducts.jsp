@@ -27,17 +27,19 @@
     <c:if test="${products.size() != 0}">
         <c:forEach items="${products}" var="product">
             <div class="card product-card" style="margin:10px auto;">
-                <div class="card-image">
-                    <c:if test="${product.imageId != 0}">
-                        <img class="activator" style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
-                    </c:if>
-                    <c:if test="${product.imageId == 0}">
-                        <img class="activator" style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
-                    </c:if>
-                </div>
+                <a href="<c:url value="/product/${product.productId}"/>">
+                    <div class="card-image">
+                        <c:if test="${product.imageId != 0}">
+                            <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
+                        </c:if>
+                        <c:if test="${product.imageId == 0}">
+                            <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
+                        </c:if>
+                    </div>
+                </a>
                 <div class="card-content">
-                    <span class="card-title product-card-title activator"><c:out value="${product.name}"/></span>
-                    <div class="activator" style="margin-top: 2vh; margin-bottom: 2vh;">
+                    <a href="<c:url value="/product/${product.productId}"/>" class="card-title product-card-title"><c:out value="${product.name}"/></a>
+                    <div style="margin-top: 2vh; margin-bottom: 2vh;">
                         <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                     </div>
                     <div style="margin-top: 3vh; margin-bottom: 1vh;">
@@ -60,36 +62,36 @@
                             </c:if>
                         </c:forEach>
                     </div>
-                    <div class="submit-button">
-                        <a class="waves-effect waves-light btn standard-button"
-                           href="<c:url value="/product/${product.productId}"/>"
-                           style="text-align: center">
-                            <spring:message code="explore.product.goto"/>
-                        </a>
-                    </div>
+<%--                    <div class="submit-button">--%>
+<%--&lt;%&ndash;                        <a class="waves-effect waves-light btn standard-button"&ndash;%&gt;--%>
+<%--&lt;%&ndash;                           href="<c:url value="/product/${product.productId}"/>"&ndash;%&gt;--%>
+<%--&lt;%&ndash;                           style="text-align: center">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <spring:message code="explore.product.goto"/>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        </a>&ndash;%&gt;--%>
+<%--                    </div>--%>
                 </div>
-                <div class="card-reveal" style="background-color: #1b5e20; color: #ADE28A;">
-                    <span class="card-title product-card-title"><i class="material-icons right">close</i></span>
-                    <div class="two-line">
-                        <span class="card-title product-card-title"><c:out value="${product.name}"/></span>
-                        <span class="card-title product-card-title"><c:out value="$${product.price}"/></span>
-                    </div>
-                    <p><c:out value="${product.description}"/></p>
-                    <c:forEach items="${product.tagList}" var="ecotag">
-                        <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
-                        <i class="tiny material-icons">${ecotag.icon}</i>
-                        <spring:message code="${ecotag.tag}"/>
-                        </a>
-                        <br>
-                    </c:forEach>
-                    <div class="submit-button">
-                        <a class="waves-effect waves-light btn standard-button"
-                           href="<c:url value="/product/${product.productId}"/>"
-                           style="text-align: center">
-                            <spring:message code="explore.product.goto"/>
-                        </a>
-                    </div>
-                </div>
+<%--                <div class="card-reveal" style="background-color: #1b5e20; color: #ADE28A;">--%>
+<%--                    <span class="card-title product-card-title"><i class="material-icons right">close</i></span>--%>
+<%--                    <div class="two-line">--%>
+<%--                        <span class="card-title product-card-title"><c:out value="${product.name}"/></span>--%>
+<%--                        <span class="card-title product-card-title"><c:out value="$${product.price}"/></span>--%>
+<%--                    </div>--%>
+<%--                    <p><c:out value="${product.description}"/></p>--%>
+<%--                    <c:forEach items="${product.tagList}" var="ecotag">--%>
+<%--                        <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>--%>
+<%--                        <i class="tiny material-icons">${ecotag.icon}</i>--%>
+<%--                        <spring:message code="${ecotag.tag}"/>--%>
+<%--                        </a>--%>
+<%--                        <br>--%>
+<%--                    </c:forEach>--%>
+<%--                    <div class="submit-button">--%>
+<%--                        <a class="waves-effect waves-light btn standard-button"--%>
+<%--                           href="<c:url value="/product/${product.productId}"/>"--%>
+<%--                           style="text-align: center">--%>
+<%--                            <spring:message code="explore.product.goto"/>--%>
+<%--                        </a>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </div>
         </c:forEach>
     </c:if>
