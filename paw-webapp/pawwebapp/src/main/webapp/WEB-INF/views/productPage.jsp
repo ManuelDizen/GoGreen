@@ -37,10 +37,10 @@
                 <div class="productpage-ecotags separating-fields">
                     <c:forEach items="${ecotags}" var="ecotag">
                         <div style="margin-top: 1vh; margin-bottom: 1vh;">
-                            <div class="${ecotag.color} white-text chip">
+                            <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                 <i class="tiny material-icons">${ecotag.icon}</i>
                                 <spring:message code="${ecotag.tag}"/>
-                            </div>
+                            </a>
                         </div>
                     </c:forEach>
                 </div>
