@@ -39,11 +39,10 @@
                 </a>
                 <div class="card-content">
                     <a href="<c:url value="/product/${product.productId}"/>" class="card-title product-card-title"><c:out value="${product.name}"/></a>
-                    <div style="margin-top: 2vh; margin-bottom: 2vh;">
+                    <div class="card-price">
                         <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                     </div>
-                    <div style="margin-top: 3vh; margin-bottom: 1vh;">
-                        <c:set var="count" value="0"/>
+                    <div>
                         <c:forEach items="${product.tagList}" var="ecotag">
                             <%--<c:if test="${count == 2}">
                                 <br>
@@ -53,13 +52,12 @@
                                 <c:set var="count" value="${count + 1}"/>
                             </c:if>--%>
 
-                            <c:if test="${count lt 2}">
+
                                 <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>"/>
                                 <i class="tiny material-icons">${ecotag.icon}</i>
                                 <spring:message code="${ecotag.tag}"/>
                                 </a>
                                 <c:set var="count" value="${count + 1}"/>
-                            </c:if>
                         </c:forEach>
                     </div>
 <%--                    <div class="submit-button">--%>

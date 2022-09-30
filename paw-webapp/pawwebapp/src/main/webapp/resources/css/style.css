@@ -229,6 +229,10 @@ nav {
 
 /*                  */
 
+.card-content .card-title {
+    font-size: 18px;
+}
+
 .product-card-title{
     white-space: nowrap;
     overflow: hidden;
@@ -246,9 +250,7 @@ nav {
     justify-content: space-evenly;
 }
 
-.product-card-price{
-    font-size: xx-large;
-}
+
 
 .product-card-goto{
     color: #ADE28A;
@@ -1084,10 +1086,24 @@ ALL CREDITS TO @andrewsims
 .product-card .card-content{
     border-radius: 0 0 10px 10px;
     background-color: var(--palette-color-secondary);
+    padding: 8px 20px 8px 20px;
 }
 
 .product-card .card-content > a{
     color: #ADE28A;
+}
+
+.product-card .card-content > a {
+    margin-top: 0;
+    margin-bottom:5px;
+}
+
+.card-price {
+    font-size: 14px;
+}
+
+.product-card .card-content > div {
+    margin-bottom: 7px;
 }
 
 .explore-products .product-card .card-content{
@@ -1095,7 +1111,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .explore-products .card-image img{
-    max-height:150px;
+    max-height:110px;
     object-fit:cover;
 }
 
