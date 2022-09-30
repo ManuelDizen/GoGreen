@@ -62,7 +62,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     public void configure(final WebSecurity web) throws	Exception	{
-        web.ignoring().antMatchers("/css/**","/js/**","/img/**",	"/favicon.ico",	"/403");
+        web.ignoring().antMatchers("/css/**","/js/**","/images/**",	"/favicon.ico",	"/403");
     }
 
     @Override
@@ -82,8 +82,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/", "/explore", "/productpage/**").permitAll()
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
                     .antMatchers("/userProfile").hasRole("USER")
-                    .antMatchers("/sellerProfile").hasRole("SELLER")
-                    .antMatchers("/createProduct").hasRole("SELLER")
+                    .antMatchers("/sellerProfile", "/sellerProfile/products", "/deleteProduct/**").hasRole("SELLER")
+                    .antMatchers("/createProduct", "/editProduct/**").hasRole("SELLER")
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")

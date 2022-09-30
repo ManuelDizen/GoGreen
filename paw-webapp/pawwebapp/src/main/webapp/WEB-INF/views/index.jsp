@@ -23,12 +23,12 @@
             <hr class = "landing-separator">
             <div style="display:flex; justify-content:center; margin-top:1vh; width: 100%;">
                 <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                    <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
                         <spring:message code="landing.discover"/>
                     </a>
                 </c:if>
                 <c:if test="${pageContext.request.userPrincipal.name == null}">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/login"/>">
+                    <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/login"/>">
                         <spring:message code="home.start"/>
                     </a>
                 </c:if>
@@ -42,37 +42,75 @@
                         <h4 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="landing.discoverproducts"/></h4>
                         <hr class = "landing-separator">
                     </div>
+                </div>
+                <div class="landing-products">
                     <c:forEach items="${recent}" var="product">
-                        <div class="col s4">
-                            <div class="card" style="margin:4vh auto; border-radius:10px;">
-                                <div class="card-image">
-                                    <c:if test="${product.imageId != 0}">
-                                        <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
-                                    </c:if>
-                                    <c:if test="${product.imageId == 0}">
-                                        <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
-                                    </c:if>
-                                    <a class="btn-floating halfway-fab waves-effect waves-light light-green"
-                                       href="<c:url value="/product/${product.productId}"/>">
-                                        <i class="material-icons">arrow_forward</i>
+                        <div class="card product-card" style="margin:10px auto;">
+                            <div class="card-image">
+                                <c:if test="${product.imageId != 0}">
+                                    <img class="activator" style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
+                                </c:if>
+                                <c:if test="${product.imageId == 0}">
+                                    <img class="activator" style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
+                                </c:if>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title product-card-title activator"><c:out value="${product.name}"/></span>
+                                <div class="activator" style="margin-top: 2vh; margin-bottom: 2vh;">
+                                    <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
+                                </div>
+                                <div style="margin-top: 3vh; margin-bottom: 1vh;">
+                                    <c:set var="count" value="0"/>
+                                    <c:forEach items="${product.tagList}" var="ecotag">
+                                        <c:if test="${count lt 2}">
+                                            <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>"/>
+                                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                            <spring:message code="${ecotag.tag}"/>
+                                            </a>
+                                            <c:set var="count" value="${count + 1}"/>
+                                        </c:if>
+                                    </c:forEach>
+                                </div>
+                                <div class="submit-button">
+                                    <a class="waves-effect waves-light btn standard-button"
+                                       href="<c:url value="/product/${product.productId}"/>"
+                                       style="text-align: center">
+                                        <spring:message code="explore.product.goto"/>
                                     </a>
                                 </div>
-                                <div class="card-content">
-                                    <span class="card-title"><c:out value="${product.name}"/></span>
-                                    <div><c:out value="${product.description}"/></div>
-                                    <div style="margin-top: 2vh; margin-bottom: 8vh;">
-                                        <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
-                                    </div>
+                            </div>
+                            <div class="card-reveal" style="background-color: #1b5e20; color: #ADE28A;">
+                                <span class="card-title product-card-title"><i class="material-icons right">close</i></span>
+                                <div class="two-line">
+                                    <span class="card-title product-card-title"><c:out value="${product.name}"/></span>
+                                    <span class="card-title product-card-title"><c:out value="$${product.price}"/></span>
+                                </div>
+                                <p><c:out value="${product.description}"/></p>
+                                <c:forEach items="${product.tagList}" var="ecotag">
+                                    <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>
+                                    <i class="tiny material-icons">${ecotag.icon}</i>
+                                    <spring:message code="${ecotag.tag}"/>
+                                    </a>
+                                    <br>
+                                </c:forEach>
+                                <div class="submit-button">
+                                    <a class="waves-effect waves-light btn standard-button"
+                                       href="<c:url value="/product/${product.productId}"/>"
+                                       style="text-align: center">
+                                        <spring:message code="explore.product.goto"/>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
-                <div class="animate glow delay-2"
-                     style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
-                    <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
-                        <spring:message code="landing.explore"/>
-                    </a>
+                <div class="row">
+                    <div class="animate glow delay-2"
+                         style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
+                        <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                            <spring:message code="landing.explore"/>
+                        </a>
+                    </div>
                 </div>
             </c:if>
         </div>

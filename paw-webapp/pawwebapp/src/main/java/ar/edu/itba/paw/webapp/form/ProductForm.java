@@ -5,36 +5,45 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.webapp.validations.FileSize;
 import ar.edu.itba.paw.webapp.validations.FileType;
 
+import ar.edu.itba.paw.webapp.validations.UniqueProductName;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 public class ProductForm {
 
-    @Size(max = 50)
+    @Size(min = 5, max = 50)
     @NotNull
+    @UniqueProductName
     private String name;
 
     @Size(max = 300)
     private String description;
 
-    @Min(value=1, message= "Por favor, introduzca un precio válido")
+    //@Min(value=1, message= "Por favor, introduzca un precio válido")
+    //@Max(value=999999, message="El precio debe ser menor a un millón")
     @NotNull
-    private Integer price;
+    @Size(max=6)
+    @Pattern(regexp = "[0-9]+")
+    private String price;
 
-    private Integer stock;
+    //@Min(value=1, message="Por favor, introduzca un stock válido")
+    //@Max(value=10000, message="El máximo para publicar son 10000 unidades.")
+    @NotNull
+    @Size(max=4)
+    @Pattern(regexp = "[0-9]+")
+    private String stock;
 
     @FileType(types = {"image/png", "image/jpeg"})
     @FileSize(bytes = (10*1024*1024))
     private MultipartFile image;
 
-    @NotNull
+
     private long[] ecotag;
 
-    // Falta category!!! Que habría que pasar a un enum dado que es estático.
+    @Min(value=1)
+    private long category;
 
 
     public MultipartFile getImage() {
@@ -61,19 +70,20 @@ public class ProductForm {
         this.description = description;
     }
 
-    public Integer getPrice() {
+
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public Integer getStock() {
+    public String getStock() {
         return stock;
     }
 
-    public void setStock(Integer stock) {
+    public void setStock(String stock) {
         this.stock = stock;
     }
 
@@ -84,4 +94,13 @@ public class ProductForm {
     public void setEcotag(long[] ecotag) {
         this.ecotag = ecotag;
     }
+
+    public long getCategory() {
+        return category;
+    }
+
+    public void setCategory(long category) {
+        this.category = category;
+    }
+
 }

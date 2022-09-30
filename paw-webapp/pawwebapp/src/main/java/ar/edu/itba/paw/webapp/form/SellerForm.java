@@ -1,48 +1,52 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.FieldMatch;
 import ar.edu.itba.paw.webapp.validations.Password;
 import ar.edu.itba.paw.webapp.validations.UniqueUserMail;
+import ar.edu.itba.paw.webapp.validations.ValidPhone;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@FieldMatch(
+        first = "password",
+        matching = "confirmationPassword"
+)
 public class SellerForm {
     @Size(max = 50)
     @NotNull
-    @NotEmpty(message="Por favor, indicar su nombre")
+    @NotEmpty
     private String firstName;
 
     @Size(max = 100)
     @NotNull
-    @NotEmpty(message = "Por favor, indicar su apellido")
+    @NotEmpty
     private String surname;
 
     @Email
-    @Size(min = 8, max = 50, message = "El mail debe tener como mínimo 8 caracteres y máximo 50.")
-    @UniqueUserMail(message = "Este email ya se encuenta registrado. Por favor, intente con otro.")
-    @NotNull(message = "Por favor, indicar su mail")
+    @Size(min = 8, max = 50)
+    @UniqueUserMail
+    @NotNull
     private String email;
 
     @Password
     @NotNull
-    @NotEmpty(message = "Por favor, indicar la contraseña")
+    @NotEmpty
     private String password;
 
     @NotNull
-    @NotEmpty(message="Por favor, indicar su nombre de usuario")
-    @Size(min = 8, max = 50, message="El nombre de usuario debe tener entre 8 y 50 caracteres")
-    private String username;
+    private String confirmationPassword;
 
     @NotNull
-    @NotEmpty(message="Por favor, indicar su dirección")
-    @Size(max = 100, message="La dirección ingresada es inusualmente larga. Por favor, indique una dirección válida.")
+    @NotEmpty
+    @Size(max = 50)
     private String address;
 
     @NotNull
-    @NotEmpty(message="Por favor, indicar su teléfono")
-    @Size(min = 8, max = 11, message="Indique su teléfono sin espacios ni código de area. Ejemplo: 1100001111, o 11112222")
+    @NotEmpty
+    @ValidPhone
     private String phone;
 
     public String getSurname() {
@@ -69,6 +73,14 @@ public class SellerForm {
         this.password = password;
     }
 
+    public String getConfirmationPassword() {
+        return confirmationPassword;
+    }
+
+    public void setConfirmationPassword(String confirmationPassword) {
+        this.confirmationPassword = confirmationPassword;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -83,14 +95,6 @@ public class SellerForm {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {

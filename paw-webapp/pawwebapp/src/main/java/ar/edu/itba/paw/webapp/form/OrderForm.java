@@ -1,17 +1,16 @@
 package ar.edu.itba.paw.webapp.form;
 
-import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class OrderForm {
     @Size(max = 1023)
     private String message;
 
-    // TODO: Custom validation @CheckForStock
-    @Min(value = 1, message = "Por favor, introduzca una cantidad válida (mínimo 1 unidad)")
+    @Min(value = 1)
+    @Max(value = 5)
     private Integer amount;
 
     public String getMessage() {

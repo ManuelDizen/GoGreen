@@ -18,124 +18,81 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="form-title" style="margin-bottom:8vh;">
+    <div class="form-title" style="text-decoration:underline;">
         <h3><spring:message code="explore.title"/></h3>
     </div>
-    <div class="explore-container">
-        <div class="explore-filter">
-            <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
-            <c:url value="/explore" var="explore"/>
-            <form action="${explore}" method="get" id="filter_form" style="margin: 20px 20px 20px 20px">
-                <table>
-                    <tr>
-                        <!--<td><label path="name">Name</label></td>-->
-                        <p class="filter-inputlabel"><spring:message code="explore.filterform.name"/></p>
-                        <input name="name" value="${name}" type="text" class="validate"/>
-                    </tr>
-<%--                    <tr>--%>
-<%--                        <label class="filter-inputlabel"><spring:message code="explore.filterform.category"/>--%>
-<%--                        <input name="category" value="${category}" type="text"/>--%>
-<%--                    </tr>--%>
-                    <tr>
-                        <!--<td><label path="price">Max price</label></td>-->
-                        <p class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></p>
-                        <input name="maxPrice" value="${maxPrice}" type="number"/>
-                    </tr>
-                    <tr>
-                        <p class="filter-inputlabel">Ecotags:</p>
-                        <c:forEach items="${ecotagList}" var="ecotag">
-                            <c:if test="${boolTags[ecotag.id-1]}">
-                                <input name="${ecotag.path}" type="checkbox" checked="checked" id="ecotag">
-                                    <label for="ecotag">${ecotag.tag}</label>
-                            </c:if>
-                            <c:if test="${!boolTags[ecotag.id-1]}">
-                                <input name="${ecotag.path}" type="checkbox" id="ecotag2">
-                                    <label for="ecotag2">${ecotag.tag}</label>
-                            </c:if>
-                            <br>
-                        </c:forEach>
-                    </tr>
-                </table>
-                <div style="display:flex;justify-content: space-around;margin-top:5vh;">
-                    <button type="submit" class="waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
-                </div>
-            </form>
+    <c:if test="${products.size()!=0}">
+        <div class="sort">
+            <c:if test="${direction == 0}">
+                <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=1"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem; height:100%;
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        color:white;">north</i></a>
+            </c:if>
+            <c:if test="${direction == 1}">
+                <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=0"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        color:white;">south</i></a>
+            </c:if>
+            <!-- Dropdown Trigger -->
+            <a class='dropdown-trigger btn waves-effect waves-light btn standard-button' href='#' data-target='dropdown1' style="align-self:center;"><spring:message code="${sortName}"/></a>
 
+            <!-- Dropdown Structure -->
+            <ul id='dropdown1' class='dropdown-content'>
+                <c:forEach items="${sorting}" var="sortVal">
+                    <li><a href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sortVal.id}&direction=${direction}"><spring:message code="${sortVal.name}"/></a></li>
+                </c:forEach>
+            </ul>
+            <span style="display:flex;flex-direction: column;justify-content:center;font-size:18px;padding-right:2vw;">
+                <spring:message code="exploreproducts.sortby"/></span>
+        </div>
+    </c:if>
+    <div class="explore-container">
+        <div class="explore-filter z-depth-4">
+            <%@ include file="exploreFilter.jsp"%>
         </div>
         <div class="explore-products">
-            <c:if test="${isEmpty}">
-                <h4><spring:message code="explore.noproducts"/></h4>
-                <sec:authorize access="hasRole('SELLER')">
-                    <div><spring:message code="explore.noproducts.sellermsg"/></div>
-                    <div>
-                        <a class="waves-effect waves-light btn standard-button"
-                           href="<c:url value="/createProduct"/>">
-                            <spring:message code="explore.createproduct"/>
-                        </a>
-                    </div>
-                </sec:authorize>
-            </c:if>
-            <c:if test="${products.size() != 0}">
-                <c:forEach items="${products}" var="product">
-                    <div class="card product-card" style="margin:10px auto;">
-                        <div class="card-image">
-                            <c:if test="${product.imageId != 0}">
-                                <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
-                            </c:if>
-                            <c:if test="${product.imageId == 0}">
-                                <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
-                            </c:if>
-                        </div>
-                        <div class="card-content">
-                            <span class="card-title product-card-title"><c:out value="${product.name}"/></span>
-                            <div style="margin-top: 2vh; margin-bottom: 2vh;">
-                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
-                            </div>
-                            <div style="margin-top: 1vh; margin-bottom: 1vh;">
-                                <c:set var="count" value="0"/>
-                                <c:forEach items="${product.tagList}" var="ecotag">
-                                    <c:if test="${count == 3}">
-                                        <div class="grey black-text chip">
-                                            <spring:message code="explore.products.andmore"/>
-                                        </div>
-                                        <c:set var="count" value="${count + 1}"/>
-                                    </c:if>
-                                    <c:if test="${count lt 3}">
-                                        <div class="${ecotag.color} white-text chip">
-                                            <i class="tiny material-icons">${ecotag.icon}</i>
-                                                ${ecotag.tag}
-                                        </div>
-                                        <c:set var="count" value="${count + 1}"/>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                            <div>
-                                <a class="waves-effect waves-light btn standard-button"
-                                   href="<c:url value="/product/${product.productId}"/>"
-                                    style="text-align: center;">
-                                    <spring:message code="explore.product.goto"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </c:if>
-            <c:if test="${products.size() == 0}">
-                <div class="noproducts-container">
-                    <h4><spring:message code="explore.noproductsfilter"/></h4>
-                    <div class="circle">
-                        <img src="<c:url value="/resources/images/logo.png"/>" height="200" width="200"
-                             alt="Logo">
-                    </div>
-                    <div style="margin-bottom: 15px">
-                        <div>
-                            <button class="waves-effect waves-light btn" onClick="history.go(-1)"><spring:message code="explore.cleanfilters"/></button>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
+            <%@ include file="exploreProducts.jsp"%>
         </div>
+        <div></div>
+        <c:if test="${pages.size() > 1}">
+            <div class="pagin">
+                <c:set var="nextPage" value="${currentPage+1}"/>
+                <c:set var="previousPage" value="${currentPage-1}"/>
+                <div>
+                    <ul class="pagination">
+                        <c:if test="${currentPage <= 1}">
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPage > 1}">
+                            <li><a href="?page=${previousPage}"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            <li class="waves-effect"><a href="?page=${previousPage}" style="color: #EDFA8B">${previousPage}</a></li>
+                        </c:if>
+                        <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                        <c:if test="${currentPage < pages.size()}">
+                            <li class="waves-effect"><a href="?page=${nextPage}" style="color: #EDFA8B">${nextPage}</a></li>
+                            <li><a href="?page=${nextPage}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPage >= pages.size()}">
+                            <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                        </c:if>
+                    </ul>
+                </div>
+            </div>
+        </c:if>
     </div>
     <%@ include file="footer.jsp"%>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var textNeedCount = document.querySelectorAll('#name');
+        M.CharacterCounter.init(textNeedCount);
+    });
+</script>
 </html>

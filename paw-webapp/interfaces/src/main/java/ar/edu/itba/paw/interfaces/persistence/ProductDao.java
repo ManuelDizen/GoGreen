@@ -12,13 +12,19 @@ public interface ProductDao {
                    float price, long imageId);
 
     List<Product> findBySeller(long sellerId);
-    Optional<List<Product>> getByMaxPrice(float price);
-    Optional<List<Product>> getByCategory(long categoryId);
-    Optional<Product> getById(long productId);
-    List<Product> getAll();
 
-    List<Product> filter(String name, String category, List<Long> tags, float maxPrice);
+    Optional<Product> getById(long productId);
+    Optional<Product> getByName(String name);
+    List<Product> getAll();
+    List<Product> getAvailable();
+
+    List<Product> filter(String name, long category, List<Long> tags, float maxPrice);
 
     List<Product> getRecent(int amount);
+
+    void deleteProduct(long productId);
+    void updateStock(long productId, int amount);
+
+    Boolean addStock(String name, int amount);
 
 }

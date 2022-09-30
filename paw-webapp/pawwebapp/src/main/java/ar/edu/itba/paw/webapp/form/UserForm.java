@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.FieldMatch;
 import ar.edu.itba.paw.webapp.validations.Password;
 
 import ar.edu.itba.paw.webapp.validations.UniqueUserMail;
@@ -10,33 +11,36 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@FieldMatch(
+        first = "password",
+        matching = "confirmationPassword"
+)
 public class UserForm {
 
     @Size(max = 50)
     @NotNull
-    @NotEmpty(message = "Por favor, indicar su nombre.")
+    @NotEmpty
     private String firstName;
 
     @Size(max = 100)
     @NotNull
-    @NotEmpty(message = "Por favor, indicar su apellido.")
+    @NotEmpty
     private String surname;
 
     @Email
     @Size(min = 8, max = 50)
     @UniqueUserMail
-    @NotNull(message= "Por favor, indique si mail")
+    @NotNull
     private String email;
 
-    @NotNull(message="Por favor, indicar su usuario (entre 8 y 50 caracteres)")
-    @NotEmpty
-    @Size(min = 8, max = 50)
-    private String username;
-
     @Password
-    @NotNull(message = "Por favor, indicar su contraseña")
+    @NotNull
     @NotEmpty
     private String password;
+
+    @NotNull
+    @NotEmpty
+    private String confirmationPassword;
 
     public String getFirstName() {
         return firstName;
@@ -62,14 +66,6 @@ public class UserForm {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -78,4 +74,11 @@ public class UserForm {
         this.password = password;
     }
 
+    public String getConfirmationPassword() {
+        return confirmationPassword;
+    }
+
+    public void setConfirmationPassword(String confirmationPassword) {
+        this.confirmationPassword = confirmationPassword;
+    }
 }

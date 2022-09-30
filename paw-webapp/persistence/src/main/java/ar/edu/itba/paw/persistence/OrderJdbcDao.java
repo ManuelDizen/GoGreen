@@ -21,12 +21,12 @@ public class OrderJdbcDao implements OrderDao {
     private static final RowMapper<Order> ORDER_ROW_MAPPER = (resultSet, rowNum) -> new Order(
                             resultSet.getLong("id"),
                             resultSet.getString("productName"),
-                            resultSet.getString("sellerName"),
-                            resultSet.getString("sellerSurname"),
-                            resultSet.getString("sellerEmail"),
                             resultSet.getString("buyerName"),
                             resultSet.getString("buyerSurname"),
                             resultSet.getString("buyerEmail"),
+                            resultSet.getString("sellerName"),
+                            resultSet.getString("sellerSurname"),
+                            resultSet.getString("sellerEmail"),
                             resultSet.getInt("amount"),
                             resultSet.getFloat("price"),
                             resultSet.getObject("datetime", LocalDateTime.class),
@@ -68,20 +68,27 @@ public class OrderJdbcDao implements OrderDao {
 
     @Override
     public Optional<Order> getById(long orderId) {
-        return template.query("SELECT * FROM orders WHERE id = ?", new Object[]{orderId},
+        return template.query("SELECT * FROM orders WHERE id = ? ORDER BY id DESC", new Object[]{orderId},
                 ORDER_ROW_MAPPER).stream().findFirst();
     }
 
     @Override
     public List<Order> getBySellerEmail(String sellerEmail) {
-        return template.query("SELECT * FROM orders WHERE sellerEmail = ?", new Object[]{sellerEmail},
+        return template.query("SELECT * FROM orders WHERE sellerEmail = ? ORDER BY id DESC", new Object[]{sellerEmail},
                 ORDER_ROW_MAPPER);
 
     }
 
     @Override
     public List<Order> getByBuyerEmail(String buyerEmail) {
-        return template.query("SELECT * FROM orders WHERE buyerEmail = ?", new Object[]{buyerEmail},
+        return template.query("SELECT * FROM orders WHERE buyerEmail = ? ORDER BY id DESC", new Object[]{buyerEmail},
                 ORDER_ROW_MAPPER);
+    }
+
+    @Override
+    public Boolean deleteOrder(long orderId) {
+        String query = "DELETE FROM orders WHERE id = ?";
+        Object[] args = new Object[]{orderId};
+        return template.update(query, args) == 1;
     }
 }

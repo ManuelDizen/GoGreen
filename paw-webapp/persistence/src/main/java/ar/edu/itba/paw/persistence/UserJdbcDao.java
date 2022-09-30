@@ -7,14 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import sun.util.locale.LocaleUtils;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class UserJdbcDao implements UserDao {
@@ -24,8 +22,9 @@ public class UserJdbcDao implements UserDao {
                     resultSet.getString("firstName"),
                     resultSet.getString("surname"),
                     resultSet.getString("email"),
-                    resultSet.getString("username"),
-                    resultSet.getString("password"));
+                    resultSet.getString("password"),
+                    new Locale(resultSet.getString("locale"))
+            );
 
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
@@ -42,20 +41,21 @@ public class UserJdbcDao implements UserDao {
     }
 
     @Override
-    public User create(final String name, final String surname, final String email, final String username, final String password) {
+    public User create(final String name, final String surname, final String email, final String password,
+                       final Locale locale) {
         final Map<String, Object> values = new HashMap<>();
         values.put("firstName", name);
         values.put("surname", surname);
         values.put("email", email);
-        values.put("username", username);
         values.put("password", password);
+        values.put("locale", locale);
         final Number userId = insert.executeAndReturnKey(values);
-        return new User(userId.longValue(), name, surname, email, username, password);
+        return new User(userId.longValue(), name, surname, email, password, locale);
     }
 
     @Override
     public void updateImage(long userId, long imageId) {
-        template.query("UPDATE users SET imageId = ? WHERE id = ?",
+        template.update("UPDATE users SET imageId = ? WHERE id = ?",
                 new Object[]{imageId, userId}, USER_ROW_MAPPER);
     }
 

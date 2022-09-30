@@ -3,8 +3,8 @@ create table if not exists users(
     firstName varchar(255) not null,
     surname varchar(255) not null,
     email varchar(255) unique not null,
-    username varchar(255) unique not null,
-    password varchar(255) not null
+    password varchar(255) not null,
+    locale varchar(5) default 'es'
     );
 
 create table if not exists sellers(
@@ -33,10 +33,10 @@ create table if not exists products(
     );
 
 create table if not exists tags_to_products(
-                                               id serial primary key,
-                                               tag integer,
-                                               productId integer,
-                                               foreign key (productId) references products(id) on delete cascade
+    id serial primary key,
+    tag integer,
+    productId integer,
+    foreign key (productId) references products(id) on delete cascade
     );
 
 create table if not exists images(
@@ -46,6 +46,12 @@ create table if not exists images(
 
 alter table products add column if not exists imageId integer default null;
 alter table products add foreign key (imageId) references images(id) on delete set null;
+alter table products add unique (name);
+
+ALTER TABLE products ADD FOREIGN KEY (sellerId) REFERENCES sellers(id) ON DELETE CASCADE;
 
 alter table users add column if not exists imageId integer default null;
 alter table users add foreign key (imageId) references images(id) on delete set null;
+
+ALTER TABLE users DROP COLUMN IF EXISTS username;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS locale varchar(5) default 'es';

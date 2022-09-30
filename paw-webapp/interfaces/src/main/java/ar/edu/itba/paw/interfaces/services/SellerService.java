@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces.services;
 import ar.edu.itba.paw.models.Seller;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public interface SellerService {
@@ -17,5 +18,7 @@ public interface SellerService {
     String getEmail(long userid);
     public String getName(long userid);
     public String getSurname(long userid);
+
+    Locale getLocale(long userid);
 
 }

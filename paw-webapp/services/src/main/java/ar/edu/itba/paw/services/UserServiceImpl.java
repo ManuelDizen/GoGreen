@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -21,8 +22,8 @@ public class UserServiceImpl implements UserService {
         this.encoder = encoder;
     }
     @Override
-    public User register(String firstName, String surname, String email, String username, String password) {
-        return userDao.create(firstName, surname, email, username, encoder.encode(password));
+    public User register(String firstName, String surname, String email, String password, Locale locale) {
+        return userDao.create(firstName, surname, email, encoder.encode(password), locale);
     }
 
     @Override

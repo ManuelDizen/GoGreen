@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,6 +13,7 @@ import javax.sql.DataSource;
 import java.util.*;
 
 @Repository
+
 public class ProductJdbcDao implements ProductDao {
 
     private static final RowMapper<Product> PRODUCT_ROW_MAPPER =
@@ -40,8 +40,6 @@ public class ProductJdbcDao implements ProductDao {
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
 
-    //Esto le idnica a Spring que constructor debe usar cuando quiere crear
-    //instancias de este DAO.
     @Autowired
     public ProductJdbcDao(final DataSource ds){
         this.template = new JdbcTemplate(ds);
@@ -68,44 +66,66 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public List<Product> findBySeller(long sellerId) {
-        return template.query("SELECT * FROM products WHERE sellerId = ?", new Object[]{sellerId},
+        return template.query("SELECT * FROM products WHERE sellerId = ? ORDER BY id DESC", new Object[]{sellerId},
                 PRODUCT_ROW_MAPPER);
     }
 
     @Override
-    public Optional<List<Product>> getByMaxPrice(float price) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<List<Product>> getByCategory(long categoryId) {
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<Product> getById(long productId) {
-        List<Product> product =  template.query("SELECT * from products where id = ?",
+        List<Product> product =  template.query("SELECT * FROM products WHERE id = ? ORDER BY id DESC",
                 new Object[]{productId}, PRODUCT_ROW_MAPPER);
         return product.stream().findFirst();
     }
 
     @Override
+    public Optional<Product> getByName(String name) {
+        List<Product> product = template.query("SELECT * FROM products WHERE name = ? ORDER BY id DESC",
+                new Object[]{name}, PRODUCT_ROW_MAPPER);
+        return product.stream().findFirst();
+    }
+
+    @Override
     public List<Product> getAll() {
-        return template.query("SELECT * FROM products",
+        return template.query("SELECT * FROM products ORDER BY id DESC",
         PRODUCT_ROW_MAPPER);
     }
 
     @Override
-    public List<Product> filter(String name, String category, List<Long> tags, float maxPrice) {
-        StringBuilder query = new StringBuilder("SELECT * from products where ");
+    public List<Product> getAvailable() {
+        return template.query("SELECT * FROM products WHERE stock <> 0 ORDER BY id DESC",
+                PRODUCT_ROW_MAPPER);
+    }
+
+    @Override
+    public void deleteProduct(long productId) {
+        template.update("DELETE FROM products WHERE id = ?", new Object[]{productId});
+    }
+
+    @Override
+    public void updateStock(long productId, int amount) {
+        String query = "UPDATE products SET stock = ? WHERE id = ?";
+        Object[] args = new Object[]{amount, productId};
+        template.update(query, args);
+    }
+
+    @Override
+    public Boolean addStock(String name, int amount) {
+        String query = "UPDATE products SET stock = ? WHERE name = ?";
+        Object[] args = new Object[]{amount, name};
+        return template.update(query, args) == 1;
+    }
+
+    @Override
+    public List<Product> filter(String name, long category, List<Long> tags, float maxPrice) {
+        StringBuilder query = new StringBuilder("SELECT * FROM products WHERE ");
         List<Object> args = new ArrayList<>();
         if(name != null){
             query.append("LOWER(name) like ? ");
             args.add('%' + name.toLowerCase() + '%');
         }
-        if(category != null){
-            query.append("AND categoryId IN (SELECT id from category where LOWER(name) like ?) ");
-            args.add('%' + category.toLowerCase() + '%');
+        if(category != 0){
+            query.append("AND categoryId = ? ");
+            args.add(category);
         }
         if(tags.size() != 0){
             for(long tag : tags) {
@@ -117,14 +137,15 @@ public class ProductJdbcDao implements ProductDao {
            query.append("AND price <= ?");
            args.add(maxPrice);
         }
+        query.append("AND stock <> 0 ORDER BY id DESC");
         return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
     }
 
     @Override
     public List<Product> getRecent(int amount) {
-        List<Product> products = template.query("SELECT * FROM products ORDER BY id DESC",
+        List<Product> products = template.query("SELECT * FROM products WHERE stock <> 0 ORDER BY id DESC",
                 PRODUCT_ROW_MAPPER);
-        if(products.size() < amount) return products;
+        if (products.size() < amount) return products;
         return products.subList(0, amount);
     }
 }

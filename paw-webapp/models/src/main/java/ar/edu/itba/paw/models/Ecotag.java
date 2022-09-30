@@ -2,9 +2,11 @@ package ar.edu.itba.paw.models;
 
 public enum Ecotag {
 
-    ECOTAG_RECYCLE("Productos reciclados", 1, "recycling", "blue", "ecotagRecycle"),
-    ECOTAG_FOREST("Sin deforestación", 2, "forest", "green", "ecotagForest"),
-    ECOTAG_ENERGY("Energías renovables", 3, "wind_power", "grey", "ecotagEnergy");
+    ECOTAG_RECYCLE("recycleTag", 1, "recycling", "blue", "ecotagRecycle"),
+    ECOTAG_FOREST("forestTag", 2, "forest", "green", "ecotagForest"),
+    ECOTAG_ENERGY("energyTag", 3, "wind_power", "grey", "ecotagEnergy"),
+    ECOTAG_ANIMALS("animalTag", 4, "pets", "brown", "ecotagAnimals"),
+    ECOTAG_TRANSPORT("transportTag", 5, "local_shipping", "yellow darken-2", "ecotagTransport");
 
     private final String tag;
     private final long id;

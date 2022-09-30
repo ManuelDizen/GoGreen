@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Order {
     private long id;
@@ -15,6 +16,7 @@ public class Order {
     private float price;
     private LocalDateTime dateTime;
     private String message;
+    private String parsedDateTime;
 
     public Order(long id, String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
@@ -31,6 +33,7 @@ public class Order {
         this.price = price;
         this.dateTime = dateTime;
         this.message = message;
+        this.parsedDateTime = this.getParsedDateTime();
     }
 
     public long getId() {
@@ -115,6 +118,9 @@ public class Order {
 
     public LocalDateTime getDateTime() {
         return dateTime;
+    }
+    public String getParsedDateTime() {
+        return getDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy"));
     }
 
     public void setDateTime(LocalDateTime dateTime) {
