@@ -1112,8 +1112,17 @@ ALL CREDITS TO @andrewsims
     font-size: 14px;
 }
 
+.eco_chip {
+    width: 155px;
+}
+
 .product-card .card-content > div {
     margin-bottom: 7px;
+    margin-top: 5px;
+}
+
+.product-card .card-content .center {
+    margin-top: 25px;
 }
 
 .explore-products .product-card .card-content{
