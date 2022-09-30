@@ -122,13 +122,17 @@ public class UserController {
             final BindingResult errors
     ){
         if(errors.hasErrors()){
-            //TODO: Display form errors
+            //TODO: Display form errors,
+            // QUE EL REDIRECT NO DEJE EL LINK DE UPDATESTOCK!!!
+            // Dos soluciones viables: (1) hacer que updateStock en realidad sea un
+            // updateProduct y sea una vista de verdad
+            // (2) que updateStock mande de vuetla a sellerProfile con algún boolean de failure
             return sellerProfile(1,1,form);
         }
 
-        int newStock = parseInt(form.getNewStock());
+        //int newStock = parseInt(form.getNewStock());
 
-        Boolean success = productService.attemptUpdate(prodId, newStock);
+        Boolean success = productService.attemptUpdate(prodId, form.getNewStock());
         if(!success) throw new IllegalStateException("Stock update could not go through");
         return new ModelAndView("redirect:/sellerProfile");
     }
