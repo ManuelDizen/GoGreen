@@ -523,12 +523,13 @@ nav {
 .explore-filter{
     display:grid;
     /*grid-template-rows: 1fr 9fr;*/
-    margin: 10px 10px 10px 10px;
+    margin: 10px 5px 10px 25px;
     padding-top: 15px;
     background-color: var(--palette-color-secondary);
     color: #1E425E;
     border-radius: 20px;
     height:fit-content;
+    max-width: 250px;
     /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
@@ -1067,7 +1068,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .product-card{
-    width: 30%;
+    width: 26%;
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
