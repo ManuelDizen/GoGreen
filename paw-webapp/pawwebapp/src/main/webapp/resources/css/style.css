@@ -313,7 +313,7 @@ nav {
 }
 
 .explore-filter .row{
-    margin-top:20px;
+    margin-top:15px;
     margin-bottom:0 ;
 }
 
@@ -493,15 +493,20 @@ nav {
 .explore-filter .row .input-field > label, .filter-inputlabel,
 .explore-filter .row .select-wrapper > input {
     color: white;
+    font-size: 12px;
+}
+
+.filter-inputlabel {
+    margin-bottom: 0;
 }
 
 .explore-filter .row .select-wrapper {
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .explore-filter .row div > label {
     color: white;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .explore-filter .row .input-field .character-counter {
