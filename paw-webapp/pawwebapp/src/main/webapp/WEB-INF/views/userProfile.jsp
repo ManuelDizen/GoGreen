@@ -147,7 +147,7 @@
         </div>
     </div>
 </div>
-<%@ include file="footer.jsp"%>
+
 </body>
 <script>
     $(document).ready(function() {
