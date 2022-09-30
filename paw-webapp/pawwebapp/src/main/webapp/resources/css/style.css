@@ -361,7 +361,16 @@ nav {
 .decision-button {
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
-    font-size: large;
+}
+
+.image_button {
+    max-height: 45px;
+    font-size: 12px;
+}
+
+.publish-button {
+    height: 55px;
+    font-size: 22px;
 }
 
 .decision-button:hover {
@@ -1068,7 +1077,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .product-card{
-    width: 26%;
+    width: 28%;
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
@@ -1348,16 +1357,12 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 .createproducts{
     width: 900px;
     padding: 20px 35px 20px 35px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 4em auto;
-    border-color: var(--palette-color-secondary);
-    background: var(--palette-details-light);
-    border-width: medium;
-    color: var(--text-color-dark);
+    background: transparent;
+    color: white;
 }
 
 .createbody{
@@ -1368,6 +1373,14 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     margin-bottom: 30px;
     max-height: 50px;
 }
+
+.createbody .row .input-field > input, .createbody .row .input-field > label,
+.createbody .row .input-field .select-wrapper > input {
+    color: white;
+    border-bottom-color: white;
+}
+
+
 
 .createproduct_column {
     margin:25px 25px 25px 25px;
