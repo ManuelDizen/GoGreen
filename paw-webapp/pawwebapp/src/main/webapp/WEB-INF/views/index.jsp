@@ -22,16 +22,9 @@
             <h1 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="home.greetingmsg"/></h1>
             <hr class = "landing-separator">
             <div style="display:flex; justify-content:center; margin-top:1vh; width: 100%;">
-                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
-                        <spring:message code="landing.discover"/>
-                    </a>
-                </c:if>
-                <c:if test="${pageContext.request.userPrincipal.name == null}">
-                    <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/login"/>">
-                        <spring:message code="home.start"/>
-                    </a>
-                </c:if>
+                <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
+                    <spring:message code="home.start"/>
+                </a>
             </div>
         </div>
         <div class="landing-recent-product-container animate glow delay-2" style="margin-top:10vh;">
