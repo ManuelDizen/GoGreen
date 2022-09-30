@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <body>
-<div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
+<%--<div class="explore-filter-title"><spring:message code="explore.filterby"/></div>--%>
 <c:url value="/explore" var="explore"/>
 <form action="${explore}" method="get" id="filter_form" style="margin: 0 20px 20px 20px">
     <div class="row">
@@ -51,13 +51,13 @@
             <c:if test="${boolTags[ecotag.id-1]}">
                 <div>
                     <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
-                    <label style="color:black;font-size:15px;" for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
+                    <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
                 </div>
             </c:if>
             <c:if test="${!boolTags[ecotag.id-1]}">
                 <div>
                     <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
-                    <label style="color:black;font-size:15px;" for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
+                    <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
                 </div>
             </c:if>
         </c:forEach>

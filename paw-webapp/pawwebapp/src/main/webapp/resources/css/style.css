@@ -313,7 +313,7 @@ nav {
 }
 
 .explore-filter .row{
-    margin-top:1vh;
+    margin-top:20px;
     margin-bottom:0 ;
 }
 
@@ -490,21 +490,42 @@ nav {
     overflow-y:auto;
 }
 
+.explore-filter .row .input-field > label, .filter-inputlabel,
+.explore-filter .row .select-wrapper > input {
+    color: white;
+}
+
+.explore-filter .row .select-wrapper {
+    margin-top: 10px;
+}
+
+.explore-filter .row div > label {
+    color: white;
+    font-size: 15px;
+}
+
+.explore-filter .row .input-field .character-counter {
+    display: none;
+}
+
+.explore-filter .row .input-field > input, .explore-filter .row .select-wrapper > input {
+    border-bottom-color: white;
+}
+
 
 .explore-filter{
     display:grid;
-    grid-template-rows: 1fr 9fr;
+    /*grid-template-rows: 1fr 9fr;*/
     margin: 10px 10px 10px 10px;
-    background-color: #ade28a;
+    padding-top: 15px;
+    background-color: var(--palette-color-secondary);
     color: #1E425E;
     border-radius: 20px;
     height:fit-content;
     /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
-.filter-inputlabel{
-    color: #1E425E;
-}
+
 
 .filterinputs{
     margin-bottom:0;
@@ -1057,6 +1078,7 @@ ALL CREDITS TO @andrewsims
 
 .product-card .card-content{
     border-radius: 0 0 10px 10px;
+    background-color: var(--palette-color-secondary);
 }
 
 .explore-products .product-card .card-content{
