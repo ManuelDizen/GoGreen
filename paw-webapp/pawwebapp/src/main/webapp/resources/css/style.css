@@ -1262,6 +1262,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 .sort {
     display: flex;
     flex-direction: row-reverse;
+    margin-top: 30px;
     margin-right: 50px;
     height:10%;
 }
@@ -1433,6 +1434,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     flex-direction:column;
     margin:2vh auto;
 }
+
 
 
 

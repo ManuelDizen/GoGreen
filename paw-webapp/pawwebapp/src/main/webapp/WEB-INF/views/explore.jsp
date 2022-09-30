@@ -18,9 +18,6 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="form-title" style="text-decoration:underline;">
-        <h3><spring:message code="explore.title"/></h3>
-    </div>
     <c:if test="${products.size()!=0}">
         <div class="sort">
             <c:if test="${direction == 0}">
