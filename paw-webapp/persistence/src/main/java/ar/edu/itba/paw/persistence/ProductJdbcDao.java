@@ -28,14 +28,6 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getLong("imageId")
             );
 
-    private static final RowMapper<Seller> SELLER_ROW_MAPPER =
-            (resultSet, rowNum) -> new Seller(
-                    resultSet.getLong("id"),
-                    resultSet.getLong("userid"),
-                    resultSet.getString("phone"),
-                    resultSet.getString("address")
-            );
-
 
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;

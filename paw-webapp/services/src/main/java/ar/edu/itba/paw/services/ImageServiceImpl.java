@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    private ImageDao imageDao;
+    private final ImageDao imageDao;
 
     @Autowired
     public ImageServiceImpl(ImageDao imageDao){
