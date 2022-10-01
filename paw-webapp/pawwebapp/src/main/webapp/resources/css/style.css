@@ -1113,7 +1113,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .eco_chip {
-    width: 155px;
+    width: fit-content;
 }
 
 .product-card .card-content > div {

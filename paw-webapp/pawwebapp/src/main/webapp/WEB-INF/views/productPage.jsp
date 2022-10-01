@@ -49,9 +49,15 @@
             <div style="font-size: 25px; width:100%; margin-bottom:0;"><spring:message code="productpage.prodinfo.stock"/>
             <c:out value="${' '}${product.stock}"/></div>
             <c:if test="${product.stock < 6}">
+                <c:if test="${product.stock == 1}">
+                    <spring:message code="productpage.orderform.lastunit" var="alertmessage"/>
+                </c:if>
+                <c:if test = "${product.stock != 1}">
+                    <spring:message code="productpage.orderform.lastunits" var="alertmessage"/>
+                </c:if>
                 <div style="text-align:center; margin-top: 2vh;">
                     <a class="btn orange accent-4" style="cursor: default;">
-                        <spring:message code="productpage.orderform.lastunits"/>
+                        <c:out value="${alertmessage}"/>
                     </a>
                 </div>
             </c:if>
