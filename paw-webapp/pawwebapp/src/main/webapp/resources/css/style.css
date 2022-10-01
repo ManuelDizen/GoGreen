@@ -1146,7 +1146,8 @@ ALL CREDITS TO @andrewsims
     flex-direction:column;
 }
 .seller-profile-card{
-    width: 80%;
+    /*width: 80%;*/
+    width: 28%;
     height: fit-content;
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
@@ -1157,8 +1158,9 @@ ALL CREDITS TO @andrewsims
     margin: 2vh auto;
 }
 .seller-profile-card-title{
-    font-size:20px;
+    font-size:25px;
     margin-top: 2vh;
+    font-weight:bold;
 }
 
 .seller-profile-product-card,
@@ -1578,10 +1580,6 @@ input[type=number] {
     background-color:white;
 }
 
-.seller-profile-container-orders-2{
-
-}
-
 .seller-inner-div-1, .seller-inner-div-2{
     height:100%;
     flex:50%;
@@ -1623,6 +1621,12 @@ input[type=number] {
 .seller-profile-products-2-bis, .seller-profile-container-orders-2{
     flex:100%;
     text-align:center;
+
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width:100%;
 }
 
 .seller-profile-product-card{

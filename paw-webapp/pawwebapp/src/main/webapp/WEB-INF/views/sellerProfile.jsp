@@ -194,8 +194,8 @@
         </div>
         <div id="orders" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
+                <h4 class="center"><spring:message code="sellerprofile.orders"/></h4>
                 <div class="seller-profile-container-orders-2">
-                    <h4><spring:message code="sellerprofile.orders"/></h4>
                     <c:if test="${orders.size() == 0}">
                         <div style="margin-top:5vh;">
                             <div style="text-align: center;"><spring:message code="sellerprofile.noorders"/></div>
@@ -222,6 +222,10 @@
                                 <div>
                                     <spring:message code="sellerprofile.orders.buyer"/>
                                     <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                </div>
+                                <div>
+                                    <spring:message code="sellerprofile.orders.buyermail"/>
+                                    <c:out value="${order.buyerEmail}"/>
                                 </div>
                                 <div style="margin:5vh auto 2vh auto;">
                                     <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
