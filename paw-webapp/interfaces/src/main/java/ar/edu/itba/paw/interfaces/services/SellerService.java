@@ -20,5 +20,8 @@ public interface SellerService {
     public String getSurname(long userid);
 
     Locale getLocale(long userid);
+    public Boolean registerSeller(String firstName, String surname,
+                                  String email, String password, Locale locale, String phone,
+                                  String address);
 
 }

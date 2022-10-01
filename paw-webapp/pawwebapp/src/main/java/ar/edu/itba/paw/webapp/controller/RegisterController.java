@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -109,23 +110,10 @@ public class RegisterController {
             return registerSeller(form);
         }
         //TODO: All this logic could go into sellerService.create() method
-        User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
-                form.getPassword(), LocaleContextHolder.getLocale());
-        if(user == null){
-            throw new IllegalArgumentException("Usuario no pudo ser creado");
-        }
-        Seller seller = sellerService.create(user.getId(), form.getPhone(), form.getAddress());
-        if(seller == null){
-            throw new IllegalArgumentException("Seller no pudo ser creado");
-        }
-        Optional<Role> role = roleService.getByName("SELLER");
-        if(!role.isPresent()){
-            throw new IllegalArgumentException("Role no fue encontrado");
-        }
-        userRoleService.create(user.getId(), role.get().getId());
 
-        emailService.registration(user, user.getLocale());
-
+        Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
+                form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
+                form.getAddress());
         // Para setear al usuario recién creado como activo
         // (Una convención, podríamos preguntar si es apropiado)
         // (Fuente: https://www.baeldung.com/spring-security-auto-login-user-after-registration)
@@ -138,7 +126,6 @@ public class RegisterController {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         authToken.setDetails(new WebAuthenticationDetails(request));
         Authentication authentication = authenticationManager.authenticate(authToken);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

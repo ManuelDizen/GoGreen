@@ -6,7 +6,6 @@ public class StockForm {
 
     @Min(value=1)
     @Max(value=10000)
-    //@Pattern(regexp = "[0-9]+")
     private Integer newStock;
 
     public Integer getNewStock() {
