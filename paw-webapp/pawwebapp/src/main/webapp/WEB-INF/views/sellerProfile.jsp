@@ -93,13 +93,14 @@
                                         <c:if test="${product.stock != 0}">
                                             <a id="productinfo" style="margin-right:2vw; font-size:18px;" href="<c:url value="/product/${product.productId}"/>">
                                                 <br><b><c:out value="${product.name}"/></b> - <spring:message code="sellerprofile.orders.price"/>
-                                                <c:out value="${product.price}"/> - <spring:message code="sellerprofile.stock"/>
+                                                <c:out value="${'$'}${product.price}"/> - <spring:message code="sellerprofile.stock"/>
                                                 <c:out value="${product.stock}"/>
                                             </a>
                                         </c:if>
                                         <div style="margin-right:1vw; display:inline-flex">
-                                            <a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}">
-                                                <i class="material-icons">check</i>
+                                            <%--a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}"--%>
+                                            <a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="<c:url value="/updateProduct/${product.productId}"/>">
+                                                <i class="material-icons">edit</i>
                                                 <spring:message code="sellerprofile.updatestock"/>
                                             </a>
                                             <a id="delete" class="waves-effect waves-light btn red accent-4 modal-trigger" href="#modal${product.productId}">

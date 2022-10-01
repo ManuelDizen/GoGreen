@@ -6,11 +6,9 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
-import ar.edu.itba.paw.webapp.form.StockForm;
+import ar.edu.itba.paw.webapp.form.UpdateProdForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import java.util.*;
@@ -29,13 +26,13 @@ import static java.lang.Integer.parseInt;
 
 @Controller
 public class ProductController {
-    private final ProductService ps;
+    private final ProductService productService;
 
     private final SellerService sellerService;
 
-    private final EmailService es;
+    private final EmailService emailService;
 
-    private final ImageService is;
+    private final ImageService imageService;
 
     private final UserService us;
 
@@ -47,13 +44,13 @@ public class ProductController {
 
     
     @Autowired
-    public ProductController(final ProductService ps, final SellerService sellerService,
-                             final EmailService es, final ImageService is, final UserService us,
+    public ProductController(final ProductService productService, final SellerService sellerService,
+                             final EmailService emailService, final ImageService imageService, final UserService us,
                              final SecurityService securityService, EcotagService ecos, final OrderService os) {
-        this.ps = ps;
+        this.productService = productService;
         this.sellerService = sellerService;
-        this.es = es;
-        this.is = is;
+        this.emailService = emailService;
+        this.imageService = imageService;
         this.us = us;
         this.securityService = securityService;
         this.ecos = ecos;
@@ -65,7 +62,7 @@ public class ProductController {
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
-            @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
+            @RequestParam(name="maxPrice", defaultValue = "-1") final Integer maxPrice,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
@@ -75,7 +72,7 @@ public class ProductController {
         //Ecotag management
 
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
-        mav.addObject("path", ps.buildPath(strings));
+        mav.addObject("path", productService.buildPath(strings));
 
         final boolean[] boolTags = new boolean[Ecotag.values().length];
 
@@ -95,8 +92,8 @@ public class ProductController {
 
         //Product filter
 
-        List<Product> productList = ps.filter(name, category, tagsToFilter, maxPrice);
-        List<Product> allProducts = ps.getAvailable();
+        List<Product> productList = productService.filter(name, category, tagsToFilter, maxPrice);
+        List<Product> allProducts = productService.getAvailable();
 
         mav.addObject("isEmpty", allProducts.isEmpty());
 
@@ -110,14 +107,14 @@ public class ProductController {
         mav.addObject("sort", sort);
         mav.addObject("direction", direction);
 
-        ps.sortProducts(productList, sort, direction);
+        productService.sortProducts(productList, sort, direction);
 
         mav.addObject("sortName", Sort.getById(sort).getName());
         mav.addObject("sorting", Sort.values());
 
         //Pagination
 
-        List<List<Product>> productPages = ps.divideIntoPages(productList);
+        List<List<Product>> productPages = productService.divideIntoPages(productList);
 
         mav.addObject("currentPage", page);
         if(productPages.size() != 0)
@@ -141,7 +138,7 @@ public class ProductController {
 
     @RequestMapping(value = "/deleteProduct/{prodId}", method = RequestMethod.GET)
     public ModelAndView deleteProduct(@PathVariable final long prodId){
-        Boolean bool = ps.attemptDelete(prodId);
+        Boolean bool = productService.attemptDelete(prodId);
         if(!bool) throw new IllegalStateException();
         ModelAndView mav = new ModelAndView("redirect:/sellerProfile");
         return mav;
@@ -154,7 +151,7 @@ public class ProductController {
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
-        final Optional<Product> product = ps.getById(productId);
+        final Optional<Product> product = productService.getById(productId);
 
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
@@ -183,11 +180,11 @@ public class ProductController {
         if(errors.hasErrors() || form.getAmount() == null){
             return productPage(prodId, form, true);
         }
-        final Optional<Product> product = ps.getById(prodId);
+        final Optional<Product> product = productService.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product p = product.get();
 
-        Boolean enough = ps.checkForAvailableStock(p, form.getAmount());
+        Boolean enough = productService.checkForAvailableStock(p, form.getAmount());
         if(!enough){
             errors.addError(new ObjectError("amount",
                     "El stock disponible es insuficiente para su pedido. Por favor, reviselo" +
@@ -243,7 +240,7 @@ public class ProductController {
         int stock = Integer.parseInt(form.getStock());
         int price = Integer.parseInt(form.getPrice());
 
-        Product product = ps.create(seller.get().getId(),
+        Product product = productService.create(seller.get().getId(),
                 form.getCategory(), form.getName(), form.getDescription(),
                 stock, price, image);
 
@@ -252,6 +249,39 @@ public class ProductController {
         }
 
         return new ModelAndView("redirect:/product/" + product.getProductId());
+    }
+
+    @RequestMapping(value="/updateProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView updateProduct(
+            @PathVariable("productId") final long productId,
+            @ModelAttribute("updateProdForm") final UpdateProdForm form
+    ){
+        Boolean isOwner = productService.checkForOwnership(productId);
+        if(!isOwner) throw new IllegalStateException();
+
+        Optional<Product> product = productService.getById(productId);
+        if(!product.isPresent()) throw new IllegalStateException();
+        Product prodObj = product.get();
+
+        ModelAndView mav = new ModelAndView("/updateProduct");
+        mav.addObject("product", prodObj);
+
+        return mav;
+    }
+
+    @RequestMapping(value="/updateProduct/{productId:[0-9]+}", method=RequestMethod.POST)
+    public ModelAndView updateProductPost(
+            @PathVariable("productId") final long productId,
+            @Valid @ModelAttribute("updateProdForm") final UpdateProdForm form,
+            final BindingResult errors
+    ){
+        if(errors.hasErrors()){
+            return updateProduct(productId, form);
+        }
+        Boolean success = productService.updateProduct(productId, form.getNewStock(), form.getNewPrice());
+        if(!success) throw new IllegalStateException();
+
+        return new ModelAndView("redirect:/sellerProfile");
     }
 
 }

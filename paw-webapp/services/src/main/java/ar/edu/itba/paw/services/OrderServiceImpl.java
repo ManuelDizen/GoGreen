@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order create(String productName, String buyerName, String buyerSurname,
                         String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                        Integer amount, float price, LocalDateTime dateTime, String message) {
+                        Integer amount, Integer price, LocalDateTime dateTime, String message) {
         return orderDao.create(productName, buyerName, buyerSurname, buyerEmail,
                 sellerName, sellerSurname, sellerEmail, amount, price, dateTime, message);
     }

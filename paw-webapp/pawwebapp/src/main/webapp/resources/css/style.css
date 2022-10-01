@@ -230,7 +230,7 @@ nav {
 /*                  */
 
 .card-content .card-title {
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .product-card-title{
@@ -1660,5 +1660,24 @@ input[type=number] {
 }
 
 .pagination-arrow{
+    color:white;
+}
+
+/* UPDATE PRODUCT */
+
+.update-product-body{
+    width:50%;
+    margin: 0 auto;
+}
+
+.separated-button{
+    margin-top: 30px;
+}
+
+.light-input{
+    color:white;
+}
+
+.update-product-body label{
     color:white;
 }

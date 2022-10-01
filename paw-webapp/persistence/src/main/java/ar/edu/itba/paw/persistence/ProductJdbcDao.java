@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,7 +23,7 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getString("name"),
                     resultSet.getString("description"),
                     resultSet.getInt("stock"),
-                    resultSet.getFloat("price"),
+                    resultSet.getInt("price"),
                     resultSet.getLong("imageId")
             );
 
@@ -42,7 +41,7 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
-                          int stock, float price, long imageId) {
+                          int stock, Integer price, long imageId) {
         final Map<String, Object> values = new HashMap<>();
         values.put("sellerId", sellerId);
         values.put("categoryId", categoryId);
@@ -101,6 +100,13 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
+    public void updatePrice(long productId, int price) {
+        String query = "UPDATE products SET price = ? WHERE id = ?";
+        Object[] args = new Object[]{price, productId};
+        template.update(query, args);
+    }
+
+    @Override
     public Boolean addStock(String name, int amount) {
         String query = "UPDATE products SET stock = ? WHERE name = ?";
         Object[] args = new Object[]{amount, name};
@@ -108,7 +114,7 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, long category, List<Long> tags, float maxPrice) {
+    public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice) {
         StringBuilder query = new StringBuilder("SELECT * FROM products WHERE ");
         List<Object> args = new ArrayList<>();
         if(name != null){

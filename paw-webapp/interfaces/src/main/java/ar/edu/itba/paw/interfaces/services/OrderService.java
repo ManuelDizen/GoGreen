@@ -13,7 +13,7 @@ public interface OrderService {
 
     Order create(String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, float price, LocalDateTime dateTime, String message);
+                 Integer amount, Integer price, LocalDateTime dateTime, String message);
 
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);

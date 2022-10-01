@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
-                          int stock, float price, byte[] image) {
+                          int stock, Integer price, byte[] image) {
         long imgId = 0;
         if(image != null && image.length > 0){
             imgId = imageService.create(image).getId();
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAvailable(){return productDao.getAvailable();}
 
     @Override
-    public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice) {
+    public List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());
@@ -106,24 +106,6 @@ public class ProductServiceImpl implements ProductService {
                 return 0;
             }
         });
-
-//        switch (sort) {
-//            case 0:
-//                productList.sort(new Comparator<Product>() {
-//                    @Override
-//                    public int compare(Product o1, Product o2) {
-//                        return (int) (o2.getPrice() - o1.getPrice());
-//                    }
-//                });
-//            case 1:
-//                productList.sort(new Comparator<Product>() {
-//                    @Override
-//                    public int compare(Product o1, Product o2) {
-//                        return o2.getName().compareTo(o1.getName());
-//                    }
-//                });
-//        }
-
     }
 
 
@@ -196,7 +178,14 @@ public class ProductServiceImpl implements ProductService {
         productDao.updateStock(prodId, (product.get().getStock()-amount));
     }
 
-
+    @Override
+    public Boolean updateProduct(long prodId, int amount, int price) {
+        Boolean isOwner = checkForOwnership(prodId);
+        if(!isOwner) return false;
+        productDao.updateStock(prodId, amount);
+        productDao.updatePrice(prodId, price);
+        return true;
+    }
 
     @Override
     public Boolean addStock(String prodName, int amount) {

@@ -64,7 +64,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void purchase(String buyerEmail, String buyer, Product product, int amount, float price,
+    public void purchase(String buyerEmail, String buyer, Product product, int amount, Integer price,
                          String sellerName, String sellerPhone, String sellerMail, Locale locale) {
         Map<String, Object> data = new HashMap<>();
         data.put("buyer", buyer);
@@ -81,7 +81,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
+    public void itemsold(String sellerEmail, String seller, Product product, int amount, Integer price,
                          String buyerName, String buyerEmail, String buyerMessage, Locale locale) {
         Map<String, Object> data = new HashMap<>();
         data.put("seller", seller);

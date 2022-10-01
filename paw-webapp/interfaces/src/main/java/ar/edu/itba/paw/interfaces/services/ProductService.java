@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ProductService {
 
     Product create(long sellerId, long categoryId, String name, String description, int stock,
-                   float price, byte[] image);
+                   Integer price, byte[] image);
 
     List<Product> findBySeller(long sellerId);
     Optional<Product> getById(long productId);
@@ -18,7 +18,7 @@ public interface ProductService {
     List<Product> getAll();
     List<Product> getAvailable();
     List<Product> getRecent(int amount);
-    List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice);
+    List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice);
 
     void sortProducts(List<Product> productList, int sort, int direction);
 
@@ -31,6 +31,8 @@ public interface ProductService {
     Boolean checkForAvailableStock(Product p, int amount);
     Boolean checkForOwnership(long prodId);
     void updateStock(long prodId, int amount);
+
+    Boolean updateProduct(long prodId, int amount, int price);
 
     Boolean addStock(String prodName, int amount);
     Boolean addStock(long prodId, int amount);
