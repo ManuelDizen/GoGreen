@@ -52,9 +52,9 @@ public class UserController {
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
             // It's a seller
-            return new ModelAndView("redirect:/sellerProfile#test1");
+            return new ModelAndView("redirect:/sellerProfile#information");
         }
-        return new ModelAndView("redirect:/userProfile/false#test1");
+        return new ModelAndView("redirect:/userProfile/false#information");
     }
 
 
