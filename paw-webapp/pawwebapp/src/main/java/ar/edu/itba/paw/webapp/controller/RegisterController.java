@@ -70,25 +70,15 @@ public class RegisterController {
 
     @RequestMapping(value = "/registerbuyerprocess", method = RequestMethod.POST)
     public ModelAndView registerBuyerPost(
-            @Valid @ModelAttribute("userForm") final UserForm form,
-            final BindingResult errors,
-            HttpServletRequest request){
+            @Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors, HttpServletRequest request){
         if(errors.hasErrors()) {
             return registerBuyer(form);
         }
         //TODO:Include userRoleService.create logic in userService.register
-        User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
+        Boolean success = userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
-        Optional<Role> role = roleService.getByName("USER");
-        if(!role.isPresent())
-            throw new IllegalStateException("No se encontró el rol.");
-
-        // TODO: This call could potentially be included in the userService.register() call
-        userRoleService.create(user.getId(), role.get().getId());
-        emailService.registration(user, LocaleContextHolder.getLocale());
-
+        if(!success) throw new IllegalStateException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
-
         return new ModelAndView("redirect:/");
     }
 
@@ -109,14 +99,13 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
-        //TODO: All this logic could go into sellerService.create() method
-
         Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
                 form.getAddress());
         // Para setear al usuario recién creado como activo
         // (Una convención, podríamos preguntar si es apropiado)
         // (Fuente: https://www.baeldung.com/spring-security-auto-login-user-after-registration)
+        if(!success) throw new IllegalStateException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         return new ModelAndView("redirect:/");
