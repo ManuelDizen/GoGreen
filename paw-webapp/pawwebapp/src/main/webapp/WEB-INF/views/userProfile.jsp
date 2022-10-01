@@ -10,7 +10,7 @@
 <head>
     <%@ include file="header.jsp"%>
     <title><spring:message code="profile.title"/> ${user.firstName} ${user.surname}</title>
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/images/logo.png"/>"/>
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
