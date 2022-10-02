@@ -1163,11 +1163,19 @@ ALL CREDITS TO @andrewsims
     font-weight:bold;
 }
 
-.seller-profile-product-card,
+/*.seller-profile-product-card,
 .seller-profile-product-card-info{
     display:flex;
     align-items:center;
     justify-content: center;
+}*/
+
+.seller-profile-product-card{
+    width:28%;
+    vertical-align: center;
+    margin:3vh auto;
+    height:fit-content;
+    min-height: 300px;
 }
 
 .seller-profile-product-card-info #stockless{
@@ -1629,13 +1637,6 @@ input[type=number] {
     width:100%;
 }
 
-.seller-profile-product-card{
-    width:100%;
-    vertical-align: center;
-    margin:3vh auto;
-    height:80px;
-}
-
 .seller-profile-product-card-info{
     text-align:center;
     background-color:var(--palette-color-secondary);
@@ -1684,4 +1685,16 @@ input[type=number] {
 
 .update-product-body label{
     color:white;
+}
+
+.center-buttons{
+    display:flex;
+    justify-content:center;
+}
+
+.accomodate-button{
+    display:flex;
+    justify-content: space-between;
+    min-width:110px;
+    margin-top:20px;
 }
