@@ -1526,7 +1526,9 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 input#ecotag, input#ecotag2,
 .explore-container #filter_form .row .input-field .select-wrapper ul,
 .input-field .selectMultiple .select-wrapper,
-.sort ul{
+.sort ul,
+#orderamount ul,
+#orderamount select{
     display: none;
 }
 
@@ -1697,4 +1699,8 @@ input[type=number] {
     justify-content: space-between;
     min-width:110px;
     margin-top:20px;
+}
+
+#orderamount input{
+    color:white;
 }
