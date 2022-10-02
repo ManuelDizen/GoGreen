@@ -38,4 +38,7 @@ public interface ProductService {
     Boolean addStock(long prodId, int amount);
 
     String buildPath(String[] strings);
+
+    Product createProduct(Integer stock, Integer price, long categoryId, String name,
+                          String description, byte[] image, long[] ecotagIds);
 }

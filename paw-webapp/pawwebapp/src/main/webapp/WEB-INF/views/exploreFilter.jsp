@@ -41,7 +41,7 @@
     </div>
     <div class="row">
         <div class="input-field col s12 filterinputs">
-            <input id="maxPrice" name="maxPrice" type="text" value="${maxPrice}">
+            <input id="maxPrice" name="maxPrice" type="number" value="${maxPrice}">
             <label for="maxPrice"><spring:message code="explore.filterform.maxprice"/></label>
         </div>
     </div>

@@ -93,7 +93,6 @@ public class WebConfig {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
         dbp.addScript(productsSql);
         dbp.addScript(rolesSql);
-        dbp.addScript(faqsSql);
         dbp.addScript(ordersSql);
         return dbp;
     }

@@ -3,8 +3,10 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ObjectError;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,7 +59,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean createAndNotify(Product product, User user, Seller seller, int amount, String message) {
+    public Boolean createAndNotify(long productId, int amount, String message) {
+
+        final Optional<Product> maybeProduct = productService.getById(productId);
+        if(!maybeProduct.isPresent()) return false;
+        final Product product = maybeProduct.get();
+
+        Boolean enough = productService.checkForAvailableStock(product, amount);
+        if(!enough){return false;}
+
+        User user = securityService.getLoggedUser();
+        if(user == null)return false;
+
+        final Optional<Seller> maybeSeller = sellerService.findById(product.getSellerId());
+        if(!maybeSeller.isPresent()) throw new IllegalStateException("No se encontró seller");
+        final Seller seller = maybeSeller.get();
 
         emailService.purchase(user.getEmail(), user.getFirstName(),
                 product, amount,

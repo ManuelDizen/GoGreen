@@ -20,16 +20,16 @@ public class ProductServiceImpl implements ProductService {
     private final SecurityService securityService;
     private final SellerService sellerService;
     private final UserService userService;
-    private final EcotagService ecos;
+    private final EcotagService ecotagService;
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecos){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService){
         this.productDao = productDao;
         this.imageService = imageService;
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.userService = userService;
-        this.ecos = ecos;
+        this.ecotagService = ecotagService;
     }
 
     @Override
@@ -220,8 +220,24 @@ public class ProductServiceImpl implements ProductService {
         List<Product> recent =  productDao.getRecent(amount);
 
         for(Product product : recent) {
-            product.setTagList(ecos.getTagFromProduct(product.getProductId()));
+            product.setTagList(ecotagService.getTagFromProduct(product.getProductId()));
         }
         return recent;
+    }
+
+    @Override
+    public Product createProduct(Integer stock, Integer price, long categoryId, String name,
+                                 String description, byte[] image, long[] ecotagIds){
+        User user = securityService.getLoggedUser();
+        //TODO: Ya sabemos que el usuario que entró a este link tiene rol SELLER, está chequeado
+        // mediante spring security.
+        if(user == null) return null;
+        Optional<Seller> seller = sellerService.findByUserId(user.getId());
+        if(!seller.isPresent()) return null;
+        Product product = create(seller.get().getId(), categoryId, name, description, stock, price, image);
+        for (long id : ecotagIds) {
+            ecotagService.addTag(Ecotag.getById(id), product.getProductId());
+        }
+        return product;
     }
 }

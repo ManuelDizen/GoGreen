@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.EcotagService;
-import ar.edu.itba.paw.interfaces.services.FAQService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Category;
@@ -21,21 +20,14 @@ import static java.lang.Integer.parseInt;
 @Controller
 public class BasicController {
 
-    // Leave the constructor, as it prevents dependency injection (https://stackoverflow.com/questions/40620000/spring-autowire-on-properties-vs-constructor)
-
-    private final UserService userService;
-
-    private final FAQService faqService;
+    // Leave the constructor, as it prevents dependency injection
+    // (https://stackoverflow.com/questions/40620000/spring-autowire-on-properties-vs-constructor)
 
     private final ProductService productService;
-    private final EcotagService ecotagService;
 
     @Autowired
-    public BasicController(final UserService userService, final FAQService faqService, final ProductService productService, EcotagService ecotagService) {
-        this.userService = userService;
-        this.faqService = faqService;
+    public BasicController(final ProductService productService) {
         this.productService = productService;
-        this.ecotagService = ecotagService;
     }
 
     @RequestMapping("/")
@@ -48,16 +40,8 @@ public class BasicController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login(HttpServletRequest request){
-        final ModelAndView mav = new ModelAndView("login");
-        return mav;
-    }
-
-    @RequestMapping(value="/faq")
-    public ModelAndView faq(){
-        final ModelAndView mav = new ModelAndView("FAQ");
-        mav.addObject("faqs", faqService.getFAQs());
-        return mav;
+    public ModelAndView login() {
+        return new ModelAndView("login");
     }
 
     @ExceptionHandler(UserNotFoundException.class)
