@@ -34,25 +34,25 @@ public class UserServiceImplTest {
 //        us = new UserServiceImpl(userDao);
 //    }
 
-    @Test
-    public void testCreate() {
-
-        Mockito.when(userDao.create(eq(EMAIL), eq(PASSWORD))).thenReturn(new User(1, EMAIL, PASSWORD));
-
-        final User newUser = us.register(EMAIL, PASSWORD);
-        assertNotNull(newUser);
-        assertEquals(EMAIL, newUser.getEmail());
-    }
-
-    @Test
-    public void testFindByEmail() {
-        Mockito.when(userDao.findByEmail(eq(EMAIL))).thenReturn(Optional.of(new User(1, EMAIL, PASSWORD)));
-
-        final Optional<User> maybeUser = us.findByEmail(EMAIL);
-
-        assertTrue(maybeUser.isPresent());
-        assertEquals(EMAIL, maybeUser.get().getEmail());
-
-    }
+//    @Test
+//    public void testCreate() {
+//
+//        Mockito.when(userDao.create(eq(EMAIL), eq(PASSWORD))).thenReturn(new User(1, EMAIL, PASSWORD));
+//
+//        final User newUser = us.register(EMAIL, PASSWORD);
+//        assertNotNull(newUser);
+//        assertEquals(EMAIL, newUser.getEmail());
+//    }
+//
+//    @Test
+//    public void testFindByEmail() {
+//        Mockito.when(userDao.findByEmail(eq(EMAIL))).thenReturn(Optional.of(new User(1, EMAIL, PASSWORD)));
+//
+//        final Optional<User> maybeUser = us.findByEmail(EMAIL);
+//
+//        assertTrue(maybeUser.isPresent());
+//        assertEquals(EMAIL, maybeUser.get().getEmail());
+//
+//    }
 
 }
