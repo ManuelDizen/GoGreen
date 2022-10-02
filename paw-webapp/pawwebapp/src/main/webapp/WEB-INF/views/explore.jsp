@@ -50,7 +50,7 @@
         </div>
     </c:if>
     <div class="explore-container">
-        <div class="explore-filter z-depth-4">
+        <div class="explore-filter z-depth-1">
             <%@ include file="exploreFilter.jsp"%>
         </div>
         <div class="explore-products">

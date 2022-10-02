@@ -164,6 +164,9 @@ public class ProductController {
         }
 
         mav.addObject("product", productObj);
+        mav.addObject("categories", Category.values());
+        List<Product> interesting = ps.getInteresting(productObj);
+        mav.addObject("interesting", interesting);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
         if(!seller.isPresent()) throw new RuntimeException("Seller not found");

@@ -36,4 +36,6 @@ public interface ProductService {
     Boolean addStock(long prodId, int amount);
 
     String buildPath(String[] strings);
+
+    List<Product> getInteresting(Product product);
 }

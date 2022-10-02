@@ -26,7 +26,7 @@
     </c:if>
     <c:if test="${products.size() != 0}">
         <c:forEach items="${products}" var="product">
-            <div class="card product-card" style="margin:10px auto;">
+            <div class="card product-card z-depth-1" style="margin:10px auto;">
                 <a href="<c:url value="/product/${product.productId}"/>">
                     <div class="card-image">
                         <c:if test="${product.imageId != 0}">
