@@ -75,6 +75,7 @@ public class RegisterController {
         if(errors.hasErrors()) {
             return registerBuyer(form);
         }
+        //TODO:Include userRoleService.create logic in userService.register
         User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
         Optional<Role> role = roleService.getByName("USER");
@@ -83,7 +84,6 @@ public class RegisterController {
 
         // TODO: This call could potentially be included in the userService.register() call
         userRoleService.create(user.getId(), role.get().getId());
-
         emailService.registration(user, LocaleContextHolder.getLocale());
 
         authWithAuthManager(request, form.getEmail(), form.getPassword());
