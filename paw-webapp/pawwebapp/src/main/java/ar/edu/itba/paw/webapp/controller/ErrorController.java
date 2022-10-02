@@ -12,6 +12,7 @@ public class ErrorController {
     public ModelAndView error404() {
         ModelAndView mav = new ModelAndView("error");
         mav.addObject("error", "404");
+        mav.addObject("message", "abrazo capo");
         return mav;
     }
 

@@ -18,82 +18,81 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="explore-title"><spring:message code="explore.title"/></div>
-    <div class="explore-container">
-        <div class="explore-filter">
-            <div class="explore-filter-title"><spring:message code="explore.filterby"/></div>
-            <c:url value="/explore" var="explore"/>
-            <form action="${explore}" method="get" id="filter_form">
-                <table>
-                    <tr>
-                        <!--<td><label path="name">Name</label></td>-->
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.name"/></td>
-                        <td><input name="name" type="text"/></td>
-                    </tr>
-                    <tr>
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.category"/></td>
-                        <td><input name="category" type="text"/><td>
-                    </tr>
-                    <tr>
-                        <td class="filter-inputlabel">Ecotag</td>
-                        <c:forEach items="${ecotagList}" var="ecotag">
-                            <td><input name="${ecotag.path}" type="checkbox" id="ecotag">
-                                <label for="ecotag">${ecotag.tag}</label> </td>
-                        </c:forEach>
-                    </tr>
-                    <tr>
-                        <!--<td><label path="price">Max price</label></td>-->
-                        <td class="filter-inputlabel"><spring:message code="explore.filterform.maxprice"/></td>
-                        <td><input name="maxPrice" type="number"/></td>
-                    </tr>
-                </table>
-                <div style="display:flex;justify-content: space-around;margin-top:5vh;">
-                    <button type="submit" class="waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
-                </div>
-            </form>
+    <div class="form-title" style="text-decoration:underline;">
+        <h3><spring:message code="explore.title"/></h3>
+    </div>
+    <c:if test="${products.size()!=0}">
+        <div class="sort">
+            <c:if test="${direction == 0}">
+                <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=1"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem; height:100%;
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        color:white;">north</i></a>
+            </c:if>
+            <c:if test="${direction == 1}">
+                <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sort}&direction=0"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        color:white;">south</i></a>
+            </c:if>
+            <!-- Dropdown Trigger -->
+            <a class='dropdown-trigger btn waves-effect waves-light btn standard-button' href='#' data-target='dropdown1' style="align-self:center;"><spring:message code="${sortName}"/></a>
 
+            <!-- Dropdown Structure -->
+            <ul id='dropdown1' class='dropdown-content'>
+                <c:forEach items="${sorting}" var="sortVal">
+                    <li><a href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}${path}&sort=${sortVal.id}&direction=${direction}"><spring:message code="${sortVal.name}"/></a></li>
+                </c:forEach>
+            </ul>
+            <span style="display:flex;flex-direction: column;justify-content:center;font-size:18px;padding-right:2vw;">
+                <spring:message code="exploreproducts.sortby"/></span>
+        </div>
+    </c:if>
+    <div class="explore-container">
+        <div class="explore-filter z-depth-4">
+            <%@ include file="exploreFilter.jsp"%>
         </div>
         <div class="explore-products">
-            <c:if test="${isEmpty}">
-                <div class="center">
-                    <h4><spring:message code="explore.noproducts"/></h4>
-                    <img style="width:30%; position:relative;" src="<c:url value="/resources/images/landingImage1.png"/>" alt="Sustainability for all!">
-                    <h4><spring:message code="explore.comeback"/></h4>
-                </div>
-            </c:if>
-            <c:forEach items="${products}" var="product">
-                <div class="product-card-holder">
-                    <!-- TODO: Me da toda la sensación que esta mal, pero el return default
-                            para los products con columna null de imageId es 0.-->
-                    <c:if test="${product.imageId != 0}">
-                        <div class="explore-product-image-container">
-                            <img src="<c:url value="/image/${product.imageId}"/>" alt="">
-                        </div>
-                    </c:if>
-                    <div class="pccontainer">
-                        <a class="pccard1" href="<c:url value="/product/${product.productId}"/>">
-                            <h3>${product.name}</h3>
-                            <p class="small">${product.description}</p>
-                            <p class="small">
-                                <spring:message code="explore.products.price"/>${product.price}
-                            </p>
-                            <c:forEach items="${product.tagList}" var="ecotag">
-                                <div class="${ecotag.color} white-text chip">
-                                    <i class="tiny material-icons">${ecotag.icon}</i>
-                                        ${ecotag.tag}
-                                </div>
-                            </c:forEach>
-                            <div class="go-corner" href="#">
-                                <div class="go-arrow">
-                                    →
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </c:forEach>
+            <%@ include file="exploreProducts.jsp"%>
         </div>
+        <div></div>
+        <c:if test="${pages.size() > 1}">
+            <div class="pagin">
+                <c:set var="nextPage" value="${currentPage+1}"/>
+                <c:set var="previousPage" value="${currentPage-1}"/>
+                <div>
+                    <ul class="pagination">
+                        <c:if test="${currentPage <= 1}">
+                            <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPage > 1}">
+                            <li><a href="?page=${previousPage}"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            <li class="waves-effect"><a href="?page=${previousPage}" style="color: #EDFA8B">${previousPage}</a></li>
+                        </c:if>
+                        <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                        <c:if test="${currentPage < pages.size()}">
+                            <li class="waves-effect"><a href="?page=${nextPage}" style="color: #EDFA8B">${nextPage}</a></li>
+                            <li><a href="?page=${nextPage}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                        </c:if>
+                        <c:if test="${currentPage >= pages.size()}">
+                            <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                        </c:if>
+                    </ul>
+                </div>
+            </div>
+        </c:if>
     </div>
     <%@ include file="footer.jsp"%>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var textNeedCount = document.querySelectorAll('#name');
+        M.CharacterCounter.init(textNeedCount);
+    });
+</script>
 </html>

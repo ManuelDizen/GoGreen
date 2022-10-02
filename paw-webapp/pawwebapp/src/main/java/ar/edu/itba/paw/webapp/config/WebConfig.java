@@ -17,6 +17,7 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -38,6 +39,7 @@ import java.util.Properties;
         "ar.edu.itba.paw.persistence"
 })
 @Configuration
+@EnableAsync
 @PropertySource("classpath:application.properties")
 public class WebConfig {
 
@@ -49,6 +51,9 @@ public class WebConfig {
 
     @Value("classpath:roles.sql")
     private Resource rolesSql;
+
+    @Value("classpath:orders.sql")
+    private Resource ordersSql;
 
     @Value("classpath:faqs.sql")
     private Resource faqsSql;
@@ -89,6 +94,7 @@ public class WebConfig {
         dbp.addScript(productsSql);
         dbp.addScript(rolesSql);
         dbp.addScript(faqsSql);
+        dbp.addScript(ordersSql);
         return dbp;
     }
 

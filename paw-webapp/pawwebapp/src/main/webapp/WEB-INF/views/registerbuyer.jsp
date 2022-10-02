@@ -13,46 +13,77 @@
 <head>
     <title><spring:message code="registerbuyer.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="register-buyer-form-container">
+    <div class="register-form-container">
         <c:url value="/registerbuyerprocess" var="postUrl"/>
         <form:form modelAttribute="userForm" method="post" action="${postUrl}" id="user_form">
-            <div>
-                <h4><spring:message code="registerbuyer.title"/></h4>
+            <div style="margin:5vh auto; display:block;">
+                <h4 style="margin:4vh auto; text-align: center; text-decoration: underline;">
+                    <spring:message code="registerbuyer.title"/>
+                </h4>
             </div>
-            <div>
-                <form:errors path="firstName" element="p" cssClass="error"/>
-                <form:label path="firstName"><spring:message code="registerbuyer.form.name"/>
-                <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="firstName" type="text"/>
+            <div class="registerbody">
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            <form:input path="firstName" id="firstName" type="text"/>
+                            <label for="firstName"><spring:message code="registerbuyer.form.name"/>
+                                <spring:message code="forms.obligatorysign"/></label>
+                        </div>
+                        <div class="errors">
+                            <form:errors path="firstName" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="input-field">
+                            <form:input path="surname" id="surname" type="text"/>
+                            <label for="surname"><spring:message code="registerbuyer.form.surname"/>
+                                <spring:message code="forms.obligatorysign"/></label>
+                        </div>
+                        <div class="errors">
+                            <form:errors path="surname" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="input-field">
+                            <form:input path="email" id="email" type="text"/>
+                            <label for="email"><spring:message code="registerbuyer.form.email"/>
+                                <spring:message code="forms.obligatorysign"/></label>
+                        </div>
+                        <div class="errors">
+                            <form:errors path="email" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            <form:input path="password" id="password" type="password"/>
+                            <label for="password"><spring:message code="registerbuyer.form.password"/>
+                                <spring:message code="forms.obligatorysign"/></label>
+                        </div>
+                        <div class="errors">
+                            <form:errors path="password" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="input-field">
+                            <form:input path="confirmationPassword" id="confirmationPassword" type="password"/>
+                            <label for="password"><spring:message code="registerbuyer.form.confirmpassword"/>
+                                <spring:message code="forms.obligatorysign"/></label>
+                        </div>
+                        <div class="errors">
+                            <form:errors path="confirmationPassword" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <form:errors path="surname" element="p" cssClass="error"/>
-                <form:label path="surname"><spring:message code="registerbuyer.form.surname"/>
-                    <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="surname" type="text"/>
-            </div>
-            <div>
-                <form:errors path="email" element="p" cssClass="error"/>
-                <form:label path="email"><spring:message code="registerbuyer.form.email"/>
-                    <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="email" type="text"/>
-            </div>
-            <div>
-                <form:errors path="username" element="p" cssClass="error"/>
-                <form:label path="username"><spring:message code="registerbuyer.form.username"/>
-                    <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="username" type="text"/>
-            </div>
-            <div>
-                <form:errors path="password" element="p" cssClass="error"/>
-                <form:label path="password"><spring:message code="registerbuyer.form.password"/>
-                    <spring:message code="forms.obligatorysign"/></form:label>
-                <form:input path="password" type="password"/>
-            </div>
-            <div>
+            <div class="center">
                 <button type="submit" class="waves-effect waves-light btn">
                     <spring:message code="registerbuyer.form.submit"/>
                 </button>
@@ -61,4 +92,22 @@
     </div>
     <%@ include file="footer.jsp"%>
 </body>
+
+
+<script>
+    function myFunction() {
+        var pass1 = document.getElementById("password").value;
+        var pass2 = document.getElementById("confirmationPassword").value;
+        if (pass1 !== pass2) {
+            alert("Passwords Do not match");
+            document.getElementById("pass1").style.borderColor = "#E34234";
+            document.getElementById("pass2").style.borderColor = "#E34234";
+        }
+        else {
+            alert("Passwords Match!!!");
+        }
+    }
+</script>
+
+
 </html>

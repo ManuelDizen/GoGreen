@@ -1,13 +1,19 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.FieldMatch;
 import ar.edu.itba.paw.webapp.validations.Password;
 import ar.edu.itba.paw.webapp.validations.UniqueUserMail;
+import ar.edu.itba.paw.webapp.validations.ValidPhone;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@FieldMatch(
+        first = "password",
+        matching = "confirmationPassword"
+)
 public class SellerForm {
     @Size(max = 50)
     @NotNull
@@ -31,18 +37,16 @@ public class SellerForm {
     private String password;
 
     @NotNull
-    @NotEmpty
-    @Size(min = 8, max = 50)
-    private String username;
+    private String confirmationPassword;
 
     @NotNull
     @NotEmpty
-    @Size(min = 10, max = 100)
+    @Size(max = 50)
     private String address;
 
     @NotNull
     @NotEmpty
-    @Size(min = 8, max = 11)
+    @ValidPhone
     private String phone;
 
     public String getSurname() {
@@ -69,6 +73,14 @@ public class SellerForm {
         this.password = password;
     }
 
+    public String getConfirmationPassword() {
+        return confirmationPassword;
+    }
+
+    public void setConfirmationPassword(String confirmationPassword) {
+        this.confirmationPassword = confirmationPassword;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -83,14 +95,6 @@ public class SellerForm {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {

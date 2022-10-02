@@ -14,8 +14,12 @@ import java.util.Optional;
 @Controller
 public class ImageController {
 
+    private final ImageService imageService;
+
     @Autowired
-    private ImageService imageService;
+    public ImageController(final ImageService imageService) {
+        this.imageService = imageService;
+    }
 
     @RequestMapping(value="/image/{imageId:[0-9]+}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     @ResponseBody

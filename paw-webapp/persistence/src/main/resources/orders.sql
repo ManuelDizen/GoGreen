@@ -1,13 +1,14 @@
-create table if not exists orders{
+create table if not exists orders(
     id serial primary key,
-    productId integer not null,
-    sellerId integer not null,
-    buyerId integer not null,
+    productName varchar(255) not null,
+    sellerName varchar(255) not null,
+    sellerSurname varchar(255) not null,
+    sellerEmail varchar(255) not null,
+    buyerName varchar(255) not null,
+    buyerSurname varchar(255) not null,
+    buyerEmail varchar(255) not null,
     amount integer not null,
-    price integer not null
-    }
-/* Tema FKs acá: Me preocupa que al borrar un producto, al ser on cascade,
-   las FK que referencian al producto y/o al seller desaparezcan.
-
-   TODO: Charlar sobre como resolver esto.
- */
+    price integer not null,
+    datetime timestamp not null,
+    message varchar(1024)
+    );

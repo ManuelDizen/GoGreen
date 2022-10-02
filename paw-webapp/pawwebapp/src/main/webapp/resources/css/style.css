@@ -1,15 +1,29 @@
 /* General CSS rules for every view */
 
 *{
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     font-family: 'Manrope';
+}
+
+:root{
+    --palette-color-primary: #ADE28A;
+    --palette-color-secondary: #407056;
+    --palette-color-light: #E0E0E0;
+    --palette-color-dark: #6A7152;
+
+    --text-color-light: #E0E0E0;
+    --text-color-dark: #424242;
+
+    --back-gradient-light: #44A08D;
+    --back-gradient-dark: #093637;
+
+    --palette-details-light: #EDFA8B;
 }
 
 body{
     min-height:100vh;
-    /*background-color: #256670;*/
     background-image: linear-gradient(to bottom right, #44A08D, #093637);
-    color: white;
+    color: var(--text-color-light);
     display: flex;
     flex-direction: column;
 }
@@ -21,14 +35,17 @@ main {
 /* Navbar CSS rules (joined with materialize standards)*/
 
 .custom-nav{
-    background-color: #407056;
-    color: #ADE28A;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom: 1px solid #EDFA8B;
-    vertical-align: middle;
-    overflow: hidden;
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    border-bottom: 2px solid var(--palette-details-light);
+    /*vertical-align: middle;*/
+    padding: 0px 20px;
 }
+
+.sidenav {
+    background-color: var(--palette-color-primary);
+}
+
 
 .custom-title{
     padding-left: 2vw;
@@ -36,11 +53,20 @@ main {
     color: #ADE28A;
 }
 
+.form-title{
+    color: var(--text-color-light);
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-body{
+    color: var(--text-color-light);
+}
+
 .custom-footer{
-    background-color: #407056;
-    color: #ADE28A;
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
     overflow: hidden;
-    min-height: 50px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -53,20 +79,27 @@ main {
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: 5px 0px;
+    padding: 5px 10px;
+    position: relative;
     bottom:0;
+    width: 100%;
+    min-height: 50px;
+    margin-top: auto;
 }
 
 nav {
-    height: 15vh;
+    max-height: 30em;
     margin: 0;
     padding: 0;
     background-color:transparent;
-    color:#ADE28A;
+    color: var(--text-color-light);
     align-content: center;
     border-bottom:transparent;
     box-shadow:none;
 }
+
+
+
 
 .main-container{
     flex-wrap: nowrap;
@@ -88,7 +121,7 @@ nav {
     display:flex;
     flex-direction: column;
     justify-content:center;
-    margin-top:2vh;
+    margin-top:10vh;
     height:fit-content;
     width:100%;
 }
@@ -100,7 +133,23 @@ nav {
 
 .landing-page-title{
     text-align:center;
-    font-size: 30px;
+}
+
+.landing-recent-product-container{
+    height:fit-content;
+}
+
+.landing-recent-product-container .card .card-image img{
+    height: 200px;
+    object-fit: cover;
+}
+
+.landing-recent-product-container .card .card-image img .card-content{
+    max-height:initial;
+}
+
+.landing-recent-product-container .card .card-content{
+    height:40%;
 }
 
 .introduction-container{
@@ -181,10 +230,9 @@ nav {
 /*                  */
 
 .product-card-title{
-    font-size: 25px;
-    text-align: center;
-    margin-top: 2px;
-    margin-bottom:2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description-container{
@@ -216,13 +264,21 @@ nav {
     top:0;
     flex:20%;
     height:auto;
-    width:auto;
-    margin-left: 10%;
+    width:100%;
+    margin-left:10%;
 }
+
+.explore-product-image-container img{
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+
 
 .product-card-holder img{
     height:100%;
     width:100%;
+    border-radius:10px;
 }
 
 .card-container{
@@ -254,6 +310,11 @@ nav {
     text-justify: distribute-all-lines;
     margin-top: 2vh;
     width: 100%;
+}
+
+.explore-filter .row{
+    margin-top:1vh;
+    margin-bottom:0 ;
 }
 
 .column {
@@ -290,9 +351,20 @@ nav {
 }
 
 .standard-button{
-    background-color: #EDF8AB;
-    color: #1E425E;
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
     border-radius: 10px;
+}
+
+.decision-button {
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    font-size: large;
+}
+
+.decision-button:hover {
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
 }
 
 /* PRODUCT PAGE */
@@ -305,28 +377,51 @@ nav {
 
 .productpage-image-container{
     display:flex;
-    align-content: space-around;
+    justify-content: space-around;
     height: 30%;
     width: 100%;
+    margin: 10px auto;
 }
 
 .productpage-image-container img{
-    border-radius: 50px;
-    max-height:50%;
-    max-width:50%;
-    flex:40%;
+    width:80%;
+    object-fit:cover;
+    text-align:center;
+}
+
+.productpage-orderform{
+    margin-top:0;
+    margin-bottom:0;
+
 }
 
 .product-info-container{
     align-content: center;
     text-align: center;
     height: fit-content;
-    flex:50%;
-    margin: 10px 5px;
-    padding-bottom: 10px;
-    background-color: #EDF8AB;
+    flex:30%;
+    margin: 10px 20px 20px 20px;
+    padding-bottom: 20px;
+    /*background-color: #EDF8AB;*/
     border-radius: 10px;
     color: #1E425E;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+}
+
+.center-container{
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-radius: 0;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    flex: 38%;
+}
+
+.separating-fields{
+    margin-bottom:4vh;
 }
 
 .product-info-container table tr{
@@ -344,10 +439,6 @@ nav {
     height:fit-content;
     color: white;
     background:red;
-}
-
-.errorTr td{
-
 }
 
 #amount.errors, #phone.errors{
@@ -381,7 +472,7 @@ nav {
     margin-bottom: 10px;
 }
 
-.explore-title{
+.generic-title{
     width:100%;
     text-align: center;
     font-size: 40px;
@@ -407,11 +498,22 @@ nav {
     background-color: #ade28a;
     color: #1E425E;
     border-radius: 20px;
-    height:fit-content; /*TODO: Armado hasta que se haga una implementación correcta*/
+    height:fit-content;
+    /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
 .filter-inputlabel{
     color: #1E425E;
+}
+
+.filterinputs{
+    margin-bottom:0;
+    margin-top:0;
+}
+
+.productpage-image-container .material-placeholder{
+    display:flex;
+    justify-content: center;
 }
 
 /* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
@@ -423,15 +525,310 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
 }
 
+.selectMultiple {
+    width: 400px;
+    position: relative;
+}
+.selectMultiple select {
+    display: none;
+}
+.selectMultiple > div {
+    position: relative;
+    z-index: 2;
+    padding: 8px 12px 2px 12px;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    min-height: 44px;
+    box-shadow: 0 4px 16px 0 rgba(22, 42, 90, 0.12);
+    transition: box-shadow 0.3s ease;
+}
+.selectMultiple > div:hover {
+    box-shadow: 0 4px 24px -1px rgba(22, 42, 90, 0.16);
+}
+.selectMultiple > div .arrow {
+    right: 1px;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+    width: 28px;
+    position: absolute;
+}
+.selectMultiple > div .arrow:before, .selectMultiple > div .arrow:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 2px;
+    height: 8px;
+    border-bottom: 8px solid #99A3BA;
+    top: 43%;
+    transition: all 0.3s ease;
+}
+.selectMultiple > div .arrow:before {
+    right: 12px;
+    transform: rotate(-130deg);
+}
+.selectMultiple > div .arrow:after {
+    left: 9px;
+    transform: rotate(130deg);
+}
+.selectMultiple > div span {
+    color: #99A3BA;
+    display: block;
+    position: absolute;
+    left: 12px;
+    cursor: pointer;
+    top: 8px;
+    line-height: 28px;
+    transition: all 0.3s ease;
+}
+.selectMultiple > div span.hide {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-4px, 0);
+}
+.selectMultiple > div a {
+    position: relative;
+    padding: 0 24px 6px 8px;
+    line-height: 28px;
+    color: #1E2330;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 6px 0 0;
+}
+.selectMultiple > div a em {
+    font-style: normal;
+    display: block;
+    white-space: nowrap;
+}
+.selectMultiple > div a:before {
+    content: "";
+    left: 0;
+    top: 0;
+    bottom: 6px;
+    width: 100%;
+    position: absolute;
+    display: block;
+    background: rgba(228, 236, 250, 0.7);
+    z-index: -1;
+    border-radius: 4px;
+}
+.selectMultiple > div a i {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 28px;
+    display: block;
+}
+.selectMultiple > div a i:before, .selectMultiple > div a i:after {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: #4D18FF;
+    border-radius: 1px;
+}
+.selectMultiple > div a i:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.selectMultiple > div a i:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+.selectMultiple > div a.notShown {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.selectMultiple > div a.notShown:before {
+    width: 28px;
+    transition: width 0.45s cubic-bezier(0.87, -0.41, 0.19, 1.44) 0.2s;
+}
+.selectMultiple > div a.notShown i {
+    opacity: 0;
+    transition: all 0.3s ease 0.3s;
+}
+.selectMultiple > div a.notShown em {
+    opacity: 0;
+    transform: translate(-6px, 0);
+    transition: all 0.4s ease 0.3s;
+}
+.selectMultiple > div a.notShown.shown {
+    opacity: 1;
+}
+.selectMultiple > div a.notShown.shown:before {
+    width: 100%;
+}
+.selectMultiple > div a.notShown.shown i {
+    opacity: 1;
+}
+.selectMultiple > div a.notShown.shown em {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+.selectMultiple > div a.remove:before {
+    width: 28px;
+    transition: width 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44) 0s;
+}
+.selectMultiple > div a.remove i {
+    opacity: 0;
+    transition: all 0.3s ease 0s;
+}
+.selectMultiple > div a.remove em {
+    opacity: 0;
+    transform: translate(-12px, 0);
+    transition: all 0.4s ease 0s;
+}
+.selectMultiple > div a.remove.disappear {
+    opacity: 0;
+    transition: opacity 0.5s ease 0s;
+}
+
+.selectMultiple > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 16px;
+    z-index: 1;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    opacity: 0;
+    border-radius: 8px;
+    transform: translate(0, 20px) scale(0.8);
+    transform-origin: 0 0;
+    filter: drop-shadow(0 12px 20px rgba(22, 42, 90, 0.08));
+    transition: all 0.4s ease, transform 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44), filter 0.3s ease 0.2s;
+}
+.selectMultiple > ul li {
+    color: #1E2330;
+    background: #fff;
+    padding: 6px 10px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease 0.3s, opacity 0.5s ease 0.3s, border-radius 0.3s ease 0.3s;
+}
+.selectMultiple > ul li:first-child {
+    border-radius: 8px 8px 0 0;
+}
+.selectMultiple > ul li:first-child:last-child {
+    border-radius: 8px;
+}
+.selectMultiple > ul li:last-child {
+    border-radius: 0 0 8px 8px;
+}
+.selectMultiple > ul li:last-child:first-child {
+    border-radius: 8px;
+}
+.selectMultiple > ul li:hover {
+    background: #4D18FF;
+    color: #fff;
+}
+.selectMultiple > ul li:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+.selectMultiple > ul li.beforeRemove {
+    border-radius: 0 0 8px 8px;
+}
+.selectMultiple > ul li.beforeRemove:first-child {
+    border-radius: 8px;
+}
+.selectMultiple > ul li.afterRemove {
+    border-radius: 8px 8px 0 0;
+}
+.selectMultiple > ul li.afterRemove:last-child {
+    border-radius: 8px;
+}
+.selectMultiple > ul li.remove {
+    transform: scale(0);
+    opacity: 0;
+}
+.selectMultiple > ul li.remove:after {
+    -webkit-animation: ripple 0.4s ease-out;
+    animation: ripple 0.4s ease-out;
+}
+.selectMultiple > ul li.notShown {
+    display: none;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.4s ease;
+}
+.selectMultiple > ul li.notShown.show {
+    transform: scale(1);
+    opacity: 1;
+}
+.selectMultiple.open > div {
+    box-shadow: 0 4px 20px -1px rgba(22, 42, 90, 0.12);
+}
+.selectMultiple.open > div .arrow:before {
+    transform: rotate(-50deg);
+}
+.selectMultiple.open > div .arrow:after {
+    transform: rotate(50deg);
+}
+.selectMultiple.open > ul {
+    transform: translate(0, 12px) scale(1);
+    opacity: 1;
+    visibility: visible;
+    filter: drop-shadow(0 16px 24px rgba(22, 42, 90, 0.16));
+}
+
+@-webkit-keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 1;
+    }
+    25% {
+        transform: scale(30, 30);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(50, 50);
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 1;
+    }
+    25% {
+        transform: scale(30, 30);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(50, 50);
+    }
+}
+
 .explore-filter input[type=number]{
     -moz-appearance: textfield;
 }
 
-.explore-products{
+.explore-products, .productpage-ecotags, .landing-products{
     display:flex;
-    flex-direction: column;
-    /*align-items: center;*/
-    /*justify-content: center;*/
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width:100%;
 }
 
 .explore-filter-title{
@@ -509,6 +906,8 @@ ALL CREDITS TO @andrewsims
     color: black;
 }
 
+
+
 .pccard1 {
     display: block;
     position: relative;
@@ -564,10 +963,21 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
+.register-title{
+    font-size: 20px;
+    margin: 2vh auto;
+}
+
+.register-textbody{
+    width:100%;
+    padding: 2vh 4vw;
+    font-size: 15px;
+}
+
 .register-seller-container, .register-buyer-container{
     align-content: center;
     text-align: center;
-    height: fit-content;
+    height: 100%;
     flex:50%;
     margin: 10px 5px;
     padding-bottom: 10px;
@@ -577,5 +987,606 @@ ALL CREDITS TO @andrewsims
 }
 
 .register-seller-form-container{
+    color:white;
+}
+
+/* ------ SELLER PROFILE ------ */
+
+.seller-profile-main-body-container, .buyer-profile-main-body-container{
+    display:flex;
+    margin: 3vh 5vh 0vh;
+    flex-direction: column;
+
+}
+
+.seller-profile-main-body-container h4{
+    margin-top:0;
+}
+
+.seller-profile-main-body-container-information, .buyer-profile-main-body-container-information{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-around;
+    height:fit-content;
+    margin:0;
+}
+
+.seller-profile-main-body-container-information{
+    flex:33%;
+}
+
+.seller-profile-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    background-color: #EDF8AB;
+    color: #407056;
+    align-content: center;
+    width:80%;
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
+}
+
+.seller-profile-container img, .card-image img{
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+.seller-profile-container img{
+    max-height: 100px;
+}
+
+.product-card{
+    width: 30%;
+    background: transparent;
+    box-shadow:none;
+    transition: 0.3s;
+    height:fit-content;
+}
+
+.product-card:hover{
+    transform: translate(0, -10px);
+}
+
+.product-card .card-image{
+    background:white;
+    border-radius:10px 10px 0 0;
+}
+
+.product-card .card-content{
+    border-radius: 0 0 10px 10px;
+}
+
+.explore-products .product-card .card-content{
+    height:250px;
+}
+
+.explore-products .card-image img{
+    max-height:150px;
+    object-fit:cover;
+}
+
+.seller-profile-container .profile-row{
+    display:flex;
+    justify-content: space-around;
+    margin: 10px;
+}
+.seller-profile-container-orders, .seller-profile-container-products, .seller-profile-published-products{
+    flex: 33%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+}
+.seller-profile-card{
+    width: 80%;
+    height: fit-content;
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    border: 1px solid var(--palette-details-light);
+    align-self: center;
+
+    padding-bottom:2vh;
+    margin: 2vh auto;
+}
+.seller-profile-card-title{
+    font-size:20px;
+    margin-top: 2vh;
+}
+
+.seller-profile-product-card,
+.seller-profile-product-card-info{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.seller-profile-product-card-info #stockless{
+    margin:auto 1vw auto 1vw;
+    align-items:center;
+    display:flex;
+}
+
+.seller-profile-product-card-info #stockless i,
+.seller-profile-product-card-info #edit i,
+.seller-profile-product-card-info #delete i{
+    margin-right:10px;
+}
+
+.seller-profile-product-card-info #productinfo{
+    margin: auto 1vw auto 1vw;
+    display:flex;
+    align-items:center;
+}
+
+.seller-profile-product-card-info #edit,
+.seller-profile-product-card-info #delete{
+    margin: auto 1vw auto 1vw;
+    display:inline-flex;
+    align-items:center;
+}
+
+/* ------- REGISTER VIEWS ------- */
+
+.register-form-row{
+    display:flex;
+    justify-content: space-around;
+}
+
+/* -------- LOGIN VIEW ------- */
+
+
+.login{
+    max-width: 500px;
+    padding: 20px 35px 20px 35px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4em auto;
+    border-color: var(--palette-color-secondary);
+    background: white;
+    border-width: medium;
+    color: var(--text-color-dark);
+}
+
+.login-form-container, .login-register-container, .register-form-container{
+    height:fit-content;
+    width:60%;
+    margin:auto;
+    color:white;
+}
+
+.login-form-container div, .login-register-container div{
+    width:100%;
+    display:flex;
+    justify-content: space-around;
+    margin: 5px 0 0 0;
+}
+
+.register-form-container div label, .login-form-container div label,
+.login-register-container div label{
+    font-size:10px;
+}
+
+.register-form-container div input, .login-form-container div input,
+.login-register-container div input{
+    color:white;
+}
+
+.login-form-container div, .login-register-container div{
+    margin-bottom:4vh;
+}
+
+.register-form-container div .errors .error{
+    font-size: 10px;
+    font-weight: bold;
+    color: red;
+    margin: 0 0 0 0;
+}
+
+.register-form-container div .input-field{
+    margin: 0 0 0 0;
+}
+
+
+
+.label-container{
+    margin-top:2vh;
+}
+
+.login-form-container div label, .register-form-container div label{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color:var(--text-color-light);
+    font-size: 18px;
+}
+
+.login-form-container input{
+    color:white;
+    font-family: 'Manrope';
+    margin-bottom: 0;
+    margin-left: 4vw;
+    width: 60%;
+    align-self: end;
+}
+
+.login-page-container .error{
+    font-size:20px;
+}
+
+.form-input{
+margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
+    color:white;
+}
+
+/*.container #product_form div label,*/
+/*.container #product_form div input{*/
+/*    color:black;*/
+
+/*}*/
+
+.container #product_form .input-field ul li span label{
+    color:var(--palette-color-secondary)
+}
+
+/* Extracted from https://www.geeksforgeeks.org/how-to-create-fade-in-effect-on-page-load-using-css/ */
+.login-page-container {
+    width:100%;
+    height:fit-content;
+    animation: fadeInAnimation ease 1.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+
+}
+
+.login .error{
+    color:red;
+    text-align:center;
+    font-size:18px;
+    margin-top:5vh;
+}
+
+.sort {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 50px;
+    height:10%;
+}
+
+.custom-chip{
+    height:100%;
+    font-size:20px;
+    font-weight:300;
+    padding: 5px 12px;
+    border-radius:12px;
+    background-color: transparent;
+    color: white;
+}
+
+.sort-arrow{
+    height:100%;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    color:white;
+}
+
+.check {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+}
+
+/* -------- CREATE PRODUCT ------- */
+
+.createproducts{
+    width: 900px;
+    padding: 20px 35px 20px 35px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4em auto;
+    border-color: var(--palette-color-secondary);
+    background: var(--palette-details-light);
+    border-width: medium;
+    color: var(--text-color-dark);
+}
+
+.createbody{
+    display: grid;
+}
+
+.createbody .row {
+    margin-bottom: 30px;
+    max-height: 50px;
+}
+
+.createproduct_column {
+    margin:25px 25px 25px 25px;
+}
+
+.createproduct_row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.createbody div .error {
+    font-size: 10px;
+    font-weight: bold;
+    color: red;
+    margin: 0 0 0 0;
+}
+
+.createproduct_column .input-field{
+    margin-bottom: 10px;
+    width:300px;
+}
+
+.btn .character-counter {
+    display: none;
+}
+
+.file-path-wrapper {
+    max-width: 100px;
+}
+
+.dropdown-content {
+    max-height: 200px;
+}
+
+.registerbody {
+    display: grid;
+}
+
+.register-form-container .center {
+    margin-top: 40px;
+}
+
+.registerbody .row {
+    margin-bottom: 25px;
+    max-height: 50px;
+}
+
+
+
+/* ------ USER PROFILE VIEW ---------- */
+.buyer-profile-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    background-color: #EDF8AB;
+    color: #407056;
+    align-content: center;
+    width:40%;
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
+}
+
+/* ------ ERROR VIEW -------- */
+.error-container{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    align-self: center;
+}
+
+.error-container-block{
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    background-color: #EDF8AB;
+    color: #407056;
+    width:100%;
+    margin: 50px;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    align-self: center;
+    text-align: center;
+}
+
+.noproducts-container {
+    display: flex;
+    flex-direction: column;
+    height:fit-content;
+    align-content: center;
+    background-color: #EDF8AB;
+    color: #407056;
+    width:100%;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #407056;
+    text-align: center;
+}
+
+.input-field .selectMultiple .select-wrapper{
+    display: none;
+}
+
+.userPurchase{
+    text-align:center;
+    display:flex;
+    justify-content: center;
+    flex-direction:column;
+    margin:2vh auto;
+}
+
+
+
+/* ----- some features ----- */
+#product_form .select-wrapper select, .login #login_form #rememberme input,
+#product_form .input-field .select-wrapper ul li input,
+.container #product_form .input-field .select-wrapper ul,
+.container #product_form .row .input-field .btn .character-counter,
+input#ecotag, input#ecotag2,
+.explore-container #filter_form .row .input-field .select-wrapper ul,
+.input-field .selectMultiple .select-wrapper,
+.sort ul{
+    display: none;
+}
+
+/* https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+
+/* --------- TESTING PURPOSES ------- */
+
+.seller-profile-container-2, .seller-profile-container-2-lower, .seller-profile-container-2-bis,
+.seller-profile-container-2-lower-bis{
+    height:fit-content;
+    background:var(--palette-color-secondary);
+    color:white;
+    /*display:flex;
+    justify-content: space-around;*/
+    display:block;
+    align-self: center;
+    padding-top:6vh;
+    padding-bottom:5vh;
+    border-left: 1px solid var(--palette-details-light);
+    border-right: 1px solid var(--palette-details-light);
+    border-bottom: 1px solid var(--palette-details-light);
+}
+
+.seller-profile-container-2, .seller-profile-container-2-lower{
+    width:80%;
+}
+
+.seller-profile-container-2-lower{
+    margin-top: 2vh;
+    background:transparent;
+}
+
+#sellerprofile_tabs{
+    background-color: var(--palette-color-secondary);
+    border-left: 1px solid var(--palette-details-light);
+    border-right: 1px solid var(--palette-details-light);
+    border-top: 1px solid var(--palette-details-light);
+}
+
+#sellerprofile_tabs li a{
+    color: white;
+}
+
+#sellerprofile_tabs .indicator{
+    color:white;
+    background-color:white;
+}
+
+.seller-profile-container-orders-2{
+
+}
+
+.seller-inner-div-1, .seller-inner-div-2{
+    height:100%;
+    flex:50%;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+}
+
+.seller-profile-pic-container img{
+    border-radius: 50%;
+    height: auto;
+    max-height: 200px;
+    align-self:center;
+}
+
+.seller-profile-pic-container{
+    width:100%;
+    overflow: hidden;
+    text-align:center;
+}
+
+
+.text-center{
+    text-align:center;
+}
+
+.seller-profile-products-2, .seller-profile-orders-2{
+    flex:48%;
+    text-align:center;
+}
+
+.seller-profile-orders-2{
+    display:flex;
+    flex-direction:column;
+    background-color: var(--palette-color-secondary);
+}
+
+.seller-profile-products-2-bis, .seller-profile-container-orders-2{
+    flex:100%;
+    text-align:center;
+}
+
+.seller-profile-product-card{
+    width:100%;
+    vertical-align: center;
+    margin:3vh auto;
+    height:80px;
+}
+
+.seller-profile-product-card-info{
+    text-align:center;
+    background-color:var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    border-radius: 10px;
+    height:100%;
+    width:95%;
+}
+
+.seller-profile-product-card-info a{
+    color:white;
+}
+
+.yellow-card {
+    background: var(--palette-details-light);
+}
+
+.enabled {
+    color: var(--palette-details-light);
+}
+
+.pagin {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.pagination-arrow{
     color:white;
 }
