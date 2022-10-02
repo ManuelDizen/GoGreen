@@ -30,13 +30,4 @@ public class EcotagServiceImpl implements EcotagService {
         return ecotagDao.getTagsFromProduct(productId);
     }
 
-    @Override
-    public List<Ecotag> filterByTags(boolean[] ecotags) {
-        List<Ecotag> toReturn = new ArrayList<>();
-        for(int i=0; i<ecotags.length; i++) {
-            if(ecotags[i])
-                toReturn.add(Ecotag.getById(i+1));
-        }
-        return toReturn;
-    }
 }
