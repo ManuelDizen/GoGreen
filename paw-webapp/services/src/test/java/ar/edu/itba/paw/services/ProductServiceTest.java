@@ -36,26 +36,26 @@ public class ProductServiceTest {
     private ProductDao productDao;
 
 
-    @Test
-    public void testCreate() {
-
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE))).thenReturn(new Product(1, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE));
-
-        final Product newProduct = ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE);
-        assertNotNull(newProduct);
-        assertEquals(SELLERID, newProduct.getSellerId());
-        assertEquals(NAME, newProduct.getName());
-
-    }
-
-    @Test
-    public void testFindById() {
-        Mockito.when(productDao.getById(1)).thenReturn(Optional.of(new Product(1, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE)));
-
-        Optional<Product> product = ps.getById(1);
-        assertTrue(product.isPresent());
-        assertEquals(SELLERID, product.get().getSellerId());
-    }
+//    @Test
+//    public void testCreate() {
+//
+//        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE))).thenReturn(new Product(1, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE));
+//
+//        final Product newProduct = ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE);
+//        assertNotNull(newProduct);
+//        assertEquals(SELLERID, newProduct.getSellerId());
+//        assertEquals(NAME, newProduct.getName());
+//
+//    }
+//
+//    @Test
+//    public void testFindById() {
+//        Mockito.when(productDao.getById(1)).thenReturn(Optional.of(new Product(1, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE)));
+//
+//        Optional<Product> product = ps.getById(1);
+//        assertTrue(product.isPresent());
+//        assertEquals(SELLERID, product.get().getSellerId());
+//    }
 
 
 
