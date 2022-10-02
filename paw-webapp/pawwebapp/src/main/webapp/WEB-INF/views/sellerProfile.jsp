@@ -104,7 +104,7 @@
                                             <c:out value="${product.stock}"/>
                                         </div>
                                         <div style="display:inline-flex; margin-bottom: 15px; margin-top:20px;">
-                                            <a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="<c:url value="/updateProduct/${product.productId}"/>">
+                                            <a id="edit" class="waves-effect waves-light btn modal-trigger edit-btn" href="<c:url value="/updateProduct/${product.productId}"/>">
                                                 <i class="material-icons">edit</i>
                                                 <spring:message code="sellerprofile.updatestock"/>
                                             </a>
@@ -124,7 +124,7 @@
                                             <spring:message code="sellerprofile.updatestock.note2"/>
                                         </div>
                                         <div class="row s12 center-buttons">
-                                            <a id="edit2" class="waves-effect waves-light btn blue darken-3 modal-trigger accomodate-button" href="<c:url value="/updateProduct/${product.productId}"/>">
+                                            <a id="edit2" class="waves-effect waves-light btn edit-btn modal-trigger accomodate-button" href="<c:url value="/updateProduct/${product.productId}"/>">
                                                 <i class="material-icons">edit</i>
                                                 <spring:message code="sellerprofile.updatestock"/>
                                             </a>

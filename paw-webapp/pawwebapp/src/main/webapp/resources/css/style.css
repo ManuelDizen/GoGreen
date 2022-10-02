@@ -18,6 +18,7 @@
     --back-gradient-dark: #093637;
 
     --palette-details-light: #EDFA8B;
+    --palette-edit-button: #B8AD4E;
 }
 
 body{
@@ -1703,4 +1704,8 @@ input[type=number] {
 
 #orderamount input{
     color:white;
+}
+
+.edit-btn{
+    background-color: var(--palette-edit-button);
 }
