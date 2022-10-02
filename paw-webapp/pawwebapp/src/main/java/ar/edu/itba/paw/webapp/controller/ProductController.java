@@ -30,11 +30,7 @@ public class ProductController {
 
     private final SellerService sellerService;
 
-    private final UserService userService;
-
     private final EcotagService ecotagService;
-
-    private final SecurityService securityService;
 
     private final OrderService orderService;
 
@@ -45,8 +41,6 @@ public class ProductController {
                              final EcotagService ecotagService, final OrderService orderService) {
         this.productService = productService;
         this.sellerService = sellerService;
-        this.userService = userService;
-        this.securityService = securityService;
         this.ecotagService = ecotagService;
         this.orderService = orderService;
     }
@@ -157,7 +151,6 @@ public class ProductController {
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
         if(!seller.isPresent()) throw new RuntimeException("Seller not found");
-        //Should never have that exception, the product exists and sellerID is FK
 
         List<Ecotag> ecotags = ecotagService.getTagFromProduct(productObj.getProductId());
         mav.addObject("seller", seller.get());

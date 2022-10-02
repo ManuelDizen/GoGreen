@@ -2,11 +2,12 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.models.Order;
+import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
+import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.ObjectError;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -32,40 +32,26 @@ public class RegisterController {
     private final SellerService sellerService;
 
     private final UserService userService;
-
-    private final RoleService roleService;
-
-
-    private final UserRoleService userRoleService;
-
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailService;
 
     @Autowired
     public RegisterController(final SellerService sellerService, final UserService userService,
-                              final RoleService roleService, final UserRoleService userRoleService,
-                              final AuthenticationManager authenticationManager,
-                              final EmailService emailService) {
+                              final AuthenticationManager authenticationManager) {
         this.sellerService = sellerService;
         this.userService = userService;
-        this.roleService = roleService;
-        this.userRoleService = userRoleService;
         this.authenticationManager = authenticationManager;
-        this.emailService = emailService;
     }
 
     @RequestMapping(value= "/register", method= RequestMethod.GET)
     public ModelAndView register(){
-        final ModelAndView mav = new ModelAndView("register");
-        return mav;
+        return new ModelAndView("register");
     }
 
     @RequestMapping(value="/registerbuyer", method = RequestMethod.GET)
     public ModelAndView registerBuyer(
             @ModelAttribute("userForm") final UserForm form
     ){
-        final ModelAndView mav = new ModelAndView("registerbuyer");
-        return mav;
+        return new ModelAndView("registerbuyer");
     }
 
     @RequestMapping(value = "/registerbuyerprocess", method = RequestMethod.POST)
@@ -74,7 +60,6 @@ public class RegisterController {
         if(errors.hasErrors()) {
             return registerBuyer(form);
         }
-        //TODO:Include userRoleService.create logic in userService.register
         Boolean success = userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
         if(!success) throw new IllegalStateException();
@@ -86,8 +71,7 @@ public class RegisterController {
     public ModelAndView registerSeller(
             @ModelAttribute("sellerForm") final SellerForm form
     ){
-        final ModelAndView mav = new ModelAndView("registerseller");
-        return mav;
+        return new ModelAndView("registerseller");
     }
 
     @RequestMapping(value="/registersellerprocess", method=RequestMethod.POST)
@@ -102,9 +86,6 @@ public class RegisterController {
         Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
                 form.getAddress());
-        // Para setear al usuario recién creado como activo
-        // (Una convención, podríamos preguntar si es apropiado)
-        // (Fuente: https://www.baeldung.com/spring-security-auto-login-user-after-registration)
         if(!success) throw new IllegalStateException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
