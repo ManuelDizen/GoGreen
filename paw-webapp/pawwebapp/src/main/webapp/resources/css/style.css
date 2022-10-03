@@ -431,10 +431,6 @@ nav {
     flex: 38%;
 }
 
-.separating-fields{
-    margin-bottom:4vh;
-}
-
 .product-info-container table tr{
     border-bottom: transparent;
 }
@@ -1661,4 +1657,26 @@ input[type=number] {
 
 .pagination-arrow{
     color:white;
+}
+
+.product-information{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+
+.separate{
+    margin: 15px auto;
+}
+
+.order-form{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    height:100%;
+    padding-left: 30px;
+}
+
+.order-form-container{
+    border-left:1px solid white;
 }

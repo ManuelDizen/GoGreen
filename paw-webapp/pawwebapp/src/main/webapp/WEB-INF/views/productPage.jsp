@@ -21,7 +21,124 @@
             <spring:message code="productpage.orderfail"/>
         </div>
     </c:if>
-    <div class="product-page-container" style="height:available;">
+
+    <div class="row product-page-container-2">
+        <div class="col s8">
+            <h4 style="margin-top:0; text-decoration:underline; font-size:40px;margin-bottom:50px; text-align:center;">
+                <c:out value="${product.name}"/></h4>
+            <div class="row" style="margin:0;">
+                <c:if test="${product.imageId != 0}">
+                    <div class="col s6">
+                        <div class = "productpage-image-container" style="margin-top:0; height:fit-content;">
+                            <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}" style="border-radius:10px;border:2px solid var(--palette-color-secondary);">
+                        </div>
+                    </div>
+                    <div class="col s6 product-information">
+                        <div style="font-size:25px; font-weight:bold; text-align:center;" class="separate"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate" style="font-size: 25px; text-align:center;"><spring:message code="productpage.prodinfo.stock"/>
+                            <c:out value="${' '}${product.stock}"/></div>
+                        <c:if test="${product.stock < 6}">
+                            <div class="separate" style="text-align:center; margin-top: 2vh;">
+                                <a class="btn orange accent-4" style="cursor: default;">
+                                    <spring:message code="productpage.orderform.lastunits"/>
+                                </a>
+                            </div>
+                        </c:if>
+                        <c:if test="${ecotags.size() != 0}">
+                            <div class="productpage-ecotags separating-fields separate">
+                                <c:forEach items="${ecotags}" var="ecotag">
+                                    <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                                        <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
+                                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                            <spring:message code="${ecotag.tag}"/>
+                                        </a>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:if>
+                    </div>
+                </c:if>
+                <c:if test="${product.imageId == 0}">
+                    <div class="col s12 product-information" style="margin:0;">
+                        <div style="font-size:25px; font-weight:bold; text-align:center;"><c:out value="${'$'}${product.price}"/></div>
+                        <div style="font-size: 25px; text-align:center;"><spring:message code="productpage.prodinfo.stock"/>
+                            <c:out value="${' '}${product.stock}"/></div>
+                        <c:if test="${product.stock < 6}">
+                            <div style="text-align:center; margin-top: 2vh;">
+                                <a class="btn orange accent-4" style="cursor: default;">
+                                    <spring:message code="productpage.orderform.lastunits"/>
+                                </a>
+                            </div>
+                        </c:if>
+                        <c:if test="${ecotags.size() != 0}">
+                            <div class="productpage-ecotags separating-fields separate">
+                                <c:forEach items="${ecotags}" var="ecotag">
+                                    <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                                        <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
+                                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                            <spring:message code="${ecotag.tag}"/>
+                                        </a>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:if>
+                    </div>
+                </c:if>
+            </div>
+        </div>
+        <div class="col s4 order-form-container" style="height:100%;">
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <c:url value="/process/${product.productId}" var="process"/>
+            </c:if>
+            <c:if test="${pageContext.request.userPrincipal.name == null}">
+                <c:url value="/login" var="process"/>
+            </c:if>
+            <form:form modelAttribute="orderForm" action="${process}" method="post" cssClass="order-form">
+                <div class="row productpage-orderform">
+                    <div class="input-field col s12">
+                        <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
+                        <form:textarea placeholder="${textareaMsg}" id="textarea1" class="materialize-textarea" path="message" data-length="300" style="color:white;"/>
+                        <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                    </div>
+                </div>
+                <div class="errors">
+                    <form:errors path="message" element="p" cssClass="error"/>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <spring:message var="placeholder1" code="productpage.orderform.amount.placeholder"/>
+                        <form:input id="amount" path="amount" type="number"
+                                    style="color:white;" placeholder="${placeholder1}"/>
+
+                        <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                    </div>
+                </div>
+                <div class="errors">
+                    <form:errors path="amount" element="p" cssClass="error"/>
+                </div>
+                <div class="row" style="text-align:center;">
+                    <sec:authorize access="hasRole('SELLER')">
+                        <button type="submit" class="waves-effect waves-light btn disabled">
+                            <spring:message code="productpage.orderform.sellerblocked"/>
+                        </button>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('USER')">
+                        <button type="submit" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.orderform.submit"/>
+                        </button>
+                    </sec:authorize>
+                    <c:if test="${pageContext.request.userPrincipal.name == null}">
+                        <a href="<c:url value="/login"/>" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.orderform.submit"/>
+                        </a>
+                    </c:if>
+                </div>
+            </form:form>
+        </div>
+    </div>
+
+
+    <%--div class="product-page-container" style="height:available;">
         <c:if test="${product.imageId != 0}">
             <div class="product-info-container" style="background-color:transparent;">
                     <div class = "productpage-image-container" style="margin-top:0;">
@@ -115,8 +232,8 @@
                 </div>
             </c:if>
         </div>
-    </div>
-<div class="landing-recent-product-container animate glow delay-2" style="margin-top:10vh;">
+    </div --%>
+<div class="landing-recent-product-container" style="margin-top:20px;">
 <c:if test="${recent.size() != 0}">
     <div class="row">
     <div class="col s12">
