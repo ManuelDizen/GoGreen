@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s12">
+                <div class="col s6">
                     <div class="input-field">
                         <form:input path="email" id="email" type="text"/>
                         <label for="email"><spring:message code="registerbuyer.form.email"/>
@@ -54,6 +54,18 @@
                     </div>
                     <div class="errors">
                         <form:errors path="email" element="p" cssClass="error"/>
+                    </div>
+                </div>
+                <div class="col s6 input-field">
+                    <div>
+                        <form:select path="area">
+                            <form:option value="0" disabled="true"><spring:message code="explore.select"/></form:option>
+                            <c:forEach items="${areas}" var="area">
+                                <form:option value="${area.id}">${area.name}</form:option>
+                            </c:forEach>
+                        </form:select>
+                        <form:label for="area" path="area"><spring:message code="createproduct.form.category"/></form:label>
+                        <form:errors path="area" element="p" cssClass="error"/>
                     </div>
                 </div>
             </div>

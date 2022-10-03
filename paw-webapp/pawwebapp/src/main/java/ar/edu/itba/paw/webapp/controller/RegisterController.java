@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Area;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
@@ -96,6 +97,7 @@ public class RegisterController {
             @ModelAttribute("sellerForm") final SellerForm form
     ){
         final ModelAndView mav = new ModelAndView("registerseller");
+        mav.addObject("areas", Area.values()); //solo esta línea
         return mav;
     }
 
@@ -114,7 +116,7 @@ public class RegisterController {
         if(user == null){
             throw new IllegalArgumentException("Usuario no pudo ser creado");
         }
-        Seller seller = sellerService.create(user.getId(), form.getPhone(), form.getAddress());
+        Seller seller = sellerService.create(user.getId(), form.getPhone(), form.getAddress(), form.getArea());
         if(seller == null){
             throw new IllegalArgumentException("Seller no pudo ser creado");
         }

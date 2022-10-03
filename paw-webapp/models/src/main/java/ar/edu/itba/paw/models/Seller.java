@@ -6,11 +6,14 @@ public class Seller {
     private String phone;
     private String address;
 
-    public Seller(long id, long userid, String phone, String address) {
+    private long areaId;
+
+    public Seller(long id, long userid, String phone, String address, long areaId) {
         this.id = id;
         this.userid = userid;
         this.phone = phone;
         this.address = address;
+        this.areaId = areaId;
     }
 
     public long getId() {
@@ -33,5 +36,13 @@ public class Seller {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public long getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(long areaId) {
+        this.areaId = areaId;
     }
 }
