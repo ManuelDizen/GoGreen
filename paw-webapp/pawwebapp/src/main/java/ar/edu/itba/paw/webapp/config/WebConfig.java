@@ -55,9 +55,6 @@ public class WebConfig {
     @Value("classpath:orders.sql")
     private Resource ordersSql;
 
-    @Value("classpath:faqs.sql")
-    private Resource faqsSql;
-
     @Bean
     public ViewResolver viewResolver() {
         final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

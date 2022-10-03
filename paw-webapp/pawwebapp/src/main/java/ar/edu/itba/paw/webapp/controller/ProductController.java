@@ -4,6 +4,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.UpdateProdForm;
@@ -76,7 +77,7 @@ public class ProductController {
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
         mav.addObject("chosenCategory", category);
-        if(maxPrice > -1.0)
+        if(maxPrice > -1)
             mav.addObject("maxPrice", maxPrice);
         else
             mav.addObject("maxPrice", null);
@@ -140,7 +141,7 @@ public class ProductController {
         mav.addObject("interesting", interesting);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
-        if(!seller.isPresent()) throw new RuntimeException("Seller not found");
+        if(!seller.isPresent()) throw new UserNotFoundException();
 
         List<Ecotag> ecotags = ecotagService.getTagFromProduct(productObj.getProductId());
         mav.addObject("seller", seller.get());
