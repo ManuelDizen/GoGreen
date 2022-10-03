@@ -28,14 +28,6 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getLong("imageId")
             );
 
-    private static final RowMapper<Seller> SELLER_ROW_MAPPER =
-            (resultSet, rowNum) -> new Seller(
-                    resultSet.getLong("id"),
-                    resultSet.getLong("userid"),
-                    resultSet.getString("phone"),
-                    resultSet.getString("address")
-            );
-
 
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
@@ -84,11 +76,6 @@ public class ProductJdbcDao implements ProductDao {
         return product.stream().findFirst();
     }
 
-    @Override
-    public List<Product> getAll() {
-        return template.query("SELECT * FROM products ORDER BY id DESC",
-        PRODUCT_ROW_MAPPER);
-    }
 
     @Override
     public List<Product> getAvailable() {

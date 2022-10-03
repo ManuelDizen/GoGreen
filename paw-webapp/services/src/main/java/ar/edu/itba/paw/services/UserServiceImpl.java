@@ -26,10 +26,10 @@ public class UserServiceImpl implements UserService {
         return userDao.create(firstName, surname, email, encoder.encode(password), locale);
     }
 
-    @Override
-    public void updateImage(long userId, long imageId) {
-        userDao.updateImage(userId, imageId);
-    }
+//    @Override
+//    public void updateImage(long userId, long imageId) {
+//        userDao.updateImage(userId, imageId);
+//    }
 
     @Override
     public Optional<User> findByEmail(String email) {
