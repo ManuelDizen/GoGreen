@@ -215,6 +215,44 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getInteresting(Product product) {
+        List<Product> toReturn = new ArrayList<>();
+        List<Product> bySellerAndCategory = findBySeller(product.getSellerId());
+        for(Product prod : bySellerAndCategory) {
+            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+                toReturn.add(prod);
+            }
+        }
+        if(toReturn.size() < 3) {
+            List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1);
+            for(Product prod : byCategory) {
+                if(prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+                    toReturn.add(prod);
+                }
+            }
+        }
+        if(toReturn.size() < 3) {
+            List<Product> bySeller = findBySeller(product.getSellerId());
+            for(Product prod : bySeller) {
+                if(prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+                    toReturn.add(prod);
+                }
+            }
+        }
+        if(toReturn.size() < 3) {
+            List<Product> sorted = getAll();
+            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
+            for(Product prod : sorted) {
+                if(prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+                    toReturn.add(prod);
+                }
+            }
+        }
+
+        return toReturn;
+    }
+
+    @Override
     public List<Product> getRecent(int amount){
 
         List<Product> recent =  productDao.getRecent(amount);
