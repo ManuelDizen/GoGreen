@@ -7,6 +7,8 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserRole;
+import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,7 +51,7 @@ public class SecurityServiceImpl implements SecurityService {
             Optional<User> user = userService.findByEmail(auth.getName());
             // Remember username is given by email and not a proper username
             if (!user.isPresent()) {
-                throw new IllegalStateException("No se encontró usuario");
+                throw new UserNotFoundException();
             }
             return user.get().getEmail();
         }
@@ -60,7 +62,7 @@ public class SecurityServiceImpl implements SecurityService {
         Authentication auth = getAuthentication();
         Optional<User> user = userService.findByEmail(auth.getName());
         if(!user.isPresent()){
-            throw new IllegalStateException("No se encontró usuario");
+            throw new UserNotFoundException();
         }
         return user.get().getFirstName();
     }
@@ -69,7 +71,7 @@ public class SecurityServiceImpl implements SecurityService {
         Authentication auth = getAuthentication();
         Optional<User> user = userService.findByEmail(auth.getName());
         if(!user.isPresent()){
-            throw new IllegalStateException("No se encontró usuario");
+            throw new UserNotFoundException();
         }
         return user.get().getSurname();
     }
@@ -82,7 +84,7 @@ public class SecurityServiceImpl implements SecurityService {
         long userId = user.getId();
         for(UserRole ur : userRoleService.getById(userId)){
             Optional<Role> role = roleService.getById(ur.getRoleId());
-            if(!role.isPresent()) throw new RuntimeException();
+            if(!role.isPresent()) throw new RoleNotFoundException();
             roles.add(role.get());
         }
         return roles;

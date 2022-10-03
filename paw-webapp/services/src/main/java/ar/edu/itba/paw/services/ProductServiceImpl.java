@@ -163,9 +163,9 @@ public class ProductServiceImpl implements ProductService {
         if(prodToDelete.isPresent()){
             Product prod = prodToDelete.get();
             Optional<Seller> prodOwner = sellerService.findById(prod.getSellerId());
-            if(!prodOwner.isPresent()) throw new IllegalStateException();
+            if(!prodOwner.isPresent()) throw new UserNotFoundException();
             Optional<User> userProdOwner = userService.findById(prodOwner.get().getUserId());
-            if(!userProdOwner.isPresent()) throw new IllegalStateException();
+            if(!userProdOwner.isPresent()) throw new UserNotFoundException();
 
             return userProdOwner.get().getEmail().equals(user.getEmail());
         }
