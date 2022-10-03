@@ -118,7 +118,9 @@
                             <form:select path="amount">
                                 <form:option value="0" disabled="true"><spring:message code="productpage.orderform.amount.placeholder"/></form:option>
                                 <c:forEach var="i" begin="1" end="5">
-                                    <form:option value="${i}"><c:out value="${i}"/></form:option>
+                                    <c:if test="${i <= product.stock}">
+                                        <form:option value="${i}"><c:out value="${i}"/></form:option>
+                                    </c:if>
                                 </c:forEach>
                             </form:select>
                             <form:label for="amount" path="amount"><spring:message code="createproduct.form.category"/></form:label>

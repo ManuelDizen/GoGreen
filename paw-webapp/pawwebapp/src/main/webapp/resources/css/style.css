@@ -1727,3 +1727,7 @@ input[type=number] {
 .order-form-container{
     border-left:1px solid white;
 }
+
+#orderamount{
+    padding:0;
+}
