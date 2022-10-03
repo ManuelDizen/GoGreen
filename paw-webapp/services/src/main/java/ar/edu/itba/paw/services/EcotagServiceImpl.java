@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @Service
 public class EcotagServiceImpl implements EcotagService {
 
@@ -31,11 +33,13 @@ public class EcotagServiceImpl implements EcotagService {
     }
 
     @Override
-    public List<Ecotag> filterByTags(boolean[] ecotags) {
+    public List<Ecotag> filterByTags(String[] ecoStrings, boolean[] ecotags) {
         List<Ecotag> toReturn = new ArrayList<>();
-        for(int i=0; i<ecotags.length; i++) {
-            if(ecotags[i])
-                toReturn.add(Ecotag.getById(i+1));
+        if(!ecoStrings[0].equals("null")) {
+            for(String s : ecoStrings) {
+                toReturn.add(Ecotag.getById(parseInt(s)));
+                ecotags[parseInt(s)-1] = true;
+            }
         }
         return toReturn;
     }
