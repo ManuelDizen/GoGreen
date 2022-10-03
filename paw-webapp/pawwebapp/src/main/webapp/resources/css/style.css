@@ -23,7 +23,7 @@
 
 body{
     min-height:100vh;
-    background-image: linear-gradient(to bottom right, var(--back-gradient-dark), var(--back-gradient-light));
+    background-image: linear-gradient(to bottom right, var(--back-gradient-light), var(--back-gradient-dark));
     color: var(--text-color-light);
     display: flex;
     flex-direction: column;
