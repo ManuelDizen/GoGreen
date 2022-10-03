@@ -5,11 +5,11 @@ import javax.validation.constraints.Min;
 
 public class UpdateProdForm {
 
-    @Min(value=5)
+    @Min(value=1)
     @Max(value = 10000)
     private Integer newStock;
 
-    @Min(value=5)
+    @Min(value=1)
     @Max(value = 1000000)
     private Integer newPrice;
 

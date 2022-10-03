@@ -114,11 +114,16 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <spring:message var="placeholder1" code="productpage.orderform.amount.placeholder"/>
-                        <form:input id="amount" path="amount" type="number"
-                                    style="color:white;" placeholder="${placeholder1}"/>
-
-                        <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                        <div class="input-field col s12" id="orderamount">
+                            <form:select path="amount">
+                                <form:option value="0" disabled="true"><spring:message code="productpage.orderform.amount.placeholder"/></form:option>
+                                <c:forEach var="i" begin="1" end="5">
+                                    <form:option value="${i}"><c:out value="${i}"/></form:option>
+                                </c:forEach>
+                            </form:select>
+                            <form:label for="amount" path="amount"><spring:message code="createproduct.form.category"/></form:label>
+                            <form:errors path="amount" element="p" cssClass="error"/>
+                        </div>
                     </div>
                 </div>
                 <div class="errors">

@@ -149,7 +149,7 @@ public class ProductController {
 
         mav.addObject("product", productObj);
         mav.addObject("categories", Category.values());
-        List<Product> interesting = ps.getInteresting(productObj);
+        List<Product> interesting = productService.getInteresting(productObj);
         mav.addObject("interesting", interesting);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
