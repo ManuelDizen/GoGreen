@@ -11,7 +11,7 @@
 <head>
     <%@ include file="header.jsp"%>
     <title><spring:message code="profile.title"/> ${user.firstName} ${user.surname}</title>
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
 </head>
@@ -285,7 +285,7 @@
         </div>
     </div>
 </div>
-<%@ include file="footer.jsp"%>
+
 </body>
 <script>
     $(document).ready(function() {

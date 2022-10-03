@@ -4,16 +4,16 @@ import javax.validation.constraints.*;
 
 public class StockForm {
 
-    @NotNull
-    @Size(max=4)
-    @Pattern(regexp = "[0-9]+")
-    private String newStock;
+    @Min(value=1)
+    @Max(value=10000)
+    //@Pattern(regexp = "[0-9]+")
+    private Integer newStock;
 
-    public String getNewStock() {
+    public Integer getNewStock() {
         return newStock;
     }
 
-    public void setNewStock(String newStock) {
+    public void setNewStock(Integer newStock) {
         this.newStock = newStock;
     }
 }

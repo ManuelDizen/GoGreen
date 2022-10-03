@@ -24,8 +24,8 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller create(long userid, String phone, String address) {
-        return sd.create(userid, phone, address);
+    public Seller create(long userid, String phone, String address, long areaId) {
+        return sd.create(userid, phone, address, areaId);
     }
 
     @Override

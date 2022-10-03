@@ -23,7 +23,7 @@
         <c:url value="/createProduct" var="postUrl"/>
         <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
             <div class="center" style="margin-top: 25px; margin-bottom: 35px">
-                <h4 style="color: var(--palette-color-secondary)"><spring:message code="createproduct.title"/></h4>
+                <h5><spring:message code="createproduct.title"/></h5>
             </div>
             <div class="createbody">
                 <div class="row">
@@ -76,7 +76,7 @@
             </div>
             <div class="createproduct_row" style="margin-top: 25px; margin-bottom: 10px">
                 <div class="file-field input-field">
-                    <div class="btn">
+                    <div class="decision-button waves-effect waves-light btn image_button">
                         <span><spring:message code="createproduct.form.image"/></span>
                         <form:input path="image" type="file"/>
                     </div>
@@ -87,7 +87,7 @@
                 <form:errors path="image" element="p" cssClass="error"/>
             </div>
             <div class="center" style="padding-top: 1em;">
-                <button type="submit" class="decision-button waves-effect waves-light btn">
+                <button type="submit" class="decision-button waves-effect waves-light btn publish-button">
                     <spring:message code="createproduct.form.submit"/>
                 </button>
             </div>
@@ -163,7 +163,7 @@
 
         </form:form>
     </div>
-    <%@ include file="footer.jsp"%>
+
 </body>
 <script>
 
