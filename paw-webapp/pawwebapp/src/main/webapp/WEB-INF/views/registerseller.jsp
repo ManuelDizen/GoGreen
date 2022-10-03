@@ -64,7 +64,7 @@
                                 <form:option value="${area.id}">${area.name}</form:option>
                             </c:forEach>
                         </form:select>
-                        <form:label for="area" path="area"><spring:message code="createproduct.form.category"/></form:label>
+                        <form:label for="area" path="area"><spring:message code="registerseller.area"/></form:label>
                         <form:errors path="area" element="p" cssClass="error"/>
                     </div>
                 </div>

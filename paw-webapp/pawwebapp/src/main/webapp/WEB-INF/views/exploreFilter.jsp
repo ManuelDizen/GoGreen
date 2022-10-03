@@ -63,7 +63,7 @@
                     </c:if>
                 </c:forEach>
             </select>
-            <label><spring:message code="explore.filterform.category"/></label>
+            <label><spring:message code="registerseller.area"/>:</label>
         </div>
 
     </div>
