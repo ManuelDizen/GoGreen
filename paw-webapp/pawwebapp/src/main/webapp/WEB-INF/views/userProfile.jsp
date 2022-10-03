@@ -56,6 +56,7 @@
                         </div>
                     </c:if>
                     <c:if test="${orders.size() != 0}">
+                        <c:set var="num" value="0"/>
                         <c:forEach items="${orders}" var="order">
                             <div class="user-profile-card">
                                 <div class="seller-profile-card-title">
@@ -81,6 +82,14 @@
                                     <spring:message code="sellerprofile.orders.buyermail"/>
                                     <c:out value="${' '}${order.sellerEmail}"/>
                                 </div>
+                                <c:if test="${fromSale && num == 0}">
+                                    <div class="center" style="margin-top: 8px">
+                                        <div class="chip green" style="color: white; font-weight: bold; max-width: 100px">
+                                            <spring:message code="profile.newpurchase"/>
+                                        </div>
+                                    </div>
+                                    <c:set var="num" value="${num+1}"/>
+                                </c:if>
                             </div>
                         </c:forEach>
                     </c:if>
