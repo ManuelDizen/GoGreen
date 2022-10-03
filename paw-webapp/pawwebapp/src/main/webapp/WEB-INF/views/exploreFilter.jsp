@@ -46,6 +46,28 @@
         </div>
     </div>
     <div class="row">
+        <div class="input-field col s12 filterinputs" style="margin-top:2vh;">
+            <select name="areaId" style="display: none">
+                <c:if test="${chosenArea != 0}">
+                    <option value="" disabled><spring:message code="explore.select"/></option>
+                </c:if>
+                <c:if test="${chosenArea == 0}">
+                    <option value="" disabled selected><spring:message code="explore.select"/></option>
+                </c:if>
+                <c:forEach items="${areas}" var="area">
+                    <c:if test="${chosenArea != area.id}">
+                        <option value="${area.id}">${area.name}</option>
+                    </c:if>
+                    <c:if test="${chosenArea == area.id}">
+                        <option selected value="${area.id}">${area.name}</option>
+                    </c:if>
+                </c:forEach>
+            </select>
+            <label><spring:message code="explore.filterform.category"/></label>
+        </div>
+
+    </div>
+    <div class="row">
         <p class="filter-inputlabel">Ecotags:</p>
         <c:forEach items="${ecotagList}" var="ecotag">
             <c:if test="${boolTags[ecotag.id-1]}">

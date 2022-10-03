@@ -66,6 +66,7 @@ public class ProductController {
             @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1.0") final float maxPrice,
+            @RequestParam(name="areaId", defaultValue="0") final long areaId,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
@@ -79,6 +80,8 @@ public class ProductController {
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
         mav.addObject("chosenCategory", category);
+        mav.addObject("areas", Area.values());
+        mav.addObject("chosenArea", areaId);
         if(maxPrice > -1.0)
             mav.addObject("maxPrice", maxPrice);
         else
@@ -98,7 +101,7 @@ public class ProductController {
         mav.addObject("ecotagList", ecotagList);
 
         //Product filter
-        List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, sort, direction);
+        List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
 
         //Sorting
         mav.addObject("sort", sort);

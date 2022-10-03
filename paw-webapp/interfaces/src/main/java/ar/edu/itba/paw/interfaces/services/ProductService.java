@@ -17,12 +17,12 @@ public interface ProductService {
     Optional<Product> getByName(String name);
     //List<Product> getAll();
     List<Product> getAvailable();
-    List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice);
+    List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice, long areaId);
 
     void sortProducts(List<Product> productList, int sort, int direction);
 
     List<List<Product>> divideIntoPages(List<Product> list);
-    List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, int sort, int direction);
+    List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, long areaId, int sort, int direction);
 
     void deleteProduct(long productId);
     Boolean attemptDelete(long productId);

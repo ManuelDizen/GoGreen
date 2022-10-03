@@ -17,7 +17,7 @@ public interface ProductDao {
     Optional<Product> getByName(String name);
     List<Product> getAvailable();
 
-    List<Product> filter(String name, long category, List<Long> tags, float maxPrice);
+    List<Product> filter(String name, long category, List<Long> tags, float maxPrice, long areaId);
 
     List<Product> getRecent(int amount);
 

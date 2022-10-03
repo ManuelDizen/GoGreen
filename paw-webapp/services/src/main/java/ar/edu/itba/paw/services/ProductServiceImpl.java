@@ -66,12 +66,12 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAvailable(){return productDao.getAvailable();}
 
     @Override
-    public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice) {
+    public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice, long areaId) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());
         }
-        return productDao.filter(name, category, ecotags, maxPrice);
+        return productDao.filter(name, category, ecotags, maxPrice, areaId);
     }
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
@@ -118,8 +118,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, int sort, int direction) {
-        List<Product> productList = filter(name, category, tags, maxPrice);
+    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, long areaId, int sort, int direction) {
+        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
         return divideIntoPages(productList);
@@ -223,7 +223,7 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         if(toReturn.size() < 3) {
-            List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1);
+            List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1, 0);
             addIfNotPresent(toReturn, byCategory, product);
 
         }
