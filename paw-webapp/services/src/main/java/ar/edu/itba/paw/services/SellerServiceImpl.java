@@ -5,6 +5,8 @@ import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,41 +68,33 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public String getEmail(long userid) {
         Optional<User> maybeUser = userService.findById(userid);
-        if(maybeUser.isPresent()) {
-            User user = maybeUser.get();
-            return user.getEmail();
-        }
-        return null;
+        if(!maybeUser.isPresent()) throw new UserNotFoundException();
+        User user = maybeUser.get();
+        return user.getEmail();
     }
 
     @Override
     public String getName(long userid) {
         Optional<User> maybeUser = userService.findById(userid);
-        if(maybeUser.isPresent()) {
-            User user = maybeUser.get();
-            return user.getFirstName();
-        }
-        return null;
+        if(!maybeUser.isPresent()) throw new UserNotFoundException();
+        User user = maybeUser.get();
+        return user.getFirstName();
     }
 
     @Override
     public String getSurname(long userid) {
         Optional<User> maybeUser = userService.findById(userid);
-        if(maybeUser.isPresent()) {
-            User user = maybeUser.get();
-            return user.getSurname();
-        }
-        return null;
+        if(!maybeUser.isPresent()) throw new UserNotFoundException();
+        User user = maybeUser.get();
+        return user.getSurname();
     }
 
     @Override
     public Locale getLocale(long userid) {
         Optional<User> maybeUser = userService.findById(userid);
-        if(maybeUser.isPresent()){
-            User user = maybeUser.get();
-            return user.getLocale();
-        }
-        return null;
+        if(!maybeUser.isPresent()) throw new UserNotFoundException();
+        User user = maybeUser.get();
+        return user.getLocale();
     }
 
     @Override
@@ -112,7 +106,7 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = create(user.getId(), phone, address);
         if(seller == null) return false;
         Optional<Role> role = roleService.getByName("SELLER");
-        if(!role.isPresent()) return false;
+        if(!role.isPresent()) throw new RoleNotFoundException();
         userRoleService.create(user.getId(), role.get().getId());
         emailService.registration(user, user.getLocale());
         return true;

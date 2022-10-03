@@ -6,6 +6,10 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.OrderNotFoundException;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
     public Boolean createAndNotify(long productId, int amount, String message) {
 
         final Optional<Product> maybeProduct = productService.getById(productId);
-        if(!maybeProduct.isPresent()) return false;
+        if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
 
         Boolean enough = productService.checkForAvailableStock(product, amount);
@@ -73,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         if(user == null)return false;
 
         final Optional<Seller> maybeSeller = sellerService.findById(product.getSellerId());
-        if(!maybeSeller.isPresent()) throw new IllegalStateException("No se encontró seller");
+        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
         final Seller seller = maybeSeller.get();
 
         emailService.purchase(user.getEmail(), user.getFirstName(),
@@ -95,13 +99,12 @@ public class OrderServiceImpl implements OrderService {
                 message);
         if(order == null) return false;
 
-        /* TODO: Get updateStock() to return the modified tuple in order to save an invocation */
         productService.updateStock(product.getProductId(), amount);
         Optional<Product> modified = productService.getById(product.getProductId());
         if (!modified.isPresent()) return false;
         if (modified.get().getStock() == 0) {
             Optional<User> seller2 = userService.findById(seller.getUserId());
-            if (!seller2.isPresent()) return false;
+            if (!seller2.isPresent()) throw new UserNotFoundException();
             User u = seller2.get();
             emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
                     u.getSurname(), u.getLocale());
@@ -128,12 +131,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean checkForOrderOwnership(long orderId) {
         User user = securityService.getLoggedUser();
-        if(user == null) return false;
+        if(user == null) throw new UnauthorizedRoleException();
         Optional<Order> maybeOrder = getById(orderId);
         if(maybeOrder.isPresent()){
             Order order = maybeOrder.get();
-            System.out.println("Entre a order.get");
-            System.out.println("Seller email: " + order.getSellerEmail() + " userEmail: " + user.getEmail());
             return order.getSellerEmail().equals(user.getEmail());
         }
         return false;
@@ -141,25 +142,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean deleteOrder(long orderId) {
-        /* Primero, borro instancia de orden. Después, reestablezo stock
-        *
-        * TODO: No me gusta la lógica de este método. Hay que pasarlo si o si a un trigger,
-        *  si falla agregando stock es un problema para el seller.
-        *
-        * */
         Boolean isOwner = checkForOrderOwnership(orderId);
-        if(!isOwner) return false;
+        if(!isOwner) throw new UnauthorizedRoleException();
 
         Optional<Order> order = orderDao.getById(orderId);
-        if(!order.isPresent()) return false;
+        if(!order.isPresent()) throw new OrderNotFoundException();
+
         Boolean delete = orderDao.deleteOrder(orderId);
         if(!delete) return false;
 
-        /* Get locale of both buyer and seller for mails*/
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
-        if(!buyer.isPresent()) return false;
+        if(!buyer.isPresent()) throw new UserNotFoundException();
         Optional<User> seller = userService.findByEmail(order.get().getSellerEmail());
-        if(!seller.isPresent()) return false;
+        if(!seller.isPresent()) throw new UserNotFoundException();
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
         return productService.addStock(order.get().getProductName(), order.get().getAmount());
     }

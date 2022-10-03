@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.services.UserRoleService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
                 password, locale);
         if(user == null) return false;
         Optional<Role> role = roleService.getByName("USER");
-        if(!role.isPresent()) return false;
+        if(!role.isPresent()) throw new RoleNotFoundException();
         userRoleService.create(user.getId(), role.get().getId());
         emailService.registration(user, LocaleContextHolder.getLocale());
         return true;

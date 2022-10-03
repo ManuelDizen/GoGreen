@@ -3,6 +3,8 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -156,8 +158,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean checkForOwnership(long prodId) {
         User user = securityService.getLoggedUser();
-        if(user == null) throw new IllegalStateException();
-        /* TODO: Exceptions!!! */
+        if(user == null) throw new UnauthorizedRoleException();
         Optional<Product> prodToDelete = getById(prodId);
         if(prodToDelete.isPresent()){
             Product prod = prodToDelete.get();
@@ -191,9 +192,6 @@ public class ProductServiceImpl implements ProductService {
     public Boolean addStock(String prodName, int amount) {
         System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
         Optional<Product> prod = getByName(prodName);
-        // TODO: Discutir esta implementación. Si uno borra el producto y luego cancela una orden,
-        //  esto va a tirar una excepción y no debería ser así. Pero tampoco debería poderse devolver
-        //  true si el producto no existe. Discutir.
         if(!prod.isPresent()) return true;
         return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
@@ -267,11 +265,9 @@ public class ProductServiceImpl implements ProductService {
     public Product createProduct(Integer stock, Integer price, long categoryId, String name,
                                  String description, byte[] image, long[] ecotagIds){
         User user = securityService.getLoggedUser();
-        //TODO: Ya sabemos que el usuario que entró a este link tiene rol SELLER, está chequeado
-        // mediante spring security.
-        if(user == null) return null;
+        if(user == null)  throw new UnauthorizedRoleException();
         Optional<Seller> seller = sellerService.findByUserId(user.getId());
-        if(!seller.isPresent()) return null;
+        if(!seller.isPresent()) throw new UserNotFoundException();
         Product product = create(seller.get().getId(), categoryId, name, description, stock, price, image);
         for (long id : ecotagIds) {
             ecotagService.addTag(Ecotag.getById(id), product.getProductId());
