@@ -137,7 +137,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("datetime", orderDateTime);
         data.put("amount", amount);
         sendThymeleafMail(buyerEmail, "orderCancelledBuyer", data,
-                "subject.orderCancelledBuyer", locale); //TODO: HACE ESTA DECLARACIÓN
+                "subject.orderCancelledBuyer", locale);
     }
 
     void notifySellerOrderCancelled(String productName, String sellerEmail, String sellerName, String sellerSurname,

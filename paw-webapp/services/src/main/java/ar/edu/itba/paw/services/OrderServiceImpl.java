@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -80,10 +81,16 @@ public class OrderServiceImpl implements OrderService {
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
         final Seller seller = maybeSeller.get();
 
+        // Sobre el locale de los mails: Si bien almacenamos el locale de los usuarios a la
+        // hora de registrarse, si el usuario está navegando en ese momento en otro Locale,
+        // resulta pertinente enviarle el mail en ese idioma. Es por eso que el mail de
+        // user sale con el locale del navegador actual, y el del vendedor con el guardado
+        // (no lo tenemos guardado)
         emailService.purchase(user.getEmail(), user.getFirstName(),
                 product, amount,
                 product.getPrice(), sellerService.getName(seller.getUserId()),
-                seller.getPhone(), sellerService.getEmail(seller.getUserId()), user.getLocale());
+                seller.getPhone(), sellerService.getEmail(seller.getUserId()),
+                LocaleContextHolder.getLocale());
 
         emailService.itemsold(sellerService.getEmail(seller.getUserId()),
                 sellerService.getName(seller.getUserId()), product,

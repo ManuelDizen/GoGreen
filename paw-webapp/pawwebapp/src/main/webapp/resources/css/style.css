@@ -1142,7 +1142,8 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction:column;
 }
-.seller-profile-card{
+.seller-profile-card,
+.user-profile-card{
     /*width: 80%;*/
     width: 28%;
     height: fit-content;
@@ -1154,6 +1155,14 @@ ALL CREDITS TO @andrewsims
     padding-bottom:2vh;
     margin: 2vh auto;
 }
+
+.user-profile-card{
+    height: 250px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
 .seller-profile-card-title{
     font-size:25px;
     margin-top: 2vh;
