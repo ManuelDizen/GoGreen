@@ -1,4 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: manuel
@@ -211,6 +213,12 @@
                                 <div>
                                     <spring:message code="sellerprofile.orders.buyermail"/>
                                     <c:out value="${order.buyerEmail}"/>
+                                </div>
+                                <div>
+                                    <c:if test="${fn:length(order.message) > 0}">
+                                        <spring:message code="sellerprofile.orders.message"/>
+                                        <c:out value="${': '}${order.message}"/>
+                                    </c:if>
                                 </div>
                                 <div style="margin:5vh auto 2vh auto;">
                                     <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
