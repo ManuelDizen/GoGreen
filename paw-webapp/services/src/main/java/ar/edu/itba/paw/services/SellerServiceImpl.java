@@ -43,15 +43,7 @@ public class SellerServiceImpl implements SellerService {
         return sd.findByMail(mail);
     }
 
-    @Override
-    public List<Seller> findByName(String name) {
-        return sd.findByName(name);
-    }
 
-    @Override
-    public Optional<Seller> findByPhone(String phone) {
-        return sd.findByPhone(phone);
-    }
 
     @Override
     public List<Seller> getAll() {

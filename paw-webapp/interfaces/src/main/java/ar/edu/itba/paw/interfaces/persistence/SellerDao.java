@@ -12,8 +12,6 @@ public interface SellerDao {
     Optional<Seller> findById(long id);
     Optional<Seller> findByUserId(long userId);
     Optional<Seller> findByMail(String mail);
-    List<Seller> findByName(String name);
-    Optional<Seller> findByPhone(String phone);
     List<Seller> getAll();
 
 }
