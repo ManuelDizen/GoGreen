@@ -120,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, int sort, int direction) {
+    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, int sort, int direction) {
         List<Product> productList = filter(name, category, tags, maxPrice);
         setTagList(productList);
         sortProducts(productList, sort, direction);

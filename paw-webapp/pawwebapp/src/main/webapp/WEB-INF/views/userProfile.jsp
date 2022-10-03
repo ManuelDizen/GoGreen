@@ -82,7 +82,7 @@
                                     <spring:message code="sellerprofile.orders.buyermail"/>
                                     <c:out value="${' '}${order.sellerEmail}"/>
                                 </div>
-                                <c:if test="${fromSale && num == 0}">
+                                <c:if test="${fromSale && num == 0 && currentPage == 1}">
                                     <div class="center" style="margin-top: 8px">
                                         <div class="chip green" style="color: white; font-weight: bold; max-width: 100px">
                                             <spring:message code="profile.newpurchase"/>
