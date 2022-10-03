@@ -62,7 +62,6 @@ public class ProductController {
 
     @RequestMapping(value="/explore")
     public ModelAndView exploreProducts(
-            @Valid @ModelAttribute("orderForm") final OrderForm form,
             @RequestParam(name="name", defaultValue="") final String name,
             @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
