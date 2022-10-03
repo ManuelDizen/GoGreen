@@ -50,10 +50,10 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    @Override
-    public void updateImage(long userId, long imageId) {
-        userDao.updateImage(userId, imageId);
-    }
+//    @Override
+//    public void updateImage(long userId, long imageId) {
+//        userDao.updateImage(userId, imageId);
+//    }
 
     @Override
     public Optional<User> findByEmail(String email) {

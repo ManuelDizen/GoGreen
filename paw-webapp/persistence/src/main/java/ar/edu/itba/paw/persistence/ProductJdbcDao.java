@@ -75,11 +75,6 @@ public class ProductJdbcDao implements ProductDao {
         return product.stream().findFirst();
     }
 
-    @Override
-    public List<Product> getAll() {
-        return template.query("SELECT * FROM products ORDER BY id DESC",
-        PRODUCT_ROW_MAPPER);
-    }
 
     @Override
     public List<Product> getAvailable() {

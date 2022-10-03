@@ -15,7 +15,7 @@ public interface ProductService {
     List<Product> findBySeller(long sellerId);
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
-    List<Product> getAll();
+    //List<Product> getAll();
     List<Product> getAvailable();
     List<Product> getRecent(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice);
@@ -23,6 +23,7 @@ public interface ProductService {
     void sortProducts(List<Product> productList, int sort, int direction);
 
     List<List<Product>> divideIntoPages(List<Product> list);
+    List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, int sort, int direction);
 
     void deleteProduct(long productId);
     Boolean attemptDelete(long productId);
@@ -42,5 +43,12 @@ public interface ProductService {
     Product createProduct(Integer stock, Integer price, long categoryId, String name,
                           String description, byte[] image, long[] ecotagIds);
 
+    void setTagList(List<Product> productList);
+
+    List<Product> getProductPage(int page, List<List<Product>> productPages);
+
     List<Product> getInteresting(Product product);
+
+    List<Product> getRecent(int amount);
+
 }
