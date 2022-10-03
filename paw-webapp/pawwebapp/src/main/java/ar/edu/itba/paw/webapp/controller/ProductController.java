@@ -150,7 +150,7 @@ public class ProductController {
         //Should never have that exception, the product exists and sellerID is FK
 
         List<Ecotag> ecotags = ecotagService.getTagFromProduct(productObj.getProductId());
-        mav.addObject("seller", seller.get());
+        mav.addObject("area", Area.getById(seller.get().getAreaId()));
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         return mav;

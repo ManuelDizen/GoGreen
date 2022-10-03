@@ -57,8 +57,7 @@
                             </div>
                         </c:if>
                         <div style="height:fit-content; text-align:center; font-size:20px;">
-                            <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
-                            <span><c:out value="${seller.address}"/></span>
+                            <i class="tiny material-icons">location_pin</i><span><c:out value="${area.name}"/></span>
                         </div>
                     </div>
                 </c:if>

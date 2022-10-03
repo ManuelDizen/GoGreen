@@ -89,4 +89,12 @@ public enum Area {
     public String getName() {
         return name;
     }
+
+    public static Area getById(long id) {
+        for(Area area : Area.values()) {
+            if(area.getId() == id)
+                return area;
+        }
+        return null;
+    }
 }
