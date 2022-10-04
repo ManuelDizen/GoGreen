@@ -30,8 +30,14 @@ public class ProductJdbcDaoTest {
     private static final String NAME = "P1";
     private static final String DESCRIPTION = "First product";
     private static final int STOCK = 10;
-    private static final float PRICE = 100;
+    private static final int PRICE = 100;
     private static final int IMAGEID = 0;
+
+    private static final long PRODUCTID2 = 2;
+    private static final String NAME2 = "Q2";
+
+    private static final long CATEGORYID2 = 2;
+    private static final int PRICE2 = 20;
 
     @Autowired
     private ProductJdbcDao dao;
@@ -129,5 +135,94 @@ public class ProductJdbcDaoTest {
         List<Product> recentProducts = dao.getRecent(1);
         assertEquals(NAME, recentProducts.get(0).getName());
     }
+
+    @Test
+    public void testFilterByName() {
+
+        final Map<String, Object> values = createProduct();
+        final Number number = insert.executeAndReturnKey(values);
+
+        final Map<String, Object> values2 = new HashMap<>();
+        values2.put("sellerId", SELLERID);
+        values2.put("categoryId", CATEGORYID2);
+        values2.put("name", NAME2);
+        values2.put("description", DESCRIPTION);
+        values2.put("stock", STOCK);
+        values2.put("price", PRICE2);
+        values2.put("imageId", IMAGEID);
+        insert.execute(values2);
+
+        List<Product> filteredList = dao.filter(NAME, 0, new ArrayList<>(), -1, 0);
+        assertEquals(1, filteredList.size());
+        assertEquals(number.longValue(), filteredList.get(0).getProductId());
+
+    }
+    @Test
+    public void testFilterByPrice() {
+
+        final Map<String, Object> values = createProduct();
+        insert.execute(values);
+
+        final Map<String, Object> values2 = new HashMap<>();
+        values2.put("sellerId", SELLERID);
+        values2.put("categoryId", CATEGORYID2);
+        values2.put("name", NAME2);
+        values2.put("description", DESCRIPTION);
+        values2.put("stock", STOCK);
+        values2.put("price", PRICE2);
+        values2.put("imageId", IMAGEID);
+        final Number number = insert.executeAndReturnKey(values2);
+
+        List<Product> filteredList = dao.filter("", 0, new ArrayList<>(), 30, 0);
+        assertEquals(1, filteredList.size());
+        assertEquals(number.longValue(), filteredList.get(0).getProductId());
+
+    }
+
+    @Test
+    public void testFilterByCategory() {
+
+        final Map<String, Object> values = createProduct();
+        insert.execute(values);
+
+        final Map<String, Object> values2 = new HashMap<>();
+        values2.put("sellerId", SELLERID);
+        values2.put("categoryId", CATEGORYID2);
+        values2.put("name", NAME2);
+        values2.put("description", DESCRIPTION);
+        values2.put("stock", STOCK);
+        values2.put("price", PRICE2);
+        values2.put("imageId", IMAGEID);
+        final Number number = insert.executeAndReturnKey(values2);
+
+        List<Product> filteredList = dao.filter("", CATEGORYID2, new ArrayList<>(), -1, 0);
+        assertEquals(1, filteredList.size());
+        assertEquals(number.longValue(), filteredList.get(0).getProductId());
+
+    }
+
+    @Test
+    public void testFilterGetNothing() {
+
+        final Map<String, Object> values = createProduct();
+        insert.execute(values);
+
+        final Map<String, Object> values2 = new HashMap<>();
+        values2.put("sellerId", SELLERID);
+        values2.put("categoryId", CATEGORYID2);
+        values2.put("name", NAME2);
+        values2.put("description", DESCRIPTION);
+        values2.put("stock", STOCK);
+        values2.put("price", PRICE2);
+        values2.put("imageId", IMAGEID);
+        insert.execute(values2);
+
+        assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "products"));
+        List<Product> filteredList = dao.filter("", CATEGORYID, new ArrayList<>(), 30, 0);
+        assertEquals(0, filteredList.size());
+
+
+    }
+
 
 }

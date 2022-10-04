@@ -53,3 +53,4 @@ create table if not exists orders(
     message varchar(1024)
     );
 
+alter table sellers add column areaId integer default null;

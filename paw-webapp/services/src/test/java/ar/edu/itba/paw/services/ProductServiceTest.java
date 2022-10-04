@@ -30,12 +30,15 @@ public class ProductServiceTest {
     private static final String NAME = "P1";
     private static final String DESCRIPTION = "First product";
     private static final int STOCK = 10;
-    private static final float PRICE = 100;
+    private static final int PRICE = 100;
     private static final int IMAGEID = 0;
 
     private static final long PRODUCTID2 = 2;
     private static final String NAME2 = "Q2";
-    private static final float PRICE2 = 20;
+
+    private static final long CATEGORYID2 = 2;
+    private static final int PRICE2 = 20;
+
 
     @InjectMocks
     private ProductServiceImpl ps;
@@ -45,7 +48,7 @@ public class ProductServiceTest {
 
     private List<Product> productForSorting() {
         Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), anyLong())).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), anyLong())).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
 
         List<Product> productList = new ArrayList<>();
         productList.add(ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
@@ -67,27 +70,6 @@ public class ProductServiceTest {
 
     }
 
-    @Test
-    public void testFindById() {
-        Mockito.when(productDao.getById(PRODUCTID)).thenReturn(Optional.of(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID)));
-
-        Optional<Product> product = ps.getById(PRODUCTID);
-        assertTrue(product.isPresent());
-        assertEquals(PRODUCTID, product.get().getProductId());
-        assertEquals(SELLERID, product.get().getSellerId());
-        assertEquals(NAME, product.get().getName());
-    }
-
-    @Test
-    public void testFindByName() {
-        Mockito.when(productDao.getByName(NAME)).thenReturn(Optional.of(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID)));
-
-        Optional<Product> product = ps.getByName(NAME);
-        assertTrue(product.isPresent());
-        assertEquals(PRODUCTID, product.get().getProductId());
-        assertEquals(SELLERID, product.get().getSellerId());
-        assertEquals(NAME, product.get().getName());
-    }
 
     @Test
     public void testSortByChronologic() {
@@ -126,6 +108,17 @@ public class ProductServiceTest {
 
     }
 
+
+    @Test
+    public void testCheckForStock() {
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+
+        final Product newProduct = ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null);
+        Boolean bool = ps.checkForAvailableStock(newProduct, 20);
+        assertEquals(bool, false);
+        bool = ps.checkForAvailableStock(newProduct, 5);
+        assertEquals(bool, true);
+    }
 
 
 

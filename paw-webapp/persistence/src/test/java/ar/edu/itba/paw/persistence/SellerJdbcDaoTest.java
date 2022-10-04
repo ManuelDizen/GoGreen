@@ -39,6 +39,8 @@ public class SellerJdbcDaoTest {
     private static final String PASSWORD = "secret";
     private static final Locale LOCALE = new Locale("es");
 
+    private static final long AREAID = 1;
+
     @Autowired
     private SellerJdbcDao dao;
 
@@ -59,6 +61,7 @@ public class SellerJdbcDaoTest {
         values.put("userId", newUser.getId());
         values.put("phone", PHONE);
         values.put("address", ADDRESS);
+        values.put("areaId", AREAID);
         return values;
     }
 
@@ -71,13 +74,14 @@ public class SellerJdbcDaoTest {
                 .usingGeneratedKeyColumns("id");
 
         JdbcTestUtils.deleteFromTables(jdbcTemplate,	"sellers");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate,	"users");
 
     }
 
     @Test
     public void testCreate() {
         User newUser = userDao.create(FIRSTNAME, SURNAME, EMAIL, PASSWORD, LOCALE);
-        Seller newSeller = dao.create(newUser.getId(), PHONE, ADDRESS);
+        Seller newSeller = dao.create(newUser.getId(), PHONE, ADDRESS, AREAID);
         assertEquals(newUser.getId(), newSeller.getUserId());
         assertEquals(PHONE, newSeller.getPhone());
         assertEquals(ADDRESS, newSeller.getAddress());
