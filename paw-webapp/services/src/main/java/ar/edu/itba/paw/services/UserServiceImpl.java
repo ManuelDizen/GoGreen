@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
         this.userRoleService = userRoleService;
         this.emailService = emailService;
     }
+
+    @Transactional
     @Override
     public User register(String firstName, String surname, String email, String password, Locale locale) {
         return userDao.create(firstName, surname, email, encoder.encode(password), locale);

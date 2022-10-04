@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +31,7 @@ public class SellerServiceImpl implements SellerService {
         this.emailService = emailService;
     }
 
+    @Transactional
     @Override
     public Seller create(long userid, String phone, String address, long areaId) {
         return sellerDao.create(userid, phone, address, areaId);

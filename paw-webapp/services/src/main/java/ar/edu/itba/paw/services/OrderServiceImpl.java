@@ -13,6 +13,7 @@ import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getByBuyerEmail(buyerEmail);
     }
 
+    @Transactional
     @Override
     public Boolean createAndNotify(long productId, int amount, String message) {
 
@@ -147,6 +149,7 @@ public class OrderServiceImpl implements OrderService {
         return false;
     }
 
+    @Transactional
     @Override
     public Boolean deleteOrder(long orderId) {
         Boolean isOwner = checkForOrderOwnership(orderId);

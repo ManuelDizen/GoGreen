@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.services.UserRoleService;
 import ar.edu.itba.paw.models.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class UserRoleServiceImpl implements UserRoleService{
         return userRoleDao.getById(userId);
     }
 
+    @Transactional
     @Override
     public UserRole create(long userId, long roleId) {
         return userRoleDao.create(userId, roleId);

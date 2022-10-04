@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
         this.ecotagService = ecotagService;
     }
 
+    @Transactional
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
                           int stock, Integer price, byte[] image) {
@@ -127,6 +129,7 @@ public class ProductServiceImpl implements ProductService {
         return divideIntoPages(productList);
     }
 
+    @Transactional
     @Override
     public void deleteProduct(long productId) {
         productDao.deleteProduct(productId);
@@ -172,6 +175,7 @@ public class ProductServiceImpl implements ProductService {
         return false;
     }
 
+    @Transactional
     @Override
     public void updateStock(long prodId, int amount) {
         Optional<Product> product = productDao.getById(prodId);
@@ -179,6 +183,7 @@ public class ProductServiceImpl implements ProductService {
         productDao.updateStock(prodId, (product.get().getStock()-amount));
     }
 
+    @Transactional
     @Override
     public Boolean updateProduct(long prodId, int amount, int price) {
         Boolean isOwner = checkForOwnership(prodId);
@@ -188,6 +193,7 @@ public class ProductServiceImpl implements ProductService {
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean addStock(String prodName, int amount) {
         System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
@@ -196,6 +202,7 @@ public class ProductServiceImpl implements ProductService {
         return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
+    @Transactional
     @Override
     public Boolean addStock(long prodId, int amount){
         Optional<Product> product = getById(prodId);
