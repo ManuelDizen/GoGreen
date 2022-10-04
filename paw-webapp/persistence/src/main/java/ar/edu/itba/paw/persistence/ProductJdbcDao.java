@@ -109,7 +109,7 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice) {
+    public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
         StringBuilder query = new StringBuilder("SELECT * FROM products WHERE ");
         List<Object> args = new ArrayList<>();
         if(name != null){
@@ -129,6 +129,10 @@ public class ProductJdbcDao implements ProductDao {
         if(maxPrice != -1.0){
            query.append("AND price <= ?");
            args.add(maxPrice);
+        }
+        if(areaId > 0){
+            query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = ?)");
+            args.add(areaId);
         }
         query.append("AND stock <> 0 ORDER BY id DESC");
         return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);

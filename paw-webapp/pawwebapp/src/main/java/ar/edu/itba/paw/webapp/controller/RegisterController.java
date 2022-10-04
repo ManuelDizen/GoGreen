@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Area;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
@@ -71,7 +72,9 @@ public class RegisterController {
     public ModelAndView registerSeller(
             @ModelAttribute("sellerForm") final SellerForm form
     ){
-        return new ModelAndView("registerseller");
+        final ModelAndView mav = new ModelAndView("registerseller");
+        mav.addObject("areas", Area.values()); //solo esta línea
+        return mav;
     }
 
     @RequestMapping(value="/registersellerprocess", method=RequestMethod.POST)
@@ -85,7 +88,7 @@ public class RegisterController {
         }
         Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
-                form.getAddress());
+                form.getAddress(), form.getArea());
         if(!success) throw new IllegalStateException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 

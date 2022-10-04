@@ -81,7 +81,9 @@
             </div>
             <div style="margin-bottom: 15px">
                 <div>
-                    <a class="decision-button waves-effect waves-light btn" href="<c:url value="/explore"/>"><spring:message code="explore.cleanfilters"/></a>
+                    <a class="decision-button waves-effect waves-light btn" href="<c:url value="/explore"/>">
+                        <spring:message code="explore.cleanfilters"/>
+                    </a>
                 </div>
             </div>
         </div>

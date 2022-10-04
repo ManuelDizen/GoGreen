@@ -31,8 +31,8 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller create(long userid, String phone, String address) {
-        return sellerDao.create(userid, phone, address);
+    public Seller create(long userid, String phone, String address, long areaId) {
+        return sellerDao.create(userid, phone, address, areaId);
     }
 
     @Override
@@ -100,10 +100,10 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Boolean registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
-                        String address){
+                        String address, long areaId){
         User user = userService.register(firstName, surname, email, password, locale);
         if(user == null) return false;
-        Seller seller = create(user.getId(), phone, address);
+        Seller seller = create(user.getId(), phone, address, areaId);
         if(seller == null) return false;
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();

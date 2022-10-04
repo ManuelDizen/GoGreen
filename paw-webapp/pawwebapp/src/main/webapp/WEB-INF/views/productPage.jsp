@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <%@ include file="header.jsp"%>
@@ -56,10 +57,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <div style="height:fit-content; text-align:center; font-size:20px;">
-                            <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
-                            <span><c:out value="${seller.address}"/></span>
-                        </div>
+                        <c:if test="${fn:length(area.name) <= 0}">
+                            <div style="height:fit-content; text-align:center; font-size:20px;">
+                                <i class="tiny material-icons">location_pin</i><span><c:out value="${area.name}"/></span>
+                            </div>
+                        </c:if>
                     </div>
                 </c:if>
                 <c:if test="${product.imageId == 0}">
@@ -86,10 +88,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <div style="height:fit-content; text-align: center; font-size:20px;">
-                            <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
-                            <span><c:out value="${seller.address}"/></span>
-                        </div>
+                        <c:if test="${fn:length(area.name) <= 0}">
+                            <div style="height:fit-content; text-align:center; font-size:20px;">
+                                <i class="tiny material-icons">location_pin</i><span><c:out value="${area.name}"/></span>
+                            </div>
+                        </c:if>
                     </div>
                 </c:if>
             </div>
