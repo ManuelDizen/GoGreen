@@ -43,6 +43,22 @@ main {
     padding: 0px 20px;
 }
 
+.logo {
+    margin-left:4vw; vertical-align: middle; font-weight: bolder; font-size: large;
+}
+
+.img-logo {
+    vertical-align: middle;
+}
+
+.nav-mobile {
+    padding-right:2vw; display:flex;
+}
+
+.nav-li {
+    padding-right:2vw; display:flex; flex-direction: column;
+}
+
 .sidenav {
     background-color: var(--palette-color-primary);
 }
@@ -127,6 +143,13 @@ nav {
     width:100%;
 }
 
+.start-button {
+    display:flex;
+    justify-content:center;
+    margin-top:5px;
+    width: 100%;
+}
+
 .landing-separator{
     width:70%;
     vertical-align:center;
@@ -134,10 +157,13 @@ nav {
 
 .landing-page-title{
     text-align:center;
+    margin-top: 15px; margin-bottom:15px;
 }
 
 .landing-recent-product-container{
     height:fit-content;
+    margin-top:50px;
+    margin-bottom:30px;
 }
 
 .landing-recent-product-container .card .card-image img{
@@ -1283,6 +1309,24 @@ ALL CREDITS TO @andrewsims
     background: white;
     border-width: medium;
     color: var(--text-color-dark);
+}
+
+.login-container {
+    text-align: center;
+}
+
+.remember-me {
+    align-content: center;
+}
+
+.login-submit {
+    margin-top: 20px;
+}
+
+.redirect-register {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: right;
 }
 
 .login-form-container, .login-register-container, .register-form-container{

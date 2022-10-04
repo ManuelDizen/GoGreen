@@ -23,7 +23,7 @@
         <div class="login">
             <div class="row">
                 <form method="post" action="${postUrl}" id="login_form">
-                    <div class="login-container" style="text-align: center">
+                    <div class="login-container">
                         <h3><spring:message code="loginpage.title"/></h3>
                     </div>
                     <div class="input-field col s12">
@@ -34,19 +34,19 @@
                         <label><spring:message code="loginpage.password"/></label>
                         <input type="password" name="password" id="password_input" class="validate"/>
                     </div>
-                    <div class="col s12" style="align-content: center;" id="rememberme">
+                    <div class="col s12 remember-me" id="rememberme">
                         <label>
                             <input type="checkbox" name="remember-me">
                             <span><spring:message code="loginpage.rememberme"/></span>
                         </label>
                     </div>
-                    <div class="col s12" style="padding-top: 1em; padding-bottom: 1em; text-align: right;">
+                    <div class="col s12 redirect-register">
                         <span><spring:message code="loginpage.redirectregister"/></span>
                         <a href="<c:url value="/register"/>">
                             <span><spring:message code="loginpage.registerbutton"/></span>
                         </a>
                     </div>
-                    <div class="col s12 center">
+                    <div class="col s12 center login-submit">
                         <button type="submit" class="waves-effect waves-light btn decision-button">
                             <spring:message code="loginpage.submit"/>
                         </button>

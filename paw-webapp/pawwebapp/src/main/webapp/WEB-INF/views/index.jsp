@@ -19,33 +19,33 @@
         <%@ include file="navbar.jsp"%>
         <div class="landing-title-container animate glow delay-1">
             <hr class="landing-separator">
-            <h1 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="home.greetingmsg"/></h1>
+            <h1 class="landing-page-title"><spring:message code="home.greetingmsg"/></h1>
             <hr class = "landing-separator">
-            <div style="display:flex; justify-content:center; margin-top:1vh; width: 100%;">
+            <div class="start-button">
                 <a class="decision-button waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
                     <spring:message code="home.start"/>
                 </a>
             </div>
         </div>
-        <div class="landing-recent-product-container animate glow delay-2" style="margin-top:10vh;">
+        <div class="landing-recent-product-container animate glow delay-2">
             <c:if test="${recent.size() != 0}">
                 <div class="row">
                     <div class="col s12">
                         <hr class="landing-separator">
-                        <h4 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="landing.discoverproducts"/></h4>
+                        <h4 class="landing-page-title"><spring:message code="landing.discoverproducts"/></h4>
                         <hr class = "landing-separator">
                     </div>
                 </div>
                 <div class="landing-products">
                     <c:forEach items="${recent}" var="product">
-                        <div class="card product-card" style="margin:10px auto;">
+                        <div class="card product-card">
                             <a href="<c:url value="/product/${product.productId}"/>">
                                 <div class="card-image">
                                     <c:if test="${product.imageId != 0}">
-                                        <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
+                                        <img src="<c:url value="/image/${product.imageId}"/>">
                                     </c:if>
                                     <c:if test="${product.imageId == 0}">
-                                        <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
+                                        <img src="<c:url value="/resources/images/logo.png"/>">
                                     </c:if>
                                 </div>
                             </a>
@@ -84,14 +84,14 @@
                         </div>
                     </c:forEach>
                 </div>
-                <div class="row">
-                    <div class="animate glow delay-2"
-                         style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">
-                        <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">
-                            <spring:message code="landing.explore"/>
-                        </a>
-                    </div>
-                </div>
+<%--                <div class="row">--%>
+<%--                    <div class="animate glow delay-2"--%>
+<%--                         style="display:flex; justify-content:center; margin-top:1vh; margin-bottom:8vh; width: 100%;">--%>
+<%--                        <a class="waves-effect waves-light btn standard-button" href="<c:url value="/explore"/>">--%>
+<%--                            <spring:message code="landing.explore"/>--%>
+<%--                        </a>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </c:if>
         </div>
 
