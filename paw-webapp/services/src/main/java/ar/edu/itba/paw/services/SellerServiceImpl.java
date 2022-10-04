@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +23,7 @@ public class SellerServiceImpl implements SellerService {
         this.sd = sd;
         this.ud = ud;
     }
-
+    @Transactional
     @Override
     public Seller create(long userid, String phone, String address) {
         return sd.create(userid, phone, address);
@@ -42,8 +43,6 @@ public class SellerServiceImpl implements SellerService {
     public Optional<Seller> findByMail(String mail) {
         return sd.findByMail(mail);
     }
-
-
 
     @Override
     public List<Seller> getAll() {
