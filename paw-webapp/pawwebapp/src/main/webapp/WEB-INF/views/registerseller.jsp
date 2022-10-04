@@ -91,7 +91,9 @@
                             </c:forEach>
                         </form:select>
                         <form:label for="area" path="area"><spring:message code="registerseller.area"/><spring:message code="forms.obligatorysign"/></form:label>
-                        <form:errors path="area" element="p" cssClass="error"/>
+                        <div class="errors">
+                            <form:errors path="area" element="p" cssClass="error"/>
+                        </div>
                     </div>
                 </div>
             </div>
