@@ -579,7 +579,7 @@ nav {
     font-size: 10px;
     font-weight: 300;
     line-height: 24px;
-    padding: 5 12px;
+    padding: 5px 12px;
     border-radius: 12px;
 }
 
@@ -2012,4 +2012,11 @@ input[type=number] {
 
 .separate-icon{
     margin:0 10px;
+}
+
+.seller-profile-no-products-container{
+    display:flex;
+    flex-direction:column;
+    margin-top:15px;
+
 }

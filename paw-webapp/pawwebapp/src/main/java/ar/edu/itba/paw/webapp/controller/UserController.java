@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.StockForm;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class UserController {
     public ModelAndView profile(){
         User user = securityService.getLoggedUser();
         if(user == null){
-            throw new IllegalStateException("Only logged users can access their profile");
+            throw new UnauthorizedRoleException();
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
             // It's a seller
@@ -88,10 +89,10 @@ public class UserController {
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
+        if(!user.isPresent()) throw new UserNotFoundException();
 
         Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
-        if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
+        if(!seller.isPresent()) throw new UserNotFoundException();
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
         List<List<Order>> orderPages = orderService.divideIntoPages(orders);
@@ -106,12 +107,6 @@ public class UserController {
         mav.addObject("orderPages", orderPages);
         mav.addObject("orders", orderPages.get(pageO-1));
         mav.addObject("products", productPages.get(pageP-1));
-        return mav;
-    }
-
-    @RequestMapping(value="/sellerProfile/products", method= RequestMethod.GET)
-    public ModelAndView sellerProducts(){
-        final ModelAndView mav = new ModelAndView("/sellerProducts");
         return mav;
     }
 
