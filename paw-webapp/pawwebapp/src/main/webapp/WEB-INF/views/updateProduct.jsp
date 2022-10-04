@@ -17,7 +17,7 @@
     <div class="container" style="margin-top: 20px">
         <c:url value="/updateProduct/${product.productId}" var="postUrl"/>
         <form:form modelAttribute="updateProdForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
-            <div class="center" style="margin-top: 25px; margin-bottom: 35px">
+            <div class="center update-margins">
                 <h5><spring:message code="updateProducts.title"/><c:out value="${': '}${product.name}"/></h5>
             </div>
             <div class="update-product-body">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="center separated-button" style="padding-top: 1em;">
+            <div class="center separated-button">
                 <button type="submit" class="decision-button waves-effect waves-light btn publish-button">
                     <spring:message code="updateproduct.submit"/>
                 </button>

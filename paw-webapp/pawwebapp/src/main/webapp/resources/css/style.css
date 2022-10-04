@@ -1214,9 +1214,11 @@ ALL CREDITS TO @andrewsims
     background: var(--palette-color-secondary);
 }
 
+
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
     color: #ADE28A;
 }
+
 
 
 
@@ -1871,6 +1873,10 @@ input[type=number] {
 
 /* UPDATE PRODUCT */
 
+.update-margins {
+    margin-top: 25px; margin-bottom: 35px;
+}
+
 .update-product-body{
     width:50%;
     margin: 0 auto;
@@ -1878,6 +1884,7 @@ input[type=number] {
 
 .separated-button{
     margin-top: 30px;
+    padding-top: 1em;
 }
 
 .light-input{
