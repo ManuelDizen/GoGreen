@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.exceptions.*;
+import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -85,6 +86,55 @@ public class ErrorController {
     public ModelAndView unauthorizedRole(UnauthorizedRoleException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error401");
+    }
+
+    @ExceptionHandler(EmailErrorException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView emailError(EmailErrorException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(OrderCreationException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView orderCreationError(OrderCreationException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(OrderDeleteException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView orderDeleteError(OrderDeleteException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(ProductDeleteException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView productDeleteError(ProductDeleteException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(ProductUpdateException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView productUpdateError(ProductUpdateException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(SellerRegisterException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView sellerRegisterError(SellerRegisterException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(UserRegisterException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
+    public ModelAndView userRegisterError(UserRegisterException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
     }
 
 }

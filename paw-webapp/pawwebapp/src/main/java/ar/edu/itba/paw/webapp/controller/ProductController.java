@@ -3,8 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.exceptions.*;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.UpdateProdForm;
@@ -117,7 +116,7 @@ public class ProductController {
     @RequestMapping(value = "/deleteProduct/{productId}", method = RequestMethod.GET)
     public ModelAndView deleteProduct(@PathVariable final long productId){
         Boolean bool = productService.attemptDelete(productId);
-        if(!bool) throw new IllegalStateException();
+        if(!bool) throw new ProductDeleteException();
         return new ModelAndView("redirect:/sellerProfile");
     }
 
@@ -161,7 +160,7 @@ public class ProductController {
         }
 
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
-        if(!created) throw new IllegalStateException();
+        if(!created) throw new OrderCreationException();
 
         final ModelAndView mav = new ModelAndView("redirect:/userProfile/true#orders");
         return mav;
@@ -188,7 +187,7 @@ public class ProductController {
 
         Product product = productService.createProduct(Integer.parseInt(form.getStock()), Integer.parseInt(form.getPrice()),
                 form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
-        if(product == null) throw new IllegalStateException();
+        if(product == null) throw new ProductNotFoundException();
 
         return new ModelAndView("redirect:/product/" + product.getProductId());
     }
@@ -199,10 +198,10 @@ public class ProductController {
             @ModelAttribute("updateProdForm") final UpdateProdForm form
     ){
         Boolean isOwner = productService.checkForOwnership(productId);
-        if(!isOwner) throw new IllegalStateException();
+        if(!isOwner) throw new UnauthorizedRoleException();
 
         Optional<Product> product = productService.getById(productId);
-        if(!product.isPresent()) throw new IllegalStateException();
+        if(!product.isPresent()) throw new ProductNotFoundException();
 
         ModelAndView mav = new ModelAndView("/updateProduct");
         mav.addObject("product", product.get());
@@ -219,7 +218,7 @@ public class ProductController {
             return updateProduct(productId, form);
         }
         Boolean success = productService.updateProduct(productId, form.getNewStock(), form.getNewPrice());
-        if(!success) throw new IllegalStateException();
+        if(!success) throw new ProductUpdateException();
 
         return new ModelAndView("redirect:/sellerProfile");
     }
