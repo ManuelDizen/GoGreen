@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.StockForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +53,9 @@ public class UserController {
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
             // It's a seller
-            return new ModelAndView("redirect:/sellerProfile#test1");
+            return new ModelAndView("redirect:/sellerProfile#information");
         }
-        return new ModelAndView("redirect:/userProfile/false#test1");
+        return new ModelAndView("redirect:/userProfile/false#information");
     }
 
 
@@ -64,7 +65,7 @@ public class UserController {
             @PathVariable("fromSale") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
+        if(!user.isPresent()) throw new UserNotFoundException();
         mav.addObject("user", user.get());
 
         List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
@@ -75,6 +76,8 @@ public class UserController {
         mav.addObject("pages", orderPages);
         mav.addObject("orders", orderPages.get(page-1));
         mav.addObject("fromSale", fromSale);
+        mav.addObject("users", userService.getAll());
+        mav.addObject("sellers", sellerService.getAll());
         return mav;
     }
 

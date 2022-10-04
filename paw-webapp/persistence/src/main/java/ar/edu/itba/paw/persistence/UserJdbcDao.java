@@ -73,4 +73,9 @@ public class UserJdbcDao implements UserDao {
                 new Object[]{ userId }, USER_ROW_MAPPER
         ).stream().findFirst();
     }
+
+    @Override
+    public List<User> getAll() {
+        return template.query("SELECT * FROM users", USER_ROW_MAPPER);
+    }
 }

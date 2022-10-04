@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <%@ include file="header.jsp"%>
@@ -56,9 +57,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <div style="height:fit-content; text-align:center; font-size:20px;">
-                            <i class="tiny material-icons">location_pin</i><span><c:out value="${area.name}"/></span>
-                        </div>
+                        <c:if test="${area != null}">
+                            <div style="height:fit-content; text-align:center; font-size:20px;">
+                                <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
+                            </div>
+                        </c:if>
                     </div>
                 </c:if>
                 <c:if test="${product.imageId == 0}">
@@ -85,10 +88,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <div style="height:fit-content; text-align: center; font-size:20px;">
-                            <span><spring:message code="productpage.prodinfo.selleraddress"/></span>
-                            <span><c:out value="${seller.address}"/></span>
-                        </div>
+                        <c:if test="${area != null}">
+                            <div style="height:fit-content; text-align:center; font-size:20px;">
+                                <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
+                            </div>
+                        </c:if>
                     </div>
                 </c:if>
             </div>
@@ -113,11 +117,18 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <spring:message var="placeholder1" code="productpage.orderform.amount.placeholder"/>
-                        <form:input id="amount" path="amount" type="number"
-                                    style="color:white;" placeholder="${placeholder1}"/>
-
-                        <form:label path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                        <div class="input-field col s12" id="orderamount">
+                            <form:select path="amount">
+                                <form:option value="0" disabled="true"><spring:message code="productpage.orderform.amount.placeholder"/></form:option>
+                                <c:forEach var="i" begin="1" end="5">
+                                    <c:if test="${i <= product.stock}">
+                                        <form:option value="${i}"><c:out value="${i}"/></form:option>
+                                    </c:if>
+                                </c:forEach>
+                            </form:select>
+                            <form:label for="amount" path="amount"><spring:message code="createproduct.form.category"/></form:label>
+                            <form:errors path="amount" element="p" cssClass="error"/>
+                        </div>
                     </div>
                 </div>
                 <div class="errors">

@@ -3,8 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,9 +35,10 @@ public class ProductServiceImpl implements ProductService {
         this.ecotagService = ecotagService;
     }
 
+    @Transactional
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
-                          int stock, float price, byte[] image) {
+                          int stock, Integer price, byte[] image) {
         long imgId = 0;
         if(image != null && image.length > 0){
             imgId = imageService.create(image).getId();
@@ -66,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAvailable(){return productDao.getAvailable();}
 
     @Override
-    public List<Product> filter(String name, long category, List<Ecotag> tags, float maxPrice, long areaId) {
+    public List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());
@@ -118,13 +122,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, float maxPrice, long areaId, int sort, int direction) {
+    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
         return divideIntoPages(productList);
     }
 
+    @Transactional
     @Override
     public void deleteProduct(long productId) {
         productDao.deleteProduct(productId);
@@ -156,21 +161,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean checkForOwnership(long prodId) {
         User user = securityService.getLoggedUser();
-        if(user == null) throw new IllegalStateException();
-        /* TODO: Exceptions!!! */
+        if(user == null) throw new UnauthorizedRoleException();
         Optional<Product> prodToDelete = getById(prodId);
         if(prodToDelete.isPresent()){
             Product prod = prodToDelete.get();
             Optional<Seller> prodOwner = sellerService.findById(prod.getSellerId());
-            if(!prodOwner.isPresent()) throw new IllegalStateException();
+            if(!prodOwner.isPresent()) throw new UserNotFoundException();
             Optional<User> userProdOwner = userService.findById(prodOwner.get().getUserId());
-            if(!userProdOwner.isPresent()) throw new IllegalStateException();
+            if(!userProdOwner.isPresent()) throw new UserNotFoundException();
 
             return userProdOwner.get().getEmail().equals(user.getEmail());
         }
         return false;
     }
 
+    @Transactional
     @Override
     public void updateStock(long prodId, int amount) {
         Optional<Product> product = productDao.getById(prodId);
@@ -178,17 +183,26 @@ public class ProductServiceImpl implements ProductService {
         productDao.updateStock(prodId, (product.get().getStock()-amount));
     }
 
+    @Transactional
+    @Override
+    public Boolean updateProduct(long prodId, int amount, int price) {
+        Boolean isOwner = checkForOwnership(prodId);
+        if(!isOwner) return false;
+        productDao.updateStock(prodId, amount);
+        productDao.updatePrice(prodId, price);
+        return true;
+    }
+
+    @Transactional
     @Override
     public Boolean addStock(String prodName, int amount) {
         System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
         Optional<Product> prod = getByName(prodName);
-        // TODO: Discutir esta implementación. Si uno borra el producto y luego cancela una orden,
-        //  esto va a tirar una excepción y no debería ser así. Pero tampoco debería poderse devolver
-        //  true si el producto no existe. Discutir.
         if(!prod.isPresent()) return true;
         return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
+    @Transactional
     @Override
     public Boolean addStock(long prodId, int amount){
         Optional<Product> product = getById(prodId);
@@ -261,5 +275,19 @@ public class ProductServiceImpl implements ProductService {
             product.setTagList(ecotagService.getTagFromProduct(product.getProductId()));
         }
         return recent;
+    }
+
+    @Override
+    public Product createProduct(Integer stock, Integer price, long categoryId, String name,
+                                 String description, byte[] image, long[] ecotagIds){
+        User user = securityService.getLoggedUser();
+        if(user == null)  throw new UnauthorizedRoleException();
+        Optional<Seller> seller = sellerService.findByUserId(user.getId());
+        if(!seller.isPresent()) throw new UserNotFoundException();
+        Product product = create(seller.get().getId(), categoryId, name, description, stock, price, image);
+        for (long id : ecotagIds) {
+            ecotagService.addTag(Ecotag.getById(id), product.getProductId());
+        }
+        return product;
     }
 }

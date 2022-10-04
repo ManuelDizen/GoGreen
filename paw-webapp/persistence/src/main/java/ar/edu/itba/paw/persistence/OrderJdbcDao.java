@@ -28,7 +28,7 @@ public class OrderJdbcDao implements OrderDao {
                             resultSet.getString("sellerSurname"),
                             resultSet.getString("sellerEmail"),
                             resultSet.getInt("amount"),
-                            resultSet.getFloat("price"),
+                            resultSet.getInt("price"),
                             resultSet.getObject("datetime", LocalDateTime.class),
                             resultSet.getString("message")
                             );
@@ -48,7 +48,7 @@ public class OrderJdbcDao implements OrderDao {
     @Override
     public Order create(String productName, String buyerName, String buyerSurname,
                         String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                        Integer amount, float price, LocalDateTime dateTime, String message) {
+                        Integer amount, Integer price, LocalDateTime dateTime, String message) {
         final Map<String, Object> values = new HashMap<>();
         values.put("productName", productName);
         values.put("buyerName", buyerName);

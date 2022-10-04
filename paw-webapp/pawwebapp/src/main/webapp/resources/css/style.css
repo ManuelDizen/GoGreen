@@ -18,11 +18,12 @@
     --back-gradient-dark: #093637;
 
     --palette-details-light: #EDFA8B;
+    --palette-edit-button: #30695C;
 }
 
 body{
     min-height:100vh;
-    background-image: linear-gradient(to bottom right, #44A08D, #093637);
+    background-image: linear-gradient(to bottom right, var(--back-gradient-light), var(--back-gradient-dark));
     color: var(--text-color-light);
     display: flex;
     flex-direction: column;
@@ -149,7 +150,7 @@ nav {
 }
 
 .landing-recent-product-container .card .card-content{
-    height:40%;
+    height:200px;
 }
 
 .introduction-container{
@@ -230,7 +231,7 @@ nav {
 /*                  */
 
 .card-content .card-title {
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .product-card-title{
@@ -1109,7 +1110,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .eco_chip {
-    width: 155px;
+    width: fit-content;
 }
 
 .product-card .card-content > div {
@@ -1141,27 +1142,44 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction:column;
 }
-.seller-profile-card{
-    width: 80%;
+.seller-profile-card,
+.user-profile-card{
+    /*width: 80%;*/
+    width: 28%;
     height: fit-content;
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
-    align-self: center;
-
     padding-bottom:2vh;
     margin: 2vh auto;
 }
-.seller-profile-card-title{
-    font-size:20px;
-    margin-top: 2vh;
+
+.user-profile-card{
+    height: 250px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
-.seller-profile-product-card,
+.seller-profile-card-title{
+    font-size:25px;
+    margin-top: 2vh;
+    font-weight:bold;
+}
+
+/*.seller-profile-product-card,
 .seller-profile-product-card-info{
     display:flex;
     align-items:center;
     justify-content: center;
+}*/
+
+.seller-profile-product-card{
+    width:28%;
+    vertical-align: center;
+    margin:3vh auto;
+    height:fit-content;
+    min-height: 300px;
 }
 
 .seller-profile-product-card-info #stockless{
@@ -1243,7 +1261,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .register-form-container div .errors .error{
-    font-size: 10px;
+    font-size: 13px;
     font-weight: bold;
     color: red;
     margin: 0 0 0 0;
@@ -1277,7 +1295,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .login-page-container .error{
-    font-size:20px;
+    font-size:13px;
 }
 
 .form-input{
@@ -1398,7 +1416,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 }
 
 .createbody div .error {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: bold;
     color: red;
     margin: 0 0 0 0;
@@ -1520,7 +1538,9 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 input#ecotag, input#ecotag2,
 .explore-container #filter_form .row .input-field .select-wrapper ul,
 .input-field .selectMultiple .select-wrapper,
-.sort ul{
+.sort ul,
+#orderamount ul,
+#orderamount select{
     display: none;
 }
 
@@ -1582,10 +1602,6 @@ input[type=number] {
     background-color:white;
 }
 
-.seller-profile-container-orders-2{
-
-}
-
 .seller-inner-div-1, .seller-inner-div-2{
     height:100%;
     flex:50%;
@@ -1627,13 +1643,12 @@ input[type=number] {
 .seller-profile-products-2-bis, .seller-profile-container-orders-2{
     flex:100%;
     text-align:center;
-}
 
-.seller-profile-product-card{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     width:100%;
-    vertical-align: center;
-    margin:3vh auto;
-    height:80px;
 }
 
 .seller-profile-product-card-info{
@@ -1667,6 +1682,45 @@ input[type=number] {
     color:white;
 }
 
+/* UPDATE PRODUCT */
+
+.update-product-body{
+    width:50%;
+    margin: 0 auto;
+}
+
+.separated-button{
+    margin-top: 30px;
+}
+
+.light-input{
+    color:white;
+}
+
+.update-product-body label{
+    color:white;
+}
+
+.center-buttons{
+    display:flex;
+    justify-content:center;
+}
+
+.accomodate-button{
+    display:flex;
+    justify-content: space-between;
+    min-width:110px;
+    margin-top:20px;
+}
+
+#orderamount input{
+    color:white;
+}
+
+.edit-btn{
+    background-color: var(--palette-edit-button);
+}
+
 .product-information{
     height:100%;
     display:flex;
@@ -1687,4 +1741,12 @@ input[type=number] {
 
 .order-form-container{
     border-left:1px solid white;
+}
+
+#orderamount{
+    padding:0;
+}
+
+.separate-icon{
+    margin:0 10px;
 }

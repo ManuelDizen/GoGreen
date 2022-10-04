@@ -68,36 +68,7 @@
                             <c:set var="count" value="${count + 1}"/>
                         </c:forEach>
                     </div>
-<%--                    <div class="submit-button">--%>
-<%--&lt;%&ndash;                        <a class="waves-effect waves-light btn standard-button"&ndash;%&gt;--%>
-<%--&lt;%&ndash;                           href="<c:url value="/product/${product.productId}"/>"&ndash;%&gt;--%>
-<%--&lt;%&ndash;                           style="text-align: center">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <spring:message code="explore.product.goto"/>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        </a>&ndash;%&gt;--%>
-<%--                    </div>--%>
                 </div>
-<%--                <div class="card-reveal" style="background-color: #1b5e20; color: #ADE28A;">--%>
-<%--                    <span class="card-title product-card-title"><i class="material-icons right">close</i></span>--%>
-<%--                    <div class="two-line">--%>
-<%--                        <span class="card-title product-card-title"><c:out value="${product.name}"/></span>--%>
-<%--                        <span class="card-title product-card-title"><c:out value="$${product.price}"/></span>--%>
-<%--                    </div>--%>
-<%--                    <p><c:out value="${product.description}"/></p>--%>
-<%--                    <c:forEach items="${product.tagList}" var="ecotag">--%>
-<%--                        <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?name=&maxPrice=&${ecotag.path}=on"/>"/>--%>
-<%--                        <i class="tiny material-icons">${ecotag.icon}</i>--%>
-<%--                        <spring:message code="${ecotag.tag}"/>--%>
-<%--                        </a>--%>
-<%--                        <br>--%>
-<%--                    </c:forEach>--%>
-<%--                    <div class="submit-button">--%>
-<%--                        <a class="waves-effect waves-light btn standard-button"--%>
-<%--                           href="<c:url value="/product/${product.productId}"/>"--%>
-<%--                           style="text-align: center">--%>
-<%--                            <spring:message code="explore.product.goto"/>--%>
-<%--                        </a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
             </div>
         </c:forEach>
     </c:if>
@@ -110,7 +81,9 @@
             </div>
             <div style="margin-bottom: 15px">
                 <div>
-                    <a class="decision-button waves-effect waves-light btn" href="<c:url value="/explore"/>"><spring:message code="explore.cleanfilters"/></a>
+                    <a class="decision-button waves-effect waves-light btn" href="<c:url value="/explore"/>">
+                        <spring:message code="explore.cleanfilters"/>
+                    </a>
                 </div>
             </div>
         </div>
