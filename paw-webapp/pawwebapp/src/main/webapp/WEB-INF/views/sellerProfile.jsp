@@ -78,7 +78,6 @@
                     </c:if>
                     <c:if test="${products.size() != 0}">
                         <c:set var="count" value="0"/>
-                        <%-- TODO: Es necesario? Si traigo los 3 de la pagina nomas--%>
                         <c:forEach items="${products}" var="product">
                             <c:if test="${count lt 3}">
                                 <div class="seller-profile-product-card">

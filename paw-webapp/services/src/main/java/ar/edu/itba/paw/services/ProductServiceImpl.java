@@ -135,7 +135,6 @@ public class ProductServiceImpl implements ProductService {
         productDao.deleteProduct(productId);
     }
 
-    // TODO: This method's logic could be integrated to attemptUpdate()
     @Override
     public Boolean attemptDelete(long productId) {
         if(checkForOwnership(productId)){
