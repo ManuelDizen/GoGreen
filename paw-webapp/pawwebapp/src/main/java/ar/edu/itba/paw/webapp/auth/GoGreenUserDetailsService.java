@@ -44,10 +44,6 @@ public class GoGreenUserDetailsService implements UserDetailsService {
             if(!role.isPresent())
                 throw new IllegalStateException("No hay role con ese ID");
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
-            //Not necessary to add ToUpper() as roles are already in uppercase on the DB
-
-            //TODO: Acá todavía falta otorgarle los permisos permitidos a los usuarios
-            // dados por los roles
         }
         if(userToRoleList.isEmpty()){
             //By default, users are buyers unless stated otherwise
@@ -58,7 +54,6 @@ public class GoGreenUserDetailsService implements UserDetailsService {
                 throw new IllegalStateException("No se encontró el rol");
             }
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
-            // TODO: Acá agregar todos los permisos que tiene también
             urs.create(user.getId(), role.get().getId());
         }
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), auths);

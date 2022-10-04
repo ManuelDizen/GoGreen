@@ -98,9 +98,6 @@ public class UserController {
         List<Product> products = productService.findBySeller(seller.get().getId());
         List<List<Product>> productPages = productService.divideIntoPages(products);
 
-        // TODO: Acá faltaría además buscar los productos que vende un seller,
-        //  y las órdenes que tiene pendientes (para esto hay que agrandar la BDD)
-
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
         mav.addObject("currentPageP", pageP);
@@ -116,28 +113,6 @@ public class UserController {
     public ModelAndView sellerProducts(){
         final ModelAndView mav = new ModelAndView("/sellerProducts");
         return mav;
-    }
-
-    @RequestMapping(value="/updateStock/{prodId:[0-9]+}", method=RequestMethod.POST)
-    public ModelAndView updateStock(
-            @PathVariable("prodId") final long prodId,
-            @Valid @ModelAttribute("stockForm") final StockForm form,
-            final BindingResult errors
-    ){
-        if(errors.hasErrors()){
-            //TODO: Display form errors,
-            // QUE EL REDIRECT NO DEJE EL LINK DE UPDATESTOCK!!!
-            // Dos soluciones viables: (1) hacer que updateStock en realidad sea un
-            // updateProduct y sea una vista de verdad
-            // (2) que updateStock mande de vuetla a sellerProfile con algún boolean de failure
-            return sellerProfile(1,1,form);
-        }
-
-        //int newStock = parseInt(form.getNewStock());
-
-        Boolean success = productService.attemptUpdate(prodId, form.getNewStock());
-        if(!success) throw new IllegalStateException("Stock update could not go through");
-        return new ModelAndView("redirect:/sellerProfile");
     }
 
 }

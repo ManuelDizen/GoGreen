@@ -606,7 +606,6 @@ label {
     border-radius: 20px;
     height:fit-content;
     max-width: 250px;
-    /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
 .filter-form {
