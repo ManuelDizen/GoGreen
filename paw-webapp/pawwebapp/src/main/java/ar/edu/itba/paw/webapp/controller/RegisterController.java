@@ -5,6 +5,8 @@ import ar.edu.itba.paw.models.Area;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
+import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,7 @@ public class RegisterController {
         }
         Boolean success = userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
-        if(!success) throw new IllegalStateException();
+        if(!success) throw new UserRegisterException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
         return new ModelAndView("redirect:/");
     }
@@ -89,7 +91,7 @@ public class RegisterController {
         Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
                 form.getAddress(), form.getArea());
-        if(!success) throw new IllegalStateException();
+        if(!success) throw new SellerRegisterException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         return new ModelAndView("redirect:/");

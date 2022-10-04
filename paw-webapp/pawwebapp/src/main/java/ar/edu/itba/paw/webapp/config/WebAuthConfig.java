@@ -70,9 +70,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    /* TODO: Este método que queda abajo es el que hay que revisar para nuestros
-        roles y authorities (en el script de SQL está armado pero hay que hablarlo)
-     */
+
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
 
@@ -82,7 +80,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/", "/explore", "/productpage/**").permitAll()
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
                     .antMatchers("/userProfile").hasRole("USER")
-                    .antMatchers("/sellerProfile", "/sellerProfile/products", "/deleteProduct/**").hasRole("SELLER")
+                    .antMatchers("/sellerProfile", "/deleteProduct/**").hasRole("SELLER")
                     .antMatchers("/createProduct", "/editProduct/**").hasRole("SELLER")
                 .and().formLogin()
                     .usernameParameter("email")
@@ -101,10 +99,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                 .and().exceptionHandling()
                 .accessDeniedPage("/403")
                 .and().csrf().disable();
-        /*
-        TODO: Esto va a haber que cambiarlo dinamicamente, de momento va a funcionar xq tiene las paginas
-            creadas, pero eso no se va a mantener.
-        */
 
     }
 }
