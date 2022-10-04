@@ -31,7 +31,7 @@ public class EcotagJdbcDaoTest {
     private static final String NAME = "P1";
     private static final String DESCRIPTION = "First product";
     private static final int STOCK = 10;
-    private static final float PRICE = 100;
+    private static final int PRICE = 100;
     private static final int IMAGEID = 0;
 
     @Autowired
