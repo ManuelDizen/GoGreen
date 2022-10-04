@@ -53,16 +53,6 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public List<Seller> findByName(String name) {
-        return sellerDao.findByName(name);
-    }
-
-    @Override
-    public Optional<Seller> findByPhone(String phone) {
-        return sellerDao.findByPhone(phone);
-    }
-
-    @Override
     public List<Seller> getAll() {
         return sellerDao.getAll();
     }
