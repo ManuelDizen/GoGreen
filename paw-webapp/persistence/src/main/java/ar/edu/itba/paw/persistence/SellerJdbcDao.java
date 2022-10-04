@@ -68,20 +68,6 @@ public class SellerJdbcDao implements SellerDao {
     }
 
     @Override
-    public List<Seller> findByName(String name) {
-        return template.query("SELECT * from sellers where userId = " +
-                        "(SELECT id FROM users where firstName = ?)",
-                new Object[]{name}, SELLER_ROW_MAPPER);
-    }
-
-    @Override
-    public Optional<Seller> findByPhone(String phone) {
-        return template.query("SELECT * from sellers where phone = ?",
-                new Object[]{phone}, SELLER_ROW_MAPPER).stream().findFirst();
-
-    }
-
-    @Override
     public List<Seller> getAll() {
         return template.query("SELECT * FROM sellers",
                 SELLER_ROW_MAPPER);

@@ -14,4 +14,5 @@ public interface EcotagService {
 
     public List<Ecotag> filterByTags(String[] ecoStrings, boolean[] ecotags);
 
+
 }

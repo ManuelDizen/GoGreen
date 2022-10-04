@@ -50,6 +50,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Optional<Seller> findByMail(String mail) {
         return sellerDao.findByMail(mail);
+
     }
 
     @Override
