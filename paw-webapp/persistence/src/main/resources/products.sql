@@ -55,3 +55,5 @@ alter table users add foreign key (imageId) references images(id) on delete set 
 
 ALTER TABLE users DROP COLUMN IF EXISTS username;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS locale varchar(5) default 'es';
+
+ALTER TABLE sellers ADD COLUMN IF NOT EXISTS areaId integer default null;

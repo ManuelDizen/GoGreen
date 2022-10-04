@@ -2952,11 +2952,9 @@ ul.staggered-list li {
 }
 
 .page-footer {
-  padding-top: 5px;
-  padding-bottom:5px;
-  background-color: #407056;
-  color: #ADE28A;
-  border-top: 1px solid #edfa8b;
+  padding-top: 20px;
+  color: #fff;
+  background-color: #ee6e73;
 }
 
 .page-footer .footer-copyright {
@@ -2975,6 +2973,8 @@ ul.staggered-list li {
       -ms-flex-pack: justify;
           justify-content: space-between;
   padding: 10px 0px;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(51, 51, 51, 0.08);
 }
 
 table, th, td {
@@ -4893,11 +4893,6 @@ small {
   padding: 24px;
 }
 
-.card-content{
-  background-color: #1b5e20;
-  color: #ADE28A;
-}
-
 .card .card-content {
   padding: 24px;
   border-radius: 0 0 2px 2px;
@@ -4918,7 +4913,7 @@ small {
 }
 
 .card .card-action {
-  background-color: #1b5e20;
+  background-color: inherit;
   border-top: 1px solid rgba(160, 160, 160, 0.2);
   position: relative;
   padding: 16px 24px;
@@ -5963,13 +5958,13 @@ body.keyboard-focused .dropdown-content li:focus {
 
 .chip {
   display: inline-block;
-  height: 28px;
-  font-size: 10px;
-  font-weight: 300;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
   color: rgba(0, 0, 0, 0.6);
-  line-height: 24px;
-  padding: 5 12px;
-  border-radius: 12px;
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
   background-color: #e4e4e4;
   margin-bottom: 5px;
   margin-right: 5px;
@@ -6113,7 +6108,6 @@ button:focus {
 label {
   font-size: 0.8rem;
   color: #9e9e9e;
-  margin-bottom: 20px;
 }
 
 /* Text Inputs + Textarea
@@ -6855,13 +6849,10 @@ textarea.materialize-textarea {
 /* Checkboxes
    ========================================================================== */
 /* Remove default checkbox */
-
-
 [type="checkbox"] {
-  margin-top: 10px;
-  margin-right: 5px;
   /* checkbox aspect */
 }
+
 
 [type="checkbox"] + span:not(.lever) {
   position: relative;

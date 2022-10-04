@@ -17,8 +17,8 @@
     <div class="register-form-container">
     <c:url value="/registersellerprocess" var="postUrl"/>
     <form:form modelAttribute="sellerForm" method="post" action="${postUrl}" id="user_form">
-        <div style="margin:5vh auto; display:block;">
-            <h4 style="margin:4vh auto; text-align: center; text-decoration: underline;">
+        <div class="title-block">
+            <h4 class="registerbuyer-title">
                 <spring:message code="registerseller.title"/>
             </h4>
         </div>
@@ -42,18 +42,6 @@
                     </div>
                     <div class="errors">
                         <form:errors path="surname" element="p" cssClass="error"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <div class="input-field">
-                        <form:input path="email" id="email" type="text"/>
-                        <label for="email"><spring:message code="registerbuyer.form.email"/>
-                            <spring:message code="forms.obligatorysign"/></label>
-                    </div>
-                    <div class="errors">
-                        <form:errors path="email" element="p" cssClass="error"/>
                     </div>
                 </div>
             </div>
@@ -82,6 +70,30 @@
             <div class="row">
                 <div class="col s6">
                     <div class="input-field">
+                        <form:input path="email" id="email" type="text"/>
+                        <label for="email"><spring:message code="registerbuyer.form.email"/>
+                            <spring:message code="forms.obligatorysign"/></label>
+                    </div>
+                    <div class="errors">
+                        <form:errors path="email" element="p" cssClass="error"/>
+                    </div>
+                </div>
+                <div class="col s6 input-field">
+                    <div>
+                        <form:select path="area">
+                            <form:option value="0" disabled="true"><spring:message code="explore.select"/></form:option>
+                            <c:forEach items="${areas}" var="area">
+                                <form:option value="${area.id}">${area.name}</form:option>
+                            </c:forEach>
+                        </form:select>
+                        <form:label for="area" path="area"><spring:message code="registerseller.area"/><spring:message code="forms.obligatorysign"/></form:label>
+                        <form:errors path="area" element="p" cssClass="error"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <div class="input-field">
                         <form:input path="address" id="address" type="text"/>
                         <label for="address"><spring:message code="registerbuyer.form.address"/>
                             <spring:message code="forms.obligatorysign"/></label>
@@ -104,7 +116,7 @@
 
 
         </div>
-        <div class="center" style="margin-top:3vh;">
+        <div class="center registerseller-submit">
             <button type="submit" class="waves-effect waves-light btn">
                 <spring:message code="registerbuyer.form.submit"/>
             </button>
@@ -112,6 +124,6 @@
     </form:form>
     </div>
 
-    <%@ include file="footer.jsp"%>
+
 </body>
 </html>

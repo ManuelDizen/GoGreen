@@ -26,7 +26,11 @@ public enum Category {
 
     HYGIENE(1, "higiene"),
     HEALTH(2, "salud"),
-    SKINCARE(3, "cuidadopiel");
+    SKINCARE(3, "cuidadopiel"),
+    FOOD(4, "alimento"),
+    CLOTHING(5, "indumentaria"),
+    INTERIOR(6, "interiores"),
+    OTHERS(7, "otros");
 
     private final long id;
     private final String name;

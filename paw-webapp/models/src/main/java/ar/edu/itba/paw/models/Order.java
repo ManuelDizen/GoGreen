@@ -13,14 +13,14 @@ public class Order {
     private String sellerSurname;
     private String sellerEmail;
     private Integer amount;
-    private float price;
+    private Integer price;
     private LocalDateTime dateTime;
     private String message;
     private String parsedDateTime;
 
     public Order(long id, String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, float price, LocalDateTime dateTime, String message) {
+                 Integer amount, Integer price, LocalDateTime dateTime, String message) {
         this.id = id;
         this.productName = productName;
         this.buyerName = buyerName;
@@ -108,11 +108,11 @@ public class Order {
         this.amount = amount;
     }
 
-    public float getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

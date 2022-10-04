@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.EmailErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -48,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             sendMail(to, htmlBody, sbj);
         } catch(MessagingException mex) {
-            System.out.println("error"); //TODO exception management
+            throw new EmailErrorException();
         }
     }
 
@@ -64,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void purchase(String buyerEmail, String buyer, Product product, int amount, float price,
+    public void purchase(String buyerEmail, String buyer, Product product, int amount, Integer price,
                          String sellerName, String sellerPhone, String sellerMail, Locale locale) {
         Map<String, Object> data = new HashMap<>();
         data.put("buyer", buyer);
@@ -81,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void itemsold(String sellerEmail, String seller, Product product, int amount, float price,
+    public void itemsold(String sellerEmail, String seller, Product product, int amount, Integer price,
                          String buyerName, String buyerEmail, String buyerMessage, Locale locale) {
         Map<String, Object> data = new HashMap<>();
         data.put("seller", seller);
@@ -137,7 +138,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("datetime", orderDateTime);
         data.put("amount", amount);
         sendThymeleafMail(buyerEmail, "orderCancelledBuyer", data,
-                "subject.orderCancelledBuyer", locale); //TODO: HACE ESTA DECLARACIÓN
+                "subject.orderCancelledBuyer", locale);
     }
 
     void notifySellerOrderCancelled(String productName, String sellerEmail, String sellerName, String sellerSurname,

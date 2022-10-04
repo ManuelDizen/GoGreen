@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import sun.util.locale.LocaleUtils;
+
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -53,11 +53,11 @@ public class UserJdbcDao implements UserDao {
         return new User(userId.longValue(), name, surname, email, password, locale);
     }
 
-    @Override
-    public void updateImage(long userId, long imageId) {
-        template.update("UPDATE users SET imageId = ? WHERE id = ?",
-                new Object[]{imageId, userId}, USER_ROW_MAPPER);
-    }
+//    @Override
+//    public void updateImage(long userId, long imageId) {
+//        template.update("UPDATE users SET imageId = ? WHERE id = ?",
+//                new Object[]{imageId, userId}, USER_ROW_MAPPER);
+//    }
 
     @Override
     public Optional<User> findByEmail(final String email) {
@@ -72,5 +72,10 @@ public class UserJdbcDao implements UserDao {
         return template.query("SELECT * FROM users WHERE id = ?",
                 new Object[]{ userId }, USER_ROW_MAPPER
         ).stream().findFirst();
+    }
+
+    @Override
+    public List<User> getAll() {
+        return template.query("SELECT * FROM users", USER_ROW_MAPPER);
     }
 }

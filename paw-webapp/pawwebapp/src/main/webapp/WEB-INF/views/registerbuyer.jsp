@@ -20,8 +20,8 @@
     <div class="register-form-container">
         <c:url value="/registerbuyerprocess" var="postUrl"/>
         <form:form modelAttribute="userForm" method="post" action="${postUrl}" id="user_form">
-            <div style="margin:5vh auto; display:block;">
-                <h4 style="margin:4vh auto; text-align: center; text-decoration: underline;">
+            <div class="title-block">
+                <h4 class="registerbuyer-title">
                     <spring:message code="registerbuyer.title"/>
                 </h4>
             </div>
@@ -90,7 +90,7 @@
             </div>
         </form:form>
     </div>
-    <%@ include file="footer.jsp"%>
+
 </body>
 
 

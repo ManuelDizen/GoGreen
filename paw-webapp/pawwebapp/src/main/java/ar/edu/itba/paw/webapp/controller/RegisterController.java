@@ -1,12 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Area;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,63 +33,38 @@ public class RegisterController {
     private final SellerService sellerService;
 
     private final UserService userService;
-
-    private final RoleService roleService;
-
-
-    private final UserRoleService userRoleService;
-
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailService;
 
     @Autowired
     public RegisterController(final SellerService sellerService, final UserService userService,
-                              final RoleService roleService, final UserRoleService userRoleService,
-                              final AuthenticationManager authenticationManager,
-                              final EmailService emailService) {
+                              final AuthenticationManager authenticationManager) {
         this.sellerService = sellerService;
         this.userService = userService;
-        this.roleService = roleService;
-        this.userRoleService = userRoleService;
         this.authenticationManager = authenticationManager;
-        this.emailService = emailService;
     }
 
     @RequestMapping(value= "/register", method= RequestMethod.GET)
     public ModelAndView register(){
-        final ModelAndView mav = new ModelAndView("register");
-        return mav;
+        return new ModelAndView("register");
     }
 
     @RequestMapping(value="/registerbuyer", method = RequestMethod.GET)
     public ModelAndView registerBuyer(
             @ModelAttribute("userForm") final UserForm form
     ){
-        final ModelAndView mav = new ModelAndView("registerbuyer");
-        return mav;
+        return new ModelAndView("registerbuyer");
     }
 
     @RequestMapping(value = "/registerbuyerprocess", method = RequestMethod.POST)
     public ModelAndView registerBuyerPost(
-            @Valid @ModelAttribute("userForm") final UserForm form,
-            final BindingResult errors,
-            HttpServletRequest request){
+            @Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors, HttpServletRequest request){
         if(errors.hasErrors()) {
             return registerBuyer(form);
         }
-        User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
+        Boolean success = userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
-        Optional<Role> role = roleService.getByName("USER");
-        if(!role.isPresent())
-            throw new IllegalStateException("No se encontró el rol.");
-
-        // TODO: This call could potentially be included in the userService.register() call
-        userRoleService.create(user.getId(), role.get().getId());
-
-        emailService.registration(user, LocaleContextHolder.getLocale());
-
+        if(!success) throw new IllegalStateException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
-
         return new ModelAndView("redirect:/");
     }
 
@@ -96,6 +73,7 @@ public class RegisterController {
             @ModelAttribute("sellerForm") final SellerForm form
     ){
         final ModelAndView mav = new ModelAndView("registerseller");
+        mav.addObject("areas", Area.values()); //solo esta línea
         return mav;
     }
 
@@ -108,27 +86,10 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
-        //TODO: All this logic could go into sellerService.create() method
-        User user = userService.register(form.getFirstName(), form.getSurname(), form.getEmail(),
-                form.getPassword(), LocaleContextHolder.getLocale());
-        if(user == null){
-            throw new IllegalArgumentException("Usuario no pudo ser creado");
-        }
-        Seller seller = sellerService.create(user.getId(), form.getPhone(), form.getAddress());
-        if(seller == null){
-            throw new IllegalArgumentException("Seller no pudo ser creado");
-        }
-        Optional<Role> role = roleService.getByName("SELLER");
-        if(!role.isPresent()){
-            throw new IllegalArgumentException("Role no fue encontrado");
-        }
-        userRoleService.create(user.getId(), role.get().getId());
-
-        emailService.registration(user, user.getLocale());
-
-        // Para setear al usuario recién creado como activo
-        // (Una convención, podríamos preguntar si es apropiado)
-        // (Fuente: https://www.baeldung.com/spring-security-auto-login-user-after-registration)
+        Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
+                form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
+                form.getAddress(), form.getArea());
+        if(!success) throw new IllegalStateException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         return new ModelAndView("redirect:/");
@@ -138,7 +99,6 @@ public class RegisterController {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         authToken.setDetails(new WebAuthenticationDetails(request));
         Authentication authentication = authenticationManager.authenticate(authToken);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

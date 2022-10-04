@@ -21,7 +21,6 @@ public class OrderController {
     public ModelAndView deleteOrder(@PathVariable("orderId") final long orderId){
         Boolean deleted = orderService.deleteOrder(orderId);
         if(!deleted) throw new RuntimeException();
-        ModelAndView mav = new ModelAndView("redirect:/sellerProfile#test3");
-        return mav;
+        return new ModelAndView("redirect:/sellerProfile#orders");
     }
 }

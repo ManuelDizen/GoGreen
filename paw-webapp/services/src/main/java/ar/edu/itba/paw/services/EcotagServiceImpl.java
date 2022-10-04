@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class EcotagServiceImpl implements EcotagService {
         this.ecotagDao = ecotagDao;
     }
 
+    @Transactional
     @Override
     public void addTag(Ecotag tag, long productId) {
         ecotagDao.add(tag, productId);

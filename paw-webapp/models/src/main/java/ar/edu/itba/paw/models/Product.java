@@ -10,13 +10,13 @@ public class Product {
     private String name;
     private String description;
     private int stock;
-    private float price;
+    private Integer price;
     private List<Ecotag> tagList;
 
     private long imageId;
 
     public Product(long productId, long sellerId, long categoryId, String name, String description, int stock,
-                   float price, long imageId) {
+                   Integer price, long imageId) {
         this.productId = productId;
         this.sellerId = sellerId;
         this.categoryId = categoryId;
@@ -43,7 +43,7 @@ public class Product {
         return stock;
     }
 
-    public float getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -51,7 +51,7 @@ public class Product {
         this.stock = stock;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,16 +23,8 @@ public class ProductJdbcDao implements ProductDao {
                     resultSet.getString("name"),
                     resultSet.getString("description"),
                     resultSet.getInt("stock"),
-                    resultSet.getFloat("price"),
+                    resultSet.getInt("price"),
                     resultSet.getLong("imageId")
-            );
-
-    private static final RowMapper<Seller> SELLER_ROW_MAPPER =
-            (resultSet, rowNum) -> new Seller(
-                    resultSet.getLong("id"),
-                    resultSet.getLong("userid"),
-                    resultSet.getString("phone"),
-                    resultSet.getString("address")
             );
 
 
@@ -50,7 +41,7 @@ public class ProductJdbcDao implements ProductDao {
 
     @Override
     public Product create(long sellerId, long categoryId, String name, String description,
-                          int stock, float price, long imageId) {
+                          int stock, Integer price, long imageId) {
         final Map<String, Object> values = new HashMap<>();
         values.put("sellerId", sellerId);
         values.put("categoryId", categoryId);
@@ -84,11 +75,6 @@ public class ProductJdbcDao implements ProductDao {
         return product.stream().findFirst();
     }
 
-    @Override
-    public List<Product> getAll() {
-        return template.query("SELECT * FROM products ORDER BY id DESC",
-        PRODUCT_ROW_MAPPER);
-    }
 
     @Override
     public List<Product> getAvailable() {
@@ -109,6 +95,13 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
+    public void updatePrice(long productId, int price) {
+        String query = "UPDATE products SET price = ? WHERE id = ?";
+        Object[] args = new Object[]{price, productId};
+        template.update(query, args);
+    }
+
+    @Override
     public Boolean addStock(String name, int amount) {
         String query = "UPDATE products SET stock = ? WHERE name = ?";
         Object[] args = new Object[]{amount, name};
@@ -116,7 +109,7 @@ public class ProductJdbcDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, long category, List<Long> tags, float maxPrice) {
+    public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
         StringBuilder query = new StringBuilder("SELECT * FROM products WHERE ");
         List<Object> args = new ArrayList<>();
         if(name != null){
@@ -136,6 +129,10 @@ public class ProductJdbcDao implements ProductDao {
         if(maxPrice != -1.0){
            query.append("AND price <= ?");
            args.add(maxPrice);
+        }
+        if(areaId > 0){
+            query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = ?)");
+            args.add(areaId);
         }
         query.append("AND stock <> 0 ORDER BY id DESC");
         return template.query(query.toString(), args.toArray(), PRODUCT_ROW_MAPPER);
