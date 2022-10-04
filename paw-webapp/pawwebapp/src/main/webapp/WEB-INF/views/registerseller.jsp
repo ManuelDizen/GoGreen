@@ -46,17 +46,21 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s6">
+                <div class="col s12" style="height:fit-content;">
                     <div class="input-field">
                         <form:input path="password" id="password" type="password"/>
+                        <spring:message var="passCond" code="registerbuyer.form.passwordCondition"/>
                         <label for="password"><spring:message code="registerbuyer.form.password"/>
-                            <spring:message code="forms.obligatorysign"/></label>
+                            <spring:message code="forms.obligatorysign"/>
+                            <c:out value="${' ('}${passCond}${') '}"/></label>
                     </div>
-                    <div class="errors">
+                    <div class="errors" style="height:fit-content;">
                         <form:errors path="password" element="p" cssClass="error"/>
                     </div>
                 </div>
-                <div class="col s6">
+            </div>
+            <div class="row">
+                <div class="col s12">
                     <div class="input-field">
                         <form:input path="confirmationPassword" id="confirmationPassword" type="password"/>
                         <label for="password"><spring:message code="registerbuyer.form.confirmpassword"/>
