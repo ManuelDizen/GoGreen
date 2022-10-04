@@ -220,7 +220,7 @@ public class ProductServiceImpl implements ProductService {
 
     private void addIfNotPresent(List<Product> toReturn, List<Product> list, Product product) {
         for(Product prod : list) {
-            if(prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < 3) {
                 toReturn.add(prod);
             }
         }
