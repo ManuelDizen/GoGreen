@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
                 product, amount,
                 product.getPrice(), sellerService.getName(seller.getUserId()),
                 seller.getPhone(), sellerService.getEmail(seller.getUserId()),
-                LocaleContextHolder.getLocale());
+                user.getLocale());
 
         emailService.itemsold(sellerService.getEmail(seller.getUserId()),
                 sellerService.getName(seller.getUserId()), product,
