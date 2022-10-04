@@ -57,9 +57,9 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <c:if test="${fn:length(area.name) <= 0}">
+                        <c:if test="${area != null}">
                             <div style="height:fit-content; text-align:center; font-size:20px;">
-                                <i class="tiny material-icons">location_pin</i><span><c:out value="${area.name}"/></span>
+                                <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
                             </div>
                         </c:if>
                     </div>
@@ -88,9 +88,9 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <c:if test="${fn:length(area.name) <= 0}">
+                        <c:if test="${area != null}">
                             <div style="height:fit-content; text-align:center; font-size:20px;">
-                                <i class="tiny material-icons">location_pin</i><span><c:out value="${area.name}"/></span>
+                                <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
                             </div>
                         </c:if>
                     </div>

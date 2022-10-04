@@ -1746,3 +1746,7 @@ input[type=number] {
 #orderamount{
     padding:0;
 }
+
+.separate-icon{
+    margin:0 10px;
+}
