@@ -10,7 +10,7 @@
 <body>
 <%--<div class="explore-filter-title"><spring:message code="explore.filterby"/></div>--%>
 <c:url value="/explore" var="explore"/>
-<form action="${explore}" method="get" id="filter_form" style="margin: 0 20px 20px 20px">
+<form action="${explore}" method="get" id="filter_form" class="filter-form">
     <div class="row">
         <div class="input-field col s12 filterinputs">
             <input name="name" id="name" type="text" value="${name}">
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s12 filterinputs" style="margin-top:2vh;">
+        <div class="input-field col s12 filterinputs filter-category">
             <select name="category" style="display: none">
                 <c:if test="${chosenCategory != 0}">
                     <option value="" disabled><spring:message code="explore.select"/></option>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s12 filterinputs" style="margin-top:2vh;">
+        <div class="input-field col s12 filterinputs filter-margin">
             <select name="areaId" style="display: none">
                 <c:if test="${chosenArea != 0}">
                     <option value="" disabled><spring:message code="explore.select"/></option>
@@ -96,7 +96,7 @@
             <label style="display: none" for="direction"><spring:message code="explore.filterform.maxprice"/></label>
         </div>
     </div>
-    <div style="display:flex;justify-content: space-around;margin-top:5vh;">
+    <div class="filter-submit">
         <button type="submit" class="decision-button waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
     </div>
 </form>

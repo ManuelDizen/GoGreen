@@ -26,14 +26,14 @@
     </c:if>
     <c:if test="${products.size() != 0}">
         <c:forEach items="${products}" var="product">
-            <div class="card product-card z-depth-1" style="margin:10px auto;">
+            <div class="card product-card z-depth-1">
                 <a href="<c:url value="/product/${product.productId}"/>">
                     <div class="card-image">
                         <c:if test="${product.imageId != 0}">
-                            <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
+                            <img src="<c:url value="/image/${product.imageId}"/>">
                         </c:if>
                         <c:if test="${product.imageId == 0}">
-                            <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
+                            <img src="<c:url value="/resources/images/logo.png"/>">
                         </c:if>
                     </div>
                 </a>
@@ -79,7 +79,7 @@
                 <img src="<c:url value="/resources/images/logo.png"/>" height="200" width="200"
                      alt="Logo">
             </div>
-            <div style="margin-bottom: 15px">
+            <div class="clean-filters">
                 <div>
                     <a class="decision-button waves-effect waves-light btn" href="<c:url value="/explore"/>">
                         <spring:message code="explore.cleanfilters"/>

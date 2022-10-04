@@ -563,11 +563,21 @@ label {
     /*TODO: Armado hasta que se haga una implementación correcta*/
 }
 
-
+.filter-form {
+    margin: 0 20px 20px 20px;
+}
 
 .filterinputs{
     margin-bottom:0;
     margin-top:0;
+}
+
+.filter-margin {
+    margin-top:15px;
+}
+
+.filter-submit {
+    display:flex;justify-content: space-around;margin-top:30px;
 }
 
 .productpage-image-container .material-placeholder{
@@ -1103,6 +1113,7 @@ ALL CREDITS TO @andrewsims
     box-shadow:none;
     transition: 0.3s;
     height:fit-content;
+    margin:10px auto;
 }
 
 .product-card:hover{
@@ -1135,6 +1146,10 @@ ALL CREDITS TO @andrewsims
 
 .card-price > a{
     color: #ADE28A;
+}
+
+.clean-filters {
+    margin-bottom: 15px;
 }
 
 .explore-container #filter_form .row .input-field .select-wrapper ul {
@@ -1402,6 +1417,19 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     flex-direction: column;
     justify-content: center;
     color:white;
+    font-size:1.3rem;
+}
+
+.drop-align {
+    align-self:center;
+}
+
+.sortby {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    font-size:18px;
+    padding-right:2vw;
 }
 
 .check {
@@ -1750,6 +1778,7 @@ input[type=number] {
 .pagination-arrow{
     color:white;
 }
+
 
 /* UPDATE PRODUCT */
 
