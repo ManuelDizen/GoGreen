@@ -68,12 +68,14 @@
                 <h4 style="text-align:center;"><spring:message code="sellerprofile.productos"/></h4>
                 <div class="seller-profile-products-2-bis">
                     <c:if test="${products.size() == 0}">
-                        <div><spring:message code="sellerprofile.noproducts"/></div>
-                        <div style="margin-top:5vh;">
-                            <a style="margin-top:5vh;" class="decision-button waves-effect waves-light btn standard-button"
-                               href="<c:url value="/createProduct"/>">
-                                <spring:message code="explore.createproduct"/>
-                            </a>
+                        <div class="seller-profile-no-products-container">
+                            <div><spring:message code="sellerprofile.noproducts"/></div>
+                            <div class="seller-margin">
+                                <a class="decision-button waves-effect waves-light btn standard-button seller-margin"
+                                   href="<c:url value="/createProduct"/>">
+                                    <spring:message code="explore.createproduct"/>
+                                </a>
+                            </div>
                         </div>
                     </c:if>
                     <c:if test="${products.size() != 0}">
