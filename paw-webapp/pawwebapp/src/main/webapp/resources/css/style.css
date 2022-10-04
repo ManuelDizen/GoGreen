@@ -149,6 +149,17 @@ nav {
     max-height:initial;
 }
 
+.card-content{
+    background-color: #1b5e20;
+    color: #ADE28A;
+}
+
+[type="checkbox"] {
+    margin-top: 10px;
+    margin-right: 5px;
+    /* checkbox aspect */
+}
+
 .landing-recent-product-container .card .card-content{
     height:200px;
 }
@@ -515,6 +526,19 @@ nav {
 .explore-filter .row div > label {
     color: white;
     font-size: 12px;
+}
+
+.chip {
+    height: 28px;
+    font-size: 10px;
+    font-weight: 300;
+    line-height: 24px;
+    padding: 5 12px;
+    border-radius: 12px;
+}
+
+label {
+    margin-bottom: 20px;
 }
 
 .explore-filter .row .input-field .character-counter {
