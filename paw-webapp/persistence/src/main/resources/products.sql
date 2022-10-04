@@ -50,8 +50,8 @@ alter table products add unique (name);
 
 ALTER TABLE products ADD FOREIGN KEY (sellerId) REFERENCES sellers(id) ON DELETE CASCADE;
 
-alter table users add column if not exists imageId integer default null;
-alter table users add foreign key (imageId) references images(id) on delete set null;
+/*alter table users add column if not exists imageId integer default null;
+alter table users add foreign key (imageId) references images(id) on delete set null;*/
 
 ALTER TABLE users DROP COLUMN IF EXISTS username;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS locale varchar(5) default 'es';
