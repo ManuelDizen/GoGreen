@@ -45,4 +45,5 @@ public class EcotagServiceImpl implements EcotagService {
         }
         return toReturn;
     }
+
 }
