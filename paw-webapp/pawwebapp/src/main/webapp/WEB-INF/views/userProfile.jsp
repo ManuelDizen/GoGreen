@@ -90,6 +90,10 @@
                                                     <spring:message code="userprofile.orders.selleraddress"/>
                                                     <c:out value="${' '}${seller.address}"/>
                                                 </div>
+                                                <div>
+                                                    <spring:message code="userprofile.orders.sellerphone"/>
+                                                    <c:out value="${' '}${seller.phone}"/>
+                                                </div>
                                             </c:if>
                                         </c:forEach>
                                     </c:if>
