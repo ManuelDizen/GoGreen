@@ -17,8 +17,8 @@
     <div class="register-form-container">
     <c:url value="/registersellerprocess" var="postUrl"/>
     <form:form modelAttribute="sellerForm" method="post" action="${postUrl}" id="user_form">
-        <div style="margin:5vh auto; display:block;">
-            <h4 style="margin:4vh auto; text-align: center; text-decoration: underline;">
+        <div class="title-block">
+            <h4 class="registerbuyer-title">
                 <spring:message code="registerseller.title"/>
             </h4>
         </div>
@@ -116,7 +116,7 @@
 
 
         </div>
-        <div class="center" style="margin-top:3vh;">
+        <div class="center registerseller-submit">
             <button type="submit" class="waves-effect waves-light btn">
                 <spring:message code="registerbuyer.form.submit"/>
             </button>

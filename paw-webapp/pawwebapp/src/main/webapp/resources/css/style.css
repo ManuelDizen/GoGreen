@@ -1081,6 +1081,15 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
+.center-no-margin {
+    text-align: center; margin-top:0; margin-bottom:0;
+}
+
+.register-bigtitle {
+    margin: 20px auto;
+    margin-bottom:5px;
+}
+
 .register-title{
     font-size: 20px;
     margin: 2vh auto;
@@ -1595,6 +1604,18 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     max-height: 200px;
 }
 
+.title-block {
+    margin:5vh auto; display:block;
+}
+
+.registerbuyer-title {
+    margin:20px auto; text-align: center; text-decoration: underline;
+}
+
+.registerseller-submit {
+    margin-top:3vh;
+}
+
 .registerbody {
     display: grid;
 }
@@ -1787,6 +1808,7 @@ input[type=number] {
     overflow: hidden;
     text-align:center;
 }
+
 
 
 .text-center{
