@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -66,5 +67,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(long userId) {
         return userDao.findById(userId);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDao.getAll();
     }
 }

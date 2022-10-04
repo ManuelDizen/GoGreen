@@ -82,6 +82,18 @@
                                     <spring:message code="sellerprofile.orders.buyermail"/>
                                     <c:out value="${' '}${order.sellerEmail}"/>
                                 </div>
+                                <c:forEach items="${users}" var="user">
+                                    <c:if test="${user.email == order.sellerEmail}">
+                                        <c:forEach items="${sellers}" var="seller">
+                                            <c:if test="${user.id == seller.userId}">
+                                                <div>
+                                                    <spring:message code="userprofile.orders.selleraddress"/>
+                                                    <c:out value="${' '}${seller.address}"/>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
+                                </c:forEach>
                                 <c:if test="${fromSale && num == 0 && currentPage == 1}">
                                     <div class="center" style="margin-top: 8px">
                                         <div class="chip green" style="color: white; font-weight: bold; max-width: 100px">
