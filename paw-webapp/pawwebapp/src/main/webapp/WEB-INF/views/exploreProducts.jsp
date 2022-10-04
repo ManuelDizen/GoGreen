@@ -46,7 +46,7 @@
                         <i class="tiny material-icons">category</i>
                         <c:forEach items="${categories}" var="category">
                             <c:if test="${category.id == product.categoryId}">
-                                <spring:message code="${category.name}"/>
+                                <a href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>"><spring:message code="${category.name}"/></a>
                             </c:if>
                         </c:forEach>
                     </div>

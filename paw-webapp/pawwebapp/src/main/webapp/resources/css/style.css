@@ -1109,6 +1109,10 @@ ALL CREDITS TO @andrewsims
     font-size: 14px;
 }
 
+.card-price > a{
+    color: #ADE28A;
+}
+
 .eco_chip {
     width: fit-content;
 }
