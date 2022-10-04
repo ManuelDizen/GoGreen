@@ -16,7 +16,7 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div style="height:5vh; width:100%;"></div>
+    <div class="form-failure"></div>
     <c:if test="${formFailure}">
         <div class="order-failure">
             <spring:message code="productpage.orderfail"/>
@@ -25,22 +25,22 @@
 
     <div class="row product-page-container-2">
         <div class="col s8">
-            <h4 style="margin-top:0; text-decoration:underline; font-size:40px;margin-bottom:50px; text-align:center;">
+            <h4 class="product-page-title">
                 <c:out value="${product.name}"/></h4>
-            <div class="row" style="margin:0;">
+            <div class="row no-margin">
                 <c:if test="${product.imageId != 0}">
                     <div class="col s6">
-                        <div class = "productpage-image-container" style="margin-top:0; height:fit-content;">
-                            <img class="materialboxed" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}" style="border-radius:10px;border:2px solid var(--palette-color-secondary);">
+                        <div class = "productpage-image-container productpage-img">
+                            <img class="materialboxed alt" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
                         </div>
                     </div>
                     <div class="col s6 product-information">
-                        <div style="font-size:25px; font-weight:bold; text-align:center;" class="separate"><c:out value="${'$'}${product.price}"/></div>
-                        <div class="separate" style="font-size: 25px; text-align:center;"><spring:message code="productpage.prodinfo.stock"/>
+                        <div class="separate productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
                             <c:out value="${' '}${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
-                            <div class="separate" style="text-align:center; margin-top: 2vh;">
-                                <a class="btn orange accent-4" style="cursor: default;">
+                            <div class="separate productpage-info-margin">
+                                <a class="btn orange accent-4 cursor-default">
                                     <spring:message code="productpage.orderform.lastunits"/>
                                 </a>
                             </div>
@@ -48,7 +48,7 @@
                         <c:if test="${ecotags.size() != 0}">
                             <div class="productpage-ecotags separating-fields separate">
                                 <c:forEach items="${ecotags}" var="ecotag">
-                                    <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                                    <div class="productpage-ecotag">
                                         <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                             <i class="tiny material-icons">${ecotag.icon}</i>
                                             <spring:message code="${ecotag.tag}"/>
@@ -58,20 +58,20 @@
                             </div>
                         </c:if>
                         <c:if test="${area != null}">
-                            <div style="height:fit-content; text-align:center; font-size:20px;">
+                            <div class="location-pin">
                                 <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
                             </div>
                         </c:if>
                     </div>
                 </c:if>
                 <c:if test="${product.imageId == 0}">
-                    <div class="col s12 product-information" style="margin:0;">
-                        <div style="font-size:25px; font-weight:bold; text-align:center;"><c:out value="${'$'}${product.price}"/></div>
-                        <div style="font-size: 25px; text-align:center;"><spring:message code="productpage.prodinfo.stock"/>
+                    <div class="col s12 product-information no-margin">
+                        <div class="productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
                             <c:out value="${' '}${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
-                            <div style="text-align:center; margin-top: 2vh;">
-                                <a class="btn orange accent-4" style="cursor: default;">
+                            <div class="productpage-info-margin">
+                                <a class="btn orange accent-4 cursor-default">
                                     <spring:message code="productpage.orderform.lastunits"/>
                                 </a>
                             </div>
@@ -79,7 +79,7 @@
                         <c:if test="${ecotags.size() != 0}">
                             <div class="productpage-ecotags separating-fields separate">
                                 <c:forEach items="${ecotags}" var="ecotag">
-                                    <div style="margin-top: 1vh; margin-bottom: 1vh;">
+                                    <div class="productpage-ecotag">
                                         <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                             <i class="tiny material-icons">${ecotag.icon}</i>
                                             <spring:message code="${ecotag.tag}"/>
@@ -89,7 +89,7 @@
                             </div>
                         </c:if>
                         <c:if test="${area != null}">
-                            <div style="height:fit-content; text-align:center; font-size:20px;">
+                            <div class="location-pin">
                                 <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
                             </div>
                         </c:if>
@@ -97,7 +97,7 @@
                 </c:if>
             </div>
         </div>
-        <div class="col s4 order-form-container" style="height:100%;">
+        <div class="col s4 order-form-container">
             <c:if test="${pageContext.request.userPrincipal.name != null}">
                 <c:url value="/process/${product.productId}" var="process"/>
             </c:if>
@@ -134,7 +134,7 @@
                 <div class="errors">
                     <form:errors path="amount" element="p" cssClass="error"/>
                 </div>
-                <div class="row" style="text-align:center;">
+                <div class="row text-center">
                     <sec:authorize access="hasRole('SELLER')">
                         <button type="submit" class="waves-effect waves-light btn disabled">
                             <spring:message code="productpage.orderform.sellerblocked"/>
@@ -162,20 +162,20 @@
             <div class="row">
                 <div class="col s12">
                     <hr class="landing-separator">
-                    <h4 class="landing-page-title" style="margin-top: 15px; margin-bottom:15px;"><spring:message code="productpage.otherinteresting"/></h4>
+                    <h4 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h4>
                     <hr class = "landing-separator">
                 </div>
             </div>
             <div class="landing-products">
                 <c:forEach items="${interesting}" var="product">
-                    <div class="card product-card z-depth-1" style="margin:10px auto;">
+                    <div class="card product-card z-depth-1">
                         <a href="<c:url value="/product/${product.productId}"/>">
                             <div class="card-image">
                                 <c:if test="${product.imageId != 0}">
-                                    <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/image/${product.imageId}"/>">
+                                    <img src="<c:url value="/image/${product.imageId}"/>">
                                 </c:if>
                                 <c:if test="${product.imageId == 0}">
-                                    <img style="border-radius: 10px 10px 0 0;" src="<c:url value="/resources/images/logo.png"/>">
+                                    <img src="<c:url value="/resources/images/logo.png"/>">
                                 </c:if>
                             </div>
                         </a>
