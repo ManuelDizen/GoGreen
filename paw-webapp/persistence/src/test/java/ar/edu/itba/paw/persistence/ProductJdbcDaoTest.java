@@ -5,6 +5,7 @@ import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -18,6 +19,8 @@ import javax.sql.DataSource;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -222,6 +225,18 @@ public class ProductJdbcDaoTest {
         assertEquals(0, filteredList.size());
 
 
+    }
+
+    @Test
+    public void testUpdateStock() {
+
+        final Map<String, Object> values = createProduct();
+        final Number number = insert.executeAndReturnKey(values);
+
+
+        dao.updateStock(number.longValue(), 20);
+        Product product = dao.getById(number.longValue()).get();
+        assertEquals(20, product.getStock());
     }
 
 
