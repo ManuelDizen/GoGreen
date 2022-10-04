@@ -147,6 +147,7 @@ public class WebConfig {
         messageSource.setBasename("classpath:i18n/messages");
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
         messageSource.setCacheSeconds(5);
+        messageSource.setFallbackToSystemLocale(false);
         return messageSource;
     }
 
