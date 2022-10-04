@@ -31,7 +31,7 @@
         <div id="information" class="col s12">
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
-                    <div class="text-center" style="font-size:20px;font-weight: bold;"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                    <div class="text-center seller-font"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
                         <c:if test="${user.imageId == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
@@ -47,7 +47,7 @@
                     </div>--%>
                 </div>
                 <div class="seller-inner-div-2">
-                    <div><div style="font-size:20px; font-weight: bold;"><spring:message code="sellerprofile.info"/></div>
+                    <div><div class="seller-font"><spring:message code="sellerprofile.info"/></div>
                         <ul>
                             <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
                             <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
@@ -65,12 +65,12 @@
         </div>
         <div id="products" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
-                <h4 style="text-align:center;"><spring:message code="sellerprofile.productos"/></h4>
+                <h4 class="text-center"><spring:message code="sellerprofile.productos"/></h4>
                 <div class="seller-profile-products-2-bis">
                     <c:if test="${products.size() == 0}">
                         <div><spring:message code="sellerprofile.noproducts"/></div>
-                        <div style="margin-top:5vh;">
-                            <a style="margin-top:5vh;" class="decision-button waves-effect waves-light btn standard-button"
+                        <div class="seller-margin">
+                            <a class="decision-button waves-effect waves-light btn standard-button seller-margin"
                                href="<c:url value="/createProduct"/>">
                                 <spring:message code="explore.createproduct"/>
                             </a>
@@ -83,7 +83,7 @@
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
-                                        <div style="display:inline-flex; margin-bottom: 15px; margin-top:20px;">
+                                        <div class="seller-inline-flex">
                                                 <%--a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}"--%>
                                             <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
                                                 <i class="material-icons">warning</i>
@@ -104,7 +104,7 @@
                                             <spring:message code="sellerprofile.stock"/>
                                             <c:out value="${product.stock}"/>
                                         </div>
-                                        <div style="display:inline-flex; margin-bottom: 15px; margin-top:20px;">
+                                        <div class="seller-inline-flex">
                                             <a id="edit" class="waves-effect waves-light btn modal-trigger edit-btn" href="<c:url value="/updateProduct/${product.productId}"/>">
                                                 <i class="material-icons">edit</i>
                                                 <spring:message code="sellerprofile.updatestock"/>
@@ -116,11 +116,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="stockModal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                <div id="stockModal${product.productId}" class="modal green-modal">
                                     <div class="modal-content">
-                                        <h3 style="text-decoration: underline"><spring:message code="sellerprofile.nostock.message"/>:
+                                        <h3 class="underline"><spring:message code="sellerprofile.nostock.message"/>:
                                             <c:out value="${product.name}"/></h3>
-                                        <div style="text-align: center;">
+                                        <div class="text-center">
                                             <spring:message code="sellerprofile.updatestock.note"/>
                                             <spring:message code="sellerprofile.updatestock.note2"/>
                                         </div>
@@ -132,16 +132,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="modal${product.productId}" class="modal" style="background-color:var(--palette-color-secondary);">
+                                <div id="modal${product.productId}" class="modal green-modal">
                                     <div class="modal-content">
-                                        <h3 style="text-decoration: underline"><spring:message code="sellerprofile.delete.confirm"/></h3>
+                                        <h3 class="underline"><spring:message code="sellerprofile.delete.confirm"/></h3>
                                         <h4><c:out value="${product.name}"/></h4>
                                     </div>
                                     <div class="row s12" style="display:flex; justify-content: center;">
-                                        <a class="modal-close waves-effect waves-green btn-flat" style="color:white; margin-right:1vw;">
+                                        <a class="modal-close waves-effect waves-green btn-flat white-margin">
                                             <spring:message code="sellerprofile.delete.cancel"/>
                                         </a>
-                                        <a style="margin-left:1vw;" class="waves-effect waves-light btn  red accent-4" href=<c:url value="/deleteProduct/${product.productId}"/>>
+                                        <a class="waves-effect waves-light btn  red accent-4 left-margin" href=<c:url value="/deleteProduct/${product.productId}"/>>
                                             <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
                                         </a>
                                     </div>
@@ -183,8 +183,8 @@
                 <h4 class="center"><spring:message code="sellerprofile.orders"/></h4>
                 <div class="seller-profile-container-orders-2">
                     <c:if test="${orders.size() == 0}">
-                        <div style="margin-top:5vh;">
-                            <div style="text-align: center;"><spring:message code="sellerprofile.noorders"/></div>
+                        <div class="seller-margin">
+                            <div class="underline"><spring:message code="sellerprofile.noorders"/></div>
                         </div>
                     </c:if>
                     <c:if test="${orders.size() != 0}">
@@ -219,14 +219,14 @@
                                         <c:out value="${': '}${order.message}"/>
                                     </c:if>
                                 </div>
-                                <div style="margin:5vh auto 2vh auto;">
+                                <div class="seller-two-margin">
                                     <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
                                     <spring:message code="sellerprofile.cancelorder"/></a>
                                 </div>
                             </div>
-                            <div id="ordermodal${order.id}" class="modal" style="background-color:var(--palette-color-secondary);">
+                            <div id="ordermodal${order.id}" class="modal green-modal">
                                 <div class="modal-content">
-                                    <h3 style="text-decoration: underline"><spring:message code="sellerprofile.deleteorder.confirm"/></h3>
+                                    <h3 class="underline"><spring:message code="sellerprofile.deleteorder.confirm"/></h3>
                                     <div>
                                         <h4><c:out value="${order.productName}"/></h4>
                                         <ul>

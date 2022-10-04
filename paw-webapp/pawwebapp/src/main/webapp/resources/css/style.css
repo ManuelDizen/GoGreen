@@ -1216,7 +1216,7 @@ ALL CREDITS TO @andrewsims
 
 
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
-    color: #ADE28A;
+    color: white;
 }
 
 
@@ -1272,6 +1272,22 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+.userprofile-info {
+    font-weight: bold; font-size: 20px;
+}
+
+.user-font {
+    font-size: 20px;
+}
+
+.user-margin {
+    margin-top: 8px;
+}
+
+.chip-font {
+    color: white; font-weight: bold; max-width: 100px;
 }
 
 .seller-profile-card-title{
@@ -1773,6 +1789,39 @@ input[type=number] {
     background:transparent;
 }
 
+.seller-font {
+    font-size:20px;font-weight: bold;
+}
+
+.seller-margin {
+    margin-top: 25px;
+}
+
+.seller-two-margin {
+    margin:25px auto 10px auto;
+}
+
+.seller-inline-flex {
+    display:inline-flex; margin-bottom: 15px; margin-top:20px;
+}
+
+.green-modal {
+    background-color:var(--palette-color-secondary);
+}
+
+.white-margin {
+    color:white; margin-right:1vw;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.left-margin {
+    margin-left:1vw;
+}
+
+
 #sellerprofile_tabs{
     background-color: var(--palette-color-secondary);
     border-left: 1px solid var(--palette-details-light);
@@ -1870,7 +1919,6 @@ input[type=number] {
     color:white;
 }
 
-
 /* UPDATE PRODUCT */
 
 .update-margins {
@@ -1956,10 +2004,6 @@ input[type=number] {
 .order-form-container{
     border-left:1px solid white;
     height: 100%;
-}
-
-.text-center {
-   text-align: center;
 }
 
 #orderamount{

@@ -25,7 +25,7 @@
         <div id="information" class="col s12">
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
-                    <div class="text-center" style="font-weight: bold; font-size: 20px;"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                    <div class="text-center userprofile-info"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                     <div class="seller-profile-pic-container">
                         <c:if test="${user.imageId == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="seller-inner-div-2">
                     <div>
-                        <div style="font-size: 20px;"><b><spring:message code="sellerprofile.info"/></b></div>
+                        <div class="user-font"><b><spring:message code="sellerprofile.info"/></b></div>
                         <ul>
                             <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
                             <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
@@ -51,8 +51,8 @@
                 <h4 class="center"><spring:message code="userprofile.orders"/></h4>
                 <div class="seller-profile-container-orders-2">
                     <c:if test="${orders.size() == 0}">
-                        <div style="margin-top:5vh;">
-                            <div style="text-align: center;"><spring:message code="userprofile.noorders"/></div>
+                        <div class="seller-margin">
+                            <div class="text-center"><spring:message code="userprofile.noorders"/></div>
                         </div>
                     </c:if>
                     <c:if test="${orders.size() != 0}">
@@ -95,8 +95,8 @@
                                     </c:if>
                                 </c:forEach>
                                 <c:if test="${fromSale && num == 0 && currentPage == 1}">
-                                    <div class="center" style="margin-top: 8px">
-                                        <div class="chip green" style="color: white; font-weight: bold; max-width: 100px">
+                                    <div class="center user-margin">
+                                        <div class="chip green chip-font">
                                             <spring:message code="profile.newpurchase"/>
                                         </div>
                                     </div>
