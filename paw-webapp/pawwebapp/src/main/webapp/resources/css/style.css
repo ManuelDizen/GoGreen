@@ -1426,6 +1426,29 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     color: white;
 }
 
+.create-header {
+    margin-top: 20px
+}
+
+.create-ecotag {
+    display:flex;
+    justify-content: center;
+}
+
+.create-center {
+    margin-top: 25px;
+    margin-bottom: 35px;
+}
+
+.create-button {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.create-submit {
+    padding-top: 1em;
+}
+
 .createbody{
     display: grid;
 }
@@ -1520,6 +1543,14 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     height:fit-content;
     align-content: center;
     align-self: center;
+}
+
+.error-height {
+    height:80%;
+}
+
+.error-margin {
+    margin-bottom: 15px;
 }
 
 .error-container-block{

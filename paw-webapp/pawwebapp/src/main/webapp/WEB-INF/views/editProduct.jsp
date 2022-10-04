@@ -65,7 +65,7 @@
           </div>
           <form:errors path="image" element="p" cssClass="error"/>
         </div>
-        <div class="center" style="padding-top: 1em;">
+        <div class="center create-submit">
           <button type="submit" class="decision-button waves-effect waves-light btn">
             <spring:message code="createproduct.form.submit"/>
           </button>
