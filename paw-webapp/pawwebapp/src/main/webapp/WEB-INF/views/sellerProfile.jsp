@@ -216,10 +216,13 @@
                                     <c:out value="${order.buyerEmail}"/>
                                 </div>
                                 <div>
-                                    <c:if test="${fn:length(order.message) > 0}">
-                                        <spring:message code="sellerprofile.orders.message"/>
-                                        <c:out value="${': '}${order.message}"/>
-                                    </c:if>
+                                    <details>
+                                        <summary><spring:message code="sellerprofile.orders.message"/>
+                                        </summary>
+                                        <c:if test="${fn:length(order.message) > 0}">
+                                            <c:out value="${order.message}"/>
+                                        </c:if>
+                                    </details>
                                 </div>
                                 <div class="seller-two-margin">
                                     <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
