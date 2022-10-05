@@ -30,8 +30,7 @@
                     <div class="col s6 product-information">
                         <div class="separate productpage-info"><c:out value="${'$'}${product.price}"/></div>
                         <div class="separate productpage-info-nobold" style="font-size:18px;">
-                            <b><spring:message code="createproduct.form.description"/></b>
-                            <c:out value="${': '}${product.description}"/>
+                            <c:out value="${product.description}"/>
                         </div>
                         <div class="separate productpage-info">
                             <i class="tiny material-icons">category</i>
@@ -73,8 +72,7 @@
                     <div class="col s12 product-information no-margin">
                         <div class="productpage-info"><c:out value="${'$'}${product.price}"/></div>
                         <div class="separate productpage-info-nobold" style="font-size:18px;">
-                            <b><spring:message code="createproduct.form.description"/></b>
-                            <c:out value="${': '}${product.description}"/>
+                            <c:out value="${product.description}"/>
                         </div>
                         <div class="separate productpage-info">
                             <i class="tiny material-icons">category</i>
