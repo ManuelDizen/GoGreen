@@ -1,7 +1,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="registerseller.title"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="registerseller.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 </head>

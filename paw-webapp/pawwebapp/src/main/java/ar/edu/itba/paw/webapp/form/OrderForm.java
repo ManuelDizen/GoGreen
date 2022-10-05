@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.*;
 
 public class OrderForm {
-    @Size(max = 1023)
+    @Size(max = 300)
     private String message;
 
     @Min(value = 1)

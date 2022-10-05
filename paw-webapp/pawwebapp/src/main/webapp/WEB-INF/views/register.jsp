@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <html>
 <head>
-    <title><spring:message code="register.webtitle"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="register.webtitle"/></title>
     <link rel="icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
 </head>
 <body>

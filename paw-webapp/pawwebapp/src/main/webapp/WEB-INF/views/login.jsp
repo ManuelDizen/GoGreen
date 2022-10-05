@@ -3,7 +3,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="login.title"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="login.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/css/materialize.css"/>" type="text/css"
           media="screen,projection">

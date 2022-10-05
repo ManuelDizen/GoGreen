@@ -4,7 +4,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><c:out value="${product.name}"/></title>
+    <title><spring:message code="navbar.companyname"/> - <c:out value="${product.name}"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/images/logo.png"/>"/>
 </head>
 <body>
@@ -109,8 +109,9 @@
                 <div class="row productpage-orderform">
                     <div class="input-field col s12">
                         <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
-                        <form:textarea placeholder="${textareaMsg}" id="textarea1" class="materialize-textarea" path="message" data-length="300" style="color:white;"/>
-                        <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
+                                       data-length="300" style="color:white;"/>
+                        <form:label for="sellerMsg" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                     </div>
                 </div>
                 <div class="errors">
@@ -159,7 +160,7 @@
 
 
     <div class="landing-recent-product-container" style="margin-top:20px;">
-        <c:if test="${recent.size() != 0}">
+        <c:if test="${interesting.size() != 0}">
             <div class="row">
                 <div class="col s12">
                     <hr class="landing-separator">
@@ -222,17 +223,9 @@
 
 </body>
 <script>
-    $('#textarea1').val('New Text');
-    M.textareaAutoResize($('#textarea1'));
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var textNeedCount = document.querySelectorAll('#textarea1');
-        M.CharacterCounter.init(textNeedCount);
-    });
-
-    $(document).ready(function() {
-        $('textarea#textarea1').characterCounter();
-    });
+    var elems = document.querySelectorAll('.materialize-textarea');
+    M.CharacterCounter.init(elems);
 
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.materialboxed');
