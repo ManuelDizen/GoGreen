@@ -29,6 +29,10 @@
                     </div>
                     <div class="col s6 product-information">
                         <div class="separate productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate productpage-info-nobold" style="font-size:18px;">
+                            <b><spring:message code="createproduct.form.description"/></b>
+                            <c:out value="${': '}${product.description}"/>
+                        </div>
                         <div class="separate productpage-info">
                             <i class="tiny material-icons">category</i>
                             <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
