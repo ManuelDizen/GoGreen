@@ -115,9 +115,9 @@ public class ProductServiceTest {
 
         final Product newProduct = ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null);
         Boolean bool = ps.checkForAvailableStock(newProduct, 20);
-        assertEquals(bool, false);
+        assertFalse(bool);
         bool = ps.checkForAvailableStock(newProduct, 5);
-        assertEquals(bool, true);
+        assertTrue(bool);
     }
 
 
