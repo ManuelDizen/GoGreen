@@ -6,16 +6,18 @@
 <body>
 <div class="explore-products">
     <c:if test="${isEmpty}">
+        <div>
         <h4><spring:message code="explore.noproducts"/></h4>
         <sec:authorize access="hasRole('SELLER')">
-            <div><spring:message code="explore.noproducts.sellermsg"/></div>
+            <div style="margin:10px auto; text-align:center;"><spring:message code="explore.noproducts.sellermsg"/></div>
             <div>
                 <a class="decision-button waves-effect waves-light btn standard-button"
-                   href="<c:url value="/createProduct"/>">
+                   href="<c:url value="/createProduct"/>" style="margin:20px auto; text-align:center;">
                     <spring:message code="explore.createproduct"/>
                 </a>
             </div>
         </sec:authorize>
+        </div>
     </c:if>
     <c:if test="${products.size() != 0}">
         <c:forEach items="${products}" var="product">
@@ -65,7 +67,7 @@
             </div>
         </c:forEach>
     </c:if>
-    <c:if test="${products.size() == 0}">
+    <c:if test="${products.size() == 0 && !isEmpty}">
         <div class="noproducts-container">
             <h4><spring:message code="explore.noproductsfilter"/></h4>
             <div class="circle">

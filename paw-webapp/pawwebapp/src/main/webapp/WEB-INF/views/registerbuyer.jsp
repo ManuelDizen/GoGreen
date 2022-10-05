@@ -3,7 +3,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="registerbuyer.title"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="registerbuyer.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
