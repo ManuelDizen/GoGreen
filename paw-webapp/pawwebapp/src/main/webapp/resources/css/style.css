@@ -1270,12 +1270,15 @@ ALL CREDITS TO @andrewsims
 .user-profile-card{
     /*width: 80%;*/
     width: 28%;
-    height: fit-content;
+    /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
     padding-bottom:2vh;
     margin: 2vh auto;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .user-profile-card{
