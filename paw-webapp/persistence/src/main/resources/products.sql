@@ -52,4 +52,5 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS locale varchar(5) default 'es';
 
 ALTER TABLE sellers ADD COLUMN IF NOT EXISTS areaId integer default null;
 
-INSERT INTO images VALUES(0,null) where not exists (select * from images where id = 0);
+insert into images (id, source)
+select 0, null where not exists (select 1 from images where id = 0);
