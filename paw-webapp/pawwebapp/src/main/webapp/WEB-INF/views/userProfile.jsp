@@ -56,49 +56,51 @@
                                         <c:out value="${order.productName}"/>
                                     </div>
                                     <div class="seller-profile-card-content">
-                                        <spring:message code="sellerprofile.orders.price"/>
-                                        <c:out value="${'$'}${order.price}"/>
-                                    </div>
-                                    <div class="seller-profile-card-content">
-                                        <spring:message code="sellerprofile.orders.amount"/>
-                                        <c:out value="${order.amount}"/>
-                                    </div>
-                                    <div class="seller-profile-card-content">
-                                        <spring:message code="sellerprofile.orders.time"/>
-                                        <c:out value="${order.parsedDateTime}"/>
-                                    </div>
-                                    <div>
-                                        <spring:message code="sellerprofile.orders.seller"/>
-                                        <c:out value="${' '}${order.sellerName}${' '}${order.sellerSurname}"/>
-                                    </div>
-                                    <div>
-                                        <spring:message code="sellerprofile.orders.buyermail"/>
-                                        <c:out value="${' '}${order.sellerEmail}"/>
-                                    </div>
-                                    <c:forEach items="${users}" var="user">
-                                        <c:if test="${user.email == order.sellerEmail}">
-                                            <c:forEach items="${sellers}" var="seller">
-                                                <c:if test="${user.id == seller.userId}">
-                                                    <div>
-                                                        <spring:message code="userprofile.orders.selleraddress"/>
-                                                        <c:out value="${' '}${seller.address}"/>
-                                                    </div>
-                                                    <div>
-                                                        <spring:message code="userprofile.orders.sellerphone"/>
-                                                        <c:out value="${' '}${seller.phone}"/>
-                                                    </div>
-                                                </c:if>
-                                            </c:forEach>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:if test="${fromSale && num == 0 && currentPage == 1}">
-                                        <div class="center user-margin">
-                                            <div class="chip green chip-font">
-                                                <spring:message code="profile.newpurchase"/>
-                                            </div>
+                                        <div>
+                                            <spring:message code="sellerprofile.orders.price"/>
+                                            <c:out value="${'$'}${order.price}"/>
                                         </div>
-                                        <c:set var="num" value="${num+1}"/>
-                                    </c:if>
+                                        <div>
+                                            <spring:message code="sellerprofile.orders.amount"/>
+                                            <c:out value="${order.amount}"/>
+                                        </div>
+                                        <div>
+                                            <spring:message code="sellerprofile.orders.time"/>
+                                            <c:out value="${order.parsedDateTime}"/>
+                                        </div>
+                                        <div>
+                                            <spring:message code="sellerprofile.orders.seller"/>
+                                            <c:out value="${' '}${order.sellerName}${' '}${order.sellerSurname}"/>
+                                        </div>
+                                        <div>
+                                            <spring:message code="sellerprofile.orders.buyermail"/>
+                                            <c:out value="${' '}${order.sellerEmail}"/>
+                                        </div>
+                                        <c:forEach items="${users}" var="user">
+                                            <c:if test="${user.email == order.sellerEmail}">
+                                                <c:forEach items="${sellers}" var="seller">
+                                                    <c:if test="${user.id == seller.userId}">
+                                                        <div>
+                                                            <spring:message code="userprofile.orders.selleraddress"/>
+                                                            <c:out value="${' '}${seller.address}"/>
+                                                        </div>
+                                                        <div>
+                                                            <spring:message code="userprofile.orders.sellerphone"/>
+                                                            <c:out value="${' '}${seller.phone}"/>
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${fromSale && num == 0 && currentPage == 1}">
+                                            <div class="center user-margin">
+                                                <div class="chip green chip-font">
+                                                    <spring:message code="profile.newpurchase"/>
+                                                </div>
+                                            </div>
+                                            <c:set var="num" value="${num+1}"/>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </c:if>

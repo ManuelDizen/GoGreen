@@ -127,7 +127,7 @@
                                     </c:if>
                                 </c:forEach>
                             </form:select>
-                            <form:label for="amount" path="amount"><spring:message code="createproduct.form.category"/></form:label>
+                            <form:label for="amount" path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                             <form:errors path="amount" element="p" cssClass="error"/>
                         </div>
                     </div>
