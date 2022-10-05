@@ -155,7 +155,7 @@
             <div class="row">
                 <div class="col s12">
                     <hr class="landing-separator">
-                    <h4 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h4>
+                    <h5 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h5>
                     <hr class = "landing-separator">
                 </div>
             </div>

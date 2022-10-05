@@ -942,7 +942,15 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    width:100%;
+}
+
+.landing-products {
+    padding-right: 10%;
+    padding-left:  10%;
+}
+
+.explore-products, .productpage-ecotags {
+    width: 100%;
 }
 
 .productpage-ecotag {
@@ -1235,11 +1243,11 @@ ALL CREDITS TO @andrewsims
     margin-top: 25px;
 }
 
-.explore-products .product-card .card-content{
+.explore-products .product-card .card-content, .landing-products .product-card .card-content{
     height:250px;
 }
 
-.explore-products .card-image img{
+.explore-products .card-image img, .landing-products .card-image img {
     max-height:110px;
     object-fit:cover;
     border-radius: 10px 10px 0 0;

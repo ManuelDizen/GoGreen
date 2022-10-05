@@ -246,6 +246,7 @@ public class ProductServiceImpl implements ProductService {
             sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
             addIfNotPresent(toReturn, sorted, product);
         }
+        setTagList(toReturn);
         return toReturn;
     }
 
