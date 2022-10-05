@@ -1279,6 +1279,8 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction: column;
     justify-content: space-between;
+    padding-left: 10px;
+    padding-right:10px;
 }
 
 .user-profile-card{
