@@ -1284,7 +1284,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .user-profile-card{
-    height: 250px;
+    height: 300px;
     display:flex;
     flex-direction: column;
     justify-content: space-evenly;
