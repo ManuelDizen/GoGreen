@@ -29,6 +29,12 @@
                     </div>
                     <div class="col s6 product-information">
                         <div class="separate productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate productpage-info">
+                            <i class="tiny material-icons">category</i>
+                            <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                             <spring:message code="${category.name}"/>
+                            </a>
+                        </div>
                         <div class="separate productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
                             <c:out value="${' '}${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
@@ -52,7 +58,9 @@
                         </c:if>
                         <c:if test="${area != null}">
                             <div class="location-pin">
+                                <a class="productpage-link" href="<c:url value="/explore?areaId=${area.id}&sort=${sort}&direction=${direction}"/>">
                                 <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
+                                </a>
                             </div>
                         </c:if>
                     </div>
@@ -181,7 +189,9 @@
                                 <i class="tiny material-icons">category</i>
                                 <c:forEach items="${categories}" var="category">
                                     <c:if test="${category.id == product.categoryId}">
+                                <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
                                         <spring:message code="${category.name}"/>
+                                </a>
                                     </c:if>
                                 </c:forEach>
                             </div>

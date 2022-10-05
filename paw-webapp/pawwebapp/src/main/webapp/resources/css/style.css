@@ -1982,6 +1982,10 @@ input[type=number] {
     font-size:25px; font-weight:bold; text-align:center;
 }
 
+.productpage-link {
+    color: var(--text-color-light);
+}
+
 .productpage-info-nobold {
     font-size: 25px; text-align:center;
 }

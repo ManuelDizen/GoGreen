@@ -123,7 +123,7 @@ public class ProductController {
         }
 
         mav.addObject("product", productObj);
-        mav.addObject("categories", Category.values());
+        mav.addObject("category", Category.getById(productObj.getCategoryId()));
         List<Product> interesting = productService.getInteresting(productObj);
         mav.addObject("interesting", interesting);
 
@@ -134,6 +134,7 @@ public class ProductController {
         mav.addObject("area", Area.getById(seller.get().getAreaId()));
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
+        mav.addObject("categories", Category.values());
         return mav;
     }
 
