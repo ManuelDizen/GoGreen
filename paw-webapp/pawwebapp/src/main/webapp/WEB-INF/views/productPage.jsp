@@ -111,7 +111,7 @@
                         <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
                                        data-length="300" style="color:white;"/>
-                        <form:label for="sellerMsg" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                     </div>
                 </div>
                 <div class="errors">

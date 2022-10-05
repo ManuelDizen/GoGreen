@@ -29,8 +29,6 @@ import static org.junit.Assert.assertTrue;
 @Rollback
 public class SellerJdbcDaoTest {
 
-    private long userId;
-    private String userMail;
     private static final String PHONE = "11111111";
     private static final String ADDRESS = "Address";
     private static final String FIRSTNAME = "John";
@@ -45,32 +43,20 @@ public class SellerJdbcDaoTest {
     private SellerJdbcDao dao;
 
     @Autowired
-    private UserJdbcDao userDao;
-
-    @Autowired
     private DataSource ds;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert insert;
 
-    private Map<String, Object> createSeller() {
-        final Map<String, Object> values = new HashMap<>();
-        User newUser = userDao.create(FIRSTNAME, SURNAME, EMAIL, PASSWORD, LOCALE);
-        this.userId = newUser.getId();
-        this.userMail = newUser.getEmail();
-        values.put("userId", newUser.getId());
-        values.put("phone", PHONE);
-        values.put("address", ADDRESS);
-        values.put("areaId", AREAID);
-        return values;
-    }
+    private SimpleJdbcInsert insert2;
 
     @Before
     public void setUp() {
         this.dao = new SellerJdbcDao(ds);
-        this.userDao = new UserJdbcDao(ds);
         this.jdbcTemplate = new JdbcTemplate(ds);
         this.insert = new SimpleJdbcInsert(ds).withTableName("sellers")
+                .usingGeneratedKeyColumns("id");
+        this.insert2 = new SimpleJdbcInsert(ds).withTableName("users")
                 .usingGeneratedKeyColumns("id");
 
         JdbcTestUtils.deleteFromTables(jdbcTemplate,	"sellers");
@@ -80,17 +66,38 @@ public class SellerJdbcDaoTest {
 
     @Test
     public void testCreate() {
-        User newUser = userDao.create(FIRSTNAME, SURNAME, EMAIL, PASSWORD, LOCALE);
-        Seller newSeller = dao.create(newUser.getId(), PHONE, ADDRESS, AREAID);
-        assertEquals(newUser.getId(), newSeller.getUserId());
+        final Map<String, Object> values = new HashMap<>();
+        values.put("firstName", FIRSTNAME);
+        values.put("surname", SURNAME);
+        values.put("email", EMAIL);
+        values.put("password", PASSWORD);
+        values.put("locale", LOCALE);
+        final long userId = insert2.executeAndReturnKey(values).longValue();
+        values.put("userId", userId);
+        values.put("phone", PHONE);
+        values.put("address", ADDRESS);
+        values.put("areaId", AREAID);
+        Seller newSeller = dao.create(userId, PHONE, ADDRESS, AREAID);
+        assertEquals(userId, newSeller.getUserId());
         assertEquals(PHONE, newSeller.getPhone());
         assertEquals(ADDRESS, newSeller.getAddress());
     }
 
     @Test
     public void testFindById() {
-        final Map<String, Object> values = createSeller();
-        final Number sellerId = insert.executeAndReturnKey(values);
+        final Map<String, Object> values = new HashMap<>();
+        values.put("firstName", FIRSTNAME);
+        values.put("surname", SURNAME);
+        values.put("email", EMAIL);
+        values.put("password", PASSWORD);
+        values.put("locale", LOCALE);
+        final long userId = insert2.executeAndReturnKey(values).longValue();
+        final Map<String, Object> values2 = new HashMap<>();;
+        values2.put("userId", userId);
+        values2.put("phone", PHONE);
+        values2.put("address", ADDRESS);
+        values2.put("areaId", AREAID);
+        final Number sellerId = insert.executeAndReturnKey(values2);
         final Optional<Seller> maybeSeller = dao.findById(sellerId.longValue());
         assertTrue(maybeSeller.isPresent());
         assertEquals(maybeSeller.get().getPhone(), PHONE);
@@ -99,8 +106,19 @@ public class SellerJdbcDaoTest {
 
     @Test
     public void testFindByUserId() {
-        final Map<String, Object> values = createSeller();
-        insert.execute(values);
+        final Map<String, Object> values = new HashMap<>();
+        values.put("firstName", FIRSTNAME);
+        values.put("surname", SURNAME);
+        values.put("email", EMAIL);
+        values.put("password", PASSWORD);
+        values.put("locale", LOCALE);
+        final long userId = insert2.executeAndReturnKey(values).longValue();
+        final Map<String, Object> values2 = new HashMap<>();;
+        values2.put("userId", userId);
+        values2.put("phone", PHONE);
+        values2.put("address", ADDRESS);
+        values2.put("areaId", AREAID);
+        insert.execute(values2);
         final Optional<Seller> maybeSeller = dao.findByUserId(userId);
         assertTrue(maybeSeller.isPresent());
         assertEquals(maybeSeller.get().getPhone(), PHONE);
@@ -109,9 +127,20 @@ public class SellerJdbcDaoTest {
 
     @Test
     public void testFindByMail() {
-        final Map<String, Object> values = createSeller();
-        insert.execute(values);
-        final Optional<Seller> maybeSeller = dao.findByMail(userMail);
+        final Map<String, Object> values = new HashMap<>();
+        values.put("firstName", FIRSTNAME);
+        values.put("surname", SURNAME);
+        values.put("email", EMAIL);
+        values.put("password", PASSWORD);
+        values.put("locale", LOCALE);
+        final long userId = insert2.executeAndReturnKey(values).longValue();
+        final Map<String, Object> values2 = new HashMap<>();;
+        values2.put("userId", userId);
+        values2.put("phone", PHONE);
+        values2.put("address", ADDRESS);
+        values2.put("areaId", AREAID);
+        insert.execute(values2);
+        final Optional<Seller> maybeSeller = dao.findByMail(EMAIL);
         assertTrue(maybeSeller.isPresent());
         assertEquals(maybeSeller.get().getPhone(), PHONE);
         assertEquals(maybeSeller.get().getAddress(), ADDRESS);
