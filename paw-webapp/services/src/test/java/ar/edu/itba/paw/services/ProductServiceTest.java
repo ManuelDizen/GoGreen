@@ -46,17 +46,6 @@ public class ProductServiceTest {
     @Mock
     private ProductDao productDao;
 
-    private List<Product> productForSorting() {
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), anyLong())).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
-
-        List<Product> productList = new ArrayList<>();
-        productList.add(ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        productList.add(ps.create(SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        return productList;
-    }
-
 
     @Test
     public void testCreate() {
@@ -74,7 +63,13 @@ public class ProductServiceTest {
     @Test
     public void testSortByChronologic() {
 
-        List<Product> productList = productForSorting();
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), anyLong())).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
+
+        List<Product> productList = new ArrayList<>();
+
+        productList.add(productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+        productList.add(productDao.create(SELLERID, CATEGORYID2, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
 
         ps.sortProducts(productList, 0, 0);
         assertEquals(NAME, productList.get(0).getName());
@@ -86,7 +81,13 @@ public class ProductServiceTest {
     @Test
     public void testSortByAlphabetic() {
 
-        List<Product> productList = productForSorting();
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), anyLong())).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
+
+        List<Product> productList = new ArrayList<>();
+
+        productList.add(productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+        productList.add(productDao.create(SELLERID, CATEGORYID2, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
 
         ps.sortProducts(productList, 1, 0);
         assertEquals(NAME, productList.get(0).getName());
@@ -99,7 +100,13 @@ public class ProductServiceTest {
     @Test
     public void testSortByPrice() {
 
-        List<Product> productList = productForSorting();
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), anyLong())).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
+
+        List<Product> productList = new ArrayList<>();
+
+        productList.add(productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
+        productList.add(productDao.create(SELLERID, CATEGORYID2, NAME2, DESCRIPTION, STOCK, PRICE2, IMAGEID));
 
         ps.sortProducts(productList, 2, 0);
         assertEquals(NAME2, productList.get(0).getName());
@@ -113,7 +120,7 @@ public class ProductServiceTest {
     public void testCheckForStock() {
         Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), anyLong())).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID));
 
-        final Product newProduct = ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null);
+        final Product newProduct = productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, IMAGEID);
         Boolean bool = ps.checkForAvailableStock(newProduct, 20);
         assertFalse(bool);
         bool = ps.checkForAvailableStock(newProduct, 5);

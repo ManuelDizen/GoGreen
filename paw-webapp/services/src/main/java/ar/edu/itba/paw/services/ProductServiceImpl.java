@@ -81,9 +81,9 @@ public class ProductServiceImpl implements ProductService {
             public int compare(Product o1, Product o2) {
                 if (sort == 2) {
                     if (direction == 0) {
-                        return (int) (o1.getPrice() - o2.getPrice());
+                        return (o1.getPrice() - o2.getPrice());
                     } else {
-                        return (int) (o2.getPrice() - o1.getPrice());
+                        return (o2.getPrice() - o1.getPrice());
                     }
                 } else if (sort == 1) {
                     if (direction == 0) {
