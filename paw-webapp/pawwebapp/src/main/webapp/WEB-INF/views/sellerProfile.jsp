@@ -57,7 +57,6 @@
         </div>
         <div id="products" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
-                <h4 class="text-center"><spring:message code="sellerprofile.productos"/></h4>
                 <div class="seller-profile-products-2-bis">
                     <c:if test="${products.size() == 0}">
                         <div class="seller-profile-no-products-container">
@@ -174,7 +173,6 @@
         </div>
         <div id="orders" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
-                <h4 class="center"><spring:message code="sellerprofile.orders"/></h4>
                 <div class="seller-profile-container-orders-2">
                     <c:if test="${orders.size() == 0}">
                         <div class="seller-margin">

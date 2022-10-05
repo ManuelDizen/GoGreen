@@ -41,7 +41,6 @@
             </div>
             <div id="orders" class="col s12">
                 <div class="seller-profile-container-2-lower-bis">
-                    <h4 class="center"><spring:message code="userprofile.orders"/></h4>
                     <div class="seller-profile-container-orders-2">
                         <c:if test="${orders.size() == 0}">
                             <div class="seller-margin">
