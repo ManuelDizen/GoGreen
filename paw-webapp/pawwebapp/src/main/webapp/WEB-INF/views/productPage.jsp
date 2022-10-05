@@ -1,17 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: manuel
-  Date: 1/9/22
-  Time: 18:59
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><c:out value="${product.name}"/></title>
+    <title><spring:message code="navbar.companyname"/> - <c:out value="${product.name}"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/images/logo.png"/>"/>
 </head>
 <body>
@@ -36,6 +29,15 @@
                     </div>
                     <div class="col s6 product-information">
                         <div class="separate productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate productpage-info-nobold" style="font-size:18px;">
+                            <c:out value="${product.description}"/>
+                        </div>
+                        <div class="separate productpage-info">
+                            <i class="tiny material-icons">category</i>
+                            <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                             <spring:message code="${category.name}"/>
+                            </a>
+                        </div>
                         <div class="separate productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
                             <c:out value="${' '}${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
@@ -59,7 +61,9 @@
                         </c:if>
                         <c:if test="${area != null}">
                             <div class="location-pin">
+                                <a class="productpage-link" href="<c:url value="/explore?areaId=${area.id}&sort=${sort}&direction=${direction}"/>">
                                 <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
+                                </a>
                             </div>
                         </c:if>
                     </div>
@@ -67,6 +71,15 @@
                 <c:if test="${product.imageId == 0}">
                     <div class="col s12 product-information no-margin">
                         <div class="productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate productpage-info-nobold" style="font-size:18px;">
+                            <c:out value="${product.description}"/>
+                        </div>
+                        <div class="separate productpage-info">
+                            <i class="tiny material-icons">category</i>
+                            <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                                <spring:message code="${category.name}"/>
+                            </a>
+                        </div>
                         <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
                             <c:out value="${' '}${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
@@ -108,8 +121,9 @@
                 <div class="row productpage-orderform">
                     <div class="input-field col s12">
                         <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
-                        <form:textarea placeholder="${textareaMsg}" id="textarea1" class="materialize-textarea" path="message" data-length="300" style="color:white;"/>
-                        <form:label for="textarea1" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
+                                       data-length="300" style="color:white;"/>
+                        <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                     </div>
                 </div>
                 <div class="errors">
@@ -126,7 +140,7 @@
                                     </c:if>
                                 </c:forEach>
                             </form:select>
-                            <form:label for="amount" path="amount"><spring:message code="createproduct.form.category"/></form:label>
+                            <form:label for="amount" path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
                             <form:errors path="amount" element="p" cssClass="error"/>
                         </div>
                     </div>
@@ -158,11 +172,11 @@
 
 
     <div class="landing-recent-product-container" style="margin-top:20px;">
-        <c:if test="${recent.size() != 0}">
+        <c:if test="${interesting.size() != 0}">
             <div class="row">
                 <div class="col s12">
                     <hr class="landing-separator">
-                    <h4 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h4>
+                    <h5 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h5>
                     <hr class = "landing-separator">
                 </div>
             </div>
@@ -188,7 +202,9 @@
                                 <i class="tiny material-icons">category</i>
                                 <c:forEach items="${categories}" var="category">
                                     <c:if test="${category.id == product.categoryId}">
+                                <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
                                         <spring:message code="${category.name}"/>
+                                </a>
                                     </c:if>
                                 </c:forEach>
                             </div>
@@ -219,17 +235,9 @@
 
 </body>
 <script>
-    $('#textarea1').val('New Text');
-    M.textareaAutoResize($('#textarea1'));
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var textNeedCount = document.querySelectorAll('#textarea1');
-        M.CharacterCounter.init(textNeedCount);
-    });
-
-    $(document).ready(function() {
-        $('textarea#textarea1').characterCounter();
-    });
+    var elems = document.querySelectorAll('.materialize-textarea');
+    M.CharacterCounter.init(elems);
 
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.materialboxed');

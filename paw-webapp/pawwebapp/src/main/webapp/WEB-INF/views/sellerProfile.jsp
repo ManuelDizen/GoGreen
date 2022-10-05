@@ -1,18 +1,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: manuel
-  Date: 13/9/22
-  Time: 10:55
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="profile.title"/> ${user.firstName} ${user.surname}</title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="profile.title"/> ${user.firstName} ${user.surname}</title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -65,7 +57,6 @@
         </div>
         <div id="products" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
-                <h4 class="text-center"><spring:message code="sellerprofile.productos"/></h4>
                 <div class="seller-profile-products-2-bis">
                     <c:if test="${products.size() == 0}">
                         <div class="seller-profile-no-products-container">
@@ -182,7 +173,6 @@
         </div>
         <div id="orders" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
-                <h4 class="center"><spring:message code="sellerprofile.orders"/></h4>
                 <div class="seller-profile-container-orders-2">
                     <c:if test="${orders.size() == 0}">
                         <div class="seller-margin">
@@ -215,7 +205,7 @@
                                     <spring:message code="sellerprofile.orders.buyermail"/>
                                     <c:out value="${order.buyerEmail}"/>
                                 </div>
-                                <div>
+                                <div style="height:fit-content; overflow-wrap: break-word;">
                                     <c:if test="${fn:length(order.message) > 0}">
                                         <spring:message code="sellerprofile.orders.message"/>
                                         <c:out value="${': '}${order.message}"/>

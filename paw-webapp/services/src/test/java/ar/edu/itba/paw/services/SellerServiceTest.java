@@ -27,11 +27,7 @@ public class SellerServiceTest {
     private static final long SELLERID = 1;
     private static final String PHONE = "11111111";
     private static final String ADDRESS = "Address";
-    private static final String FIRSTNAME = "John";
-    private static final String SURNAME = "Doe";
-    private static final String EMAIL = "foo@bar.edu.ar";
-    private static final String PASSWORD = "secret";
-    private static final Locale LOCALE = new Locale("es");
+    
     private static final long AREAID = 1;
 
     @InjectMocks

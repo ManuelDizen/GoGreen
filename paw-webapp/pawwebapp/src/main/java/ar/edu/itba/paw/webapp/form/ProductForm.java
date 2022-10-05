@@ -21,15 +21,11 @@ public class ProductForm {
     @Size(max = 300)
     private String description;
 
-    //@Min(value=1, message= "Por favor, introduzca un precio válido")
-    //@Max(value=999999, message="El precio debe ser menor a un millón")
     @NotNull
     @Size(max=6)
     @Pattern(regexp = "[0-9]+")
     private String price;
 
-    //@Min(value=1, message="Por favor, introduzca un stock válido")
-    //@Max(value=10000, message="El máximo para publicar son 10000 unidades.")
     @NotNull
     @Size(max=4)
     @Pattern(regexp = "[0-9]+")

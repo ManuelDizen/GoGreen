@@ -575,7 +575,8 @@ nav {
 }
 
 .chip {
-    height: 28px;
+    max-height: 5vh;
+    overflow: hidden;
     font-size: 10px;
     font-weight: 300;
     line-height: 24px;
@@ -942,7 +943,15 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    width:100%;
+}
+
+.landing-products {
+    padding-right: 10%;
+    padding-left:  10%;
+}
+
+.explore-products, .productpage-ecotags {
+    width: 100%;
 }
 
 .productpage-ecotag {
@@ -1233,13 +1242,14 @@ ALL CREDITS TO @andrewsims
 
 .product-card .card-content .center {
     margin-top: 25px;
+    overflow: hidden;
 }
 
-.explore-products .product-card .card-content{
-    height:250px;
+.explore-products .product-card .card-content, .landing-products .product-card .card-content{
+    height:42vh;
 }
 
-.explore-products .card-image img{
+.explore-products .card-image img, .landing-products .card-image img {
     max-height:110px;
     object-fit:cover;
     border-radius: 10px 10px 0 0;
@@ -1260,16 +1270,21 @@ ALL CREDITS TO @andrewsims
 .user-profile-card{
     /*width: 80%;*/
     width: 28%;
-    height: fit-content;
+    /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
     padding-bottom:2vh;
     margin: 2vh auto;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right:10px;
 }
 
 .user-profile-card{
-    height: 250px;
+    height: 300px;
     display:flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -1295,6 +1310,11 @@ ALL CREDITS TO @andrewsims
     font-size:25px;
     margin-top: 2vh;
     font-weight:bold;
+    overflow: hidden;
+}
+
+.seller-profile-card-content {
+    overflow: hidden;
 }
 
 /*.seller-profile-product-card,
@@ -1578,7 +1598,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 
 .createbody .row {
     margin-bottom: 30px;
-    max-height: 50px;
+    max-height: 9vh;
 }
 
 .createbody .row .input-field > input, .createbody .row .input-field > label,
@@ -1608,7 +1628,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 
 .createproduct_column .input-field{
     margin-bottom: 10px;
-    width:300px;
+    width:50vw;
 }
 
 .btn .character-counter {
@@ -1802,6 +1822,10 @@ input[type=number] {
     margin:25px auto 10px auto;
 }
 
+.message{
+    overflow:hidden;
+}
+
 .seller-inline-flex {
     display:inline-flex; margin-bottom: 15px; margin-top:20px;
 }
@@ -1972,6 +1996,10 @@ input[type=number] {
 
 .productpage-info {
     font-size:25px; font-weight:bold; text-align:center;
+}
+
+.productpage-link {
+    color: var(--text-color-light);
 }
 
 .productpage-info-nobold {

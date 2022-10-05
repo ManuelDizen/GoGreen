@@ -29,29 +29,16 @@ public class ProductController {
 
     private final SellerService sellerService;
 
-    private final EmailService emailService;
-
-    private final ImageService imageService;
-
-    private final UserService userService;
-
     private final EcotagService ecotagService;
-
-    private final SecurityService securityService;
 
     private final OrderService orderService;
 
     
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
-                             final EmailService emailService, final ImageService imageService, final UserService userService,
-                             final SecurityService securityService, EcotagService ecotagService, final OrderService orderService) {
+                             EcotagService ecotagService, final OrderService orderService) {
         this.productService = productService;
         this.sellerService = sellerService;
-        this.emailService = emailService;
-        this.imageService = imageService;
-        this.userService = userService;
-        this.securityService = securityService;
         this.ecotagService = ecotagService;
         this.orderService = orderService;
     }
@@ -136,7 +123,7 @@ public class ProductController {
         }
 
         mav.addObject("product", productObj);
-        mav.addObject("categories", Category.values());
+        mav.addObject("category", Category.getById(productObj.getCategoryId()));
         List<Product> interesting = productService.getInteresting(productObj);
         mav.addObject("interesting", interesting);
 
@@ -147,6 +134,7 @@ public class ProductController {
         mav.addObject("area", Area.getById(seller.get().getAreaId()));
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
+        mav.addObject("categories", Category.values());
         return mav;
     }
 
@@ -161,8 +149,7 @@ public class ProductController {
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
         if(!created) throw new OrderCreationException();
 
-        final ModelAndView mav = new ModelAndView("redirect:/userProfile/true#orders");
-        return mav;
+        return new ModelAndView("redirect:/userProfile/true#orders");
     }
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)

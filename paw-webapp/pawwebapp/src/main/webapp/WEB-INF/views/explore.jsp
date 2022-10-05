@@ -1,20 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: manuel
-  Date: 28/8/22
-  Time: 20:55
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title><spring:message code="explore.title"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="explore.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>

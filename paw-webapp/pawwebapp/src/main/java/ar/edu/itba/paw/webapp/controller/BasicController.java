@@ -20,9 +20,6 @@ import static java.lang.Integer.parseInt;
 @Controller
 public class BasicController {
 
-    // Leave the constructor, as it prevents dependency injection
-    // (https://stackoverflow.com/questions/40620000/spring-autowire-on-properties-vs-constructor)
-
     private final ProductService productService;
 
     @Autowired

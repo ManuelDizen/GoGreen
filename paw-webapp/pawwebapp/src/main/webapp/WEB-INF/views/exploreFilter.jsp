@@ -1,14 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Franco De Simone
-  Date: 22/9/2022
-  Time: 11:52
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <body>
-<%--<div class="explore-filter-title"><spring:message code="explore.filterby"/></div>--%>
 <c:url value="/explore" var="explore"/>
 <form action="${explore}" method="get" id="filter_form" class="filter-form">
     <div class="row">
@@ -21,10 +13,10 @@
         <div class="input-field col s12 filterinputs filter-category">
             <select name="category" style="display: none">
                 <c:if test="${chosenCategory != 0}">
-                    <option value="" disabled><spring:message code="explore.select"/></option>
+                    <option value=""><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:if test="${chosenCategory == 0}">
-                    <option value="" disabled selected><spring:message code="explore.select"/></option>
+                    <option value="" selected><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:forEach items="${categories}" var="category">
                     <c:if test="${chosenCategory != category.id}">
@@ -49,10 +41,10 @@
         <div class="input-field col s12 filterinputs filter-margin">
             <select name="areaId" style="display: none">
                 <c:if test="${chosenArea != 0}">
-                    <option value="" disabled><spring:message code="explore.select"/></option>
+                    <option value=""><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:if test="${chosenArea == 0}">
-                    <option value="" disabled selected><spring:message code="explore.select"/></option>
+                    <option value="" selected><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:forEach items="${areas}" var="area">
                     <c:if test="${chosenArea != area.id}">

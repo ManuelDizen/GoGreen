@@ -14,11 +14,11 @@ public interface SellerService {
     Optional<Seller> findByMail(String mail);
     List<Seller> getAll();
     String getEmail(long userid);
-    public String getName(long userid);
-    public String getSurname(long userid);
+    String getName(long userid);
+    String getSurname(long userid);
 
     Locale getLocale(long userid);
-    public Boolean registerSeller(String firstName, String surname,
+    Boolean registerSeller(String firstName, String surname,
                                   String email, String password, Locale locale, String phone,
                                   String address, long areaId);
 
