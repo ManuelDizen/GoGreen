@@ -4,6 +4,5 @@ public class ProductNotFoundException extends RuntimeException{
 
         private final static String MESSAGE = "Product was not found";
 
-        public String getErrMsg(){return MESSAGE;
-    }
+        public String getErrMsg(){return MESSAGE;}
 }

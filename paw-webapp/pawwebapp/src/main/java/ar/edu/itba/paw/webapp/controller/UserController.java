@@ -5,16 +5,15 @@ import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.form.StockForm;
+import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,13 +47,13 @@ public class UserController {
     public ModelAndView profile(){
         User user = securityService.getLoggedUser();
         if(user == null){
-            throw new IllegalStateException("Only logged users can access their profile");
+            throw new UnauthorizedRoleException();
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
             // It's a seller
-            return new ModelAndView("redirect:/sellerProfile#test1");
+            return new ModelAndView("redirect:/sellerProfile#information");
         }
-        return new ModelAndView("redirect:/userProfile/false#test1");
+        return new ModelAndView("redirect:/userProfile/false#information");
     }
 
 
@@ -64,7 +63,7 @@ public class UserController {
             @PathVariable("fromSale") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new IllegalStateException("no lo ovaf dkfds");
+        if(!user.isPresent()) throw new UserNotFoundException();
         mav.addObject("user", user.get());
 
         List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
@@ -75,28 +74,26 @@ public class UserController {
         mav.addObject("pages", orderPages);
         mav.addObject("orders", orderPages.get(page-1));
         mav.addObject("fromSale", fromSale);
+        mav.addObject("users", userService.getAll());
+        mav.addObject("sellers", sellerService.getAll());
         return mav;
     }
 
     @RequestMapping(value="/sellerProfile")
     public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
-                                      @RequestParam(name="pageO", defaultValue="1") final int pageO,
-                                      @ModelAttribute("stockForm") final StockForm form){
+                                      @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new IllegalStateException("No se encntró user");
+        if(!user.isPresent()) throw new UserNotFoundException();
 
         Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
-        if(!seller.isPresent()) throw new IllegalStateException("No se encontró seller");
+        if(!seller.isPresent()) throw new UserNotFoundException();
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
         List<List<Order>> orderPages = orderService.divideIntoPages(orders);
         List<Product> products = productService.findBySeller(seller.get().getId());
         List<List<Product>> productPages = productService.divideIntoPages(products);
-
-        // TODO: Acá faltaría además buscar los productos que vende un seller,
-        //  y las órdenes que tiene pendientes (para esto hay que agrandar la BDD)
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
@@ -107,30 +104,6 @@ public class UserController {
         mav.addObject("orders", orderPages.get(pageO-1));
         mav.addObject("products", productPages.get(pageP-1));
         return mav;
-    }
-
-    @RequestMapping(value="/sellerProfile/products", method= RequestMethod.GET)
-    public ModelAndView sellerProducts(){
-        final ModelAndView mav = new ModelAndView("/sellerProducts");
-        return mav;
-    }
-
-    @RequestMapping(value="/updateStock/{prodId:[0-9]+}", method=RequestMethod.POST)
-    public ModelAndView updateStock(
-            @PathVariable("prodId") final long prodId,
-            @Valid @ModelAttribute("stockForm") final StockForm form,
-            final BindingResult errors
-    ){
-        if(errors.hasErrors()){
-            //TODO: Display form errors
-            return sellerProfile(1,1,form);
-        }
-
-        int newStock = parseInt(form.getNewStock());
-
-        Boolean success = productService.attemptUpdate(prodId, newStock);
-        if(!success) throw new IllegalStateException("Stock update could not go through");
-        return new ModelAndView("redirect:/sellerProfile");
     }
 
 }

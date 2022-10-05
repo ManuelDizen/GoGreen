@@ -15,11 +15,6 @@ create table if not exists sellers(
     foreign key(userId) references users(id) on delete cascade
     );
 
-create table if not exists category(
-    id serial not null unique primary key,
-    name varchar(255) unique not null
-);
-
 create table if not exists products(
     id serial primary key,
     sellerId integer not null,
@@ -28,8 +23,7 @@ create table if not exists products(
     description varchar(1024) not null,
     stock integer not null,
     price integer not null,
-    foreign key (sellerId) references sellers(id),
-    foreign key (categoryId) references category(id)
+    foreign key (sellerId) references sellers(id)
     );
 
 create table if not exists tags_to_products(
@@ -50,8 +44,13 @@ alter table products add unique (name);
 
 ALTER TABLE products ADD FOREIGN KEY (sellerId) REFERENCES sellers(id) ON DELETE CASCADE;
 
-alter table users add column if not exists imageId integer default null;
-alter table users add foreign key (imageId) references images(id) on delete set null;
+/*alter table users add column if not exists imageId integer default null;
+alter table users add foreign key (imageId) references images(id) on delete set null;*/
 
 ALTER TABLE users DROP COLUMN IF EXISTS username;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS locale varchar(5) default 'es';
+
+ALTER TABLE sellers ADD COLUMN IF NOT EXISTS areaId integer default null;
+
+insert into images (id, source)
+select 0, null where not exists (select 1 from images where id = 0);

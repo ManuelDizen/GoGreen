@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface EcotagService {
 
-    public void addTag(Ecotag tag, long productId);
+    void addTag(Ecotag tag, long productId);
 
-    public List<Ecotag> getTagFromProduct(long productId);
+    List<Ecotag> getTagFromProduct(long productId);
 
-    public List<Ecotag> filterByTags(boolean[] ecotags);
+    List<Ecotag> filterByTags(String[] ecoStrings, boolean[] ecotags);
+
 
 }

@@ -11,4 +11,4 @@ create table if not exists orders(
     price integer not null,
     datetime timestamp not null,
     message varchar(1024)
-    );
+);

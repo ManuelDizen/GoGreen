@@ -6,11 +6,11 @@ import ar.edu.itba.paw.models.User;
 import java.util.List;
 
 public interface SecurityService {
-    public User getLoggedUser();
-    public String getLoggedEmail();
-    public String getLoggedFirstName();
-    public String getLoggedSurname();
+    User getLoggedUser();
+    String getLoggedEmail();
+    String getLoggedFirstName();
+    String getLoggedSurname();
 
-    public List<Role> getLoggedUserRoles();
-    public Boolean loggedUserIsSeller();
+    List<Role> getLoggedUserRoles();
+    Boolean loggedUserIsSeller();
 }

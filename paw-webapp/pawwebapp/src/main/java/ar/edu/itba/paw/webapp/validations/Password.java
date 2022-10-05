@@ -20,8 +20,7 @@ import javax.validation.Payload;
 @Documented
 @Constraint(validatedBy = {PasswordValidator.class})
 public @interface Password {
-    String message() default "La contraseña debe tener entre 8 y 20 caracteres. Debe incluir al menos 1 número," +
-            " 1 mayúscula, y una minúscula.";
+    String message() default "";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
 

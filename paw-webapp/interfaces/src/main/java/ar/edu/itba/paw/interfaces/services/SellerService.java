@@ -8,17 +8,18 @@ import java.util.Optional;
 
 public interface SellerService {
 
-    Seller create(long userid, String phone, String address);
+    Seller create(long userid, String phone, String address, long areaId);
     Optional<Seller> findById(long id);
     Optional<Seller> findByUserId(long userId);
     Optional<Seller> findByMail(String mail);
-    List<Seller> findByName(String name);
-    Optional<Seller> findByPhone(String phone);
     List<Seller> getAll();
     String getEmail(long userid);
-    public String getName(long userid);
-    public String getSurname(long userid);
+    String getName(long userid);
+    String getSurname(long userid);
 
     Locale getLocale(long userid);
+    Boolean registerSeller(String firstName, String surname,
+                                  String email, String password, Locale locale, String phone,
+                                  String address, long areaId);
 
 }

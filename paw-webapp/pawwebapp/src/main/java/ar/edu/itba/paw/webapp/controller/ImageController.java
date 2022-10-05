@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.exceptions.ImageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class ImageController {
     @ResponseBody
     public byte[] image(@PathVariable final long imageId){
         Optional<Image> image = imageService.getById(imageId);
-        if(!image.isPresent()) throw new IllegalStateException("La imagen no fue encontrada");
+        if(!image.isPresent()) throw new ImageNotFoundException();
         return image.get().getSource();
     }
 }

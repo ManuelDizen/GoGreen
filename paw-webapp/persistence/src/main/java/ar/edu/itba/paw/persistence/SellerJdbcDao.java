@@ -22,7 +22,8 @@ public class SellerJdbcDao implements SellerDao {
                     resultSet.getLong("id"),
                     resultSet.getLong("userid"),
                     resultSet.getString("phone"),
-                    resultSet.getString("address")
+                    resultSet.getString("address"),
+                    resultSet.getLong("areaid")
             );
     private final JdbcTemplate template;
     private final SimpleJdbcInsert insert;
@@ -36,13 +37,14 @@ public class SellerJdbcDao implements SellerDao {
     }
 
     @Override
-    public Seller create(long userid, String phone, String address) {
+    public Seller create(long userid, String phone, String address, long areaId) {
         final Map<String, Object> values = new HashMap<>();
         values.put("userid", userid);
         values.put("phone", phone);
         values.put("address", address);
+        values.put("areaid", areaId);
         final Number sellerId = insert.executeAndReturnKey(values);
-        return new Seller(sellerId.longValue(), userid, phone, address);
+        return new Seller(sellerId.longValue(), userid, phone, address, areaId);
     }
 
     @Override
@@ -63,20 +65,6 @@ public class SellerJdbcDao implements SellerDao {
         return template.query("SELECT * from sellers where userId = " +
                         "(SELECT id from users where email = ?)",
                 new Object[]{mail}, SELLER_ROW_MAPPER).stream().findFirst();
-    }
-
-    @Override
-    public List<Seller> findByName(String name) {
-        return template.query("SELECT * from sellers where userId = " +
-                        "(SELECT id FROM users where firstName = ?)",
-                new Object[]{name}, SELLER_ROW_MAPPER);
-    }
-
-    @Override
-    public Optional<Seller> findByPhone(String phone) {
-        return template.query("SELECT * from sellers where phone = ?",
-                new Object[]{phone}, SELLER_ROW_MAPPER).stream().findFirst();
-
     }
 
     @Override

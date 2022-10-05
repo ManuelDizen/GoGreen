@@ -6,6 +6,8 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserRole;
+import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,18 +38,14 @@ public class GoGreenUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         final User user = us.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("No se encontró al usuario " + email));
+                UserNotFoundException::new);
         Collection<GrantedAuthority> auths = new ArrayList<>();
         List<UserRole> userToRoleList = urs.getById(user.getId());
         for(UserRole ur : userToRoleList){
             Optional<Role> role = rs.getById(ur.getRoleId());
             if(!role.isPresent())
-                throw new IllegalStateException("No hay role con ese ID");
+                throw new RoleNotFoundException();
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
-            //Not necessary to add ToUpper() as roles are already in uppercase on the DB
-
-            //TODO: Acá todavía falta otorgarle los permisos permitidos a los usuarios
-            // dados por los roles
         }
         if(userToRoleList.isEmpty()){
             //By default, users are buyers unless stated otherwise
@@ -55,10 +53,9 @@ public class GoGreenUserDetailsService implements UserDetailsService {
             // así no entra acá equivocadamente. Esto es importantisimo.
             Optional<Role> role = rs.getByName("BUYER");
             if(!role.isPresent()){
-                throw new IllegalStateException("No se encontró el rol");
+                throw new RoleNotFoundException();
             }
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
-            // TODO: Acá agregar todos los permisos que tiene también
             urs.create(user.getId(), role.get().getId());
         }
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), auths);

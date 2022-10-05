@@ -7,6 +7,7 @@ import ar.edu.itba.paw.webapp.validations.ValidPhone;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -48,6 +49,10 @@ public class SellerForm {
     @NotEmpty
     @ValidPhone
     private String phone;
+
+    @NotNull
+    @Min(value=1)
+    private long area;
 
     public String getSurname() {
         return surname;
@@ -103,5 +108,13 @@ public class SellerForm {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public long getArea() {
+        return area;
+    }
+
+    public void setArea(long area) {
+        this.area = area;
     }
 }

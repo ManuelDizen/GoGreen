@@ -25,7 +25,7 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
         boolean isValid = Objects.equals(firstVal, matchingVal);
         if (!isValid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Las contraseñas deben coincidir.")
+            context.buildConstraintViolationWithTemplate("Passwords must match")
                     .addNode(matching).addConstraintViolation();
         }
         return isValid;
