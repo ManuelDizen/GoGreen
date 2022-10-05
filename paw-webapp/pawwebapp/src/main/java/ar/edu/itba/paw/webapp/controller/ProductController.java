@@ -91,8 +91,7 @@ public class ProductController {
         mav.addObject("boolTags", boolTags);
 
         List<Ecotag> tagsToFilter = ecotagService.filterByTags(strings, boolTags);
-        List<Ecotag> ecotagList = Arrays.asList(Ecotag.values());
-        mav.addObject("ecotagList", ecotagList);
+        mav.addObject("ecotagList", Ecotag.values());
 
         //Product filter
         List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
