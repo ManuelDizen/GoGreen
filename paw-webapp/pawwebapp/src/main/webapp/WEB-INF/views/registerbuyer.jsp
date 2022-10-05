@@ -1,16 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<%--
-  Created by IntelliJ IDEA.
-  User: manuel
-  Date: 10/9/22
-  Time: 09:56
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <%@ include file="header.jsp"%>
     <title><spring:message code="registerbuyer.title"/></title>
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

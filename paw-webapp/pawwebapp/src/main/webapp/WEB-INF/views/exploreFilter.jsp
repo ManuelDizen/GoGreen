@@ -1,14 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Franco De Simone
-  Date: 22/9/2022
-  Time: 11:52
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <body>
-<%--<div class="explore-filter-title"><spring:message code="explore.filterby"/></div>--%>
 <c:url value="/explore" var="explore"/>
 <form action="${explore}" method="get" id="filter_form" class="filter-form">
     <div class="row">

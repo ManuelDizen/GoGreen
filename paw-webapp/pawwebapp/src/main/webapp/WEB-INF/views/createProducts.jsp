@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Franco De Simone
-  Date: 11/9/2022
-  Time: 11:14
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
@@ -15,7 +8,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="<c:url value="resources/images/logo.png"/>"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
-
 </head>
 <body>
     <%@ include file="navbar.jsp"%>

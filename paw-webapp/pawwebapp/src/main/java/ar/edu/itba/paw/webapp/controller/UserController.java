@@ -7,16 +7,13 @@ import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.StockForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,8 +81,7 @@ public class UserController {
 
     @RequestMapping(value="/sellerProfile")
     public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
-                                      @RequestParam(name="pageO", defaultValue="1") final int pageO,
-                                      @ModelAttribute("stockForm") final StockForm form){
+                                      @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());

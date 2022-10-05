@@ -110,7 +110,6 @@ public class SellerForm {
         this.firstName = firstName;
     }
 
-    //Agregué Area con getter y setter
     public long getArea() {
         return area;
     }
