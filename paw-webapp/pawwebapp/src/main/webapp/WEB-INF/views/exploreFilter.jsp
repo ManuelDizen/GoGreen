@@ -13,10 +13,10 @@
         <div class="input-field col s12 filterinputs filter-category">
             <select name="category" style="display: none">
                 <c:if test="${chosenCategory != 0}">
-                    <option value="" disabled><spring:message code="explore.select"/></option>
+                    <option value=""><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:if test="${chosenCategory == 0}">
-                    <option value="" disabled selected><spring:message code="explore.select"/></option>
+                    <option value="" selected><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:forEach items="${categories}" var="category">
                     <c:if test="${chosenCategory != category.id}">
@@ -41,10 +41,10 @@
         <div class="input-field col s12 filterinputs filter-margin">
             <select name="areaId" style="display: none">
                 <c:if test="${chosenArea != 0}">
-                    <option value="" disabled><spring:message code="explore.select"/></option>
+                    <option value=""><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:if test="${chosenArea == 0}">
-                    <option value="" disabled selected><spring:message code="explore.select"/></option>
+                    <option value="" selected><spring:message code="explore.select"/></option>
                 </c:if>
                 <c:forEach items="${areas}" var="area">
                     <c:if test="${chosenArea != area.id}">
