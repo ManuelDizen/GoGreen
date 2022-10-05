@@ -72,6 +72,16 @@
                 <c:if test="${product.imageId == 0}">
                     <div class="col s12 product-information no-margin">
                         <div class="productpage-info"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="separate productpage-info-nobold" style="font-size:18px;">
+                            <b><spring:message code="createproduct.form.description"/></b>
+                            <c:out value="${': '}${product.description}"/>
+                        </div>
+                        <div class="separate productpage-info">
+                            <i class="tiny material-icons">category</i>
+                            <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                                <spring:message code="${category.name}"/>
+                            </a>
+                        </div>
                         <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
                             <c:out value="${' '}${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
