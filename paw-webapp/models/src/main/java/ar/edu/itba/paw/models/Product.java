@@ -1,24 +1,51 @@
 package ar.edu.itba.paw.models;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name="products")
 public class Product {
 
-    private long productId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_id_seq")
+    @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq", allocationSize = 1)
+    private Long id;
+
+    @ManyToOne(optional=false)
+    @JoinColumn(name="sellers_id", nullable=false)
     private long sellerId;
+
+    @Column(nullable = false)
     private long categoryId;
+
+    @Column(unique = true, nullable = false, length=255)
     private String name;
+
+    @Column(length=1023)
     private String description;
+
+    @Column(nullable=false)
     private int stock;
+    @Column(nullable=false)
     private Integer price;
-    private List<Ecotag> tagList;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name="tags_to_products",
+            joinColumns = @JoinColumn(name="products_id"),
+            inverseJoinColumns = @JoinColumn(name="ecotag_id") //TODO: Así funciona para usar un field de enum?
+    )
+    private Set<Ecotag> tagList = new HashSet<>();
 
     private long imageId;
 
-    public Product(long productId, long sellerId, long categoryId, String name, String description, int stock,
+    public Product(Long id, long sellerId, long categoryId, String name, String description, int stock,
                    Integer price, long imageId) {
-        this.productId = productId;
+        this.id = id;
         this.sellerId = sellerId;
         this.categoryId = categoryId;
         this.name = name;
@@ -28,8 +55,13 @@ public class Product {
         this.imageId = imageId;
     }
 
+    public Product(long sellerId, long categoryId, String name, String description, int stock,
+                   Integer price, long imageId) {
+        this(null, sellerId, categoryId, name, description, stock, price, imageId);
+    }
+
     public long getProductId() {
-        return productId;
+        return id;
     }
 
     public String getName() {
@@ -64,8 +96,8 @@ public class Product {
         this.price = price;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setProductId(long id) {
+        this.id = id;
     }
 
     public long getSellerId() {
@@ -91,11 +123,11 @@ public class Product {
         this.imageId = imageId;
     }
 
-    public List<Ecotag> getTagList() {
+    public Set<Ecotag> getTagList() {
         return tagList;
     }
 
-    public void setTagList(List<Ecotag> tagList) {
+    public void setTagList(Set<Ecotag> tagList) {
         this.tagList = tagList;
     }
 
@@ -104,11 +136,11 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return productId == product.productId;
+        return Objects.equals(id, product.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId);
+        return Objects.hash(id);
     }
 }

@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class RoleJdbcDao implements RoleDao {
 
     private final JdbcTemplate template;

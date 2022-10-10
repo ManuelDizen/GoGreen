@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
 public class OrderJdbcDao implements OrderDao {
 
     private static final RowMapper<Order> ORDER_ROW_MAPPER = (resultSet, rowNum) -> new Order(

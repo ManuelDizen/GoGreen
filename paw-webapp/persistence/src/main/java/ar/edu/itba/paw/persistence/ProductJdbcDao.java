@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.*;
 
-@Repository
-
 public class ProductJdbcDao implements ProductDao {
 
     private static final RowMapper<Product> PRODUCT_ROW_MAPPER =
