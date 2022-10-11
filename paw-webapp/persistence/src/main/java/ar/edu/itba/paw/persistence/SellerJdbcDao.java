@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
 public class SellerJdbcDao implements SellerDao {
 
     private static final RowMapper<Seller> SELLER_ROW_MAPPER =
