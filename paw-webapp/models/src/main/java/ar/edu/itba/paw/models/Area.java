@@ -2,7 +2,7 @@ package ar.edu.itba.paw.models;
 
 public enum Area {
 
-    AGRONOMIA(70, "Agronomía"),
+    AGRONOMIA(0, "Agronomía"),
     ALMAGRO(1, "Almagro"),
     ALMIRANTE_BROWN(2, "Almirante Brown"),
     AVELLANEDA(3, "Avellaneda"),
@@ -73,7 +73,7 @@ public enum Area {
     VILLA_DEL_PARQUE(68, "Villa del Parque"),
     VELEZ_SARSFIELD(69, "Vélez Sársfield");
 
-    private final long id;
+    private final Long id;
 
     private final String name;
 
@@ -82,7 +82,7 @@ public enum Area {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

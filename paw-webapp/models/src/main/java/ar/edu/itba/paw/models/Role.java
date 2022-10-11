@@ -9,17 +9,23 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_id_seq")
     @SequenceGenerator(name="roles_id_seq", sequenceName = "roles_id_seq", allocationSize = 1)
-    private final long id;
+    private Long id;
 
     @Column(nullable = false, length = 20)
-    private final String name;
+    private String name;
 
-    public Role(long id, String name) {
+    Role(){}
+
+    public Role(String name){
+        this(null, name);
+    }
+
+    public Role(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

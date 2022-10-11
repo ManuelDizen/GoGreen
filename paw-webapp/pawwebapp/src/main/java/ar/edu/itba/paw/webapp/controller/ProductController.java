@@ -49,7 +49,7 @@ public class ProductController {
             @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1") final Integer maxPrice,
-            @RequestParam(name="areaId", defaultValue="0") final long areaId,
+            @RequestParam(name="areaId", defaultValue="-1") final long areaId,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction

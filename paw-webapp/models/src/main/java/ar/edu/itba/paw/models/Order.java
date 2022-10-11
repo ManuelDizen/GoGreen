@@ -46,6 +46,8 @@ public class Order {
     private String message;
     private String parsedDateTime;
 
+    Order(){}
+
     public Order(String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
                  Integer amount, Integer price, LocalDateTime dateTime, String message){

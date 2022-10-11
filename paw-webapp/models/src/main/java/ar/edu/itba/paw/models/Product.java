@@ -15,7 +15,7 @@ public class Product {
     @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
     @JoinColumn(name="sellers_id", nullable=false)
     private long sellerId;
 
@@ -41,7 +41,11 @@ public class Product {
     )
     private Set<Ecotag> tagList = new HashSet<>();
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name="images_id")
     private long imageId;
+
+    Product(){}
 
     public Product(Long id, long sellerId, long categoryId, String name, String description, int stock,
                    Integer price, long imageId) {

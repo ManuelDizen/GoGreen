@@ -128,7 +128,7 @@ public class ProductJdbcDao implements ProductDao {
            query.append("AND price <= ?");
            args.add(maxPrice);
         }
-        if(areaId > 0){
+        if(areaId > -1){
             query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = ?)");
             args.add(areaId);
         }
