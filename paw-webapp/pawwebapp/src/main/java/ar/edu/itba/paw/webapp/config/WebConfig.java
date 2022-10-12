@@ -193,5 +193,4 @@ public class WebConfig {
         return new JpaTransactionManager(emf);
     }
 
-
 }
