@@ -14,7 +14,6 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final static int PAGE_SIZE = 6;
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SecurityService securityService;
@@ -104,16 +103,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> divideIntoPages(List<Product> list) {
+    public List<List<Product>> divideIntoPages(List<Product> list, int pageSize) {
         List<List<Product>> pageList = new ArrayList<>();
 
         int aux = 1;
-        while(aux <= list.size()/PAGE_SIZE) {
-            pageList.add(list.subList((aux-1)*PAGE_SIZE, aux*PAGE_SIZE));
+        while(aux <= list.size()/pageSize) {
+            pageList.add(list.subList((aux-1)*pageSize, aux*pageSize));
             aux++;
         }
-        if(list.size() % PAGE_SIZE != 0)
-            pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
+        if(list.size() % pageSize != 0)
+            pageList.add(list.subList((aux-1)*pageSize, list.size()));
         if(list.size() == 0) pageList.add(new ArrayList<>());
         return pageList;
     }
@@ -123,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
-        return divideIntoPages(productList);
+        return divideIntoPages(productList, 6);
     }
 
     @Transactional
