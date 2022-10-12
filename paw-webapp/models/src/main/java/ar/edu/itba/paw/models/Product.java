@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="products")
@@ -39,7 +36,7 @@ public class Product {
             joinColumns = @JoinColumn(name="products_id"),
             inverseJoinColumns = @JoinColumn(name="ecotag_id") //TODO: Así funciona para usar un field de enum?
     )
-    private Set<Ecotag> tagList = new HashSet<>();
+    private List<Ecotag> tagList = new ArrayList<>();
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="images_id")
@@ -127,11 +124,11 @@ public class Product {
         this.imageId = imageId;
     }
 
-    public Set<Ecotag> getTagList() {
+    public List<Ecotag> getTagList() {
         return tagList;
     }
 
-    public void setTagList(Set<Ecotag> tagList) {
+    public void setTagList(List<Ecotag> tagList) {
         this.tagList = tagList;
     }
 

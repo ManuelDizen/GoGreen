@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
 public class EcotagJdbcDao implements EcotagDao {
 
     private static final RowMapper<Ecotag> ECOTAG_ROW_MAPPER =

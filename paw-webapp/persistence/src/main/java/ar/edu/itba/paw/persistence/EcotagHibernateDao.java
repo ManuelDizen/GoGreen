@@ -2,14 +2,17 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.EcotagDao;
 import ar.edu.itba.paw.models.Ecotag;
+import ar.edu.itba.paw.models.Product;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 //TODO: Is this DAO necessary? "add" method should never be used?
-
+@Repository
 public class EcotagHibernateDao implements EcotagDao {
 
     @PersistenceContext
@@ -21,10 +24,9 @@ public class EcotagHibernateDao implements EcotagDao {
 
     @Override
     public List<Ecotag> getTagsFromProduct(long productId) {
-        /*final TypedQuery<Ecotag> query = em.createQuery("FROM tags_to_products WHERE productId = :productId",
-                Ecotag.class);
-        query.setParameter("productId", productId);
-        return query.getResultList();*/
+        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE productId = :productId", Product.class);
+        Optional<Product> product = query.getResultList().stream().findFirst();
+        if(product.isPresent()) return product.get().getTagList();
         return null;
     }
 }

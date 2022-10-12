@@ -91,22 +91,22 @@ public class WebConfig {
         return ds;
     }
 
-    @Bean
+    /*@Bean
     public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
         final DataSourceInitializer dsi = new DataSourceInitializer();
 
         dsi.setDataSource(ds);
         dsi.setDatabasePopulator(databasePopulator());
         return dsi;
-    }
+    }*/
 
-    private DatabasePopulator databasePopulator() {
+    /*private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
         dbp.addScript(productsSql);
         dbp.addScript(rolesSql);
         dbp.addScript(ordersSql);
         return dbp;
-    }
+    }*/
 
     @Bean
     public JavaMailSender mailSender() {
@@ -168,13 +168,7 @@ public class WebConfig {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        // multipartResolver.setMaxUploadSize(100000);
         return multipartResolver;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
     }
 
     @Bean
@@ -192,6 +186,11 @@ public class WebConfig {
         properties.setProperty("format_sql", "true");
         factoryBean.setJpaProperties(properties);
         return factoryBean;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
 
