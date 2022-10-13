@@ -13,33 +13,33 @@ public class UserRole {
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="users_id", nullable = false)
-    private long userId;
+    private User user;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="roles_id", nullable = false)
-    private long roleId;
+    private Role role;
 
     UserRole(){}
 
-    public UserRole(long userId, long roleId){
-        this(null, userId, roleId);
+    public UserRole(User user, Role role){
+        this(null, user, role);
     }
 
-    public UserRole(Long id, long userId, long roleId){
+    public UserRole(Long id, User user, Role role){
         this.id = id;
-        this.userId = userId;
-        this.roleId = roleId;
+        this.user = user;
+        this.role = role;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public long getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 }

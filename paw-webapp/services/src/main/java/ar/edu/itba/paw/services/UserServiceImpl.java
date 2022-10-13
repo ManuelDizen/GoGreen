@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) return false;
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent()) throw new RoleNotFoundException();
-        userRoleService.create(user.getId(), role.get().getId());
+        userRoleService.create(user, role.get());
         emailService.registration(user, locale);
         return true;
     }

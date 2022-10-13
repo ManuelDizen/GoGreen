@@ -34,13 +34,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description,
+    public Product create(Seller seller, long categoryId, String name, String description,
                           int stock, Integer price, byte[] image) {
-        long imgId = 0;
+        Image img = null;
         if(image != null && image.length > 0){
-            imgId = imageService.create(image).getId();
+            img = imageService.create(image);
         }
-        return productDao.create(sellerId, categoryId, name, description, stock, price, imgId);
+        return productDao.create(seller, categoryId, name, description, stock, price, img);
     }
 
     @Override
@@ -161,9 +161,9 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> prodToDelete = getById(prodId);
         if(prodToDelete.isPresent()){
             Product prod = prodToDelete.get();
-            Optional<Seller> prodOwner = sellerService.findById(prod.getSellerId());
+            Optional<Seller> prodOwner = sellerService.findById(prod.getSeller().getId());
             if(!prodOwner.isPresent()) throw new UserNotFoundException();
-            Optional<User> userProdOwner = userService.findById(prodOwner.get().getUserId());
+            Optional<User> userProdOwner = userService.findById(prodOwner.get().getUser().getId());
             if(!userProdOwner.isPresent()) throw new UserNotFoundException();
 
             return userProdOwner.get().getEmail().equals(user.getEmail());
@@ -226,7 +226,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getInteresting(Product product) {
         List<Product> toReturn = new ArrayList<>();
-        List<Product> bySellerAndCategory = findBySeller(product.getSellerId());
+        List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
         for(Product prod : bySellerAndCategory) {
             if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
                 toReturn.add(prod);
@@ -238,7 +238,7 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if(toReturn.size() < 3) {
-            List<Product> bySeller = findBySeller(product.getSellerId());
+            List<Product> bySeller = findBySeller(product.getSeller().getId());
             addIfNotPresent(toReturn, bySeller, product);
         }
         if(toReturn.size() < 3) {
@@ -281,7 +281,7 @@ public class ProductServiceImpl implements ProductService {
         if(user == null)  throw new UnauthorizedRoleException();
         Optional<Seller> seller = sellerService.findByUserId(user.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
-        Product product = create(seller.get().getId(), categoryId, name, description, stock, price, image);
+        Product product = create(seller.get(), categoryId, name, description, stock, price, image);
         for (long id : ecotagIds) {
             ecotagService.addTag(Ecotag.getById(id), product.getProductId());
         }

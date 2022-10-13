@@ -42,7 +42,7 @@ public class GoGreenUserDetailsService implements UserDetailsService {
         Collection<GrantedAuthority> auths = new ArrayList<>();
         List<UserRole> userToRoleList = urs.getById(user.getId());
         for(UserRole ur : userToRoleList){
-            Optional<Role> role = rs.getById(ur.getRoleId());
+            Optional<Role> role = rs.getById(ur.getRole().getId());
             if(!role.isPresent())
                 throw new RoleNotFoundException();
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
@@ -56,7 +56,7 @@ public class GoGreenUserDetailsService implements UserDetailsService {
                 throw new RoleNotFoundException();
             }
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
-            urs.create(user.getId(), role.get().getId());
+            urs.create(user, role.get());
         }
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), auths);
     }

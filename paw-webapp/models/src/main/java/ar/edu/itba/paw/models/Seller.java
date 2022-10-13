@@ -13,7 +13,7 @@ public class Seller {
 
     @OneToOne(optional = false, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name="users_id")
-    private long userid;
+    private User user;
 
     @Column(nullable=false, length = 20)
     private String phone;
@@ -22,21 +22,21 @@ public class Seller {
     private String address;
 
     @Column(name = "areaid")
-    @Enumerated(EnumType.ORDINAL)
+    //@Enumerated(EnumType.ORDINAL)
     //TODO: This should work except for AGRONOMÍA, check for solutions
     //  Update: Changed default value of areaid to -1, and changed agronomia ID to 0 (now matches ordinal)
     private long areaId;
 
     Seller(){}
 
-    public Seller(long userId, String phone, String address, long areaId){
-        this(null, userId, phone, address, areaId);
+    public Seller(User user, String phone, String address, long areaId){
+        this(null, user, phone, address, areaId);
     }
 
 
-    public Seller(Long id, long userid, String phone, String address, long areaId) {
+    public Seller(Long id, User user, String phone, String address, long areaId) {
         this.id = id;
-        this.userid = userid;
+        this.user = user;
         this.phone = phone;
         this.address = address;
         this.areaId = areaId;
@@ -46,7 +46,7 @@ public class Seller {
         return id;
     }
 
-    public long getUserId() { return userid; }
+    public User getUser() { return user; }
 
     public String getPhone() {
         return phone;

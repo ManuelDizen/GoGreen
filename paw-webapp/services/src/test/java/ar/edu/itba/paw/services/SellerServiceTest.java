@@ -37,7 +37,7 @@ public class SellerServiceTest {
     private SellerDao sellerDao;
 
 
-    @Test
+    /*@Test
     public void testCreate() {
 
         Mockito.when(sellerDao.create(eq(USERID), eq(PHONE), eq(ADDRESS), eq(AREAID))).thenReturn(new Seller(SELLERID, USERID, PHONE, ADDRESS, AREAID));
@@ -49,7 +49,7 @@ public class SellerServiceTest {
         assertEquals(ADDRESS, seller.getAddress());
         assertEquals(AREAID, seller.getAreaId());
 
-    }
+    }*/
 
 
 }

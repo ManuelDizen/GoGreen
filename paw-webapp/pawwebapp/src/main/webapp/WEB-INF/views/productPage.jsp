@@ -21,10 +21,10 @@
             <h4 class="product-page-title">
                 <c:out value="${product.name}"/></h4>
             <div class="row no-margin">
-                <c:if test="${product.imageId != 0}">
+                <c:if test="${product.image != null}">
                     <div class="col s6">
                         <div class = "productpage-image-container productpage-img">
-                            <img class="materialboxed alt" src="<c:url value="/image/${product.imageId}"/>" alt="${product.name}">
+                            <img class="materialboxed alt" src="<c:url value="/image/${product.image.id}"/>" alt="${product.name}">
                         </div>
                     </div>
                     <div class="col s6 product-information">

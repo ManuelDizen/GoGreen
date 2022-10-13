@@ -12,9 +12,10 @@ public class Product {
     @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(optional=false, fetch=FetchType.LAZY)
-    @JoinColumn(name="sellers_id", nullable=false)
-    private long sellerId;
+    @ManyToOne(optional=false)
+    @MapsId("sellers_id")
+    @JoinColumn(name="sellers_id", nullable = false)
+    private Seller seller;
 
     @Column(nullable = false)
     private long categoryId;
@@ -30,35 +31,41 @@ public class Product {
     @Column(nullable=false)
     private Integer price;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    /*@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name="tags_to_products",
             joinColumns = @JoinColumn(name="products_id"),
             inverseJoinColumns = @JoinColumn(name="ecotag_id") //TODO: Así funciona para usar un field de enum?
-    )
-    private List<Ecotag> tagList = new ArrayList<>();
+    )*/
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ElementCollection(targetClass = Ecotag.class)
+    @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "products_id"))
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "ecotag_id")
+    private Set<Ecotag> tagList = new HashSet<>();
+
+    @ManyToOne(optional=false)
+    @MapsId("images_id")
     @JoinColumn(name="images_id")
-    private long imageId;
+    private Image image;
 
     Product(){}
 
-    public Product(Long id, long sellerId, long categoryId, String name, String description, int stock,
-                   Integer price, long imageId) {
+    public Product(Long id, Seller seller, long categoryId, String name, String description, int stock,
+                   Integer price, Image image) {
         this.id = id;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
-        this.imageId = imageId;
+        this.image = image;
     }
 
-    public Product(long sellerId, long categoryId, String name, String description, int stock,
-                   Integer price, long imageId) {
-        this(null, sellerId, categoryId, name, description, stock, price, imageId);
+    public Product(Seller seller, long categoryId, String name, String description, int stock,
+                   Integer price, Image image) {
+        this(null, seller, categoryId, name, description, stock, price, image);
     }
 
     public long getProductId() {
@@ -101,12 +108,12 @@ public class Product {
         this.id = id;
     }
 
-    public long getSellerId() {
-        return sellerId;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setSellerId(long sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public long getCategoryId() {
@@ -117,18 +124,18 @@ public class Product {
         this.categoryId = categoryId;
     }
 
-    public long getImageId() {
-        return imageId;
+    public Image getImage() {
+        return image;
     }
-    public void setImageId(long imageId) {
-        this.imageId = imageId;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public List<Ecotag> getTagList() {
+    public Set<Ecotag> getTagList() {
         return tagList;
     }
 
-    public void setTagList(List<Ecotag> tagList) {
+    public void setTagList(Set<Ecotag> tagList) {
         this.tagList = tagList;
     }
 

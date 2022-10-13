@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.UserRoleDao;
+import ar.edu.itba.paw.models.Role;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserRole;
 import org.springframework.stereotype.Repository;
 
@@ -26,8 +28,8 @@ public class UserRoleHibernateDao implements UserRoleDao {
     }
 
     @Override
-    public UserRole create(long userId, long roleId) {
-        final UserRole userRole = new UserRole(userId, roleId);
+    public UserRole create(User user, Role role) {
+        final UserRole userRole = new UserRole(user, role);
         em.persist(userRole);
         return userRole;
     }

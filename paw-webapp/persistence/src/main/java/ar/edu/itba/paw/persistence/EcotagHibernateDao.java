@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 //TODO: Is this DAO necessary? "add" method should never be used?
 @Repository
@@ -23,7 +24,7 @@ public class EcotagHibernateDao implements EcotagDao {
     }
 
     @Override
-    public List<Ecotag> getTagsFromProduct(long productId) {
+    public Set<Ecotag> getTagsFromProduct(long productId) {
         final TypedQuery<Product> query = em.createQuery("FROM Product WHERE productId = :productId", Product.class);
         Optional<Product> product = query.getResultList().stream().findFirst();
         if(product.isPresent()) return product.get().getTagList();

@@ -83,7 +83,7 @@ public class SecurityServiceImpl implements SecurityService {
         if(user == null) return roles;
         long userId = user.getId();
         for(UserRole ur : userRoleService.getById(userId)){
-            Optional<Role> role = roleService.getById(ur.getRoleId());
+            Optional<Role> role = roleService.getById(ur.getRole().getId());
             if(!role.isPresent()) throw new RoleNotFoundException();
             roles.add(role.get());
         }

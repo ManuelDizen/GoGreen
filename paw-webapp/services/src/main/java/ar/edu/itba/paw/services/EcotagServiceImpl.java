@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 
@@ -30,7 +31,7 @@ public class EcotagServiceImpl implements EcotagService {
     }
 
     @Override
-    public List<Ecotag> getTagFromProduct(long productId) {
+    public Set<Ecotag> getTagFromProduct(long productId) {
         return ecotagDao.getTagsFromProduct(productId);
     }
 

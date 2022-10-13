@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -18,8 +20,8 @@ public class ProductHibernateDao implements ProductDao {
     private EntityManager em;
 
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description, int stock, Integer price, long imageId) {
-        final Product prod = new Product(sellerId, categoryId, name, description, stock, price, imageId);
+    public Product create(Seller seller, long categoryId, String name, String description, int stock, Integer price, Image image) {
+        final Product prod = new Product(seller, categoryId, name, description, stock, price, image);
         em.persist(prod);
         return prod;
     }
@@ -60,7 +62,7 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> getRecent(int amount) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock <> 0", Product.class);
+        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE stock <> 0", Product.class);
         List<Product> products = query.getResultList();
         if (products.size() < amount) return products;
         return products.subList(0, amount);

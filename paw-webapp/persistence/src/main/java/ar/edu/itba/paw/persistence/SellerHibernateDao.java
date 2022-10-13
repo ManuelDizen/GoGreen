@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
 import ar.edu.itba.paw.models.Seller;
+import ar.edu.itba.paw.models.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,8 +18,8 @@ public class SellerHibernateDao implements SellerDao {
     private EntityManager em;
 
     @Override
-    public Seller create(long userId, String phone, String address, long areaId) {
-        final Seller seller = new Seller(userId, phone, address, areaId);
+    public Seller create(User user, String phone, String address, long areaId) {
+        final Seller seller = new Seller(user, phone, address, areaId);
         em.persist(seller);
         return seller;
     }
@@ -30,6 +31,7 @@ public class SellerHibernateDao implements SellerDao {
 
     @Override
     public Optional<Seller> findByUserId(long userId) {
+        //TODO: Redo this method
         final TypedQuery<Seller> query = em.createQuery("FROM Seller WHERE userid = :userid", Seller.class);
         query.setParameter("userid", userId);
         return query.getResultList().stream().findFirst();

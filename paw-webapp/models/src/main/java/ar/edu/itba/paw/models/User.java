@@ -32,14 +32,15 @@ public class User {
     @Column(nullable=false, name="locale")
     private Locale locale;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(
             name="user_roles",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
-    private Set<UserRole> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
     //TODO: Should roles be final?
+
     User(){//Just for hibernate, we love you!
         }
     public User(Long id, String firstName, String surname, String email, String password, Locale locale){
