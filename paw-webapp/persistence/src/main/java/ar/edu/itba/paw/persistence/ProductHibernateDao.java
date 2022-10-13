@@ -62,8 +62,7 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> getRecent(int amount) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE stock <> 0", Product.class);
-        List<Product> products = query.getResultList();
+        List<Product> products = getAvailable();
         if (products.size() < amount) return products;
         return products.subList(0, amount);
     }
