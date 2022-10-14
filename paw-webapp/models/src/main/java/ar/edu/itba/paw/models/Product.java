@@ -12,9 +12,8 @@ public class Product {
     @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(optional=false)
-    @MapsId("sellers_id")
-    @JoinColumn(name="sellers_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name="sellerid", nullable = false)
     private Seller seller;
 
     @Column(nullable = false)
@@ -38,11 +37,11 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name="ecotag_id") //TODO: Así funciona para usar un field de enum?
     )*/
 
-    @ElementCollection(targetClass = Ecotag.class)
-    @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "products_id"))
+    @ElementCollection(targetClass = Ecotag.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "productid"))
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "ecotag_id")
-    private Set<Ecotag> tagList = new HashSet<>();
+    private List<Ecotag> tagList = new ArrayList<>();
 
     @ManyToOne(optional=false)
     @MapsId("images_id")
@@ -131,11 +130,11 @@ public class Product {
         this.image = image;
     }
 
-    public Set<Ecotag> getTagList() {
+    public List<Ecotag> getTagList() {
         return tagList;
     }
 
-    public void setTagList(Set<Ecotag> tagList) {
+    public void setTagList(List<Ecotag> tagList) {
         this.tagList = tagList;
     }
 

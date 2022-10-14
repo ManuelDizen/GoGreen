@@ -24,8 +24,9 @@ public class EcotagHibernateDao implements EcotagDao {
     }
 
     @Override
-    public Set<Ecotag> getTagsFromProduct(long productId) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE productId = :productId", Product.class);
+    public List<Ecotag> getTagsFromProduct(long productId) {
+        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE id = :productId", Product.class);
+        query.setParameter("productId", productId);
         Optional<Product> product = query.getResultList().stream().findFirst();
         if(product.isPresent()) return product.get().getTagList();
         return null;

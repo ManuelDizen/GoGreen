@@ -31,7 +31,7 @@ public class EcotagServiceImpl implements EcotagService {
     }
 
     @Override
-    public Set<Ecotag> getTagFromProduct(long productId) {
+    public List<Ecotag> getTagFromProduct(long productId) {
         return ecotagDao.getTagsFromProduct(productId);
     }
 

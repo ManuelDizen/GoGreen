@@ -9,6 +9,6 @@ public interface EcotagDao {
 
     void add(Ecotag tag, long productId);
 
-    Set<Ecotag> getTagsFromProduct(long productId);
+    List<Ecotag> getTagsFromProduct(long productId);
 
 }

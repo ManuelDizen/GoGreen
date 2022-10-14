@@ -32,6 +32,9 @@ public class User {
     @Column(nullable=false, name="locale")
     private Locale locale;
 
+    @OneToOne(mappedBy="user")
+    private Seller seller;
+
     @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(
             name="user_roles",

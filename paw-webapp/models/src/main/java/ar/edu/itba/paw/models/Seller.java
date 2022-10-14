@@ -1,6 +1,10 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="sellers")
@@ -12,7 +16,7 @@ public class Seller {
     private Long id;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name="users_id")
+    @JoinColumn(name="userid")
     private User user;
 
     @Column(nullable=false, length = 20)
@@ -27,6 +31,9 @@ public class Seller {
     //  Update: Changed default value of areaid to -1, and changed agronomia ID to 0 (now matches ordinal)
     private long areaId;
 
+
+    @OneToMany(mappedBy = "seller")
+    private Set<Product> products;
     Seller(){}
 
     public Seller(User user, String phone, String address, long areaId){
