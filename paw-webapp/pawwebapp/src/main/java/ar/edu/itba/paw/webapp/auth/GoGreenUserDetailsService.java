@@ -40,14 +40,14 @@ public class GoGreenUserDetailsService implements UserDetailsService {
         final User user = us.findByEmail(email).orElseThrow(
                 UserNotFoundException::new);
         Collection<GrantedAuthority> auths = new ArrayList<>();
-        List<UserRole> userToRoleList = urs.getById(user.getId());
-        for(UserRole ur : userToRoleList){
-            Optional<Role> role = rs.getById(ur.getRole().getId());
-            if(!role.isPresent())
-                throw new RoleNotFoundException();
-            auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
+        //List<UserRole> userToRoleList = urs.getById(user.getId());
+
+        Set<Role> roles = user.getRoles();
+
+        for(Role role : roles){
+            auths.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         }
-        if(userToRoleList.isEmpty()){
+        if(roles.isEmpty()){
             //By default, users are buyers unless stated otherwise
             // 10/9/22: Resulta necesario agregar en la bdd, cuando un usuario se registre, su rol
             // así no entra acá equivocadamente. Esto es importantisimo.
@@ -56,7 +56,8 @@ public class GoGreenUserDetailsService implements UserDetailsService {
                 throw new RoleNotFoundException();
             }
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.get().getName()));
-            urs.create(user, role.get());
+            //urs.create(user, role.get());
+            user.addRole(role.get());
         }
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), auths);
     }

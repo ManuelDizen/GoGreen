@@ -21,6 +21,9 @@ public class EcotagHibernateDao implements EcotagDao {
 
     @Override
     public void add(Ecotag tag, long productId) {
+
+
+
     }
 
     @Override

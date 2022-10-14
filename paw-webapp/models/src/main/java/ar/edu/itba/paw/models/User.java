@@ -35,7 +35,31 @@ public class User {
     @OneToOne(mappedBy="user")
     private Seller seller;
 
-    @ManyToMany(fetch=FetchType.LAZY)
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
+
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="user_roles",
             joinColumns = @JoinColumn(name="user_id"),

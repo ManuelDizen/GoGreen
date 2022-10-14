@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.persistence.UserRoleDao;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserRole;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,9 +21,8 @@ public class UserRoleHibernateDao implements UserRoleDao {
 
     @Override
     public List<UserRole> getById(long userId) {
-        //TODO: Define if a user can have more than one role (up to now its impossible)
-        //  Still, this method will return "a collection" that will have only one element
-        final TypedQuery<UserRole> query = em.createQuery("FROM UserRole WHERE userId = :userId", UserRole.class);
+        //TODO: Refactor
+        final TypedQuery<UserRole> query = em.createQuery("FROM UserRole WHERE user.id = :userId", UserRole.class);
         query.setParameter("userId", userId);
         return query.getResultList();
     }

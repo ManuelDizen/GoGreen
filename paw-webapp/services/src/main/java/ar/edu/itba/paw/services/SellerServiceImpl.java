@@ -93,6 +93,7 @@ public class SellerServiceImpl implements SellerService {
         return user.getLocale();
     }
 
+    @Transactional
     @Override
     public Boolean registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
@@ -103,7 +104,8 @@ public class SellerServiceImpl implements SellerService {
         if(seller == null) return false;
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();
-        userRoleService.create(user, role.get());
+        user.addRole(role.get());
+        //userRoleService.create(user, role.get());
         emailService.registration(user, user.getLocale());
         return true;
     }

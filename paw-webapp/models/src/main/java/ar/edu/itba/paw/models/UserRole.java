@@ -12,11 +12,11 @@ public class UserRole {
     private Long id;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="users_id", nullable = false)
+    @JoinColumn(name="user_id", nullable = false)
     private User user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name="roles_id", nullable = false)
+    @JoinColumn(name="role_id", nullable = false)
     private Role role;
 
     UserRole(){}
