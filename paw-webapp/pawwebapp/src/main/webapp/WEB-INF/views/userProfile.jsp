@@ -19,14 +19,14 @@
                 <div class="seller-profile-container-2-bis" style="display:flex;">
                     <div class="seller-inner-div-1">
                         <div class="text-center userprofile-info"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                        <div class="seller-profile-pic-container">
+                        <%--div class="seller-profile-pic-container">
                             <c:if test="${user.imageId == 0}">
                                 <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
                             </c:if>
                             <c:if test="${user.imageId != 0}">
                                 <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">
                             </c:if>
-                        </div>
+                        </div--%>
                     </div>
                     <div class="seller-inner-div-2">
                         <div>
@@ -78,7 +78,7 @@
                                         <c:forEach items="${users}" var="user">
                                             <c:if test="${user.email == order.sellerEmail}">
                                                 <c:forEach items="${sellers}" var="seller">
-                                                    <c:if test="${user.id == seller.userId}">
+                                                    <c:if test="${user.id == seller.user.id}">
                                                         <div>
                                                             <spring:message code="userprofile.orders.selleraddress"/>
                                                             <c:out value="${' '}${seller.address}"/>

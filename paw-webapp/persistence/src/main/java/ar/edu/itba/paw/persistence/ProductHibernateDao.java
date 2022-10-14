@@ -29,7 +29,7 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> findBySeller(long sellerId) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.sellerId = :sellerId",
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId",
                 Product.class);
         query.setParameter("sellerId", sellerId);
         return query.getResultList();

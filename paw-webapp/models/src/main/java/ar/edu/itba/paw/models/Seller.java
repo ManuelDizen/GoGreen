@@ -15,7 +15,7 @@ public class Seller {
     @SequenceGenerator(name="sellers_id_seq", sequenceName = "sellers_id_seq", allocationSize = 1)
     private Long id;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="userid")
     private User user;
 
