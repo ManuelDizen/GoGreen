@@ -42,7 +42,8 @@
                             <a href="<c:url value="/product/${product.productId}"/>">
                                 <div class="card-image">
                                     <c:if test="${product.image.id != 0}">
-                                        <img src="<c:url value="/image/${product.image.id}"/>">
+                                        <c:url value="/image/${product.image.id}" var="imageUrl"/>
+                                        <img src="${imageUrl}">
                                     </c:if>
                                     <c:if test="${product.image.id == 0}">
                                         <img src="<c:url value="/resources/images/logo.png"/>">

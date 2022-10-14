@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +58,7 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
         //TODO: Rebuild this method!
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

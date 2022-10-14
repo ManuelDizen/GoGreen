@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
         return userDao.create(firstName, surname, email, encoder.encode(password), locale);
     }
 
+    @Transactional
     @Override
     public Boolean registerUser(String firstName, String surname, String email, String password, Locale locale){
         User user = register(firstName, surname, email,
@@ -59,16 +60,19 @@ public class UserServiceImpl implements UserService {
 //        userDao.updateImage(userId, imageId);
 //    }
 
+    @Transactional
     @Override
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
     }
 
+    @Transactional
     @Override
     public Optional<User> findById(long userId) {
         return userDao.findById(userId);
     }
 
+    @Transactional
     @Override
     public List<User> getAll() {
         return userDao.getAll();

@@ -43,9 +43,8 @@ public class Product {
     @Column(name = "ecotag_id")
     private List<Ecotag> tagList = new ArrayList<>();
 
-    @ManyToOne(optional=false)
-    @MapsId("images_id")
-    @JoinColumn(name="images_id")
+    @ManyToOne
+    @JoinColumn(name="imageid", nullable = false)
     private Image image;
 
     Product(){}
