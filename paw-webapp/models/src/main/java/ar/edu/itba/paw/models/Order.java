@@ -44,7 +44,6 @@ public class Order {
 
     @Column(name="message")
     private String message;
-    private String parsedDateTime;
 
     Order(){}
 
@@ -70,7 +69,6 @@ public class Order {
         this.price = price;
         this.dateTime = dateTime;
         this.message = message;
-        this.parsedDateTime = this.getParsedDateTime();
     }
 
     public Long getId() {

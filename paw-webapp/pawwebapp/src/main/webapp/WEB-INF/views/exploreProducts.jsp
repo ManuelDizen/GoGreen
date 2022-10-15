@@ -24,10 +24,10 @@
             <div class="card product-card z-depth-1">
                 <a href="<c:url value="/product/${product.productId}"/>">
                     <div class="card-image">
-                        <c:if test="${product.imageId != 0}">
-                            <img src="<c:url value="/image/${product.imageId}"/>">
+                        <c:if test="${product.image.id != 0}">
+                            <img src="<c:url value="/image/${product.image.id}"/>">
                         </c:if>
-                        <c:if test="${product.imageId == 0}">
+                        <c:if test="${product.image.id == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>">
                         </c:if>
                     </div>

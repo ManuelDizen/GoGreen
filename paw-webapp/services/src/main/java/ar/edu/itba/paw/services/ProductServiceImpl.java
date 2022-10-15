@@ -132,6 +132,7 @@ public class ProductServiceImpl implements ProductService {
         productDao.deleteProduct(productId);
     }
 
+    @Transactional
     @Override
     public Boolean attemptDelete(long productId) {
         if(checkForOwnership(productId)){
@@ -192,7 +193,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Boolean addStock(String prodName, int amount) {
-        System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
         Optional<Product> prod = getByName(prodName);
         if(!prod.isPresent()) return true;
         return productDao.addStock(prodName, (amount + prod.get().getStock()));

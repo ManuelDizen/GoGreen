@@ -58,7 +58,7 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
         //TODO: Rebuild this method!
-        return new ArrayList<>();
+        return getAvailable();
     }
 
     @Override
@@ -77,22 +77,21 @@ public class ProductHibernateDao implements ProductDao {
     public void updateStock(long productId, int amount) {
         final Product product = em.find(Product.class, productId);
         product.setStock(amount);
-        em.merge(product); //TODO: Is em.merge() permitted?
+        //em.merge(product); //TODO: Is em.merge() permitted?
     }
 
     @Override
     public void updatePrice(long productId, int price) {
         final Product product = em.find(Product.class, productId);
         product.setPrice(price);
-        em.merge(product);
     }
 
     @Override
     public Boolean addStock(String name, int amount) {
+        //TODO: This logic could be moved completely to service
         final Optional<Product> product = getByName(name);
         if(!product.isPresent()) throw new ProductNotFoundException();
-        product.get().setStock(product.get().getStock() + amount);
-        em.merge(product);
+        product.get().setStock(amount);
         return true; //TODO: This booleans should be removed, no purpose at all
     }
 }

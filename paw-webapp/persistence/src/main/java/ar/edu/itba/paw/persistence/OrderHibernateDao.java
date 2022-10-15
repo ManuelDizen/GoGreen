@@ -52,6 +52,7 @@ public class OrderHibernateDao implements OrderDao {
     @Override
     public Boolean deleteOrder(long orderId) {
         em.remove(em.find(Order.class, orderId));
-        return true; // TODO: MODIFY!!!
+        return true;
+        // TODO: MODIFY!!!
     }
 }
