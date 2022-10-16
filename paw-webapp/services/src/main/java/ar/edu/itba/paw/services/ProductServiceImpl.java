@@ -256,7 +256,7 @@ public class ProductServiceImpl implements ProductService {
 
     public void setTagList(List<Product> productList) {
         for(Product product : productList) {
-            product.setTagList(ecotagService.getTagFromProduct(product.getProductId()));
+            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
         }
     }
 
