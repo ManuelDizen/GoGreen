@@ -40,6 +40,10 @@ public class ProductServiceImpl implements ProductService {
         if(image != null && image.length > 0){
             img = imageService.create(image);
         }
+        else{
+            Optional<Image> maybeImg = imageService.getById(0);
+            if(maybeImg.isPresent()) img = maybeImg.get();
+        }
         return productDao.create(seller, categoryId, name, description, stock, price, img);
     }
 
