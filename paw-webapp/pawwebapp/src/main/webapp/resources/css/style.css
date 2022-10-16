@@ -427,7 +427,7 @@ nav {
 }
 
 .no-margin {
-    margin:0;
+    margin:0; !important
 }
 
 .product-page-container{
@@ -2040,7 +2040,7 @@ input[type=number] {
 }
 
 .separate-icon{
-    margin:0 10px;
+    margin:0 10px 0 0;
 }
 
 .seller-profile-no-products-container{
@@ -2066,4 +2066,18 @@ input[type=number] {
 
 .accept{
     background-color: var(--palette-color-primary);
+}
+
+#orderSuccess .fit-modal-content{
+    max-height:100%;
+}
+
+.empty-link{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left: 0;
+
+    z-index: 1;
 }

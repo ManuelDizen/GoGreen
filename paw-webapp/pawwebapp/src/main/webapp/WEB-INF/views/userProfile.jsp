@@ -131,7 +131,7 @@
                     </div>
                 </c:if>
             </div>
-            <div id="orderSuccess" class="modal green-modal center">
+            <div id="orderSuccess" class="modal green-modal center fit-modal-content">
                 <%-- TODO: Unclear solution to get the 1st element of a collection,
                         but it seems JSP does not offer an alternative
                         to pick one element and store it as a var--%>
