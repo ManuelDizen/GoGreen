@@ -2049,3 +2049,21 @@ input[type=number] {
     margin-top:15px;
 
 }
+
+.orderSuccessModal{
+    font-size:20px;
+}
+
+.seller-info{
+    font-size: 18px;
+}
+
+#orderSuccess .custom-modal-footer{
+    display:flex;
+    justify-content:center;
+    background-color: var(--palette-color-secondary);
+}
+
+.accept{
+    background-color: var(--palette-color-primary);
+}
