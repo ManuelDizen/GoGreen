@@ -273,7 +273,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> recent =  productDao.getRecent(amount);
 
         for(Product product : recent) {
-            product.setTagList(ecotagService.getTagFromProduct(product.getProductId()));
+            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
         }
         return recent;
     }
