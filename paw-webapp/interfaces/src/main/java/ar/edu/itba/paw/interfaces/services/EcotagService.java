@@ -11,7 +11,7 @@ public interface EcotagService {
 
     void addTag(Ecotag tag, long productId);
 
-    List<Ecotag> getTagFromProduct(long productId);
+    List<Ecotag> getTagsFromProduct(long productId);
 
     List<Ecotag> filterByTags(String[] ecoStrings, boolean[] ecotags);
 

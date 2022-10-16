@@ -47,6 +47,9 @@ public class Product {
     @JoinColumn(name="imageid", nullable = false)
     private Image image;
 
+    public void addEcotag(Ecotag tag) {
+        tagList.add(tag);
+    }
     Product(){}
 
     public Product(Long id, Seller seller, long categoryId, String name, String description, int stock,

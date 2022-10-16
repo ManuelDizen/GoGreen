@@ -130,7 +130,7 @@ public class ProductController {
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        List<Ecotag> ecotags = ecotagService.getTagFromProduct(productObj.getProductId());
+        List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
         mav.addObject("area", Area.getById(seller.get().getAreaId()));
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
