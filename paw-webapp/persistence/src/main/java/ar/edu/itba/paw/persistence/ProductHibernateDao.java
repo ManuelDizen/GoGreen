@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigInteger;
+import java.util.*;
 
 @Repository
 public class ProductHibernateDao implements ProductDao {
@@ -58,36 +58,54 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
 
-//        StringBuilder query = new StringBuilder("FROM Product AS p WHERE ");
-//        List<Object> args = new ArrayList<>();
-//        if(name != null){
-//            query.append("LOWER(p.name) like ? ");
-//            args.add('%' + name.toLowerCase() + '%');
-//        }
-//        if(category != 0){
-//            query.append("AND p.categoryId = ? ");
-//            args.add(category);
-//        }
-////        if(tags.size() != 0){
-////            for(long tag : tags) {
-////                query.append("AND id IN (SELECT productId from tags_to_products WHERE tag = ?)");
-////                args.add(tag);
-////            }
-////        }
-//        if(maxPrice != -1.0){
-//            query.append("AND p.price <= ?");
-//            args.add(maxPrice);
-//        }
-////        if(areaId > 0){
-////            query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = ?)");
-////            args.add(areaId);
-////        }
-//        query.append("AND p.stock <> 0 ORDER BY p.id DESC");
-//
-//        final TypedQuery<Product> finalQuery = em.createQuery(query.toString(),
-//                Product.class);
-//        return finalQuery.getResultList();
-        return getAvailable();
+        //Falta cambiar algo de la implementación de las ecotags para poder filtrar por ecotags correctamente
+
+        StringBuilder query = new StringBuilder("SELECT id FROM products WHERE ");
+        Map<String, Object> args = new HashMap<>();
+        if(name != null){
+            query.append("LOWER(name) like :name ");
+            args.put("name", '%' + name.toLowerCase() + '%');
+        }
+
+        if(category != 0){
+            query.append("AND categoryId = :category ");
+            args.put("category", category);
+        }
+        if(tags.size() != 0){
+            query.append("AND id IN (SELECT productId from tags_to_products WHERE ecotag_id IN :tags) ");
+            args.put("tags", tags);
+
+        }
+        if(maxPrice != -1.0){
+            query.append("AND price <= :maxPrice ");
+            args.put("maxPrice", maxPrice);
+
+        }
+        if(areaId > 0){
+            query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = :areaId) ");
+            args.put("areaId", areaId);
+        }
+        query.append("AND stock <> 0 ORDER BY id DESC");
+
+        Query jpaQuery = em.createNativeQuery(query.toString());
+
+        for(Map.Entry<String, Object> entry : args.entrySet()) {
+            jpaQuery.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        List<Long> products = new ArrayList<>();
+        for(Object o : jpaQuery.getResultList()) {
+            products.add(((BigInteger) o).longValue());
+        }
+
+        if(products.isEmpty())
+            return new ArrayList<>();
+
+        final TypedQuery<Product> finalQuery =
+                em.createQuery("FROM Product as p where p.id IN :products", Product.class);
+        finalQuery.setParameter("products", products);
+
+        return finalQuery.getResultList();
     }
 
     @Override
