@@ -35,7 +35,8 @@ public class OrderHibernateDao implements OrderDao {
 
     @Override
     public List<Order> getBySellerEmail(String sellerEmail) {
-        final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.sellerEmail = :sellerEmail",
+        final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.sellerEmail = :sellerEmail " +
+                        "ORDER BY o.dateTime DESC",
                 Order.class);
         query.setParameter("sellerEmail", sellerEmail);
         return query.getResultList();
@@ -43,7 +44,8 @@ public class OrderHibernateDao implements OrderDao {
 
     @Override
     public List<Order> getByBuyerEmail(String buyerEmail) {
-        final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.buyerEmail = :buyerEmail",
+        final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.buyerEmail = :buyerEmail " +
+                        "ORDER BY o.dateTime DESC",
                 Order.class);
         query.setParameter("buyerEmail", buyerEmail);
         return query.getResultList();
