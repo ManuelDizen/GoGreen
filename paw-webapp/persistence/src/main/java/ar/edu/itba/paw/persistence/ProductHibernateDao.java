@@ -57,7 +57,36 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
-        //TODO: Rebuild this method!
+
+//        StringBuilder query = new StringBuilder("FROM Product AS p WHERE ");
+//        List<Object> args = new ArrayList<>();
+//        if(name != null){
+//            query.append("LOWER(p.name) like ? ");
+//            args.add('%' + name.toLowerCase() + '%');
+//        }
+//        if(category != 0){
+//            query.append("AND p.categoryId = ? ");
+//            args.add(category);
+//        }
+////        if(tags.size() != 0){
+////            for(long tag : tags) {
+////                query.append("AND id IN (SELECT productId from tags_to_products WHERE tag = ?)");
+////                args.add(tag);
+////            }
+////        }
+//        if(maxPrice != -1.0){
+//            query.append("AND p.price <= ?");
+//            args.add(maxPrice);
+//        }
+////        if(areaId > 0){
+////            query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = ?)");
+////            args.add(areaId);
+////        }
+//        query.append("AND p.stock <> 0 ORDER BY p.id DESC");
+//
+//        final TypedQuery<Product> finalQuery = em.createQuery(query.toString(),
+//                Product.class);
+//        return finalQuery.getResultList();
         return getAvailable();
     }
 

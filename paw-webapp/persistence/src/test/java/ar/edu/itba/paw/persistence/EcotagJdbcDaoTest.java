@@ -36,9 +36,6 @@ public class EcotagJdbcDaoTest {
     private static final int IMAGEID = 0;
 
     @Autowired
-    private EcotagHibernateDao dao;
-
-    @Autowired
     private DataSource ds;
 
     private JdbcTemplate jdbcTemplate;

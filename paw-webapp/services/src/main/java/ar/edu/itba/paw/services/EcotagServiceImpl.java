@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.persistence.EcotagDao;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.EcotagService;
 import ar.edu.itba.paw.models.Ecotag;
@@ -13,20 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 
 @Service
 public class EcotagServiceImpl implements EcotagService {
 
-    private final EcotagDao ecotagDao;
-
     private final ProductDao productDao;
 
     @Autowired
-    public EcotagServiceImpl(EcotagDao ecotagDao, ProductDao productDao) {
-        this.ecotagDao = ecotagDao;
+    public EcotagServiceImpl(ProductDao productDao) {
         this.productDao = productDao;
     }
 
