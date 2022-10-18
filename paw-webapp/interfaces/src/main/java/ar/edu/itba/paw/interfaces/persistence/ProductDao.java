@@ -28,4 +28,6 @@ public interface ProductDao {
 
     Boolean addStock(String name, int amount);
 
+    List<Product> getByCategory(Long id);
+
 }

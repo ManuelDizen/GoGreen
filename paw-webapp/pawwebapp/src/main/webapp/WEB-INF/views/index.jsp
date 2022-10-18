@@ -17,7 +17,7 @@
     </head>
     <body>
         <%@ include file="navbar.jsp"%>
-        <div class="landing-title-container animate glow delay-1">
+        <%--div class="landing-title-container animate glow delay-1">
             <hr class="landing-separator">
             <h1 class="landing-page-title"><spring:message code="home.greetingmsg"/></h1>
             <hr class = "landing-separator">
@@ -26,6 +26,10 @@
                     <spring:message code="home.start"/>
                 </a>
             </div>
+        </div--%>
+        <div class="row animate glow delay-1 separate-50-top">
+            <h1 class="text-center" style="margin-bottom:50px;"><spring:message code="landing.search.catchphrase"/></h1>
+            <%@ include file="search_bar.jsp"%>
         </div>
         <div class="landing-recent-product-container animate glow delay-2">
             <c:if test="${recent.size() != 0}">
@@ -87,6 +91,41 @@
                 </div>
             </c:if>
         </div>
-
+        <%--div class="landing-categories-container">
+            <c:forEach items="${productsPerCategory}" var="categoryList">
+                <c:if test="${categoryList.size() != 0}">
+                    <c:set var="counter" value="0"/>
+                    <div class="category-container">
+                        <c:forEach items="${categories}" var="category">
+                            <c:if test="${category.id == categoryList.get(0).categoryId}">
+                                <h4 class="center">
+                                    <spring:message code="landingpage.category.title"/>
+                                    <c:out value="${' '}"/>
+                                    <spring:message code="${category.name}"/>
+                                </h4>
+                            </c:if>
+                        </c:forEach>
+                        <div class="landing-categories-container">
+                            <c:forEach items="${categoryList}" var="product">
+                                <div class="landing-categories-image-container">
+                                    <c:if test="${product.image.id != 0 && counter < 4}">
+                                        <c:set var="counter" value="${counter+1}"/>
+                                        <a href="<c:url value="/product/${product.productId}"/>">
+                                            <img src="<c:url value="/image/${product.image.id}"/>"/>
+                                        </a>
+                                    </c:if>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div--%>
     </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.carousel');
+        var instances = M.Carousel.init(elems, options);
+    });
+</script>

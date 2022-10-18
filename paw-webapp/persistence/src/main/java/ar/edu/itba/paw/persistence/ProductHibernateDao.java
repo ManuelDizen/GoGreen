@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.math.BigInteger;
 import java.util.*;
 
 @Repository
@@ -97,7 +96,7 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaQuery.getResultList()) {
-            products.add(((BigInteger) o).longValue());
+            products.add(((Integer)o).longValue());
         }
 
 
@@ -143,5 +142,14 @@ public class ProductHibernateDao implements ProductDao {
         if(!product.isPresent()) throw new ProductNotFoundException();
         product.get().setStock(amount);
         return true; //TODO: This booleans should be removed, no purpose at all
+    }
+
+    @Override
+    public List<Product> getByCategory(Long categoryId){
+        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE categoryId = :categoryId " +
+                        "AND image.id <> 0",
+                Product.class);
+        query.setParameter("categoryId", categoryId);
+        return query.getResultList();
     }
 }

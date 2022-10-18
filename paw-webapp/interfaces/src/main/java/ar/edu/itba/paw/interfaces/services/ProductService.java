@@ -1,11 +1,13 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.models.Category;
 import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ProductService {
 
@@ -48,4 +50,8 @@ public interface ProductService {
     List<Product> getProductPage(int page, List<List<Product>> productPages);
 
     List<Product> getInteresting(Product product);
+
+    List<List<Product>> productsPerCategory();
+    List<Product> getByCategory(Category c);
+
 }
