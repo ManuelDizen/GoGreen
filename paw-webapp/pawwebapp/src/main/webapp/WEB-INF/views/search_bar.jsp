@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="full-width">
+    <div class="full-width search-style">
         <div class="search-container">
             <c:url value="/explore" var="searchUrl"/>
             <form action="${searchUrl}" method="get" id="search-form" class="landing-form-alignment">

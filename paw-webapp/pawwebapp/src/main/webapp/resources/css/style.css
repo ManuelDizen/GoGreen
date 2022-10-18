@@ -2139,3 +2139,18 @@ input[type=number] {
 .separate-50-top{
     margin-top:50px;
 }
+
+.filter-category input,
+.filterinputs input{
+    margin:0;
+}
+
+.filter-category .select-wrapper input.select-dropdown{
+
+}
+
+.search-style{
+    background-color: var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    border-radius:20px;
+}
