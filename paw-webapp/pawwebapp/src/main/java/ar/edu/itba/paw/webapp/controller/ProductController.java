@@ -71,7 +71,7 @@ public class ProductController {
             mav.addObject("maxPrice", null);
 
         //Ecotag management
-        mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
+        mav.addObject("ecoStrings", new String[]{"0", "1", "2", "3", "4"});
         mav.addObject("path", productService.buildPath(strings));
 
         final boolean[] boolTags = new boolean[Ecotag.values().length];

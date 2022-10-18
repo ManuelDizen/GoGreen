@@ -48,7 +48,7 @@ public class EcotagServiceImpl implements EcotagService {
         if(!ecoStrings[0].equals("null")) {
             for(String s : ecoStrings) {
                 toReturn.add(Ecotag.getById(parseInt(s)));
-                ecotags[parseInt(s)-1] = true;
+                ecotags[parseInt(s)] = true;
             }
         }
         return toReturn;

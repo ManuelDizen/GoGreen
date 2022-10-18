@@ -72,9 +72,10 @@ public class ProductHibernateDao implements ProductDao {
             args.put("category", category);
         }
         if(tags.size() != 0){
-            query.append("AND id IN (SELECT productId from tags_to_products WHERE ecotag_id IN :tags) ");
-            args.put("tags", tags);
-
+            for(int i=0; i<tags.size(); i++) {
+                query.append("AND id IN (SELECT productId from tags_to_products WHERE ecotag_id = :tag").append(i).append(") ");
+                args.put("tag" + i, tags.get(i));
+            }
         }
         if(maxPrice != -1.0){
             query.append("AND price <= :maxPrice ");
@@ -91,12 +92,14 @@ public class ProductHibernateDao implements ProductDao {
 
         for(Map.Entry<String, Object> entry : args.entrySet()) {
             jpaQuery.setParameter(entry.getKey(), entry.getValue());
+            System.out.println("!!!!! " + entry.getKey() + "-" + entry.getValue());
         }
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaQuery.getResultList()) {
             products.add(((BigInteger) o).longValue());
         }
+
 
         if(products.isEmpty())
             return new ArrayList<>();
