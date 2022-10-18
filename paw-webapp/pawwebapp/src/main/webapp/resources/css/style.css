@@ -1769,7 +1769,8 @@ input#ecotag, input#ecotag2,
 .input-field .selectMultiple .select-wrapper,
 .sort ul,
 #orderamount ul,
-#orderamount select{
+#orderamount select,
+.search-container .filter-category ul{
     display: none;
 }
 
@@ -2103,4 +2104,38 @@ input[type=number] {
     max-height:100%;
     max-width:100%;
     vertical-align:middle;
+}
+
+.search-container{
+    display:flex;
+    justify-content:center;
+}
+
+.landing-form-alignment{
+    margin:30px auto;
+    display:flex;
+    align-items:center;
+}
+
+.search-submit{
+    margin-top:0;
+}
+
+.black-text{
+    color:black;
+}
+
+.filter-category input,
+.filter-category label,
+.filterinputs input,
+.filterinputs label{
+    color:white;
+}
+
+.filter-category .caret{
+    fill:white;
+}
+
+.separate-50-top{
+    margin-top:50px;
 }

@@ -17,7 +17,7 @@
     </head>
     <body>
         <%@ include file="navbar.jsp"%>
-        <div class="landing-title-container animate glow delay-1">
+        <%--div class="landing-title-container animate glow delay-1">
             <hr class="landing-separator">
             <h1 class="landing-page-title"><spring:message code="home.greetingmsg"/></h1>
             <hr class = "landing-separator">
@@ -26,6 +26,10 @@
                     <spring:message code="home.start"/>
                 </a>
             </div>
+        </div--%>
+        <div class="row animate glow delay-1 separate-50-top">
+            <h1 class="text-center"><spring:message code="landing.search.catchphrase"/></h1>
+            <%@ include file="search_bar.jsp"%>
         </div>
         <div class="landing-recent-product-container animate glow delay-2">
             <c:if test="${recent.size() != 0}">

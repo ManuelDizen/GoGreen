@@ -29,7 +29,6 @@
             </select>
             <label><spring:message code="explore.filterform.category"/></label>
         </div>
-
     </div>
     <div class="row">
         <div class="input-field col s12 filterinputs">
