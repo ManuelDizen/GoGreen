@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.util.*;
 
 @Repository
@@ -96,7 +97,7 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaQuery.getResultList()) {
-            products.add(((Integer)o).longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
 
