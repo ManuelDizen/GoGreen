@@ -40,14 +40,14 @@
                 </div>
             </div>
             <div class="col s6 center landing-col">
-                <img class="restrict-img" src="<c:url value="/resources/images/BuyerImage.png"/>"/>
+                <img class="restrict-img" src="<c:url value="/resources/images/Landing1.png"/>"/>
             </div>
         </div>
         <div class="row animate glow delay-3 center">
             <hr class="landing-separator"/>
             <h3 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whyus"/></h3>
             <div class="col s6 center landing-col">
-                <img class="restrict-img" src="<c:url value="/resources/images/SellerImage.png"/>"/>
+                <img class="restrict-img" src="<c:url value="/resources/images/Landing2.png"/>"/>
             </div>
             <div class="col s6 justify landing-col text-col">
                 <div class="text-container">
