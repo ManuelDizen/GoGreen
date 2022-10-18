@@ -33,6 +33,7 @@ public class BasicController {
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("recent", recent);
         mav.addObject("categories", Category.values());
+        mav.addObject("productsPerCategory", productService.productsPerCategory());
         return mav;
     }
 

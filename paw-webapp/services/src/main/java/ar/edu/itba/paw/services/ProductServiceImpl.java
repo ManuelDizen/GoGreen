@@ -254,6 +254,21 @@ public class ProductServiceImpl implements ProductService {
         return toReturn;
     }
 
+    @Override
+    public List<List<Product>> productsPerCategory() {
+        List<List<Product>> products = new ArrayList<>();
+        for(Category c : Category.values()){
+            List<Product> auxSet = getByCategory(c);
+            products.add(auxSet);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getByCategory(Category c){
+        return productDao.getByCategory(c.getId());
+    }
+
     public void setTagList(List<Product> productList) {
         for(Product product : productList) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));

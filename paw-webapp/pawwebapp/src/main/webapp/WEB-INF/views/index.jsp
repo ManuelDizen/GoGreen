@@ -87,6 +87,41 @@
                 </div>
             </c:if>
         </div>
-
+        <%--div class="landing-categories-container">
+            <c:forEach items="${productsPerCategory}" var="categoryList">
+                <c:if test="${categoryList.size() != 0}">
+                    <c:set var="counter" value="0"/>
+                    <div class="category-container">
+                        <c:forEach items="${categories}" var="category">
+                            <c:if test="${category.id == categoryList.get(0).categoryId}">
+                                <h4 class="center">
+                                    <spring:message code="landingpage.category.title"/>
+                                    <c:out value="${' '}"/>
+                                    <spring:message code="${category.name}"/>
+                                </h4>
+                            </c:if>
+                        </c:forEach>
+                        <div class="landing-categories-container">
+                            <c:forEach items="${categoryList}" var="product">
+                                <div class="landing-categories-image-container">
+                                    <c:if test="${product.image.id != 0 && counter < 4}">
+                                        <c:set var="counter" value="${counter+1}"/>
+                                        <a href="<c:url value="/product/${product.productId}"/>">
+                                            <img src="<c:url value="/image/${product.image.id}"/>"/>
+                                        </a>
+                                    </c:if>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div--%>
     </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.carousel');
+        var instances = M.Carousel.init(elems, options);
+    });
+</script>

@@ -938,11 +938,16 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: textfield;
 }
 
-.explore-products, .productpage-ecotags, .landing-products{
+.explore-products, .productpage-ecotags, .landing-products,
+.landing-categories-container{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.landing-categories-container{
+    justify-content: space-around;
 }
 
 .landing-products {
@@ -1250,7 +1255,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .explore-products .card-image img, .landing-products .card-image img {
-    max-height:110px;
+    height:110px;
     object-fit:cover;
     border-radius: 10px 10px 0 0;
 }
@@ -2080,4 +2085,22 @@ input[type=number] {
     left: 0;
 
     z-index: 1;
+}
+
+.category-container{
+    width: 45%;
+    height: 400px;
+}
+
+.landing-categories-image-container{
+    height:35%;
+    width:35%;
+    line-height:35%;
+    text-align:center;
+}
+
+.landing-categories-image-container img{
+    max-height:100%;
+    max-width:100%;
+    vertical-align:middle;
 }

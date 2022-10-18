@@ -20,7 +20,7 @@
         <div class="col s8">
             <h4 class="product-page-title">
                 <c:out value="${product.name}"/></h4>
-            <div class="row no-margin">
+            <div class="row no-margin" style="margin:0;">
                 <c:if test="${product.image.id != 0}">
                     <div class="col s6">
                         <div class = "productpage-image-container productpage-img">
