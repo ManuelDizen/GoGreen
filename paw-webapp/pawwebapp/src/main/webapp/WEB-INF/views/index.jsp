@@ -27,11 +27,35 @@
                 </a>
             </div>
         </div--%>
-        <div class="row animate glow delay-1 separate-50-top">
+        <div class="row animate glow delay-1 separate-50-top separate-50-bottom main-container-landing">
             <h1 class="text-center" style="margin-bottom:50px;"><spring:message code="landing.search.catchphrase"/></h1>
             <%@ include file="search_bar.jsp"%>
         </div>
-        <div class="landing-recent-product-container animate glow delay-2">
+        <div class="row animate glow delay-2 center">
+            <hr class="landing-separator"/>
+            <h3 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whoarewe"/></h3>
+            <div class="col s6 justify landing-col text-col">
+                <div class="text-container">
+                    <spring:message code="landing.whoarewe.body"/>
+                </div>
+            </div>
+            <div class="col s6 center landing-col">
+                <img class="restrict-img" src="<c:url value="/resources/images/BuyerImage.png"/>"/>
+            </div>
+        </div>
+        <div class="row animate glow delay-3 center">
+            <hr class="landing-separator"/>
+            <h3 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whyus"/></h3>
+            <div class="col s6 center landing-col">
+                <img class="restrict-img" src="<c:url value="/resources/images/SellerImage.png"/>"/>
+            </div>
+            <div class="col s6 justify landing-col text-col">
+                <div class="text-container">
+                    <spring:message code="landing.vision.body"/>
+                </div>
+            </div>
+        </div>
+        <%--div class="landing-recent-product-container animate glow delay-2">
             <c:if test="${recent.size() != 0}">
                 <div class="row">
                     <div class="col s12">
@@ -90,7 +114,7 @@
                     </c:forEach>
                 </div>
             </c:if>
-        </div>
+        </div--%>
         <%--div class="landing-categories-container">
             <c:forEach items="${productsPerCategory}" var="categoryList">
                 <c:if test="${categoryList.size() != 0}">
