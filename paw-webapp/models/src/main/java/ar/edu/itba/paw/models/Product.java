@@ -40,7 +40,7 @@ public class Product {
     @ElementCollection(targetClass = Ecotag.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "productid"))
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "ecotag_id")
+    @Column(name = "tag")
     private List<Ecotag> tagList = new ArrayList<>();
 
     @ManyToOne

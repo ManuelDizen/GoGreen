@@ -25,11 +25,11 @@ public class Seller {
     @Column(nullable = false, length = 255)
     private String address;
 
-    @Column(name = "areaid")
+    @Column(name = "areaid", nullable = true)
     //@Enumerated(EnumType.ORDINAL)
     //TODO: This should work except for AGRONOMÍA, check for solutions
     //  Update: Changed default value of areaid to -1, and changed agronomia ID to 0 (now matches ordinal)
-    private long areaId;
+    private Long areaId;
 
 
     @OneToMany(mappedBy = "seller")
@@ -71,11 +71,11 @@ public class Seller {
         this.address = address;
     }
 
-    public long getAreaId() {
+    public Long getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(long areaId) {
+    public void setAreaId(Long areaId) {
         this.areaId = areaId;
     }
 }
