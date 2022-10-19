@@ -136,7 +136,7 @@
                         but it seems JSP does not offer an alternative
                         to pick one element and store it as a var--%>
                 <c:forEach var="order" items="${orders}" end="0">
-                    <div class="modal-content">
+                    <div class="modal-content" style="padding-bottom:0;">
                         <h3 class="underline"><spring:message code="userprofile.ordercompleted"/></h3>
                         <div>
                             <c:choose>
@@ -154,11 +154,11 @@
                             <ul class="seller-info">
                                 <li>
                                     <spring:message code="sellerprofile.orders.seller"/>
-                                    <c:out value="${order.sellerName}${' '}${order.sellerSurname}"/>
+                                    <c:out value="${': '}${order.sellerName}${' '}${order.sellerSurname}"/>
                                 </li>
                                 <li>
                                     <spring:message code="sellerprofile.orders.buyermail"/>
-                                    <c:out value="${order.sellerEmail}"/>
+                                    <c:out value="${': '}${order.sellerEmail}"/>
                                 </li>
                                 <c:forEach items="${users}" var="user">
                                     <c:if test="${user.email == order.sellerEmail}">
@@ -166,11 +166,11 @@
                                             <c:if test="${user.id == seller.user.id}">
                                                 <li>
                                                     <spring:message code="registerbuyer.form.address"/>
-                                                    <c:out value="${seller.address}"/>
+                                                    <c:out value="${': '}${seller.address}"/>
                                                 </li>
                                                 <li>
                                                     <spring:message code="registerbuyer.form.phone"/>
-                                                    <c:out value="${seller.phone}"/>
+                                                    <c:out value="${': '}${seller.phone}"/>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
@@ -190,13 +190,14 @@
     </div>
 </body>
 <script>
-
+    let shown = 0;
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, options);
     });
 
-    if(${fromSale}){
+    if(${fromSale} && (${currentPage} == 1) && shown === 0){
+        shown = 1;
         document.addEventListener('DOMContentLoaded', function () {
             var Modalelem = document.querySelector('#orderSuccess');
             var instance = M.Modal.init(Modalelem);

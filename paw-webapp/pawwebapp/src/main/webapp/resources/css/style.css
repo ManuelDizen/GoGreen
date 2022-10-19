@@ -2190,3 +2190,7 @@ input[type=number] {
     justify-content: center;
     
 }
+
+.remove-bottom-padding{
+    padding-bottom:0;
+}
