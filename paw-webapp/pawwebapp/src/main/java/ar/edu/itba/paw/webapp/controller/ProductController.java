@@ -71,14 +71,14 @@ public class ProductController {
             mav.addObject("maxPrice", null);
 
         //Ecotag management
-        mav.addObject("ecoStrings", new String[]{"0", "1", "2", "3", "4"});
+        mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
         mav.addObject("path", productService.buildPath(strings));
 
-        final boolean[] boolTags = new boolean[Ecotag.values().length];
-        mav.addObject("boolTags", boolTags);
+        boolean[] boolTags = new boolean[Ecotag.values().length-1];
 
         List<Ecotag> tagsToFilter = ecotagService.filterByTags(strings, boolTags);
         mav.addObject("ecotagList", Ecotag.values());
+        mav.addObject("boolTags", boolTags);
 
         //Product filter
         List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);

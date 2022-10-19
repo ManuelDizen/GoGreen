@@ -58,7 +58,9 @@
                         <spring:message code="createproduct.form.taglist" var="placeholder"/>
                         <form:select path="ecotag" multiple="true" data-placeholder="${placeholder}">
                             <c:forEach items="${tagList}" var="ecotag">
-                                <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
+                                <c:if test="${ecotag.id != 0}">
+                                    <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
+                                </c:if>
                             </c:forEach>
                         </form:select>
                         <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>

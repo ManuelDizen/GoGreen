@@ -73,7 +73,7 @@ public class ProductHibernateDao implements ProductDao {
         }
         if(tags.size() != 0){
             for(int i=0; i<tags.size(); i++) {
-                query.append("AND id IN (SELECT productId from tags_to_products WHERE ecotag_id = :tag").append(i).append(") ");
+                query.append("AND id IN (SELECT productId from tags_to_products WHERE tag = :tag").append(i).append(") ");
                 args.put("tag" + i, tags.get(i));
             }
         }
