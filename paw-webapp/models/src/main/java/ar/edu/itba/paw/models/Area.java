@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Objects;
+
 public enum Area {
 
     AGRONOMIA(0, "Agronomía"),
@@ -90,9 +92,9 @@ public enum Area {
         return name;
     }
 
-    public static Area getById(long id) {
+    public static Area getById(Long id) {
         for(Area area : Area.values()) {
-            if(area.getId() == id)
+            if(Objects.equals(area.getId(), id))
                 return area;
         }
         return null;
