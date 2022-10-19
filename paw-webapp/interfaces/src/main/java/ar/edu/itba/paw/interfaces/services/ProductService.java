@@ -24,7 +24,8 @@ public interface ProductService {
 
     void sortProducts(List<Product> productList, int sort, int direction);
 
-    List<List<Product>> divideIntoPages(List<Product> list);
+    List<List<Product>> divideIntoPages(List<Product> list, int pageSize);
+
     List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction);
 
     void deleteProduct(long productId);
