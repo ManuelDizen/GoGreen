@@ -22,6 +22,7 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final EcotagService ecotagService;
 
+
     @Autowired
     public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService){
         this.productDao = productDao;
@@ -78,12 +79,23 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDao.filter(name, category, ecotags, maxPrice, areaId);
     }
+
+    private int getSales(String productName) {
+        return productDao.getSales(productName);
+    }
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
         productList.sort(new Comparator<Product>() {
             @Override
             public int compare(Product o1, Product o2) {
-                if (sort == 2) {
+                if (sort == 3) {
+                    if (direction == 0) {
+                        return (getSales(o1.getName())- getSales(o2.getName()));
+                    } else {
+                        return (getSales(o2.getName()) - getSales(o1.getName()));
+                    }
+
+                } else if (sort == 2) {
                     if (direction == 0) {
                         return (o1.getPrice() - o2.getPrice());
                     } else {

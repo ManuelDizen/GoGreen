@@ -26,6 +26,8 @@ public interface ProductDao {
     void updateStock(long productId, int amount);
     void updatePrice(long productId, int price);
 
+    public int getSales(String productName);
+
     Boolean addStock(String name, int amount);
 
     List<Product> getByCategory(Long id);
