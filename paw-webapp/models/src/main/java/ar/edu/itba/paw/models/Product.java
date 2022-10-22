@@ -30,13 +30,6 @@ public class Product {
     @Column(nullable=false)
     private Integer price;
 
-    /*@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name="tags_to_products",
-            joinColumns = @JoinColumn(name="products_id"),
-            inverseJoinColumns = @JoinColumn(name="ecotag_id") //TODO: Así funciona para usar un field de enum?
-    )*/
-
     @ElementCollection(targetClass = Ecotag.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "productid"))
     @Enumerated(EnumType.ORDINAL)
@@ -46,6 +39,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="imageid", nullable = false)
     private Image image;
+
+    @Column(name="productstatus_id")
+    @Enumerated(EnumType.ORDINAL)
+    private ProductStatus status;
 
     public void addEcotag(Ecotag tag) {
         tagList.add(tag);
@@ -62,6 +59,7 @@ public class Product {
         this.stock = stock;
         this.price = price;
         this.image = image;
+        this.status = ProductStatus.AVAILABLE;
     }
 
     public Product(Seller seller, long categoryId, String name, String description, int stock,
@@ -151,5 +149,13 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 }

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +134,17 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void deleteProduct(long productId) {
-        productDao.deleteProduct(productId);
+        /*
+        Opción 1: La que estaba antes, una baja física.
+         */
+        //productDao.deleteProduct(productId);
+
+        /*
+        Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
+         */
+        Optional<Product> product = getById(productId);
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        product.get().setStatus(ProductStatus.DELETED);
     }
 
     @Transactional
@@ -141,7 +152,7 @@ public class ProductServiceImpl implements ProductService {
     public Boolean attemptDelete(long productId) {
         if(checkForOwnership(productId)){
             deleteProduct(productId);
-            return true;
+            return true; //TODO: Por el amor de dios borrar estos booleans no te olvides
         }
         return false;
     }
@@ -181,7 +192,10 @@ public class ProductServiceImpl implements ProductService {
     public void updateStock(long prodId, int amount) {
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) return;
-        productDao.updateStock(prodId, (product.get().getStock()-amount));
+        Product prod = product.get();
+        prod.setStock(prod.getStock() - amount);
+        //productDao.updateStock(prodId, (prod.getStock()-amount));
+        if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
     }
 
     @Transactional
@@ -189,8 +203,16 @@ public class ProductServiceImpl implements ProductService {
     public Boolean updateProduct(long prodId, int amount, int price) {
         Boolean isOwner = checkForOwnership(prodId);
         if(!isOwner) return false;
-        productDao.updateStock(prodId, amount);
-        productDao.updatePrice(prodId, price);
+        Optional<Product> product = productDao.getById(prodId);
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        Product prod = product.get();
+        if(prod.getStatus().getId() == ProductStatus.OUTOFSTOCK.getId() && amount > 0)
+            prod.setStatus(ProductStatus.AVAILABLE);
+        prod.setStock(amount);
+        if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
+        prod.setPrice(price);
+        //productDao.updateStock(prodId, amount);
+        //productDao.updatePrice(prodId, price);
         return true;
     }
 
@@ -199,7 +221,13 @@ public class ProductServiceImpl implements ProductService {
     public Boolean addStock(String prodName, int amount) {
         Optional<Product> prod = getByName(prodName);
         if(!prod.isPresent()) return true;
-        return productDao.addStock(prodName, (amount + prod.get().getStock()));
+        Product product = prod.get();
+        if(product.getStatus() == ProductStatus.OUTOFSTOCK){
+            product.setStatus(ProductStatus.AVAILABLE);
+        }
+        product.setStock(amount + product.getStock());
+        return true;
+        //return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
     @Transactional

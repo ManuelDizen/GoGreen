@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.ProductStatus;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -50,8 +51,10 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> getAvailable() {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0",
+        long deletedId = ProductStatus.DELETED.getId();
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 AND p.status.id != :deletedId",
                 Product.class);
+        query.setParameter("deletedId", deletedId);
         return query.getResultList();
     }
 
@@ -86,6 +89,10 @@ public class ProductHibernateDao implements ProductDao {
             query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = :areaId) ");
             args.put("areaId", areaId);
         }
+        long deleteId = ProductStatus.DELETED.getId();
+        query.append("AND productstatus_id <> :deleteId ");
+        args.put("deleteId", deleteId);
+
         query.append("AND stock <> 0 ORDER BY id DESC");
 
         Query jpaQuery = em.createNativeQuery(query.toString());
