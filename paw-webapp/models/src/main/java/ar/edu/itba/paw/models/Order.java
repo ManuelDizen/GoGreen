@@ -1,24 +1,60 @@
 package ar.edu.itba.paw.models;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name="orders")
 public class Order {
-    private long id;
-    private String productName;
-    private String buyerName;
-    private String buyerSurname;
-    private String buyerEmail;
-    private String sellerName;
-    private String sellerSurname;
-    private String sellerEmail;
-    private Integer amount;
-    private Integer price;
-    private LocalDateTime dateTime;
-    private String message;
-    private String parsedDateTime;
 
-    public Order(long id, String productName, String buyerName, String buyerSurname,
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_id_seq")
+    @SequenceGenerator(name = "orders_id_seq", sequenceName = "orders_id_seq", allocationSize = 1)
+    private Long id;
+
+    @Column(nullable = false)
+    private String productName;
+
+    @Column(nullable = false)
+    private String buyerName;
+
+    @Column(nullable = false)
+    private String buyerSurname;
+    @Column(nullable = false)
+    private String buyerEmail;
+
+    @Column(nullable = false)
+    private String sellerName;
+
+    @Column(nullable = false)
+    private String sellerSurname;
+
+    @Column(nullable = false)
+    private String sellerEmail;
+
+    @Column(nullable = false)
+    private Integer amount;
+
+    @Column(nullable = false)
+    private Integer price;
+
+    @Column(nullable = false)
+    private LocalDateTime dateTime;
+
+    @Column(name="message")
+    private String message;
+
+    Order(){}
+
+    public Order(String productName, String buyerName, String buyerSurname,
+                 String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
+                 Integer amount, Integer price, LocalDateTime dateTime, String message){
+        this(null,productName, buyerName, buyerSurname, buyerEmail, sellerName, sellerSurname,
+                sellerEmail, amount, price, dateTime, message);
+    }
+
+    public Order(Long id, String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
                  Integer amount, Integer price, LocalDateTime dateTime, String message) {
         this.id = id;
@@ -33,10 +69,9 @@ public class Order {
         this.price = price;
         this.dateTime = dateTime;
         this.message = message;
-        this.parsedDateTime = this.getParsedDateTime();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

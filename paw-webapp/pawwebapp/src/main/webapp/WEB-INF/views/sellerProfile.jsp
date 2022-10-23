@@ -24,14 +24,14 @@
             <div class="seller-profile-container-2-bis" style="display:flex;">
                 <div class="seller-inner-div-1">
                     <div class="text-center seller-font"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                    <div class="seller-profile-pic-container">
-                        <c:if test="${user.imageId == 0}">
+                    <%--div class="seller-profile-pic-container">
+                        <c:if test="${user.image.id == 0}">
                             <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
                         </c:if>
-                        <c:if test="${user.imageId != 0}">
+                        <c:if test="${user.image.id != 0}">
                             <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">
                         </c:if>
-                    </div>
+                    </div--%>
                     <%--<div style="width:100%;" class="text-center">
                         <a class="decision-button waves-effect waves-light btn standard-button">
                             <spring:message code="sellerprofile.changepic"/>

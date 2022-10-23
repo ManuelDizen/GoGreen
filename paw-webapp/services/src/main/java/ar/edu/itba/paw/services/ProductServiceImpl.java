@@ -21,6 +21,7 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final EcotagService ecotagService;
 
+
     @Autowired
     public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService){
         this.productDao = productDao;
@@ -33,13 +34,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Product create(long sellerId, long categoryId, String name, String description,
+    public Product create(Seller seller, long categoryId, String name, String description,
                           int stock, Integer price, byte[] image) {
-        long imgId = 0;
+        Image img = null;
         if(image != null && image.length > 0){
-            imgId = imageService.create(image).getId();
+            img = imageService.create(image);
         }
-        return productDao.create(sellerId, categoryId, name, description, stock, price, imgId);
+        else{
+            Optional<Image> maybeImg = imageService.getById(0);
+            if(maybeImg.isPresent()) img = maybeImg.get();
+        }
+        return productDao.create(seller, categoryId, name, description, stock, price, img);
     }
 
     @Override
@@ -73,12 +78,23 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDao.filter(name, category, ecotags, maxPrice, areaId);
     }
+
+    private int getSales(String productName) {
+        return productDao.getSales(productName);
+    }
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
         productList.sort(new Comparator<Product>() {
             @Override
             public int compare(Product o1, Product o2) {
-                if (sort == 2) {
+                if (sort == 3) {
+                    if (direction == 0) {
+                        return (getSales(o1.getName())- getSales(o2.getName()));
+                    } else {
+                        return (getSales(o2.getName()) - getSales(o1.getName()));
+                    }
+
+                } else if (sort == 2) {
                     if (direction == 0) {
                         return (o1.getPrice() - o2.getPrice());
                     } else {
@@ -131,6 +147,7 @@ public class ProductServiceImpl implements ProductService {
         productDao.deleteProduct(productId);
     }
 
+    @Transactional
     @Override
     public Boolean attemptDelete(long productId) {
         if(checkForOwnership(productId)){
@@ -160,9 +177,9 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> prodToDelete = getById(prodId);
         if(prodToDelete.isPresent()){
             Product prod = prodToDelete.get();
-            Optional<Seller> prodOwner = sellerService.findById(prod.getSellerId());
+            Optional<Seller> prodOwner = sellerService.findById(prod.getSeller().getId());
             if(!prodOwner.isPresent()) throw new UserNotFoundException();
-            Optional<User> userProdOwner = userService.findById(prodOwner.get().getUserId());
+            Optional<User> userProdOwner = userService.findById(prodOwner.get().getUser().getId());
             if(!userProdOwner.isPresent()) throw new UserNotFoundException();
 
             return userProdOwner.get().getEmail().equals(user.getEmail());
@@ -191,7 +208,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Boolean addStock(String prodName, int amount) {
-        System.out.println("Nombre de producto: " + prodName + " stock a aumentar: " + amount);
         Optional<Product> prod = getByName(prodName);
         if(!prod.isPresent()) return true;
         return productDao.addStock(prodName, (amount + prod.get().getStock()));
@@ -225,7 +241,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getInteresting(Product product) {
         List<Product> toReturn = new ArrayList<>();
-        List<Product> bySellerAndCategory = findBySeller(product.getSellerId());
+        List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
         for(Product prod : bySellerAndCategory) {
             if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
                 toReturn.add(prod);
@@ -237,7 +253,7 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if(toReturn.size() < 3) {
-            List<Product> bySeller = findBySeller(product.getSellerId());
+            List<Product> bySeller = findBySeller(product.getSeller().getId());
             addIfNotPresent(toReturn, bySeller, product);
         }
         if(toReturn.size() < 3) {
@@ -249,9 +265,24 @@ public class ProductServiceImpl implements ProductService {
         return toReturn;
     }
 
+    @Override
+    public List<List<Product>> productsPerCategory() {
+        List<List<Product>> products = new ArrayList<>();
+        for(Category c : Category.values()){
+            List<Product> auxSet = getByCategory(c);
+            products.add(auxSet);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> getByCategory(Category c){
+        return productDao.getByCategory(c.getId());
+    }
+
     public void setTagList(List<Product> productList) {
         for(Product product : productList) {
-            product.setTagList(ecotagService.getTagFromProduct(product.getProductId()));
+            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
         }
     }
 
@@ -268,11 +299,12 @@ public class ProductServiceImpl implements ProductService {
         List<Product> recent =  productDao.getRecent(amount);
 
         for(Product product : recent) {
-            product.setTagList(ecotagService.getTagFromProduct(product.getProductId()));
+            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
         }
         return recent;
     }
 
+    @Transactional
     @Override
     public Product createProduct(Integer stock, Integer price, long categoryId, String name,
                                  String description, byte[] image, long[] ecotagIds){
@@ -280,7 +312,7 @@ public class ProductServiceImpl implements ProductService {
         if(user == null)  throw new UnauthorizedRoleException();
         Optional<Seller> seller = sellerService.findByUserId(user.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
-        Product product = create(seller.get().getId(), categoryId, name, description, stock, price, image);
+        Product product = create(seller.get(), categoryId, name, description, stock, price, image);
         for (long id : ecotagIds) {
             ecotagService.addTag(Ecotag.getById(id), product.getProductId());
         }

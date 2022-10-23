@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         User user = securityService.getLoggedUser();
         if(user == null)return false;
 
-        final Optional<Seller> maybeSeller = sellerService.findById(product.getSellerId());
+        final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
         final Seller seller = maybeSeller.get();
 
@@ -90,21 +90,21 @@ public class OrderServiceImpl implements OrderService {
         // (no lo tenemos guardado)
         emailService.purchase(user.getEmail(), user.getFirstName(),
                 product, amount,
-                product.getPrice(), sellerService.getName(seller.getUserId()),
-                seller.getPhone(), sellerService.getEmail(seller.getUserId()),
+                product.getPrice(), sellerService.getName(seller.getUser().getId()),
+                seller.getPhone(), sellerService.getEmail(seller.getUser().getId()),
                 user.getLocale());
 
-        emailService.itemsold(sellerService.getEmail(seller.getUserId()),
-                sellerService.getName(seller.getUserId()), product,
+        emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
+                sellerService.getName(seller.getUser().getId()), product,
                 amount, product.getPrice(), user.getFirstName(), user.getEmail(),
-                message, sellerService.getLocale(seller.getUserId()));
+                message, sellerService.getLocale(seller.getUser().getId()));
 
         LocalDateTime dateTime = LocalDateTime.now();
 
         Order order = orderDao.create(product.getName(), user.getFirstName(),
-                user.getSurname(), user.getEmail(), sellerService.getName(seller.getUserId()),
-                sellerService.getSurname(seller.getUserId()),
-                sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
+                user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
+                sellerService.getSurname(seller.getUser().getId()),
+                sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
                 message);
         if(order == null) return false;
 
@@ -112,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
         Optional<Product> modified = productService.getById(product.getProductId());
         if (!modified.isPresent()) return false;
         if (modified.get().getStock() == 0) {
-            Optional<User> seller2 = userService.findById(seller.getUserId());
+            Optional<User> seller2 = userService.findById(seller.getUser().getId());
             if (!seller2.isPresent()) throw new UserNotFoundException();
             User u = seller2.get();
             emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.models;
 
 public enum Ecotag {
 
+    ECOTAG_TEST("testTag", 0, "test", "blue", "ecotagTest"),
     ECOTAG_RECYCLE("recycleTag", 1, "recycling", "blue", "ecotagRecycle"),
     ECOTAG_FOREST("forestTag", 2, "forest", "green", "ecotagForest"),
     ECOTAG_ENERGY("energyTag", 3, "wind_power", "grey", "ecotagEnergy"),

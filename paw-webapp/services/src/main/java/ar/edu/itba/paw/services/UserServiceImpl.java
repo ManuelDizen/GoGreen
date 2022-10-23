@@ -42,14 +42,15 @@ public class UserServiceImpl implements UserService {
         return userDao.create(firstName, surname, email, encoder.encode(password), locale);
     }
 
+    @Transactional
     @Override
     public Boolean registerUser(String firstName, String surname, String email, String password, Locale locale){
-        User user = register(firstName, surname, email,
-                password, locale);
+        User user = register(firstName, surname, email, password, locale);
         if(user == null) return false;
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent()) throw new RoleNotFoundException();
-        userRoleService.create(user.getId(), role.get().getId());
+        user.addRole(role.get());
+        //userRoleService.create(user, role.get());
         emailService.registration(user, locale);
         return true;
     }
@@ -57,18 +58,21 @@ public class UserServiceImpl implements UserService {
 //    @Override
 //    public void updateImage(long userId, long imageId) {
 //        userDao.updateImage(userId, imageId);
-//    }
+//    }addRole
 
+    @Transactional
     @Override
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
     }
 
+    @Transactional
     @Override
     public Optional<User> findById(long userId) {
         return userDao.findById(userId);
     }
 
+    @Transactional
     @Override
     public List<User> getAll() {
         return userDao.getAll();

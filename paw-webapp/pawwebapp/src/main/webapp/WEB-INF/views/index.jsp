@@ -17,7 +17,7 @@
     </head>
     <body>
         <%@ include file="navbar.jsp"%>
-        <div class="landing-title-container animate glow delay-1">
+        <%--div class="landing-title-container animate glow delay-1">
             <hr class="landing-separator">
             <h1 class="landing-page-title"><spring:message code="home.greetingmsg"/></h1>
             <hr class = "landing-separator">
@@ -26,8 +26,36 @@
                     <spring:message code="home.start"/>
                 </a>
             </div>
+        </div--%>
+        <div class="row animate glow delay-1 separate-50-top separate-50-bottom main-container-landing">
+            <h1 class="text-center" style="margin-bottom:50px;"><spring:message code="landing.search.catchphrase"/></h1>
+            <%@ include file="search_bar.jsp"%>
         </div>
-        <div class="landing-recent-product-container animate glow delay-2">
+        <div class="row animate glow delay-2 center">
+            <hr class="landing-separator"/>
+            <h3 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whoarewe"/></h3>
+            <div class="col s6 justify landing-col text-col">
+                <div class="text-container">
+                    <spring:message code="landing.whoarewe.body"/>
+                </div>
+            </div>
+            <div class="col s6 center landing-col">
+                <img class="restrict-img" src="<c:url value="/resources/images/Landing1.png"/>"/>
+            </div>
+        </div>
+        <div class="row animate glow delay-3 center">
+            <hr class="landing-separator"/>
+            <h3 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whyus"/></h3>
+            <div class="col s6 center landing-col">
+                <img class="restrict-img" src="<c:url value="/resources/images/Landing2.png"/>"/>
+            </div>
+            <div class="col s6 justify landing-col text-col">
+                <div class="text-container">
+                    <spring:message code="landing.vision.body"/>
+                </div>
+            </div>
+        </div>
+        <%--div class="landing-recent-product-container animate glow delay-2">
             <c:if test="${recent.size() != 0}">
                 <div class="row">
                     <div class="col s12">
@@ -41,10 +69,11 @@
                         <div class="card product-card">
                             <a href="<c:url value="/product/${product.productId}"/>">
                                 <div class="card-image">
-                                    <c:if test="${product.imageId != 0}">
-                                        <img src="<c:url value="/image/${product.imageId}"/>">
+                                    <c:if test="${product.image.id != 0}">
+                                        <c:url value="/image/${product.image.id}" var="imageUrl"/>
+                                        <img src="${imageUrl}">
                                     </c:if>
-                                    <c:if test="${product.imageId == 0}">
+                                    <c:if test="${product.image.id == 0}">
                                         <img src="<c:url value="/resources/images/logo.png"/>">
                                     </c:if>
                                 </div>
@@ -85,7 +114,42 @@
                     </c:forEach>
                 </div>
             </c:if>
-        </div>
-
+        </div--%>
+        <%--div class="landing-categories-container">
+            <c:forEach items="${productsPerCategory}" var="categoryList">
+                <c:if test="${categoryList.size() != 0}">
+                    <c:set var="counter" value="0"/>
+                    <div class="category-container">
+                        <c:forEach items="${categories}" var="category">
+                            <c:if test="${category.id == categoryList.get(0).categoryId}">
+                                <h4 class="center">
+                                    <spring:message code="landingpage.category.title"/>
+                                    <c:out value="${' '}"/>
+                                    <spring:message code="${category.name}"/>
+                                </h4>
+                            </c:if>
+                        </c:forEach>
+                        <div class="landing-categories-container">
+                            <c:forEach items="${categoryList}" var="product">
+                                <div class="landing-categories-image-container">
+                                    <c:if test="${product.image.id != 0 && counter < 4}">
+                                        <c:set var="counter" value="${counter+1}"/>
+                                        <a href="<c:url value="/product/${product.productId}"/>">
+                                            <img src="<c:url value="/image/${product.image.id}"/>"/>
+                                        </a>
+                                    </c:if>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div--%>
     </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.carousel');
+        var instances = M.Carousel.init(elems, options);
+    });
+</script>

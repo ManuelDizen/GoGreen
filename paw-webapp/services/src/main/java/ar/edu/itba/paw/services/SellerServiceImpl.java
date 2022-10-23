@@ -34,7 +34,10 @@ public class SellerServiceImpl implements SellerService {
     @Transactional
     @Override
     public Seller create(long userid, String phone, String address, long areaId) {
-        return sellerDao.create(userid, phone, address, areaId);
+        Optional<User> maybeUser = userService.findById(userid);
+        if(!maybeUser.isPresent()) throw new UserNotFoundException();
+        User user = maybeUser.get();
+        return sellerDao.create(user, phone, address, areaId);
     }
 
     @Override
@@ -90,6 +93,7 @@ public class SellerServiceImpl implements SellerService {
         return user.getLocale();
     }
 
+    @Transactional
     @Override
     public Boolean registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
@@ -100,7 +104,8 @@ public class SellerServiceImpl implements SellerService {
         if(seller == null) return false;
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();
-        userRoleService.create(user.getId(), role.get().getId());
+        user.addRole(role.get());
+        //userRoleService.create(user, role.get());
         emailService.registration(user, user.getLocale());
         return true;
     }

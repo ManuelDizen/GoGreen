@@ -18,6 +18,10 @@ import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -34,6 +38,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -77,31 +82,31 @@ public class WebConfig {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
+//        ds.setUrl(environment.getProperty("database.path"));
+//        ds.setUsername(environment.getProperty("database.username"));
+//        ds.setPassword(environment.getProperty("database.password"));
         ds.setUrl("jdbc:postgresql://localhost/postgres");
         ds.setUsername("postgres");
         ds.setPassword("docker");
-        //ds.setUrl(environment.getProperty("database.path"));
-        //ds.setUsername(environment.getProperty("database.username"));
-        //ds.setPassword(environment.getProperty("database.password"));
         return ds;
     }
 
-    @Bean
+    /*@Bean
     public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
         final DataSourceInitializer dsi = new DataSourceInitializer();
 
         dsi.setDataSource(ds);
         dsi.setDatabasePopulator(databasePopulator());
         return dsi;
-    }
+    }*/
 
-    private DatabasePopulator databasePopulator() {
+    /*private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
         dbp.addScript(productsSql);
         dbp.addScript(rolesSql);
         dbp.addScript(ordersSql);
         return dbp;
-    }
+    }*/
 
     @Bean
     public JavaMailSender mailSender() {
@@ -163,12 +168,29 @@ public class WebConfig {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        // multipartResolver.setMaxUploadSize(100000);
         return multipartResolver;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(final DataSource ds){
-        return new DataSourceTransactionManager(ds);
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
+        factoryBean.setDataSource(dataSource());
+        final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
+        final Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
+        // Si ponen esto en prod, hay tabla!!!
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("format_sql", "true");
+        factoryBean.setJpaProperties(properties);
+        return factoryBean;
     }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
+    }
+
 }

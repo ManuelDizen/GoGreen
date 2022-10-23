@@ -51,7 +51,7 @@ public class SellerForm {
     private String phone;
 
     @NotNull
-    @Min(value=1)
+    @Min(value=0)
     private long area;
 
     public String getSurname() {

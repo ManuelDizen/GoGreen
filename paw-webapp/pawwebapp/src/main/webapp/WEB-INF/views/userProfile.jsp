@@ -19,14 +19,14 @@
                 <div class="seller-profile-container-2-bis" style="display:flex;">
                     <div class="seller-inner-div-1">
                         <div class="text-center userprofile-info"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                        <div class="seller-profile-pic-container">
+                        <%--div class="seller-profile-pic-container">
                             <c:if test="${user.imageId == 0}">
                                 <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
                             </c:if>
                             <c:if test="${user.imageId != 0}">
                                 <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">
                             </c:if>
-                        </div>
+                        </div--%>
                     </div>
                     <div class="seller-inner-div-2">
                         <div>
@@ -78,7 +78,7 @@
                                         <c:forEach items="${users}" var="user">
                                             <c:if test="${user.email == order.sellerEmail}">
                                                 <c:forEach items="${sellers}" var="seller">
-                                                    <c:if test="${user.id == seller.userId}">
+                                                    <c:if test="${user.id == seller.user.id}">
                                                         <div>
                                                             <spring:message code="userprofile.orders.selleraddress"/>
                                                             <c:out value="${' '}${seller.address}"/>
@@ -131,17 +131,82 @@
                     </div>
                 </c:if>
             </div>
+            <div id="orderSuccess" class="modal green-modal center fit-modal-content">
+                <%-- TODO: Unclear solution to get the 1st element of a collection,
+                        but it seems JSP does not offer an alternative
+                        to pick one element and store it as a var--%>
+                <c:forEach var="order" items="${orders}" end="0">
+                    <div class="modal-content" style="padding-bottom:0;">
+                        <h3 class="underline"><spring:message code="userprofile.ordercompleted"/></h3>
+                        <div>
+                            <c:choose>
+                                <c:when test="${order.amount > 1}">
+                                    <p class="orderSuccessModal"><spring:message code="userprofile.ordercompleted.message"
+                                                                                 arguments="${user.firstName}, ${user.surname},
+                        ${order.productName}, ${order.amount}"/></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p class="orderSuccessModal"><spring:message code="userprofile.ordercompleted.oneunit.message"
+                                                                                 arguments="${user.firstName}, ${user.surname},
+                        ${order.productName}, ${order.amount}"/></p>
+                                </c:otherwise>
+                            </c:choose>
+                            <ul class="seller-info">
+                                <li>
+                                    <spring:message code="sellerprofile.orders.seller"/>
+                                    <c:out value="${': '}${order.sellerName}${' '}${order.sellerSurname}"/>
+                                </li>
+                                <li>
+                                    <spring:message code="sellerprofile.orders.buyermail"/>
+                                    <c:out value="${': '}${order.sellerEmail}"/>
+                                </li>
+                                <c:forEach items="${users}" var="user">
+                                    <c:if test="${user.email == order.sellerEmail}">
+                                        <c:forEach items="${sellers}" var="seller">
+                                            <c:if test="${user.id == seller.user.id}">
+                                                <li>
+                                                    <spring:message code="registerbuyer.form.address"/>
+                                                    <c:out value="${': '}${seller.address}"/>
+                                                </li>
+                                                <li>
+                                                    <spring:message code="registerbuyer.form.phone"/>
+                                                    <c:out value="${': '}${seller.phone}"/>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer custom-modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat accept">
+                            <spring:message code="accept"/>
+                        </a>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
     </div>
 </body>
 <script>
-    $(document).ready(function() {
-        $("#changePictureButton").click(function() {
-            $("#pp_form").toggle();
-        });
+    let shown = 0;
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, options);
     });
 
+    if(${fromSale} && (${currentPage} == 1) && shown === 0){
+        shown = 1;
+        document.addEventListener('DOMContentLoaded', function () {
+            var Modalelem = document.querySelector('#orderSuccess');
+            var instance = M.Modal.init(Modalelem);
+            instance.open();
+        });
+    }
+
     var instance = M.Tabs.init(el, options);
+
 
 </script>
 </html>

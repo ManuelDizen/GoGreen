@@ -49,7 +49,7 @@ public class ProductController {
             @RequestParam(name="category", defaultValue="0") final long category,
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1") final Integer maxPrice,
-            @RequestParam(name="areaId", defaultValue="0") final long areaId,
+            @RequestParam(name="areaId", defaultValue="-1") final long areaId,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
@@ -74,11 +74,11 @@ public class ProductController {
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
         mav.addObject("path", productService.buildPath(strings));
 
-        final boolean[] boolTags = new boolean[Ecotag.values().length];
-        mav.addObject("boolTags", boolTags);
+        boolean[] boolTags = new boolean[Ecotag.values().length-1];
 
         List<Ecotag> tagsToFilter = ecotagService.filterByTags(strings, boolTags);
         mav.addObject("ecotagList", Ecotag.values());
+        mav.addObject("boolTags", boolTags);
 
         //Product filter
         List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
@@ -127,11 +127,12 @@ public class ProductController {
         List<Product> interesting = productService.getInteresting(productObj);
         mav.addObject("interesting", interesting);
 
-        final Optional<Seller> seller = sellerService.findById(productObj.getSellerId());
+        final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        List<Ecotag> ecotags = ecotagService.getTagFromProduct(productObj.getProductId());
-        mav.addObject("area", Area.getById(seller.get().getAreaId()));
+        List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
+        Area area = Area.getById(seller.get().getAreaId());
+        mav.addObject("area", area);
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         mav.addObject("categories", Category.values());

@@ -29,7 +29,6 @@
             </select>
             <label><spring:message code="explore.filterform.category"/></label>
         </div>
-
     </div>
     <div class="row">
         <div class="input-field col s12 filterinputs">
@@ -62,17 +61,19 @@
     <div class="row">
         <p class="filter-inputlabel">Ecotags:</p>
         <c:forEach items="${ecotagList}" var="ecotag">
-            <c:if test="${boolTags[ecotag.id-1]}">
-                <div>
-                    <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
-                    <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
-                </div>
-            </c:if>
-            <c:if test="${!boolTags[ecotag.id-1]}">
-                <div>
-                    <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
-                    <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
-                </div>
+            <c:if test="${ecotag.id != 0}">
+                <c:if test="${boolTags[ecotag.id-1]}">
+                    <div>
+                        <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
+                        <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
+                    </div>
+                </c:if>
+                <c:if test="${!boolTags[ecotag.id-1]}">
+                    <div>
+                        <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
+                        <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
+                    </div>
+                </c:if>
             </c:if>
         </c:forEach>
     </div>

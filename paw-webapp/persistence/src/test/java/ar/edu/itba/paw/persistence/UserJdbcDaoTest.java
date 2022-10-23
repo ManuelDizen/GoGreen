@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.UserJdbcDao;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +27,7 @@ import static org.junit.Assert.*;
 @Rollback
 public class UserJdbcDaoTest {
 
-    private static final String FIRSTNAME = "John";
+    /*private static final String FIRSTNAME = "John";
     private static final String SURNAME = "Doe";
     private static final String EMAIL = "foo@bar.edu.ar";
     private static final String PASSWORD = "secret";
@@ -93,6 +92,6 @@ public class UserJdbcDaoTest {
         assertEquals(EMAIL, maybeUser.get().getEmail());
     }
 
-
+*/
 
 }
