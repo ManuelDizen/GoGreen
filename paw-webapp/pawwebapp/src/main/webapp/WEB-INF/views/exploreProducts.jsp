@@ -37,7 +37,7 @@
                     <div class="card-price">
                         <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                     </div>
-                    <div class="card-price">
+                    <div class="card-category">
                         <i class="tiny material-icons">category</i>
                         <c:forEach items="${categories}" var="category">
                             <c:if test="${category.id == product.categoryId}">
@@ -45,7 +45,7 @@
                             </c:if>
                         </c:forEach>
                     </div>
-                    <div class="center">
+                    <div class="product-card-tags">
 <%--                        <c:set var="count" value="0"/>--%>
                         <c:forEach items="${product.tagList}" var="ecotag">
 <%--                            <c:if test="${count == 2}">--%>
