@@ -354,11 +354,6 @@ nav {
     width: 100%;
 }
 
-.explore-filter .row{
-    margin-top:15px;
-    margin-bottom:30px;
-}
-
 .column {
     text-align:justify;
     width:44%;
@@ -601,7 +596,8 @@ nav {
 }
 
 .eco_div {
-    margin-bottom:5px;
+    margin-top: 15px;
+    margin-bottom:15px;
 }
 
 .explore-filter .row .input-field .character-counter {
@@ -2254,8 +2250,8 @@ input[type=number] {
 
 }
 
-.margin-bottom-filterbox{
-    margin-bottom:5px;
+.margin-bottom-filterbox {
+    margin-bottom:40px;
 }
 
 .productpage-info-price{
