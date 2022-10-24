@@ -239,7 +239,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getInteresting(Product product) {
+    public List<Product> getInteresting(Product product, int amount) {
         List<Product> toReturn = new ArrayList<>();
         List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
         for(Product prod : bySellerAndCategory) {
@@ -247,16 +247,16 @@ public class ProductServiceImpl implements ProductService {
                 toReturn.add(prod);
             }
         }
-        if(toReturn.size() < 3) {
+        if(toReturn.size() < amount) {
             List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1, 0);
             addIfNotPresent(toReturn, byCategory, product);
 
         }
-        if(toReturn.size() < 3) {
+        if(toReturn.size() < amount) {
             List<Product> bySeller = findBySeller(product.getSeller().getId());
             addIfNotPresent(toReturn, bySeller, product);
         }
-        if(toReturn.size() < 3) {
+        if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable();
             sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
             addIfNotPresent(toReturn, sorted, product);
@@ -264,6 +264,22 @@ public class ProductServiceImpl implements ProductService {
         setTagList(toReturn);
         return toReturn;
     }
+
+    @Override
+    public List<Product> getInterestingForUser(List<Order> orders, int amount) {
+        List<Product> interesting = new ArrayList<>();
+        int i=0;
+        while(interesting.size() < amount) {
+            for(Order order : orders) {
+                Product candidate = getInteresting(getByName(order.getProductName()).get(), 1).get(i);
+                if(!interesting.contains(candidate) && interesting.size() < amount)
+                    interesting.add(candidate);
+            }
+            i++;
+        }
+        return interesting;
+    }
+
 
     @Override
     public List<List<Product>> productsPerCategory() {
