@@ -12,48 +12,28 @@
 <body>
 <%@ include file="navbar.jsp"%>
 <div class="seller-profile-main-body-container">
+    <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
+        <div class="information row">
+            <div class="col s6">
+                <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                <div class="userprofile-info-1"><c:out value="${user.email}"/></div>
+            </div>
+            <div class="col s6">
+                <div class="userprofile-info-2">
+                    <c:out value="${seller.address}"/>
+                </div>
+                <div class="userprofile-info-2">
+                    <c:out value="${seller.phone}"/>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col s12">
             <ul class="tabs tabs-fixed-width" id="sellerprofile_tabs">
-                <li class="tab col s3"><a href="#information"><spring:message code="sellerprofile.information"/></a></li>
                 <li class="tab col s3"><a class="active" href="#products"><spring:message code="sellerprofile.productos"/></a></li>
                 <li class="tab col s3"><a href="#orders"><spring:message code="sellerprofile.orderstitle"/></a></li>
             </ul>
-        </div>
-        <div id="information" class="col s12">
-            <div class="seller-profile-container-2-bis" style="display:flex;">
-                <div class="seller-inner-div-1">
-                    <div class="text-center seller-font"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                    <%--div class="seller-profile-pic-container">
-                        <c:if test="${user.image.id == 0}">
-                            <img src="<c:url value="/resources/images/logo.png"/>" alt="ProfilePictureOf${user.firstName}">
-                        </c:if>
-                        <c:if test="${user.image.id != 0}">
-                            <img src="<c:url value="/image/${user.imageId}"/>" alt="ProfilePictureOf${user.firstName}">
-                        </c:if>
-                    </div--%>
-                    <%--<div style="width:100%;" class="text-center">
-                        <a class="decision-button waves-effect waves-light btn standard-button">
-                            <spring:message code="sellerprofile.changepic"/>
-                        </a>
-                    </div>--%>
-                </div>
-                <div class="seller-inner-div-2">
-                    <div><div class="seller-font"><spring:message code="sellerprofile.info"/></div>
-                        <ul>
-                            <li><spring:message code="sellerprofile.name"/>:<c:out value="${user.firstName}${' '}${user.surname}"/></li>
-                            <li><spring:message code="sellerprofile.mail"/>:<c:out value="${user.email}"/></li>
-                            <li><spring:message code="sellerprofile.address"/>:<c:out value="${seller.address}"/></li>
-                            <li><spring:message code="sellerprofile.phone"/>:<c:out value="${seller.phone}"/></li>
-                        </ul>
-                    </div>
-                    <%--<div>
-                        <a class="decision-button waves-effect waves-light btn standard-button">
-                            <spring:message code="sellerprofile.changeinfo"/>
-                        </a>
-                    </div>--%>
-                </div>
-            </div>
         </div>
         <div id="products" class="col s12">
             <div class="seller-profile-container-2-lower-bis">
