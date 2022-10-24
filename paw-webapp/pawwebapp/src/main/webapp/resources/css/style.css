@@ -985,6 +985,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .explore-products {
     margin-right: 10px;
+    margin-bottom: 10px;
     width: 100%;
 }
 

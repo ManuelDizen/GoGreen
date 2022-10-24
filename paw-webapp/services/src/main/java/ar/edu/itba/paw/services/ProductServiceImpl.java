@@ -138,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
-        return divideIntoPages(productList, 6);
+        return divideIntoPages(productList, 12);
     }
 
     @Transactional
