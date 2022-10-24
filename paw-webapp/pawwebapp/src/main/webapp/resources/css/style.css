@@ -1324,7 +1324,7 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
-    width: 28%;
+    width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
@@ -1339,14 +1339,20 @@ ALL CREDITS TO @andrewsims
 }
 
 .user-profile-card{
-    height: 300px;
+    font-size: 13px;
+    height: 270px;
     display:flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
 
 .information {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+}
+
+.purchase {
+    margin-top: 40px;
+    font-size: 20px;
 }
 
 .userprofile-info-1 {
@@ -1373,7 +1379,7 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-card-title{
     font-size:25px;
-    margin-top: 2vh;
+    margin-top: 1vh;
     font-weight:bold;
     overflow: hidden;
 }
@@ -1970,7 +1976,7 @@ input[type=number] {
 
 .seller-profile-products-2-bis, .seller-profile-container-orders-2{
     flex:100%;
-    text-align:center;
+    text-align:left;
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;

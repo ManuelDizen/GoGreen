@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    final static int PAGE_SIZE = 3;
+    final static int PAGE_SIZE = 8;
     private final OrderDao orderDao;
     private final ProductService productService;
     private final EmailService emailService;

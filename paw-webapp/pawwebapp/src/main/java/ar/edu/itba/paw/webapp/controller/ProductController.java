@@ -150,7 +150,9 @@ public class ProductController {
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
         if(!created) throw new OrderCreationException();
 
-        return new ModelAndView("redirect:/userProfile/true#orders");
+        ModelAndView mav = new ModelAndView("redirect:/userProfile");
+        mav.addObject("fromSale", true);
+        return mav;
     }
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)
