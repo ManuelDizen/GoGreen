@@ -1345,8 +1345,18 @@ ALL CREDITS TO @andrewsims
     justify-content: space-evenly;
 }
 
-.userprofile-info {
+.information {
+    margin-bottom: 20px;
+}
+
+.userprofile-info-1 {
     font-weight: bold; font-size: 20px;
+    margin-left: 40%;
+}
+
+.userprofile-info-2 {
+    font-weight: bold; font-size: 20px;
+    margin-left: 20%;
 }
 
 .user-font {
@@ -1855,6 +1865,7 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
+    border-top: 1px solid var(--palette-details-light);
 }
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
@@ -1921,12 +1932,11 @@ input[type=number] {
 
 .seller-inner-div-1, .seller-inner-div-2{
     height:100%;
-    flex:50%;
-    text-align:center;
     display:flex;
     flex-direction:column;
     justify-content: space-between;
 }
+
 
 .seller-profile-pic-container img{
     border-radius: 50%;
@@ -1961,7 +1971,6 @@ input[type=number] {
 .seller-profile-products-2-bis, .seller-profile-container-orders-2{
     flex:100%;
     text-align:center;
-
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
