@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="explore-products">
-    <c:if test="${isEmpty == 0}">
+    <c:if test="${products.size() == 0}">
         <div>
         <h4><spring:message code="explore.noproducts"/></h4>
         <sec:authorize access="hasRole('SELLER')">

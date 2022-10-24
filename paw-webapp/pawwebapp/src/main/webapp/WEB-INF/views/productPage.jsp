@@ -171,22 +171,28 @@
             <c:if test="${product.status.id != availableId}">
                 <c:choose>
                     <c:when test="${product.status.id == pausedId}">
-                        <span><spring:message code="productpage.pausedmsg"/></span>
-                        <a class="waves-effect waves-light btn-small" href="<c:url value="/explore"/>">
-                            <spring:message code="navbar.explore"/>
-                        </a>
+                        <div class="flex-column-center-align">
+                            <span class="center"><spring:message code="productpage.pausedmsg"/></span>
+                            <a class="waves-effect waves-light btn-small center-block" href="<c:url value="/explore"/>">
+                                <spring:message code="navbar.explore"/>
+                            </a>
+                        </div>
                     </c:when>
                     <c:when test="${product.status.id == outofstockId}">
-                        <span><spring:message code="productpage.outofstockmsg"/></span>
-                        <a class="waves-effect waves-light btn-small" href="<c:url value="/explore"/>">
-                            <spring:message code="navbar.explore"/>
-                        </a>
+                        <div class="flex-column-center-align">
+                            <span class="center"><spring:message code="productpage.outofstockmsg"/></span>
+                            <a class="waves-effect waves-light btn-small center-block" href="<c:url value="/explore"/>">
+                                <spring:message code="navbar.explore"/>
+                            </a>
+                        </div>
                     </c:when>
                     <c:when test="${product.status.id == deletedId}">
-                        <span><spring:message code="productpage.deletedmsg"/></span>
-                        <a class="waves-effect waves-light btn-small" href="<c:url value="/explore"/>">
-                            <spring:message code="navbar.explore"/>
-                        </a>
+                        <div class="flex-column-center-align">
+                            <span class="center"><spring:message code="productpage.deletedmsg"/></span>
+                            <a class="waves-effect waves-light btn-small center-block" href="<c:url value="/explore"/>">
+                                <spring:message code="navbar.explore"/>
+                            </a>
+                        </div>
                     </c:when>
                 </c:choose>
             </c:if>

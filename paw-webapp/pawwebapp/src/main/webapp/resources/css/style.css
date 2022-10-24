@@ -1884,7 +1884,7 @@ input[type=number] {
 }
 
 .seller-inline-flex {
-    display:inline-flex; margin-bottom: 15px; margin-top:20px;
+    display:inline-flex; margin-bottom: 5px; margin-top:10px;
 }
 
 .green-modal {
@@ -2090,6 +2090,7 @@ input[type=number] {
 .order-form-container{
     border-left:1px solid white;
     height: 100%;
+
 }
 
 #orderamount{
@@ -2277,4 +2278,9 @@ input[type=number] {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.flex-column-center-align{
+    display:flex;
+    flex-direction: column;
 }

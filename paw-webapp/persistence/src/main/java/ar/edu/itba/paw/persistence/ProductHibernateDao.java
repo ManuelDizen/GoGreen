@@ -94,8 +94,8 @@ public class ProductHibernateDao implements ProductDao {
             args.put("areaId", areaId);
         }
         long deleteId = ProductStatus.DELETED.getId();
-        query.append("AND productstatus_id <> :deleteId ");
-        args.put("deleteId", deleteId);
+        query.append("AND productstatus_id = :availableId ");
+        args.put("availableId", ProductStatus.AVAILABLE.getId());
 
         query.append("AND stock <> 0 ORDER BY id DESC");
 

@@ -76,13 +76,13 @@
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
-                                        <div class="seller-inline-flex">
-                                                <%--a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}"--%>
-                                            <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
-                                                <i class="material-icons">warning</i>
-                                                <spring:message code="sellerprofile.warning.nostock"/>
-                                            </a>
-                                        </div>
+                                            <div class="seller-inline-flex">
+                                                    <%--a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}"--%>
+                                                <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
+                                                    <i class="material-icons">warning</i>
+                                                    <spring:message code="sellerprofile.warning.nostock"/>
+                                                </a>
+                                            </div>
                                         </c:if>
                                         <div class="seller-profile-card-title">
                                             <a class="seller-profile-card-title" href="<c:url value="/product/${product.productId}"/>">
@@ -109,7 +109,7 @@
                                                 <spring:message code="sellerprofile.delete.confirmbutton"/>
                                             </a>
                                             <c:if test="${product.status.id == availableId}">
-                                                <a id="pause" class="waves-effect waves-light btn orange accent-4" href="<c:url value="/pauseProduct/${product.productId}"/>">
+                                                <a id="pause" class="waves-effect waves-light btn grey lighten-1" href="<c:url value="/pauseProduct/${product.productId}"/>">
                                                     <i class="material-icons">pause_circle_outline</i>
                                                     <spring:message code="sellerprofile.pause.confirmbutton"/>
                                                 </a>
