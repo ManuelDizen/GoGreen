@@ -2179,7 +2179,7 @@ input[type=number] {
 .text-container{
     width:80%;
     margin:auto;
-    font-size:20px;
+    font-size:18px;
 }
 
 .search-container{
@@ -2218,6 +2218,10 @@ input[type=number] {
 
 .separate-20-bottom{
     margin-bottom:20px;
+}
+
+.separate-50-bottom{
+    margin-bottom:50px;
 }
 
 .filter-category input,
