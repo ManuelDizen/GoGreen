@@ -19,7 +19,7 @@ public interface ProductService {
     Optional<Product> getByName(String name);
     //List<Product> getAll();
     List<Product> getAvailable();
-    List<Product> getRecent(int amount);
+    List<Product> getPopular(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
 
     void sortProducts(List<Product> productList, int sort, int direction);

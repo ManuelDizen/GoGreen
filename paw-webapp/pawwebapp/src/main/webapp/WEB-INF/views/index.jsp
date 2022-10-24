@@ -27,10 +27,117 @@
                 </a>
             </div>
         </div--%>
-        <div class="row animate glow delay-1 separate-50-top separate-50-bottom main-container-landing">
-            <h1 class="text-center" style="margin-bottom:50px;"><spring:message code="landing.search.catchphrase"/></h1>
+        <c:set var="role" value="0"/>
+        <sec:authorize access="hasRole('USER')">
+            <c:set var="role" value="1"/>
+        </sec:authorize>
+        <div class="row animate glow delay-1 separate-20-top separate-20-bottom main-container-landing">
+            <h4 class="text-center" style="margin-bottom:30px;"><spring:message code="landing.search.catchphrase"/></h4>
             <%@ include file="search_bar.jsp"%>
         </div>
+        <c:if test="${role == 0}">
+            <div class="row landing-row">
+                <div class="col s12">
+                    <h5 class="landing-label"><spring:message code="landing.moresold"/></h5>
+                </div>
+            </div>
+            <div class="landing-products">
+                <c:forEach items="${popular}" var="product">
+                    <div class="card product-card z-depth-1">
+                        <a href="<c:url value="/product/${product.productId}"/>">
+                            <div class="card-image">
+                                <c:if test="${product.image.id != 0}">
+                                    <img src="<c:url value="/image/${product.image.id}"/>">
+                                </c:if>
+                                <c:if test="${product.image.id == 0}">
+                                    <img src="<c:url value="/resources/images/logo.png"/>">
+                                </c:if>
+                            </div>
+                        </a>
+                        <div class="card-content">
+                            <a href="<c:url value="/product/${product.productId}"/>" class="card-title product-card-title"><c:out value="${product.name}"/></a>
+                            <div class="card-price">
+                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
+                            </div>
+                            <div class="card-category">
+                                <i class="tiny material-icons">category</i>
+                                <c:forEach items="${categories}" var="category">
+                                    <c:if test="${category.id == product.categoryId}">
+                                        <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                                            <spring:message code="${category.name}"/>
+                                        </a>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                            <div class="product-card-tags">
+                                <c:forEach items="${product.tagList}" var="ecotag">
+                                    <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">
+                                        <i class="tiny material-icons">${ecotag.icon}</i>
+                                    </a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:if>
+        <c:if test="${role == 1}">
+            <div class="row landing-row">
+                <div class="col s12">
+                    <h5 class="landing-label"><spring:message code="landing.basedonpurchase"/></h5>
+                </div>
+            </div>
+            <div class="landing-products">
+                <c:forEach items="${interesting}" var="product">
+                    <div class="card product-card z-depth-1">
+                        <a href="<c:url value="/product/${product.productId}"/>">
+                            <div class="card-image">
+                                <c:if test="${product.image.id != 0}">
+                                    <img src="<c:url value="/image/${product.image.id}"/>">
+                                </c:if>
+                                <c:if test="${product.image.id == 0}">
+                                    <img src="<c:url value="/resources/images/logo.png"/>">
+                                </c:if>
+                            </div>
+                        </a>
+                        <div class="card-content">
+                            <a href="<c:url value="/product/${product.productId}"/>" class="card-title product-card-title"><c:out value="${product.name}"/></a>
+                            <div class="card-price">
+                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
+                            </div>
+                            <div class="card-category">
+                                <i class="tiny material-icons">category</i>
+                                <c:forEach items="${categories}" var="category">
+                                    <c:if test="${category.id == product.categoryId}">
+                                        <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                                            <spring:message code="${category.name}"/>
+                                        </a>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                            <div class="center">
+                                <c:set var="count" value="0"/>
+                                <c:forEach items="${product.tagList}" var="ecotag">
+                                    <c:if test="${count == 2}">
+                                        <br>
+                                        <div class="yellow-card black-text chip ">
+                                            <i class="tiny material-icons">more_horiz</i>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${count lt 2}">
+                                        <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">
+                                            <i class="tiny material-icons">${ecotag.icon}</i>
+                                            <spring:message code="${ecotag.tag}"/>
+                                        </a>
+                                    </c:if>
+                                    <c:set var="count" value="${count + 1}"/>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:if>
         <div class="row animate glow delay-2 center">
             <hr class="landing-separator"/>
             <h3 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whoarewe"/></h3>

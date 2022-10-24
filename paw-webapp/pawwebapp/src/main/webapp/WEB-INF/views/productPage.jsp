@@ -198,7 +198,7 @@
                             <div class="card-price">
                                 <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                             </div>
-                            <div class="card-price">
+                            <div class="card-category">
                                 <i class="tiny material-icons">category</i>
                                 <c:forEach items="${categories}" var="category">
                                     <c:if test="${category.id == product.categoryId}">

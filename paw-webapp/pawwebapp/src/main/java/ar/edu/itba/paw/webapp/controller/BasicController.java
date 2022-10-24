@@ -29,9 +29,11 @@ public class BasicController {
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
-        List<Product> recent = productService.getRecent(3);
+        List<Product> popular = productService.getPopular(4);
+        List<Product> interesting = productService.getInteresting(productService.getById(8).get());
         final ModelAndView mav = new ModelAndView("index");
-        mav.addObject("recent", recent);
+        mav.addObject("popular", popular);
+        mav.addObject("interesting", interesting);
         mav.addObject("categories", Category.values());
         mav.addObject("productsPerCategory", productService.productsPerCategory());
         return mav;

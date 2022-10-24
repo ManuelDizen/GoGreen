@@ -294,14 +294,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getRecent(int amount){
+    public List<Product> getPopular(int amount) {
 
-        List<Product> recent =  productDao.getRecent(amount);
+        List<Product> products = getAvailable();
 
-        for(Product product : recent) {
+        products.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return getSales(o2.getName()) - getSales(o1.getName());
+            }
+        });
+
+        List<Product> popular = products.subList(0, amount);
+
+        for(Product product : popular) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
         }
-        return recent;
+        return popular;
     }
 
     @Transactional

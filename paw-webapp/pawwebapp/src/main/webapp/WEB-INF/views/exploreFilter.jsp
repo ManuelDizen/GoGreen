@@ -64,12 +64,16 @@
             <c:if test="${ecotag.id != 0}">
                 <c:if test="${boolTags[ecotag.id-1]}">
                     <div class="row eco_div">
-                        <div class="${ecotag.color} white-text chip chip_filter eco_chip_small">
+                        <div class="col s2">
+                            <div class="${ecotag.color} white-text chip chip_filter eco_chip_small">
                                 <i class="left-align tiny tiny_filter material-icons">${ecotag.icon}</i>
+                            </div>
                         </div>
-                        <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
-                        <label for="ecotag ${ecotag.id}">
-                            <spring:message code="${ecotag.tag}"/></label>
+                        <div class="eco_input" style="padding:0;">
+                            <input style="display:table-cell; vertical-align:middle; margin: 0 6px;" class="ecotag-checkbox" name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
+                            <label style="margin: 0 3px;" for="ecotag ${ecotag.id}">
+                                <spring:message code="${ecotag.tag}"/></label>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${!boolTags[ecotag.id-1]}">

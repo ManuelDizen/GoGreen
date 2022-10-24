@@ -20,8 +20,6 @@ public interface ProductDao {
 
     List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId);
 
-    List<Product> getRecent(int amount);
-
     void deleteProduct(long productId);
     void updateStock(long productId, int amount);
     void updatePrice(long productId, int price);

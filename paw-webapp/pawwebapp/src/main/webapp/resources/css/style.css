@@ -967,6 +967,14 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: center;
 }
 
+.landing-label {
+    margin-left: 130px;
+}
+
+.landing-row {
+    margin-bottom: 10px;
+}
+
 .landing-categories-container{
     justify-content: space-around;
 }
@@ -2203,12 +2211,12 @@ input[type=number] {
     fill:white;
 }
 
-.separate-50-top{
-    margin-top:50px;
+.separate-20-top{
+    margin-top:20px;
 }
 
-.separate-50-bottom{
-    margin-bottom:50px;
+.separate-20-bottom{
+    margin-bottom:20px;
 }
 
 .filter-category input,
@@ -2227,8 +2235,6 @@ input[type=number] {
 }
 
 .main-container-landing{
-    height:70vh;
-
     display:flex;
     flex-direction: column;
     justify-content: center;
