@@ -32,14 +32,14 @@
             <%@ include file="search_bar.jsp"%>
         </div>
         <c:if test="${popular}">
-            <div class="row landing-row">
+            <div class="row landing-row animate glow delay-2">
                 <div class="col s12">
                     <h5 class="landing-label"><spring:message code="landing.moresold"/></h5>
                 </div>
             </div>
         </c:if>
         <c:if test="${!popular}">
-            <div class="row landing-row">
+            <div class="row landing-row animate glow delay-2">
                 <div class="col s12">
                     <h5 class="landing-label"><spring:message code="landing.basedonpurchase"/></h5>
                 </div>
@@ -85,7 +85,7 @@
                     </div>
                 </c:forEach>
             </div>
-        <div class="row animate glow delay-2 center">
+        <div class="row animate glow delay-3 center">
             <hr class="landing-separator"/>
             <h4 class="separate-50-bottom separate-50-top center"><spring:message code="landing.whoarewe"/></h4>
             <div class="col s6 justify landing-col text-col">

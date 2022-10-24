@@ -3,8 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,7 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SecurityService securityService;
@@ -271,9 +275,13 @@ public class ProductServiceImpl implements ProductService {
         int i=0;
         while(interesting.size() < amount) {
             for(Order order : orders) {
-                Product candidate = getInteresting(getByName(order.getProductName()).get(), 1).get(i);
-                if(!interesting.contains(candidate) && interesting.size() < amount)
-                    interesting.add(candidate);
+                Optional<Product> aux = getByName(order.getProductName());
+                if(aux.isPresent()) {
+                    Product product = aux.get();
+                    Product candidate = getInteresting(product, 1).get(i);
+                    if (!interesting.contains(candidate) && interesting.size() < amount)
+                        interesting.add(candidate);
+                }
             }
             i++;
         }
