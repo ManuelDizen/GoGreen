@@ -59,19 +59,31 @@
 
     </div>
     <div class="row">
-        <p class="filter-inputlabel">Ecotags:</p>
+        <p class="filter-inputlabel eco_label">Ecotags:</p>
         <c:forEach items="${ecotagList}" var="ecotag">
             <c:if test="${ecotag.id != 0}">
                 <c:if test="${boolTags[ecotag.id-1]}">
-                    <div>
+                    <div class="row eco_div">
+                        <div class="${ecotag.color} white-text chip chip_filter eco_chip_small">
+                                <i class="left-align tiny tiny_filter material-icons">${ecotag.icon}</i>
+                        </div>
                         <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" checked="checked" id="ecotag ${ecotag.id}">
-                        <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
+                        <label for="ecotag ${ecotag.id}">
+                            <spring:message code="${ecotag.tag}"/></label>
                     </div>
                 </c:if>
                 <c:if test="${!boolTags[ecotag.id-1]}">
-                    <div>
-                        <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
-                        <label for="ecotag ${ecotag.id}"><spring:message code="${ecotag.tag}"/></label>
+                    <div class="row eco_div">
+                        <div class="col s2">
+                            <div class="${ecotag.color} white-text chip chip_filter eco_chip_small">
+                                <i class="left-align tiny tiny_filter material-icons">${ecotag.icon}</i>
+                            </div>
+                        </div>
+                        <div class="eco_input">
+                            <input name="strings" type="checkbox" value="${ecoStrings[ecotag.id-1]}" id="ecotag ${ecotag.id}">
+                            <label for="ecotag ${ecotag.id}">
+                                <spring:message code="${ecotag.tag}"/></label>
+                        </div>
                     </div>
                 </c:if>
             </c:if>

@@ -586,6 +586,28 @@ nav {
     border-radius: 12px;
 }
 
+.chip_filter {
+    max-height: 5vh;
+    overflow: hidden;
+    font-size: 10px;
+    font-weight: 300;
+    line-height: 24px;
+    padding: 5px 3px;
+    border-radius: 12px;
+}
+
+.eco_label {
+    margin-bottom: 10px;
+}
+
+.eco_input {
+    margin-left: 40px;
+}
+
+.eco_div {
+    margin-bottom:5px;
+}
+
 label {
     margin-bottom: 20px;
 }
@@ -1236,10 +1258,18 @@ ALL CREDITS TO @andrewsims
 }
 
 
-
-
 .eco_chip {
     width: fit-content;
+}
+
+.eco_chip_small {
+    margin:auto;
+    max-height: 22px;
+    max-width: 22px;
+}
+
+.tiny_filter {
+    float:left;
 }
 
 .product-card .card-content > div {
