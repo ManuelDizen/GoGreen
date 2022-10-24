@@ -356,7 +356,7 @@ nav {
 
 .explore-filter .row{
     margin-top:15px;
-    margin-bottom:0 ;
+    margin-bottom:30px;
 }
 
 .column {
@@ -567,10 +567,6 @@ nav {
     margin-bottom: 0;
 }
 
-.explore-filter .row .select-wrapper {
-    margin-top: 8px;
-}
-
 .explore-filter .row div > label {
     color: white;
     font-size: 12px;
@@ -601,15 +597,11 @@ nav {
 }
 
 .eco_input {
-    margin-left: 40px;
+    /*margin-left: 40px;*/
 }
 
 .eco_div {
     margin-bottom:5px;
-}
-
-label {
-    margin-bottom: 20px;
 }
 
 .explore-filter .row .input-field .character-counter {
@@ -618,6 +610,7 @@ label {
 
 .explore-filter .row .input-field > input, .explore-filter .row .select-wrapper > input {
     border-bottom-color: white;
+    left: 0;
 }
 
 
@@ -647,7 +640,11 @@ label {
 }
 
 .filter-submit {
-    display:flex;justify-content: space-around;margin-top:30px;
+    display:flex;justify-content: space-around;
+}
+
+.explore-filter .row #ecocontainer{
+    margin-bottom:10px;
 }
 
 .productpage-image-container .material-placeholder{
@@ -2240,4 +2237,12 @@ input[type=number] {
 
 .remove-bottom-padding{
     padding-bottom:0;
+}
+
+.ecotag-checkbox{
+
+}
+
+.margin-bottom-filterbox{
+    margin-bottom:5px;
 }
