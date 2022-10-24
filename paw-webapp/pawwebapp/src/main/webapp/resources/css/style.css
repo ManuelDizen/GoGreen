@@ -2055,7 +2055,8 @@ input[type=number] {
 }
 
 .productpage-info {
-    font-size:25px; font-weight:bold; text-align:center;
+    font-size:20px; font-weight:bold; text-align:center;
+    display: flex; justify-content: space-evenly;
 }
 
 .productpage-link {
@@ -2067,7 +2068,7 @@ input[type=number] {
 }
 
 .productpage-info-margin {
-    text-align:center; margin-top: 2vh;
+    text-align:center; margin-top: 25px;
 }
 
 .cursor-default {
@@ -2078,7 +2079,7 @@ input[type=number] {
     margin: 15px auto;
 }
 
-.location-pin {
+.center-in-div-with-flex {
     height:fit-content; text-align:center; font-size:20px;
 }
 
@@ -2251,4 +2252,43 @@ input[type=number] {
 
 .margin-bottom-filterbox{
     margin-bottom:5px;
+}
+
+.productpage-info-price{
+    font-size: 30px;
+    text-align:center;
+}
+
+.productpage-info-container{
+    height:100%;
+    width:70%;
+    border:1px solid var(--palette-details-light);
+    background-color: var(--palette-color-secondary);
+    padding:20px 10px;
+}
+
+.productpage-info-title{
+    width:100%;
+    margin: 5px 5px;
+    font-size: 40px;
+    font-weight: bolder;
+    text-align:center;
+}
+
+.productpage-info-content{
+    height:90%;
+    text-align:center;
+}
+
+.productpage-info-text{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height:90%;
+}
+
+.limit{
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
 }
