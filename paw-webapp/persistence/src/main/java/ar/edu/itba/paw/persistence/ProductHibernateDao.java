@@ -113,10 +113,14 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     public int getSales(String productName) {
-        String query = "SELECT id FROM orders WHERE productname = :productName";
+        int cant = 0;
+        String query = "SELECT amount FROM orders WHERE productname = :productName";
         Query jpaQuery = em.createNativeQuery(query);
         jpaQuery.setParameter("productName", productName);
-        return jpaQuery.getResultList().size();
+        for(Object o : jpaQuery.getResultList()) {
+            cant += (Integer)o;
+        }
+        return cant;
     }
 
     @Override
