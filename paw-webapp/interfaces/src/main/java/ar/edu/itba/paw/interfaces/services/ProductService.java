@@ -30,10 +30,12 @@ public interface ProductService {
     void deleteProduct(long productId);
     Boolean attemptDelete(long productId);
     Boolean attemptUpdate(long productId, int amount);
+    void attemptPause(long productId);
+    void attemptRepublish(long productId);
 
     Boolean checkForAvailableStock(Product p, int amount);
     Boolean checkForOwnership(long prodId);
-    void updateStock(long prodId, int amount);
+    void decreaseStock(long prodId, int amount);
 
     Boolean updateProduct(long prodId, int amount, int price);
 

@@ -941,7 +941,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .explore-products, .productpage-ecotags, .landing-products,
-.landing-categories-container{
+.landing-categories-container,
+.sellerprofile-action-buttons{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -1357,9 +1358,12 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-card-title{
     font-size:25px;
-    margin-top: 2vh;
     font-weight:bold;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 10px 5px 5px 5px;
+
 }
 
 .seller-profile-card-content {
@@ -1377,8 +1381,7 @@ ALL CREDITS TO @andrewsims
     width:28%;
     vertical-align: center;
     margin:3vh auto;
-    height:fit-content;
-    min-height: 300px;
+    height: 200px;
 }
 
 .seller-profile-product-card-info #stockless{
@@ -1389,7 +1392,9 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-product-card-info #stockless i,
 .seller-profile-product-card-info #edit i,
-.seller-profile-product-card-info #delete i{
+.seller-profile-product-card-info #delete i,
+.seller-profile-product-card-info #pause i,
+.seller-profile-product-card-info #republish i{
     margin-right:10px;
 }
 
@@ -1400,8 +1405,10 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-product-card-info #edit,
-.seller-profile-product-card-info #delete{
-    margin: auto 1vw auto 1vw;
+.seller-profile-product-card-info #delete,
+.seller-profile-product-card-info #pause,
+.seller-profile-product-card-info #republish{
+    margin: 10px 4px 10px 4px;
     display:inline-flex;
     align-items:center;
 }
@@ -1968,7 +1975,7 @@ input[type=number] {
     background-color:var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
-    height:100%;
+    height:200px;
     width:95%;
 }
 

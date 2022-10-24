@@ -111,61 +111,85 @@
             </div>
         </div>
         <div class="col s4 order-form-container">
-            <c:if test="${pageContext.request.userPrincipal.name != null}">
-                <c:url value="/process/${product.productId}" var="process"/>
-            </c:if>
-            <c:if test="${pageContext.request.userPrincipal.name == null}">
-                <c:url value="/login" var="process"/>
-            </c:if>
-            <form:form modelAttribute="orderForm" action="${process}" method="post" cssClass="order-form">
-                <div class="row productpage-orderform">
-                    <div class="input-field col s12">
-                        <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
-                        <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
-                                       data-length="300" style="color:white;"/>
-                        <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
-                    </div>
-                </div>
-                <div class="errors">
-                    <form:errors path="message" element="p" cssClass="error"/>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <div class="input-field col s12" id="orderamount">
-                            <form:select path="amount">
-                                <form:option value="0" disabled="true"><spring:message code="productpage.orderform.amount.placeholder"/></form:option>
-                                <c:forEach var="i" begin="1" end="5">
-                                    <c:if test="${i <= product.stock}">
-                                        <form:option value="${i}"><c:out value="${i}"/></form:option>
-                                    </c:if>
-                                </c:forEach>
-                            </form:select>
-                            <form:label for="amount" path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
-                            <form:errors path="amount" element="p" cssClass="error"/>
+            <c:if test="${product.status.id == availableId}">
+                <c:if test="${pageContext.request.userPrincipal.name != null}">
+                    <c:url value="/process/${product.productId}" var="process"/>
+                </c:if>
+                <c:if test="${pageContext.request.userPrincipal.name == null}">
+                    <c:url value="/login" var="process"/>
+                </c:if>
+                <form:form modelAttribute="orderForm" action="${process}" method="post" cssClass="order-form">
+                    <div class="row productpage-orderform">
+                        <div class="input-field col s12">
+                            <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
+                            <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
+                                           data-length="300" style="color:white;"/>
+                            <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message"><spring:message code="productpage.orderform.msgToSeller"/></form:label>
                         </div>
                     </div>
-                </div>
-                <div class="errors">
-                    <form:errors path="amount" element="p" cssClass="error"/>
-                </div>
-                <div class="row text-center">
-                    <sec:authorize access="hasRole('SELLER')">
-                        <button type="submit" class="waves-effect waves-light btn disabled">
-                            <spring:message code="productpage.orderform.sellerblocked"/>
-                        </button>
-                    </sec:authorize>
-                    <sec:authorize access="hasRole('USER')">
-                        <button type="submit" class="waves-effect waves-light btn">
-                            <spring:message code="productpage.orderform.submit"/>
-                        </button>
-                    </sec:authorize>
-                    <c:if test="${pageContext.request.userPrincipal.name == null}">
-                        <a href="<c:url value="/login"/>" class="waves-effect waves-light btn">
-                            <spring:message code="productpage.orderform.submit"/>
+                    <div class="errors">
+                        <form:errors path="message" element="p" cssClass="error"/>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <div class="input-field col s12" id="orderamount">
+                                <form:select path="amount">
+                                    <form:option value="0" disabled="true"><spring:message code="productpage.orderform.amount.placeholder"/></form:option>
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:if test="${i <= product.stock}">
+                                            <form:option value="${i}"><c:out value="${i}"/></form:option>
+                                        </c:if>
+                                    </c:forEach>
+                                </form:select>
+                                <form:label for="amount" path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                                <form:errors path="amount" element="p" cssClass="error"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="errors">
+                        <form:errors path="amount" element="p" cssClass="error"/>
+                    </div>
+                    <div class="row text-center">
+                        <sec:authorize access="hasRole('SELLER')">
+                            <button type="submit" class="waves-effect waves-light btn disabled">
+                                <spring:message code="productpage.orderform.sellerblocked"/>
+                            </button>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('USER')">
+                            <button type="submit" class="waves-effect waves-light btn">
+                                <spring:message code="productpage.orderform.submit"/>
+                            </button>
+                        </sec:authorize>
+                        <c:if test="${pageContext.request.userPrincipal.name == null}">
+                            <a href="<c:url value="/login"/>" class="waves-effect waves-light btn">
+                                <spring:message code="productpage.orderform.submit"/>
+                            </a>
+                        </c:if>
+                    </div>
+                </form:form>
+            </c:if>
+            <c:if test="${product.status.id != availableId}">
+                <c:choose>
+                    <c:when test="${product.status.id == pausedId}">
+                        <span><spring:message code="productpage.pausedmsg"/></span>
+                        <a class="waves-effect waves-light btn-small" href="<c:url value="/explore"/>">
+                            <spring:message code="navbar.explore"/>
                         </a>
-                    </c:if>
-                </div>
-            </form:form>
+                    </c:when>
+                    <c:when test="${product.status.id == outofstockId}">
+                        <span><spring:message code="productpage.outofstockmsg"/></span>
+                        <a class="waves-effect waves-light btn-small" href="<c:url value="/explore"/>">
+                            <spring:message code="navbar.explore"/>
+                        </a>
+                    </c:when>
+                    <c:when test="${product.status.id == deletedId}">
+                        <span><spring:message code="productpage.deletedmsg"/></span>
+                        <a class="waves-effect waves-light btn-small" href="<c:url value="/explore"/>">
+                            <spring:message code="navbar.explore"/>
+                        </a>
+                    </c:when>
+                </c:choose>
+            </c:if>
         </div>
     </div>
 

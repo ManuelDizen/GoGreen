@@ -30,9 +30,12 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> findBySeller(long sellerId) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId",
+        long deletedId = ProductStatus.DELETED.getId();
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId " +
+                        "AND p.status.id <> :deletedId ORDER BY id DESC",
                 Product.class);
         query.setParameter("sellerId", sellerId);
+        query.setParameter("deletedId", deletedId);
         return query.getResultList();
     }
 
@@ -43,7 +46,7 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public Optional<Product> getByName(String name) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name",
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name ORDER BY id DESC",
                 Product.class);
         query.setParameter("name", name);
         return query.getResultList().stream().findFirst();
@@ -51,10 +54,11 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> getAvailable() {
-        long deletedId = ProductStatus.DELETED.getId();
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 AND p.status.id != :deletedId",
+        long availableId = ProductStatus.AVAILABLE.getId();
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 AND p.status.id = :availableId " +
+                        "ORDER BY id DESC",
                 Product.class);
-        query.setParameter("deletedId", deletedId);
+        query.setParameter("availableId", availableId);
         return query.getResultList();
     }
 
@@ -156,7 +160,7 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> getByCategory(Long categoryId){
         final TypedQuery<Product> query = em.createQuery("FROM Product WHERE categoryId = :categoryId " +
-                        "AND image.id <> 0",
+                        "AND image.id <> 0 ORDER BY id DESC",
                 Product.class);
         query.setParameter("categoryId", categoryId);
         return query.getResultList();

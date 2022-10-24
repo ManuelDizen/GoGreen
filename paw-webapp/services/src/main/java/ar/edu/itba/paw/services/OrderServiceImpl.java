@@ -2,10 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.OrderNotFoundException;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
@@ -108,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
                 message);
         if(order == null) return false;
 
-        productService.updateStock(product.getProductId(), amount);
+        productService.decreaseStock(product.getProductId(), amount);
         Optional<Product> modified = productService.getById(product.getProductId());
         if (!modified.isPresent()) return false;
         if (modified.get().getStock() == 0) {
@@ -117,6 +114,7 @@ public class OrderServiceImpl implements OrderService {
             User u = seller2.get();
             emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
                     u.getSurname(), u.getLocale());
+            modified.get().setStatus(ProductStatus.OUTOFSTOCK);
         }
         return true;
     }

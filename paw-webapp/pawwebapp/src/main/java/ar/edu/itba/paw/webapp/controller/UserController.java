@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
@@ -103,6 +100,12 @@ public class UserController {
         mav.addObject("orderPages", orderPages);
         mav.addObject("orders", orderPages.get(pageO-1));
         mav.addObject("products", productPages.get(pageP-1));
+
+        //TODO: See how to optimize this 4 states while keeping it parametrized
+        mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
+        mav.addObject("pausedId", ProductStatus.PAUSED.getId());
+        mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
+        mav.addObject("deletedId", ProductStatus.DELETED.getId());
         return mav;
     }
 

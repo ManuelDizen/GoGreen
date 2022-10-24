@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -157,12 +158,45 @@ public class ProductServiceImpl implements ProductService {
         return false;
     }
 
+    @Transactional
     @Override
     public Boolean attemptUpdate(long productId, int amount){
         if(checkForOwnership(productId)){
            return addStock(productId, amount);
         }
         return false;
+    }
+
+    @Transactional
+    @Override
+    public void attemptPause(long productId) {
+        if(checkForOwnership(productId)){
+            System.out.println("Entro a if de attemptPause");
+            Optional<Product> prod = getById(productId);
+            if(!prod.isPresent()) throw new ProductNotFoundException();
+            Product product = prod.get();
+            if(product.getStatus().getId() == ProductStatus.AVAILABLE.getId()){
+                System.out.println("Entro al if de estado");
+                prod.get().setStatus(ProductStatus.PAUSED);
+            }
+            // Aclaración: Si el status está out of stock, no tiene sentido pausar.
+            // Tecnicamente, "ya está pausado". Si esta deleted, ni siquiera debería ser alcanzable.
+            // Por lo que el único cambio posible es si está AVAILABLE, pasarlo a PAUSED.
+            // (Si esta paused obviamente no es necesario modificar nada)
+        }
+    }
+
+    @Transactional
+    @Override
+    public void attemptRepublish(long productId) {
+        if(checkForOwnership(productId)){
+            Optional<Product> prod = getById(productId);
+            if(!prod.isPresent()) throw new ProductNotFoundException();
+            Product product = prod.get();
+            if(product.getStatus().getId() == ProductStatus.PAUSED.getId()){
+                product.setStatus(ProductStatus.AVAILABLE);
+            }
+        }
     }
 
     @Override
@@ -189,7 +223,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public void updateStock(long prodId, int amount) {
+    public void decreaseStock(long prodId, int amount) {
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) return;
         Product prod = product.get();
