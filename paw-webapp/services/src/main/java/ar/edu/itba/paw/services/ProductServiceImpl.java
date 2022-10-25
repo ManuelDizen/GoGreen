@@ -234,9 +234,9 @@ public class ProductServiceImpl implements ProductService {
         return str.toString();
     }
 
-    private void addIfNotPresent(List<Product> toReturn, List<Product> list, Product product) {
+    private void addIfNotPresent(List<Product> toReturn, List<Product> list, int amount, Product product) {
         for(Product prod : list) {
-            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < 3) {
+            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }
@@ -247,23 +247,23 @@ public class ProductServiceImpl implements ProductService {
         List<Product> toReturn = new ArrayList<>();
         List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
         for(Product prod : bySellerAndCategory) {
-            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }
         if(toReturn.size() < amount) {
             List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1, 0);
-            addIfNotPresent(toReturn, byCategory, product);
+            addIfNotPresent(toReturn, byCategory, amount, product);
 
         }
         if(toReturn.size() < amount) {
             List<Product> bySeller = findBySeller(product.getSeller().getId());
-            addIfNotPresent(toReturn, bySeller, product);
+            addIfNotPresent(toReturn, bySeller, amount, product);
         }
         if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable();
             sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
-            addIfNotPresent(toReturn, sorted, product);
+            addIfNotPresent(toReturn, sorted, amount, product);
         }
         setTagList(toReturn);
         return toReturn;
