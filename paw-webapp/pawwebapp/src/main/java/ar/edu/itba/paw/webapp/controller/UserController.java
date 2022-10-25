@@ -51,7 +51,7 @@ public class UserController {
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
             // It's a seller
-            return new ModelAndView("redirect:/sellerProfile#information");
+            return new ModelAndView("redirect:/sellerProfile");
         }
         return new ModelAndView("redirect:/userProfile");
     }
