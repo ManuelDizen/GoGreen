@@ -13,6 +13,7 @@
     <title><spring:message code="navbar.companyname"/> - <spring:message code="createarticle.title"/></title>
 </head>
 <body>
+  <%@include file="navbar.jsp"%>
   <div class="row">
     <div class="container">
       <c:url value="/createArticle" var="postUrl"/>
@@ -22,21 +23,19 @@
           <spring:message var="textareaMsg" code="createarticle.message.placeholder"/>
           <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
                          data-length="1023" style="color:white;"/>
-          <%--<form:label for="message" cssStyle="margin-left:10px; left:0;" path="message">
-            <spring:message code="createarticle.message.label"/>
-          </form:label>--%>
           <div class="errors">
             <form:errors path="message" element="p" cssClass="error"/>
           </div>
         </div>
-        <div class="createproduct_row create-button">
+        <div class="input-field col s12">
           <div class="file-field input-field">
             <div class="decision-button waves-effect waves-light btn image_button">
-              <span><spring:message code="createproduct.form.image"/></span>
+              <form:label path="image" id="image-label-createarticle"><spring:message code="createproduct.form.image"/>
+              </form:label>
               <form:input path="image" type="file"/>
             </div>
             <div class="file-path-wrapper">
-              <input class="file-path validate" type="text">
+              <input class="file-path validate" type="text" readonly id="readonly-input"/>
             </div>
           </div>
           <form:errors path="image" element="p" cssClass="error"/>
@@ -50,4 +49,8 @@
     </div>
   </div>
 </body>
+<script>
+  var elems = document.querySelectorAll('.materialize-textarea');
+  M.CharacterCounter.init(elems);
+</script>
 </html>

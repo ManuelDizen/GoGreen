@@ -29,14 +29,17 @@
             </div>
             <div class="col s9">
                 <div class="row" style="height:50%;">
-                    <div>
+                    <div style="display:flex;">
                         <h3 style="text-align: left; width:50%;"><spring:message code="sellerpage.news.title"/></h3>
-                        <c:if test="${loggedEmail != null && user.email == loggedEmail}">
-                            <a class="waves-effect waves-light btn-small"
-                               href="<c:url value="/createArticle"/>"
-                                style="width:50%; text-align:right;">
-                                <spring:message code="newspage.create"/>
-                            </a>
+                        <c:if test="${loggedEmail != null}">
+                            <c:if test="${user.email == loggedEmail}">
+                                <div style="width:50%; text-align:right; margin:auto auto;">
+                                    <a class="waves-effect waves-light btn-small"
+                                       href="<c:url value="/createArticle"/>">
+                                        <spring:message code="newspage.create"/>
+                                    </a>
+                                </div>
+                            </c:if>
                         </c:if>
                     </div>
                     <c:forEach items="${news}" var="article">
