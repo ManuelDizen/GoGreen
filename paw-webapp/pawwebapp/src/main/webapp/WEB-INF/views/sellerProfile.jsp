@@ -20,11 +20,11 @@
             </div>
             <div class="col s6">
                 <div class="sellerprofile-info-2">
-                    <spring:message code="sellerprofile.address"/>
+                    <spring:message code="sellerprofile.address"/>:
                     <c:out value="${seller.address}"/>
                 </div>
                 <div class="sellerprofile-info-2">
-                    <spring:message code="sellerprofile.phone"/>
+                    <spring:message code="sellerprofile.phone"/>:
                     <c:out value="${seller.phone}"/>
                 </div>
             </div>
