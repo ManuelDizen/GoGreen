@@ -1326,7 +1326,7 @@ ALL CREDITS TO @andrewsims
     /*width: 80%;*/
     padding: 5px;
     font-size: 13px;
-    height: 48vh;
+    height: 44vh;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
@@ -1401,11 +1401,17 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-card-title{
-    font-size:20px;
+    font-size:17px;
+    height: 32%;
     margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
 }
+
+.seller-profile-card-info {
+    max-height: 60%;
+}
+
 
 .buyer-message {
     font-size: 25px;

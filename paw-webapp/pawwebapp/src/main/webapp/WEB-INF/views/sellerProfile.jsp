@@ -20,9 +20,11 @@
             </div>
             <div class="col s6">
                 <div class="sellerprofile-info-2">
+                    <spring:message code="sellerprofile.address"/>
                     <c:out value="${seller.address}"/>
                 </div>
                 <div class="sellerprofile-info-2">
+                    <spring:message code="sellerprofile.phone"/>
                     <c:out value="${seller.phone}"/>
                 </div>
             </div>
@@ -158,27 +160,29 @@
                     <c:if test="${orders.size() != 0}">
                         <c:forEach items="${orders}" var="order">
                             <div class="seller-profile-card">
-                                <div style="text-align: right">
-                                    <c:out value="${order.parsedDateTime}"/>
-                                </div>
-                                <div class="center seller-profile-card-title">
-                                    <c:out value="${order.productName}"/>
-                                </div>
-                                <div class="seller-profile-card-content">
-                                    <spring:message code="sellerprofile.orders.price"/>
-                                    <c:out value="${'$'}${order.price}"/>
-                                </div>
-                                <div class="seller-profile-card-content">
-                                    <spring:message code="sellerprofile.orders.amount"/>
-                                    <c:out value="${order.amount}"/>
-                                </div>
-                                <div>
-                                    <spring:message code="sellerprofile.orders.buyer"/>
-                                    <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
-                                </div>
-                                <div>
-                                    <spring:message code="sellerprofile.orders.buyermail"/>:
-                                    <c:out value="${order.buyerEmail}"/>
+                                <div class="seller-profile-card-info">
+                                    <div style="text-align: right">
+                                        <c:out value="${order.parsedDateTime}"/>
+                                    </div>
+                                    <div class="center seller-profile-card-title">
+                                        <c:out value="${order.productName}"/>
+                                    </div>
+                                    <div class="seller-profile-card-content">
+                                        <spring:message code="sellerprofile.orders.price"/>
+                                        <c:out value="${'$'}${order.price}"/>
+                                    </div>
+                                    <div class="seller-profile-card-content">
+                                        <spring:message code="sellerprofile.orders.amount"/>
+                                        <c:out value="${order.amount}"/>
+                                    </div>
+                                    <div>
+                                        <spring:message code="sellerprofile.orders.buyer"/>
+                                        <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                    </div>
+                                    <div>
+                                        <spring:message code="sellerprofile.orders.buyermail"/>:
+                                        <c:out value="${order.buyerEmail}"/>
+                                    </div>
                                 </div>
 <%--                                <div style="height:fit-content; overflow-wrap: break-word;">--%>
 <%--                                    <c:if test="${fn:length(order.message) > 0}">--%>
