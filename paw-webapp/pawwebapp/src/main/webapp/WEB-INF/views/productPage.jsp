@@ -383,6 +383,10 @@
     </div>
     <div class="container comments-container">
         <h4 class="center">Comentarios</h4>
+        <sec:authorize access="hasRole('USER')">
+            <a class="waves-effect waves-light btn-small gray accent-4 modal-trigger" href="<c:url value="/comment"/>">
+                Comentar</a>
+        </sec:authorize>
     </div>
 </body>
 <script>
