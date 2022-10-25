@@ -96,9 +96,9 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaQuery.getResultList()) {
-            BigInteger big = BigInteger.valueOf((Integer)o);
-            products.add(big.longValue());
-            //products.add(((BigInteger)o).longValue());
+//            BigInteger big = BigInteger.valueOf((Integer)o);
+//            products.add(big.longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
 

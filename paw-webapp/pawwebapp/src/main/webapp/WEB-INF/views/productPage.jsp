@@ -381,7 +381,9 @@
             </div>
         </c:if>
     </div>
-
+    <div class="container comments-container">
+        <h4 class="center">Comentarios</h4>
+    </div>
 </body>
 <script>
 

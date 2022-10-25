@@ -2317,12 +2317,20 @@ input[type=number] {
     font-weight: bolder;
 }
 
-.productpage-info-container{
-    height:100%;
+.productpage-info-container,
+.comments-container {
     width:70%;
     border:1px solid var(--palette-details-light);
     background-color: var(--palette-color-secondary);
     padding:20px 10px;
+}
+
+.productpage-info-container {
+    height:100%;
+}
+
+.comments-container {
+    margin-bottom: 20px;
 }
 
 .productpage-info-title{
