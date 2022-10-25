@@ -9,10 +9,28 @@
 <html>
 <head>
     <%@include file="header.jsp"%>
-    <title><spring:message code="navbar.companyname"/> - <spring:message code="newspage.title"
-    arguments="${user.firstName}, ${user.surname}"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="newspage.title"/></title>
 </head>
 <body>
-
+    <%@include file="navbar.jsp"%>
+    <div class="row">
+        <c:forEach items="${news}" var="article">
+            <div class="big-news-card">
+                <div class="row" style="text-align: right;">
+                    <c:out value="${article.parsedDateTime}"/>
+                </div>
+                <div class="row" style="width:100%; text-align:justify; margin:auto 0 20px 20px; ">
+                    <c:out value="${article.message}"/>
+                </div>
+                <c:if test="${article.image.id != 0}">
+                    <div class="row" style="width:100%; text-align: center;">
+                        <div class="news-image">
+                            <img src="<c:url value="/image/${article.image.id}"/>" class="image-restrain">
+                        </div>
+                    </div>
+                </c:if>
+            </div>
+        </c:forEach>
+    </div>
 </body>
 </html>

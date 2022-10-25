@@ -13,15 +13,13 @@ import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -72,5 +70,16 @@ public class ArticleController {
         articleService.create(seller.get(), form.getMessage(), image, LocalDateTime.now());
 
         return new ModelAndView("redirect:/sellerPage/" + seller.get().getId());
+    }
+
+    @RequestMapping(value = "/sellerPage/{sellerId:[0-9]+}/news")
+    public ModelAndView sellerNews(@PathVariable("sellerId") long sellerId){
+        Optional<Seller> seller = sellerService.findById(sellerId);
+        if(!seller.isPresent()) throw new UserNotFoundException();
+        List<Article> news = articleService.getBySellerId(sellerId);
+
+        ModelAndView mav = new ModelAndView("sellerNews");
+        mav.addObject("news", news);
+        return mav;
     }
 }

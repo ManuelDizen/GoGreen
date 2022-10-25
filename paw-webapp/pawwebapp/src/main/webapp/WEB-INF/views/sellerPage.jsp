@@ -28,37 +28,39 @@
                 </div>
             </div>
             <div class="col s9">
-                <div class="row" style="height:50%;">
-                    <div style="display:flex;">
-                        <h3 style="text-align: left; width:50%;"><spring:message code="sellerpage.news.title"/></h3>
-                        <c:if test="${loggedEmail != null}">
-                            <c:if test="${user.email == loggedEmail}">
-                                <div style="width:50%; text-align:right; margin:auto auto;">
-                                    <a class="waves-effect waves-light btn-small"
-                                       href="<c:url value="/createArticle"/>">
-                                        <spring:message code="newspage.create"/>
-                                    </a>
-                                </div>
+                <c:if test="${news.size() != 0}">
+                    <div class="row" style="height:50%;">
+                        <div style="display:flex;">
+                            <h3 style="text-align: left; width:50%;"><spring:message code="sellerpage.news.title"/></h3>
+                            <c:if test="${loggedEmail != null}">
+                                <c:if test="${user.email == loggedEmail}">
+                                    <div style="width:50%; text-align:right; margin:auto auto;">
+                                        <a class="waves-effect waves-light btn-small"
+                                           href="<c:url value="/createArticle"/>">
+                                            <spring:message code="newspage.create"/>
+                                        </a>
+                                    </div>
+                                </c:if>
                             </c:if>
-                        </c:if>
-                    </div>
-                    <c:forEach items="${news}" var="article">
-                        <div>
-                            <div class="row" style="text-align: right;">
-                                <c:out value="${article.parsedDateTime}"/>
-                            </div>
-                            <div class="row" style="width:100%; text-align:justify;">
-                                <c:out value="${article.message}"/>
-                            </div>
                         </div>
-                        <div>
+                        <c:forEach items="${news}" var="article">
+                            <div class="news-card">
+                                <div class="row" style="text-align: right;">
+                                    <c:out value="${article.parsedDateTime}"/>
+                                </div>
+                                <div class="row" style="width:100%; text-align:justify; margin:auto 0 20px 20px; ">
+                                    <c:out value="${article.message}"/>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <div style="text-align: center;">
                             <a class="waves-effect waves-light btn-small"
-                            href="<c:url value="/sellerPage/${seller.id}/news"/>">
+                               href="<c:url value="/sellerPage/${seller.id}/news"/>">
                                 <spring:message code="explore.products.more"/>
                             </a>
                         </div>
-                    </c:forEach>
-                </div>
+                    </div>
+                </c:if>
                 <div class="row" style="height:50%;">
                     <h3><spring:message code="sellerpage.products.title"/></h3>
                     <c:forEach items="${recentProducts}" var="product">
