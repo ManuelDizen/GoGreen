@@ -22,13 +22,13 @@
     <c:if test="${products.size() != 0}">
         <c:forEach items="${products}" var="product">
             <div class="card product-card z-depth-1">
-                <a href="<c:url value="/product/${product.productId}"/>">
-                    <div class="card-image">
+                <a style="height:50%" href="<c:url value="/product/${product.productId}"/>">
+                    <div class="product-card-image-container">
                         <c:if test="${product.image.id != 0}">
-                            <img src="<c:url value="/image/${product.image.id}"/>">
+                            <img class="image-restrain" src="<c:url value="/image/${product.image.id}"/>">
                         </c:if>
                         <c:if test="${product.image.id == 0}">
-                            <img src="<c:url value="/resources/images/logo.png"/>">
+                            <img class="image-restrain" src="<c:url value="/resources/images/logo.png"/>">
                         </c:if>
                     </div>
                 </a>

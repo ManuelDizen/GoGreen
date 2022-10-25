@@ -1215,8 +1215,10 @@ ALL CREDITS TO @andrewsims
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
-    height:fit-content;
+    height:50%;
     margin:10px auto;
+    border-radius:10px 10px 0 0;
+    overflow:hidden;
 }
 
 .product-card:hover{
@@ -1301,7 +1303,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .explore-products .product-card .card-content, .landing-products .product-card .card-content{
-    height:28vh;
+    height:40%;
 }
 
 .explore-products .card-image img, .landing-products .card-image img {
@@ -2310,4 +2312,20 @@ input[type=number] {
 
 #readonly-input{
     cursor: default;
+}
+
+.product-card-image-container{
+    height: 50%;
+    width: 100%;
+    background: white;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto 0;
+}
+
+.image-restrain{
+    max-height:100%;
+    max-width:100%;
+    vertical-align:middle;
 }
