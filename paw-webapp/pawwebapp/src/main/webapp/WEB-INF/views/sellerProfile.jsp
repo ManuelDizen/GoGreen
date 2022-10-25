@@ -15,14 +15,14 @@
     <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
         <div class="information row">
             <div class="col s6">
-                <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                <div class="userprofile-info-1"><c:out value="${user.email}"/></div>
+                <div class="sellerprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                <div class="sellerprofile-info-1"><c:out value="${user.email}"/></div>
             </div>
             <div class="col s6">
-                <div class="userprofile-info-2">
+                <div class="sellerprofile-info-2">
                     <c:out value="${seller.address}"/>
                 </div>
-                <div class="userprofile-info-2">
+                <div class="sellerprofile-info-2">
                     <c:out value="${seller.phone}"/>
                 </div>
             </div>
@@ -50,9 +50,7 @@
                         </div>
                     </c:if>
                     <c:if test="${products.size() != 0}">
-                        <c:set var="count" value="0"/>
                         <c:forEach items="${products}" var="product">
-                            <c:if test="${count lt 3}">
                                 <div class="seller-profile-product-card">
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
@@ -119,8 +117,6 @@
                                         </a>
                                     </div>
                                 </div>
-                                <c:set var="count" value="${count + 1}"/>
-                            </c:if>
                         </c:forEach>
                     </c:if>
                 </div>
@@ -162,7 +158,10 @@
                     <c:if test="${orders.size() != 0}">
                         <c:forEach items="${orders}" var="order">
                             <div class="seller-profile-card">
-                                <div class="seller-profile-card-title">
+                                <div style="text-align: right">
+                                    <c:out value="${order.parsedDateTime}"/>
+                                </div>
+                                <div class="center seller-profile-card-title">
                                     <c:out value="${order.productName}"/>
                                 </div>
                                 <div class="seller-profile-card-content">
@@ -173,27 +172,38 @@
                                     <spring:message code="sellerprofile.orders.amount"/>
                                     <c:out value="${order.amount}"/>
                                 </div>
-                                <div class="seller-profile-card-content">
-                                    <spring:message code="sellerprofile.orders.time"/>
-                                    <c:out value="${order.parsedDateTime}"/>
-                                </div>
                                 <div>
                                     <spring:message code="sellerprofile.orders.buyer"/>
                                     <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
                                 </div>
                                 <div>
-                                    <spring:message code="sellerprofile.orders.buyermail"/>
+                                    <spring:message code="sellerprofile.orders.buyermail"/>:
                                     <c:out value="${order.buyerEmail}"/>
                                 </div>
-                                <div style="height:fit-content; overflow-wrap: break-word;">
+<%--                                <div style="height:fit-content; overflow-wrap: break-word;">--%>
+<%--                                    <c:if test="${fn:length(order.message) > 0}">--%>
+<%--                                        <spring:message code="sellerprofile.orders.message"/>--%>
+<%--                                        <c:out value="${': '}${order.message}"/>--%>
+<%--                                    </c:if>--%>
+<%--                                </div>--%>
+                                <div class="seller-two-margin">
                                     <c:if test="${fn:length(order.message) > 0}">
-                                        <spring:message code="sellerprofile.orders.message"/>
-                                        <c:out value="${': '}${order.message}"/>
+                                        <a class="waves-effect waves-light btn-small gray accent-4 modal-trigger" href="#messagemodal${order.id}">
+                                            <spring:message code="sellerprofile.seemessage"/></a>
                                     </c:if>
                                 </div>
                                 <div class="seller-two-margin">
-                                    <a class="waves-effect waves-light btn red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
+                                    <a class="waves-effect waves-light btn-small red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
                                     <spring:message code="sellerprofile.cancelorder"/></a>
+                                </div>
+                            </div>
+                            <div id="messagemodal${order.id}" class="modal green-modal">
+                                <div class="modal-content">
+                                    <h3 class="underline"><spring:message code="sellerprofile.orders.message"/></h3>
+                                    <div>
+                                        <h4><c:out value="${order.productName}"/></h4>
+                                        <p class="buyer-message"><c:out value="${order.message}"/></p>
+                                    </div>
                                 </div>
                             </div>
                             <div id="ordermodal${order.id}" class="modal green-modal">

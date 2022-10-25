@@ -1324,6 +1324,8 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
+    font-size: 13px;
+    height: 48vh;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
@@ -1339,12 +1341,11 @@ ALL CREDITS TO @andrewsims
 }
 
 .user-profile-card{
-    font-size: 13px;
-    height: 270px;
     display:flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
+
 
 .profile-tab {
     padding: 0;
@@ -1370,7 +1371,19 @@ ALL CREDITS TO @andrewsims
 
 .userprofile-info-2 {
     font-weight: bold; font-size: 20px;
+    margin-left: 20%;
+}
+
+.sellerprofile-info-1 {
+    font-weight: bold; font-size: 20px;
     margin-left: 25%;
+    text-align: center;
+}
+
+.sellerprofile-info-2 {
+    font-weight: bold; font-size: 20px;
+    margin-left: 0;
+    text-align: center;
 }
 
 .user-font {
@@ -1387,9 +1400,14 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-card-title{
     font-size:25px;
-    margin-top: 1vh;
+    margin-top: 8px;
+    margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
+}
+
+.buyer-message {
+    font-size: 25px;
 }
 
 .seller-profile-card-content {
@@ -1408,7 +1426,7 @@ ALL CREDITS TO @andrewsims
     vertical-align: center;
     margin:3vh auto;
     height:fit-content;
-    min-height: 300px;
+    min-height: 200px;
 }
 
 .seller-profile-product-card-info #stockless{

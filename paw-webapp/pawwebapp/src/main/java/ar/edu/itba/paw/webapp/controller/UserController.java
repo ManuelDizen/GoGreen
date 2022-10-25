@@ -93,7 +93,7 @@ public class UserController {
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
         List<List<Order>> orderPages = orderService.divideIntoPages(orders);
         List<Product> products = productService.findBySeller(seller.get().getId());
-        List<List<Product>> productPages = productService.divideIntoPages(products, 3);
+        List<List<Product>> productPages = productService.divideIntoPages(products, 6);
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
