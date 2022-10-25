@@ -3,8 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,7 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SecurityService securityService;
@@ -138,7 +142,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
-        return divideIntoPages(productList, 6);
+        return divideIntoPages(productList, 12);
     }
 
     @Transactional
@@ -239,7 +243,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getInteresting(Product product) {
+    public List<Product> getInteresting(Product product, int amount) {
         List<Product> toReturn = new ArrayList<>();
         List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
         for(Product prod : bySellerAndCategory) {
@@ -247,16 +251,16 @@ public class ProductServiceImpl implements ProductService {
                 toReturn.add(prod);
             }
         }
-        if(toReturn.size() < 3) {
+        if(toReturn.size() < amount) {
             List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1, 0);
             addIfNotPresent(toReturn, byCategory, product);
 
         }
-        if(toReturn.size() < 3) {
+        if(toReturn.size() < amount) {
             List<Product> bySeller = findBySeller(product.getSeller().getId());
             addIfNotPresent(toReturn, bySeller, product);
         }
-        if(toReturn.size() < 3) {
+        if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable();
             sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
             addIfNotPresent(toReturn, sorted, product);
@@ -264,6 +268,26 @@ public class ProductServiceImpl implements ProductService {
         setTagList(toReturn);
         return toReturn;
     }
+
+    @Override
+    public List<Product> getInterestingForUser(List<Order> orders, int amount) {
+        List<Product> interesting = new ArrayList<>();
+        int i=0;
+        while(interesting.size() < amount) {
+            for(Order order : orders) {
+                Optional<Product> aux = getByName(order.getProductName());
+                if(aux.isPresent()) {
+                    Product product = aux.get();
+                    Product candidate = getInteresting(product, 1).get(i);
+                    if (!interesting.contains(candidate) && interesting.size() < amount)
+                        interesting.add(candidate);
+                }
+            }
+            i++;
+        }
+        return interesting;
+    }
+
 
     @Override
     public List<List<Product>> productsPerCategory() {
@@ -294,14 +318,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getRecent(int amount){
+    public List<Product> getPopular(int amount) {
 
-        List<Product> recent =  productDao.getRecent(amount);
+        List<Product> products = getAvailable();
 
-        for(Product product : recent) {
+        products.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return getSales(o2.getName()) - getSales(o1.getName());
+            }
+        });
+
+        List<Product> popular = products.subList(0, amount);
+
+        for(Product product : popular) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
         }
-        return recent;
+        return popular;
     }
 
     @Transactional

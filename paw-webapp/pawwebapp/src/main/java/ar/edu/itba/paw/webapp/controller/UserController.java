@@ -53,14 +53,14 @@ public class UserController {
             // It's a seller
             return new ModelAndView("redirect:/sellerProfile#information");
         }
-        return new ModelAndView("redirect:/userProfile/false#information");
+        return new ModelAndView("redirect:/userProfile");
     }
 
 
-    @RequestMapping(value="/userProfile/{fromSale}")
+    @RequestMapping(value="/userProfile")
     public ModelAndView buyerProfile(
             @RequestParam(name="page", defaultValue = "1") final int page,
-            @PathVariable("fromSale") final boolean fromSale){
+            @RequestParam(name="fromSale", defaultValue="false") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new UserNotFoundException();
@@ -93,7 +93,7 @@ public class UserController {
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
         List<List<Order>> orderPages = orderService.divideIntoPages(orders);
         List<Product> products = productService.findBySeller(seller.get().getId());
-        List<List<Product>> productPages = productService.divideIntoPages(products, 3);
+        List<List<Product>> productPages = productService.divideIntoPages(products, 6);
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
