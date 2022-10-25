@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="news")
@@ -21,17 +23,21 @@ public class Article {
     @JoinColumn(name="sellerid", nullable = false)
     private Seller seller;
 
-    Article(){}
+    @Column(name="datetime")
+    private LocalDateTime dateTime;
 
-    public Article(Image image, String message, Seller seller){
-        this(null, image, message, seller);
+    public Article(){}
+
+    public Article(Image image, String message, Seller seller, LocalDateTime dateTime){
+        this(null, image, message, seller, dateTime);
     }
 
-    public Article(Long id, Image image, String message, Seller seller){
+    public Article(Long id, Image image, String message, Seller seller, LocalDateTime dateTime){
         this.id = id;
         this.image = image;
         this.message=message;
         this.seller=seller;
+        this.dateTime = dateTime;
     }
 
 
@@ -65,5 +71,17 @@ public class Article {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getParsedDateTime() {
+        return getDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy"));
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
