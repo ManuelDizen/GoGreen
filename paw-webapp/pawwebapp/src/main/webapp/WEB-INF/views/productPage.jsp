@@ -286,7 +286,7 @@
                     <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
                     <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
                                    data-length="300" style="color:white;"/>
-                    <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message">
+                    <form:label for="sellerMsg" cssStyle="margin-left:10px; left:0;" path="message">
                         <spring:message code="productpage.orderform.msgToSeller"/></form:label>
                     <div class="errors">
                         <form:errors path="message" element="p" cssClass="error"/>
@@ -302,7 +302,7 @@
                             </c:if>
                         </c:forEach>
                     </form:select>
-                    <form:label for="amount" path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                    <form:label for="amount" path="amount" cssStyle="left:0;"><spring:message code="productpage.orderform.amount"/></form:label>
                     <form:errors path="amount" element="p" cssClass="error"/>
                     <div class="errors">
                         <form:errors path="amount" element="p" cssClass="error"/>

@@ -29,7 +29,7 @@
         </div--%>
         <div class="row animate glow delay-1 separate-20-top separate-20-bottom main-container-landing">
             <h4 class="text-center" style="margin-bottom:30px;"><spring:message code="landing.search.catchphrase"/></h4>
-            <%@ include file="search_bar.jsp"%>
+            <%@ include file="searchBar.jsp"%>
         </div>
         <c:if test="${popular}">
             <div class="row landing-row animate glow delay-2">
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </c:if>
-            <div class="landing-products separate-20-bottom">
+        <div class="landing-products separate-20-bottom animate glow delay-2">
                 <c:forEach items="${products}" var="product">
                     <div class="card product-card z-depth-1">
                         <a href="<c:url value="/product/${product.productId}"/>">

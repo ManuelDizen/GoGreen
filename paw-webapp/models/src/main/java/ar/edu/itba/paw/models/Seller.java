@@ -34,6 +34,10 @@ public class Seller {
 
     @OneToMany(mappedBy = "seller")
     private Set<Product> products;
+
+    @OneToMany(mappedBy = "seller")
+    private Set<Article> news;
+
     Seller(){}
 
     public Seller(User user, String phone, String address, long areaId){

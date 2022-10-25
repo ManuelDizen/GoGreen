@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
@@ -103,6 +100,26 @@ public class UserController {
         mav.addObject("orderPages", orderPages);
         mav.addObject("orders", orderPages.get(pageO-1));
         mav.addObject("products", productPages.get(pageP-1));
+        return mav;
+    }
+
+    @RequestMapping(value="/sellerPage/{sellerId:[0-9]+}")
+    public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId){
+
+
+        ModelAndView mav = new ModelAndView("sellerPage");
+        Optional<Seller> seller = sellerService.findById(sellerId);
+        if(!seller.isPresent()) throw new UserNotFoundException();
+        mav.addObject("seller", seller.get());
+        mav.addObject("user", seller.get().getUser());
+        mav.addObject("areas", Area.values());
+
+        List<Product> products = productService.findBySeller(sellerId);
+        mav.addObject("products", products);
+
+        List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
+        mav.addObject("orders", orders);
+
         return mav;
     }
 
