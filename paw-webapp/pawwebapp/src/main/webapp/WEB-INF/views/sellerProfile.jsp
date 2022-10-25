@@ -186,15 +186,13 @@
 <%--                                        <c:out value="${': '}${order.message}"/>--%>
 <%--                                    </c:if>--%>
 <%--                                </div>--%>
-                                <div class="seller-two-margin">
+                                <div class="seller-two-margin center">
                                     <c:if test="${fn:length(order.message) > 0}">
-                                        <a class="waves-effect waves-light btn-small gray accent-4 modal-trigger" href="#messagemodal${order.id}">
+                                        <a class="waves-effect waves-light seller-btn btn-small gray accent-4 modal-trigger" href="#messagemodal${order.id}">
                                             <spring:message code="sellerprofile.seemessage"/></a>
                                     </c:if>
-                                </div>
-                                <div class="seller-two-margin">
                                     <a class="waves-effect waves-light btn-small red accent-4 modal-trigger" href="#ordermodal${order.id}"><i class="material-icons left">cancel</i>
-                                    <spring:message code="sellerprofile.cancelorder"/></a>
+                                        <spring:message code="sellerprofile.cancelorder"/></a>
                                 </div>
                             </div>
                             <div id="messagemodal${order.id}" class="modal green-modal">

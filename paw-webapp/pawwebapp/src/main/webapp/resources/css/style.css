@@ -1324,6 +1324,7 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
+    padding: 5px;
     font-size: 13px;
     height: 48vh;
     width: 23%;
@@ -1399,8 +1400,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-card-title{
-    font-size:25px;
-    margin-top: 8px;
+    font-size:20px;
     margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
@@ -1913,8 +1913,9 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
-    border-top: 1px solid var(--palette-details-light);
+
 }
+
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
     width:80%;
@@ -1935,6 +1936,11 @@ input[type=number] {
 
 .seller-two-margin {
     margin:25px auto 10px auto;
+    align-content: center;
+}
+
+.seller-btn {
+    margin-bottom: 5px;
 }
 
 .message{
@@ -2028,6 +2034,7 @@ input[type=number] {
 
 .seller-profile-product-card-info{
     text-align:center;
+    padding-top: 10px;
     background-color:var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
@@ -2169,7 +2176,7 @@ input[type=number] {
 }
 
 .seller-info{
-    font-size: 18px;
+    font-size: 17px;
 }
 
 #orderSuccess .custom-modal-footer{
