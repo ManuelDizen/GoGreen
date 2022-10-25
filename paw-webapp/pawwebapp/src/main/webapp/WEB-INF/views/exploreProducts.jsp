@@ -33,7 +33,8 @@
                     </div>
                 </a>
                 <div class="card-content">
-                    <a href="<c:url value="/product/${product.productId}"/>" class="card-title product-card-title"><c:out value="${product.name}"/></a>
+                    <a href="<c:url value="/product/${product.productId}"/>"
+                       class="card-title product-card-title"><c:out value="${product.name}"/></a>
                     <div class="card-price">
                         <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                     </div>

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,5 +90,10 @@ public class ArticleServiceImpl implements ArticleService {
     public void delete(Long id) {
         // Unlike deleting products, this will produce a physical deletion
         articleDao.delete(id);
+    }
+
+    @Override
+    public List<Article> getBySellerId(Long sellerId) {
+        return articleDao.getBySellerId(sellerId);
     }
 }

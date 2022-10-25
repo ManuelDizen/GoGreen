@@ -82,6 +82,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/userProfile").hasRole("USER")
                     .antMatchers("/sellerProfile", "/deleteProduct/**").hasRole("SELLER")
                     .antMatchers("/createProduct", "/editProduct/**").hasRole("SELLER")
+                    .antMatchers("/createArticle").hasRole("SELLER")
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")

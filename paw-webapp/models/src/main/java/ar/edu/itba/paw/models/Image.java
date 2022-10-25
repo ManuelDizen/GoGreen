@@ -18,7 +18,7 @@ public class Image {
     @OneToMany(mappedBy="image")
     private Set<Product> products;
 
-    @OneToMany(mappedBy="news")
+    @OneToMany(mappedBy="image")
     private Set<Article> articles;
 
     Image(){}

@@ -109,7 +109,7 @@ public class ProductController {
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
-            @Valid @ModelAttribute("orderForm") final OrderForm form,
+            @ModelAttribute("orderForm") final OrderForm form,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
