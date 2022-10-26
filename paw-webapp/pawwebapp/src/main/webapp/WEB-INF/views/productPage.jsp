@@ -383,6 +383,9 @@
     </div>
     <div class="container comments-container">
         <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
+        <c:if test="${comments.size() == 0}">
+            <span><spring:message code="nocommentsyet"/></span>
+        </c:if>
         <sec:authorize access="hasRole('USER')">
             <a id="button" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger" onclick="setToOne()">
                 Comentar</a>
@@ -395,7 +398,7 @@
                         <spring:message var="textareaMsg" code="comment.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
                                        data-length="300" style="color:white;"/>
-                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                        <form:label for="message" cssStyle="margin-left:10px" path="message"/>
                         <div class="errors">
                             <form:errors path="message" element="p" cssClass="error"/>
                         </div>
