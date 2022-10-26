@@ -1334,6 +1334,7 @@ ALL CREDITS TO @andrewsims
 
 .product-card-tags {
    margin-top: 10px;
+    display:flex;
 }
 
 /*.product-card .card-content > div {*/
@@ -2056,7 +2057,7 @@ input[type=number] {
 
 
 .text-center{
-    text-align:center;
+    text-align:center !important;
 }
 
 .seller-profile-products-2, .seller-profile-orders-2{

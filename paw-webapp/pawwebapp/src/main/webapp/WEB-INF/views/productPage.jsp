@@ -118,7 +118,7 @@
                             </div>
                         </c:if>
                         <div class="row center">
-                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>
@@ -137,7 +137,8 @@
         <c:if test="${pageContext.request.userPrincipal.name == null}">
             <c:url value="/login" var="process"/>
         </c:if>
-        <form:form modelAttribute="orderForm" action="${process}" method="post">
+        <c:if test="${product.status.id == availableId}">
+            <form:form modelAttribute="orderForm" action="${process}" method="post">
             <div class="" style="">
                 <div class="input-field col s6">
                     <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>

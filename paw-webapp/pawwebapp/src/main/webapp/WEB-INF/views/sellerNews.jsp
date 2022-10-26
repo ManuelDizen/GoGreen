@@ -16,7 +16,7 @@
     <div class="row">
         <c:forEach items="${news}" var="article">
             <div class="big-news-card">
-                <div class="row" style="text-align: right;">
+                <div class="row" style="text-align: right; padding-right:20px;">
                     <c:out value="${article.parsedDateTime}"/>
                 </div>
                 <c:if test="${article.image.id != 0}">
