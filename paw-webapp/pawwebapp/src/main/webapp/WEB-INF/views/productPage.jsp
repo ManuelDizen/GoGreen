@@ -381,14 +381,16 @@
             </div>
         </c:if>
     </div>
-    <div id="comentario" class="container comments-container">
+    <div class="container comments-container">
         <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
         <c:if test="${comments.size() == 0}">
             <span><spring:message code="nocommentsyet"/></span>
         </c:if>
         <sec:authorize access="hasRole('USER')">
-            <a id="button" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger">
-                Comentar</a>
+            <div class="center">
+                <a id="button" style="margin-bottom: 20px" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger">
+                    <spring:message code="productpage.commentmsg"/></a>
+            </div>
         </sec:authorize>
         <div id="newform" class="comment-box comment-write" style="display: none">
             <c:url value="/newComment/${product.productId}" var="postUrl"/>
@@ -406,9 +408,11 @@
                     <div style="display: none">
                         <form:input path="parentId" value="-1" type="number"/>
                     </div>
-                    <button type="submit" class="waves-effect waves-light btn">
+                    <div class="center">
+                        <button type="submit" class="waves-effect waves-light btn">
                         <spring:message code="productpage.comment.submit"/>
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </form:form>
         </div>
@@ -420,6 +424,16 @@
                     </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
                 </div>
                 <div><p class="comment-message">${comment.message}</p></div>
+                <c:if test="${comment.reply != null}">
+                    <div class="comment-reply">
+                        <div class="comment-user">
+                            <i class="tiny comment-icon material-icons">
+                                person
+                            </i><p class="comment-username">${seller.firstName}</p><p class="comment-username">${seller.surname}</p>
+                        </div>
+                        <div><p class="comment-message">${comment.reply}</p></div>
+                    </div>
+                </c:if>
                 <c:if test="${seller.email == loggedEmail}">
                     <c:if test="${comment.reply == null}">
                         <div id="newform${comment.id}" class="comment-reply">
@@ -427,7 +441,7 @@
                             <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
                                 <div class="" style="">
                                     <div class="input-field col s12">
-                                        <spring:message var="textareaMsg" code="comment.message.placeholder"/>
+                                        <spring:message var="textareaMsg" code="comment.reply.placeholder"/>
                                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
                                                        data-length="300" style="color:white;"/>
                                         <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
@@ -445,16 +459,6 @@
                             </form:form>
                         </div>
 
-                    </c:if>
-                    <c:if test="${comment.reply != null}">
-                        <div class="comment-reply">
-                            <div class="comment-user">
-                                <i class="tiny comment-icon material-icons">
-                                    person
-                                </i><p class="comment-username">${seller.firstName}</p><p class="comment-username">${seller.surname}</p>
-                            </div>
-                            <div><p class="comment-message">${comment.reply}</p></div>
-                        </div>
                     </c:if>
                 </c:if>
             </div>
