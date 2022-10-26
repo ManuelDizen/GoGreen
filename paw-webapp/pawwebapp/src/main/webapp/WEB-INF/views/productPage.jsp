@@ -384,10 +384,10 @@
     <div class="container comments-container">
         <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
         <sec:authorize access="hasRole('USER')">
-            <a id="button" class="waves-effect waves-light btn-small gray accent-4 modal-trigger" onclick="setToOne()">
+            <a id="button" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger" onclick="setToOne()">
                 Comentar</a>
         </sec:authorize>
-        <div id="newform" style="display: none">
+        <div id="newform" class="comment-box comment-write" style="display: none">
             <c:url value="/newComment/${product.productId}" var="postUrl"/>
             <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
                 <div class="" style="">
@@ -395,14 +395,13 @@
                         <spring:message var="textareaMsg" code="comment.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
                                        data-length="300" style="color:white;"/>
-                        <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message">
-                            <spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
                         <div class="errors">
                             <form:errors path="message" element="p" cssClass="error"/>
                         </div>
                     </div>
                     <button type="submit" class="waves-effect waves-light btn">
-                        <spring:message code="productpage.orderform.submit"/>
+                        <spring:message code="productpage.comment.submit"/>
                     </button>
                 </div>
             </form:form>
@@ -439,6 +438,9 @@
         }
         else {
             div.style.display = 'block';
+        }
+        if (button.style.display !== 'none') {
+            button.style.display = 'none';
         }
     };
 
