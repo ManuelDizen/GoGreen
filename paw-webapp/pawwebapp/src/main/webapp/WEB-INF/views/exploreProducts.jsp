@@ -37,7 +37,7 @@
                     <div class="card-price">
                         <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
                     </div>
-                    <div class="card-price">
+                    <div class="card-category">
                         <i class="tiny material-icons">category</i>
                         <c:forEach items="${categories}" var="category">
                             <c:if test="${category.id == product.categoryId}">
@@ -45,22 +45,22 @@
                             </c:if>
                         </c:forEach>
                     </div>
-                    <div class="center">
-                        <c:set var="count" value="0"/>
+                    <div class="product-card-tags">
+<%--                        <c:set var="count" value="0"/>--%>
                         <c:forEach items="${product.tagList}" var="ecotag">
-                            <c:if test="${count == 2}">
-                                <br>
-                                <div class="yellow-card black-text chip ">
-                                    <i class="tiny material-icons">more_horiz</i>
-                                </div>
-                            </c:if>
-                            <c:if test="${count lt 2}">
+<%--                            <c:if test="${count == 2}">--%>
+<%--                                <br>--%>
+<%--                                <div class="yellow-card black-text chip ">--%>
+<%--                                    <i class="tiny material-icons">more_horiz</i>--%>
+<%--                                </div>--%>
+<%--                            </c:if>--%>
+<%--                            <c:if test="${count lt 2}">--%>
                                 <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">
                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                <spring:message code="${ecotag.tag}"/>
+<%--                                <spring:message code="${ecotag.tag}"/>--%>
                                 </a>
-                            </c:if>
-                            <c:set var="count" value="${count + 1}"/>
+<%--                            </c:if>--%>
+<%--                            <c:set var="count" value="${count + 1}"/>--%>
                         </c:forEach>
                     </div>
                 </div>
