@@ -103,13 +103,13 @@ public class ProductHibernateDao implements ProductDao {
 
         for(Map.Entry<String, Object> entry : args.entrySet()) {
             jpaQuery.setParameter(entry.getKey(), entry.getValue());
-            System.out.println("!!!!! " + entry.getKey() + "-" + entry.getValue());
         }
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaQuery.getResultList()) {
             BigInteger big = BigInteger.valueOf((Integer)o);
             products.add(big.longValue());
+            //products.add(((BigInteger)o).longValue());
         }
 
 
@@ -123,11 +123,15 @@ public class ProductHibernateDao implements ProductDao {
         return finalQuery.getResultList();
     }
 
-    @Override
-    public List<Product> getRecent(int amount) {
-        List<Product> products = getAvailable();
-        if (products.size() < amount) return products;
-        return products.subList(0, amount);
+    public int getSales(String productName) {
+        int cant = 0;
+        String query = "SELECT amount FROM orders WHERE productname = :productName";
+        Query jpaQuery = em.createNativeQuery(query);
+        jpaQuery.setParameter("productName", productName);
+        for(Object o : jpaQuery.getResultList()) {
+            cant += (Integer)o;
+        }
+        return cant;
     }
 
     @Override
