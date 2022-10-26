@@ -15,7 +15,7 @@
 <body>
   <%@include file="navbar.jsp"%>
   <div class="row">
-    <h3><spring:message code="createarticle.title"/></h3>
+    <h3 style="text-align: center;"><spring:message code="createarticle.title"/></h3>
   </div>
   <div class="row">
     <div class="container">

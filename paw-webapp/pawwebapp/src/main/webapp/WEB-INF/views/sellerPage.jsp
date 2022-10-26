@@ -17,7 +17,7 @@
     <div class="row">
         <div class="container">
             <div class="col s3 sellerpage-info">
-                <div class="row sellerpage-info-row"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                <div class="row sellerpage-info-row sellerpage-title"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                 <div class="row sellerpage-info-row"><c:out value="${user.email}"/></div>
                 <div class="row sellerpage-info-row">
                     <c:forEach items="${areas}" var="area">
@@ -51,7 +51,9 @@
                                 <div class="row" style="text-align: right;">
                                     <c:out value="${article.parsedDateTime}"/>
                                 </div>
-                                <div class="row" style="width:100%; text-align:justify; margin:auto 0 20px 20px; ">
+                                <div class="row" style="width:100%; text-align:justify;
+                                padding: 0 20px 20px;
+                                text-overflow:ellipsis; overflow:hidden; margin:auto;">
                                     <c:out value="${article.message}"/>
                                 </div>
                             </div>
