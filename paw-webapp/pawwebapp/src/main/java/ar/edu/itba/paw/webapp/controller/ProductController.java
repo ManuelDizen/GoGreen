@@ -136,6 +136,8 @@ public class ProductController {
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         mav.addObject("categories", Category.values());
+        mav.addObject("seller", seller.get());
+
         return mav;
     }
 

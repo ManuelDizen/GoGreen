@@ -221,6 +221,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
+                        <div class="row center">
+                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                <spring:message code="productpage.linktoseller"/>
+                            </a>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${product.image.id == 0}">
@@ -265,6 +270,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
+                        <div class="row center">
+                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                <spring:message code="productpage.linktoseller"/>
+                            </a>
+                        </div>
                     </div>
                 </c:if>
             </div>
