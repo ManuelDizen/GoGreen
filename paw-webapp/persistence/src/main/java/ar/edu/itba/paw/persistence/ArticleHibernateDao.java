@@ -39,7 +39,8 @@ public class ArticleHibernateDao implements ArticleDao {
 
     @Override
     public List<Article> getBySellerId(Long sellerId) {
-        final TypedQuery<Article> query = em.createQuery("FROM Article WHERE seller.id = :sellerId", Article.class);
+        final TypedQuery<Article> query = em.createQuery("FROM Article WHERE seller.id = :sellerId " +
+                "ORDER BY datetime DESC", Article.class);
         query.setParameter("sellerId", sellerId);
         return query.getResultList();
     }

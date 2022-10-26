@@ -29,12 +29,12 @@
             </div>
             <div class="col s9">
                 <c:if test="${news.size() != 0}">
-                    <div class="row" style="height:50%;">
-                        <div style="display:flex;">
-                            <h3 style="text-align: left; width:50%;"><spring:message code="sellerpage.news.title"/></h3>
+                    <div class="row fit-content">
+                        <div style="display:flex; margin-bottom:30px;">
+                            <h3 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h3>
                             <c:if test="${loggedEmail != null}">
                                 <c:if test="${user.email == loggedEmail}">
-                                    <div style="width:50%; text-align:right; margin:auto auto;">
+                                    <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
                                         <a class="waves-effect waves-light btn-small"
                                            href="<c:url value="/createArticle"/>">
                                             <spring:message code="newspage.create"/>
@@ -61,36 +61,10 @@
                         </div>
                     </div>
                 </c:if>
-                <div class="row" style="height:50%;">
-                    <h3><spring:message code="sellerpage.products.title"/></h3>
+                <h3><spring:message code="sellerpage.products.title"/></h3>
+                <div class="sellerpage-products" style="height:50%;">
                     <c:forEach items="${recentProducts}" var="product">
-                        <div>
-                            <a href="<c:url value="/product/${product.productId}"/>">
-                                <c:out value="${product.name}"/>
-                            </a>
-                            <div>
-                                <div class="center-in-div-with-flex">
-                                    <i class="tiny material-icons">category</i>
-                                    <c:forEach items="${categories}" var="category">
-                                        <c:if test="${category.id == product.categoryId}">
-                                            <div><spring:message code="${category.name}"/></div>
-                                        </c:if>
-                                    </c:forEach>
-                                </div>
-                                <c:if test="${product.seller.areaId != null}">
-                                    <div class="center-in-div-with-flex">
-                                        <i class="tiny material-icons separate-icon">location_pin</i>
-                                        <span>
-                                            <c:forEach items="${areas}" var="area">
-                                                <c:if test="${area.id == product.seller.areaId}">
-                                                    <c:out value="${area.name}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </span>
-                                    </div>
-                                </c:if>
-                            </div>
-                        </div>
+                        <%@include file="productCard.jsp"%>
                     </c:forEach>
                 </div>
             </div>

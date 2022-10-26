@@ -956,7 +956,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .explore-products, .productpage-ecotags, .landing-products,
-.landing-categories-container{
+.landing-categories-container, .sellerpage-products{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -2347,4 +2347,14 @@ input[type=number] {
     max-width:50%;
     max-height:50%;
     margin:auto;
+}
+
+.fit-content{
+    height:fit-content;
+}
+
+.sellerpage-heading{
+    text-align: left; width:50%;
+    padding-bottom:0;
+    margin-bottom:0;
 }
