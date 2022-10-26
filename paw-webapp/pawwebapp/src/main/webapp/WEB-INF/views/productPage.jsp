@@ -382,11 +382,42 @@
         </c:if>
     </div>
     <div class="container comments-container">
-        <h4 class="center">Comentarios</h4>
+        <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
         <sec:authorize access="hasRole('USER')">
-            <a class="waves-effect waves-light btn-small gray accent-4 modal-trigger" href="<c:url value="/comment"/>">
+            <a id="button" class="waves-effect waves-light btn-small gray accent-4 modal-trigger" onclick="setToOne()">
                 Comentar</a>
         </sec:authorize>
+        <div id="newform" style="display: none">
+            <c:url value="/newComment/${product.productId}" var="postUrl"/>
+            <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
+                <div class="" style="">
+                    <div class="input-field col s12">
+                        <spring:message var="textareaMsg" code="comment.message.placeholder"/>
+                        <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
+                                       data-length="300" style="color:white;"/>
+                        <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message">
+                            <spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                        <div class="errors">
+                            <form:errors path="message" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="waves-effect waves-light btn">
+                        <spring:message code="productpage.orderform.submit"/>
+                    </button>
+                </div>
+            </form:form>
+        </div>
+        <c:forEach items="${comments}" var="comment">
+            <div class="comment-box">
+                <div class="comment-user">
+                    <i class="tiny comment-icon material-icons">
+                        person
+                    </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
+                </div>
+                <div><p class="comment-message">${comment.message}</p></div>
+            </div>
+        </c:forEach>
+
     </div>
 </body>
 <script>
@@ -398,6 +429,18 @@
         var elems = document.querySelectorAll('.materialboxed');
         var instances = M.Materialbox.init(elems, options);
     });
+
+    var button = document.getElementById('button');
+
+    button.onclick = function() {
+        var div = document.getElementById('newform');
+        if (div.style.display !== 'none') {
+            div.style.display = 'none';
+        }
+        else {
+            div.style.display = 'block';
+        }
+    };
 
 </script>
 </html>
