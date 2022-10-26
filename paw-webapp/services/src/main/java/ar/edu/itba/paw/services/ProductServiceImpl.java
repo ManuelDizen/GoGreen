@@ -390,7 +390,7 @@ public class ProductServiceImpl implements ProductService {
             }
         });
 
-        List<Product> popular = products.subList(0, amount);
+        List<Product> popular = products.size() < amount? products:products.subList(0, amount);
 
         for(Product product : popular) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));

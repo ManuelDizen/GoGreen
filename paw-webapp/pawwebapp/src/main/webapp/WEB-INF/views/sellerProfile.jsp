@@ -88,7 +88,7 @@
                                                 <spring:message code="sellerprofile.delete.confirmbutton"/>
                                             </a>
                                             <c:if test="${product.status.id == availableId}">
-                                                <a id="pause" class="waves-effect waves-light btn grey lighten-1" href="<c:url value="/pauseProduct/${product.productId}"/>">
+                                                <a id="pause" class="waves-effect waves-light btn grey lighten-1 black-text" href="<c:url value="/pauseProduct/${product.productId}"/>">
                                                     <i class="material-icons">pause_circle_outline</i>
                                                     <spring:message code="sellerprofile.pause.confirmbutton"/>
                                                 </a>
@@ -132,6 +132,7 @@
                                         </a>
                                     </div>
                                 </div>
+                            </c:if>
                         </c:forEach>
                     </c:if>
                 </div>
