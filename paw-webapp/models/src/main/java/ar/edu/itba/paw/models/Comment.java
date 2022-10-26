@@ -12,7 +12,7 @@ public class Comment {
     @SequenceGenerator(name="comments_id_seq", sequenceName = "comments_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(length = 1023, nullable = false, name="message")
+    @Column(length = 500, nullable = false, name="message")
     private String message;
 
     @ManyToOne
@@ -25,6 +25,9 @@ public class Comment {
 
     @Column(name="datetime")
     private LocalDateTime dateTime;
+
+    @Column(length=500, name="reply")
+    private String reply;
 
     public Comment(){}
 
@@ -83,6 +86,14 @@ public class Comment {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 }
 

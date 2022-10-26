@@ -139,6 +139,7 @@ public class ProductController {
         if(!seller.isPresent()) throw new UserNotFoundException();
 
         List<Comment> comments = commentService.getCommentsForProduct(productId);
+        Collections.reverse(comments);
         mav.addObject("comments", comments);
 
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());

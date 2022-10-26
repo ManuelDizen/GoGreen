@@ -394,7 +394,7 @@
                     <div class="input-field col s12">
                         <spring:message var="textareaMsg" code="comment.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
-                                       data-length="300" style="color:white;"/>
+                                       data-length="500" style="color:white;"/>
                         <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
                         <div class="errors">
                             <form:errors path="message" element="p" cssClass="error"/>
