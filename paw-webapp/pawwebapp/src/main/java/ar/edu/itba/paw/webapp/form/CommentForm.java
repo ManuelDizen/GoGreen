@@ -4,8 +4,10 @@ import javax.validation.constraints.Size;
 
 public class CommentForm {
 
-        @Size(max = 512)
+        @Size(max = 300)
         private String message;
+
+        private long parentId;
 
         public String getMessage() {
             return message;
@@ -15,4 +17,11 @@ public class CommentForm {
             this.message = message;
         }
 
+    public long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
+    }
 }

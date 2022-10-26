@@ -32,4 +32,10 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getCommentsForProduct(long productId) {
         return commentDao.getCommentsForProduct(productId);
     }
+
+    @Transactional
+    @Override
+    public void replyComment(long parentId, String message) {
+        commentDao.replyComment(parentId, message);
+    }
 }

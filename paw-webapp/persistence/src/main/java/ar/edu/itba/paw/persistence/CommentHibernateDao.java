@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CommentHibernateDao implements CommentDao {
@@ -32,4 +33,19 @@ public class CommentHibernateDao implements CommentDao {
         query.setParameter("productId", productId);
         return query.getResultList();
     }
+
+    @Override
+    public Comment getById(long commentId) {
+        return em.find(Comment.class, commentId);
+    }
+
+    @Override
+    public void replyComment(long parentId, String message) {
+        Comment comment = em.find(Comment.class, parentId);
+        comment.setReply(message);
+        //em.persist(comment);
+
+    }
+
+
 }

@@ -12,4 +12,6 @@ public interface CommentService {
 
     List<Comment> getCommentsForProduct(long productId);
 
+    void replyComment(long parentId, String message);
+
 }

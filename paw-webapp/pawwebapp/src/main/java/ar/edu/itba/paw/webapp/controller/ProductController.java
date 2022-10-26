@@ -138,6 +138,11 @@ public class ProductController {
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
+        mav.addObject("seller", seller.get().getUser());
+        User user = securityService.getLoggedUser();
+        String loggedEmail = user == null ? null : user.getEmail();
+        mav.addObject("loggedEmail", loggedEmail);
+
         List<Comment> comments = commentService.getCommentsForProduct(productId);
         Collections.reverse(comments);
         mav.addObject("comments", comments);
@@ -178,12 +183,36 @@ public class ProductController {
 
         User loggedUser = securityService.getLoggedUser();
 
+        System.out.println("comment!!! " + commentForm.getParentId());
+
         Optional<Product> product = productService.getById(productId);
 
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
         Comment newComment = commentService.create(loggedUser, productObj, commentForm.getMessage());
+
+        return new ModelAndView("redirect:/product/{productId}");
+    }
+
+    @RequestMapping(value = "/reply/{productId}", method = {RequestMethod.POST})
+    public ModelAndView reply(@PathVariable final long productId,
+                                @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+                                final BindingResult errors){
+        if(errors.hasErrors())
+            return productPage(productId, form, commentForm, true);
+
+        User loggedUser = securityService.getLoggedUser();
+
+        Optional<Product> product = productService.getById(productId);
+
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        final Product productObj = product.get();
+
+        System.out.println("comment... " + commentForm.getParentId());
+
+        commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());
 
         return new ModelAndView("redirect:/product/{productId}");
     }

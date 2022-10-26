@@ -12,4 +12,8 @@ public interface CommentDao {
 
     List<Comment> getCommentsForProduct(long productId);
 
+    Comment getById(long commentId);
+
+    void replyComment(long parentId, String message);
+
 }
