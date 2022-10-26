@@ -23,7 +23,8 @@
 
 body{
     min-height:100vh;
-    background-image: linear-gradient(to bottom right, var(--back-gradient-light), var(--back-gradient-dark));
+    background-image: linear-gradient(to right, var(--back-gradient-light), var(--back-gradient-dark));
+    background-repeat: repeat-y;
     color: var(--text-color-light);
     display: flex;
     flex-direction: column;
@@ -1347,7 +1348,13 @@ ALL CREDITS TO @andrewsims
     overflow: hidden;
 }
 
-.explore-products .product-card .card-content, .landing-products .product-card .card-content{
+.product-card-width-30{
+    width:30%;
+}
+
+.explore-products .product-card .card-content,
+.landing-products .product-card .card-content,
+.sellerpage-products .product-card .card-content {
     height:40%;
 }
 
@@ -2188,7 +2195,7 @@ input[type=number] {
 }
 
 .center-in-div-with-flex {
-    height:fit-content; text-align:center; font-size:20px;
+    height:fit-content; text-align:center; font-size:15px;
 }
 
 .order-form{
@@ -2415,7 +2422,7 @@ input[type=number] {
 
 .productpage-info-container{
     height:100%;
-    width:70%;
+    width:50%;
     border:1px solid var(--palette-details-light);
     background-color: var(--palette-color-secondary);
     padding:20px 10px;
@@ -2437,7 +2444,7 @@ input[type=number] {
 .productpage-info-text{
     display:flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: initial;
     height:90%;
 }
 

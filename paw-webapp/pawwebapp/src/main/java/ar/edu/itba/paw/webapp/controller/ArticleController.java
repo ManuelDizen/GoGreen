@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.services.ArticleService;
 import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Article;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
@@ -28,15 +29,17 @@ public class ArticleController {
     private final SecurityService securityService;
     private final SellerService sellerService;
     private final ArticleService articleService;
+    private final UserService userService;
 
     @Autowired
     public ArticleController(final SecurityService securityService,
                              final SellerService sellerService,
-                             final ArticleService articleService){
+                             final ArticleService articleService,
+                             final UserService userService){
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.articleService = articleService;
-
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/createArticle", method = RequestMethod.GET)
@@ -80,6 +83,8 @@ public class ArticleController {
 
         ModelAndView mav = new ModelAndView("sellerNews");
         mav.addObject("news", news);
+        mav.addObject("seller", seller.get());
+        mav.addObject("user", seller.get().getUser());
         return mav;
     }
 }

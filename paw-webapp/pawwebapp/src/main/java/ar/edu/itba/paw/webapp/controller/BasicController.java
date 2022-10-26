@@ -64,10 +64,4 @@ public class BasicController {
         return new ModelAndView("login");
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ModelAndView userNotFound(){
-        return new ModelAndView("404");
-    }
-
 }

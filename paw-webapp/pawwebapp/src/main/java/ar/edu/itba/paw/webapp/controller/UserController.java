@@ -122,15 +122,19 @@ public class UserController {
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
         User user = securityService.getLoggedUser();
+        //TODO: Move to service
         String loggedEmail = user == null? null : user.getEmail();
         mav.addObject("loggedEmail", loggedEmail);
         mav.addObject("areas", Area.values());
         mav.addObject("categories", Category.values());
 
         List<Product> products = productService.findBySeller(sellerId);
-        mav.addObject("recentProducts", products.size() >= 3? products.subList(0,2):products);
+        //TODO: Move to service
+        mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
 
         List<Article> news = articleService.getBySellerId(sellerId);
+        //TODO: Move to service
+        news = news.size() > 3? news.subList(0, 3):news;
         mav.addObject("news", news);
 
         List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
