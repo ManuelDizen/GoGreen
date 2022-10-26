@@ -51,16 +51,16 @@ public class UserController {
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
             // It's a seller
-            return new ModelAndView("redirect:/sellerProfile#information");
+            return new ModelAndView("redirect:/sellerProfile");
         }
-        return new ModelAndView("redirect:/userProfile/false#information");
+        return new ModelAndView("redirect:/userProfile");
     }
 
 
-    @RequestMapping(value="/userProfile/{fromSale}")
+    @RequestMapping(value="/userProfile")
     public ModelAndView buyerProfile(
             @RequestParam(name="page", defaultValue = "1") final int page,
-            @PathVariable("fromSale") final boolean fromSale){
+            @RequestParam(name="fromSale", defaultValue="false") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
         Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
         if(!user.isPresent()) throw new UserNotFoundException();
@@ -93,7 +93,7 @@ public class UserController {
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
         List<List<Order>> orderPages = orderService.divideIntoPages(orders);
         List<Product> products = productService.findBySeller(seller.get().getId());
-        List<List<Product>> productPages = productService.divideIntoPages(products, 3);
+        List<List<Product>> productPages = productService.divideIntoPages(products, 6);
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
@@ -103,6 +103,12 @@ public class UserController {
         mav.addObject("orderPages", orderPages);
         mav.addObject("orders", orderPages.get(pageO-1));
         mav.addObject("products", productPages.get(pageP-1));
+
+        //TODO: See how to optimize this 4 states while keeping it parametrized
+        mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
+        mav.addObject("pausedId", ProductStatus.PAUSED.getId());
+        mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
+        mav.addObject("deletedId", ProductStatus.DELETED.getId());
         return mav;
     }
 

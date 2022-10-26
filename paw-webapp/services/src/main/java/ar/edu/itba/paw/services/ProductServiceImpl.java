@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,7 +149,17 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void deleteProduct(long productId) {
-        productDao.deleteProduct(productId);
+        /*
+        Opción 1: La que estaba antes, una baja física.
+         */
+        //productDao.deleteProduct(productId);
+
+        /*
+        Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
+         */
+        Optional<Product> product = getById(productId);
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        product.get().setStatus(ProductStatus.DELETED);
     }
 
     @Transactional
@@ -156,17 +167,50 @@ public class ProductServiceImpl implements ProductService {
     public Boolean attemptDelete(long productId) {
         if(checkForOwnership(productId)){
             deleteProduct(productId);
-            return true;
+            return true; //TODO: Por el amor de dios borrar estos booleans no te olvides
         }
         return false;
     }
 
+    @Transactional
     @Override
     public Boolean attemptUpdate(long productId, int amount){
         if(checkForOwnership(productId)){
            return addStock(productId, amount);
         }
         return false;
+    }
+
+    @Transactional
+    @Override
+    public void attemptPause(long productId) {
+        if(checkForOwnership(productId)){
+            System.out.println("Entro a if de attemptPause");
+            Optional<Product> prod = getById(productId);
+            if(!prod.isPresent()) throw new ProductNotFoundException();
+            Product product = prod.get();
+            if(product.getStatus().getId() == ProductStatus.AVAILABLE.getId()){
+                System.out.println("Entro al if de estado");
+                prod.get().setStatus(ProductStatus.PAUSED);
+            }
+            // Aclaración: Si el status está out of stock, no tiene sentido pausar.
+            // Tecnicamente, "ya está pausado". Si esta deleted, ni siquiera debería ser alcanzable.
+            // Por lo que el único cambio posible es si está AVAILABLE, pasarlo a PAUSED.
+            // (Si esta paused obviamente no es necesario modificar nada)
+        }
+    }
+
+    @Transactional
+    @Override
+    public void attemptRepublish(long productId) {
+        if(checkForOwnership(productId)){
+            Optional<Product> prod = getById(productId);
+            if(!prod.isPresent()) throw new ProductNotFoundException();
+            Product product = prod.get();
+            if(product.getStatus().getId() == ProductStatus.PAUSED.getId()){
+                product.setStatus(ProductStatus.AVAILABLE);
+            }
+        }
     }
 
     @Override
@@ -193,10 +237,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public void updateStock(long prodId, int amount) {
+    public void decreaseStock(long prodId, int amount) {
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) return;
-        productDao.updateStock(prodId, (product.get().getStock()-amount));
+        Product prod = product.get();
+        prod.setStock(prod.getStock() - amount);
+        //productDao.updateStock(prodId, (prod.getStock()-amount));
+        if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
     }
 
     @Transactional
@@ -204,8 +251,16 @@ public class ProductServiceImpl implements ProductService {
     public Boolean updateProduct(long prodId, int amount, int price) {
         Boolean isOwner = checkForOwnership(prodId);
         if(!isOwner) return false;
-        productDao.updateStock(prodId, amount);
-        productDao.updatePrice(prodId, price);
+        Optional<Product> product = productDao.getById(prodId);
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        Product prod = product.get();
+        if(prod.getStatus().getId() == ProductStatus.OUTOFSTOCK.getId() && amount > 0)
+            prod.setStatus(ProductStatus.AVAILABLE);
+        prod.setStock(amount);
+        if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
+        prod.setPrice(price);
+        //productDao.updateStock(prodId, amount);
+        //productDao.updatePrice(prodId, price);
         return true;
     }
 
@@ -214,7 +269,13 @@ public class ProductServiceImpl implements ProductService {
     public Boolean addStock(String prodName, int amount) {
         Optional<Product> prod = getByName(prodName);
         if(!prod.isPresent()) return true;
-        return productDao.addStock(prodName, (amount + prod.get().getStock()));
+        Product product = prod.get();
+        if(product.getStatus() == ProductStatus.OUTOFSTOCK){
+            product.setStatus(ProductStatus.AVAILABLE);
+        }
+        product.setStock(amount + product.getStock());
+        return true;
+        //return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
     @Transactional
@@ -234,9 +295,9 @@ public class ProductServiceImpl implements ProductService {
         return str.toString();
     }
 
-    private void addIfNotPresent(List<Product> toReturn, List<Product> list, Product product) {
+    private void addIfNotPresent(List<Product> toReturn, List<Product> list, int amount, Product product) {
         for(Product prod : list) {
-            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < 3) {
+            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }
@@ -247,23 +308,23 @@ public class ProductServiceImpl implements ProductService {
         List<Product> toReturn = new ArrayList<>();
         List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
         for(Product prod : bySellerAndCategory) {
-            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < 3) {
+            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }
         if(toReturn.size() < amount) {
             List<Product> byCategory = filter("", product.getCategoryId(), new ArrayList<>(), -1, 0);
-            addIfNotPresent(toReturn, byCategory, product);
+            addIfNotPresent(toReturn, byCategory, amount, product);
 
         }
         if(toReturn.size() < amount) {
             List<Product> bySeller = findBySeller(product.getSeller().getId());
-            addIfNotPresent(toReturn, bySeller, product);
+            addIfNotPresent(toReturn, bySeller, amount, product);
         }
         if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable();
             sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
-            addIfNotPresent(toReturn, sorted, product);
+            addIfNotPresent(toReturn, sorted, amount, product);
         }
         setTagList(toReturn);
         return toReturn;
@@ -329,7 +390,7 @@ public class ProductServiceImpl implements ProductService {
             }
         });
 
-        List<Product> popular = products.subList(0, amount);
+        List<Product> popular = products.size() < amount? products:products.subList(0, amount);
 
         for(Product product : popular) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));

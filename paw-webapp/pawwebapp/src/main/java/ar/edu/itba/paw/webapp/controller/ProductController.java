@@ -118,9 +118,11 @@ public class ProductController {
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
-        if(productObj.getStock() == 0){
+        // Change over previous functionality:
+        // Product should now load whether stock is available or not
+        /*if(productObj.getStock() == 0){
             return new ModelAndView("redirect:/404");
-        }
+        }*/
 
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
@@ -138,6 +140,12 @@ public class ProductController {
         mav.addObject("categories", Category.values());
         mav.addObject("seller", seller.get());
 
+
+        //TODO: See how to optimize this 4 states while keeping it parametrized
+        mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
+        mav.addObject("pausedId", ProductStatus.PAUSED.getId());
+        mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
+        mav.addObject("deletedId", ProductStatus.DELETED.getId());
         return mav;
     }
 
@@ -152,7 +160,9 @@ public class ProductController {
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
         if(!created) throw new OrderCreationException();
 
-        return new ModelAndView("redirect:/userProfile/true#orders");
+        ModelAndView mav = new ModelAndView("redirect:/userProfile");
+        mav.addObject("fromSale", true);
+        return mav;
     }
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)
@@ -161,6 +171,25 @@ public class ProductController {
         mav.addObject("tagList", Arrays.asList(Ecotag.values()));
         mav.addObject("categories", Category.values());
         return mav;
+    }
+
+    @RequestMapping(value="/pauseProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView pauseProduct(@PathVariable("productId") final long productId) {
+        /*
+        como hago
+        1) Chequeo que el usuario loggeado sea dueño del producto
+        2) Si es, chequeo estado de producto.
+        3) Si esta available/out of stock, pauso.
+        4) Si esta paused/deleted, lo dejo como esta.
+         */
+        productService.attemptPause(productId);
+        return new ModelAndView("redirect:/sellerProfile");
+    }
+
+    @RequestMapping(value="/republishProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView republishProduct(@PathVariable("productId") final long productId) {
+        productService.attemptRepublish(productId);
+        return new ModelAndView("redirect:/sellerProfile");
     }
 
     @RequestMapping(value = "/createProduct", method = RequestMethod.POST)

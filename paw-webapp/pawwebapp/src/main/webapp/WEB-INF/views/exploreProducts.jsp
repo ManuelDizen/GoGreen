@@ -11,7 +11,7 @@
         <sec:authorize access="hasRole('SELLER')">
             <div style="margin:10px auto; text-align:center;"><spring:message code="explore.noproducts.sellermsg"/></div>
             <div>
-                <a class="decision-button waves-effect waves-light btn standard-button"
+                <a class="decision-button waves-effect waves-light btn standard-button center"
                    href="<c:url value="/createProduct"/>" style="margin:20px auto; text-align:center;">
                     <spring:message code="explore.createproduct"/>
                 </a>

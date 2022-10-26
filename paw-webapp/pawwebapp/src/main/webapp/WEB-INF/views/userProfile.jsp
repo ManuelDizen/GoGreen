@@ -21,6 +21,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="purchase underline center"><spring:message code="userprofile.orderstitle"/></div>
                     <div class="seller-profile-container-orders-2">
                         <c:if test="${orders.size() == 0}">
                             <div class="seller-margin">
@@ -31,7 +32,10 @@
                             <c:set var="num" value="0"/>
                             <c:forEach items="${orders}" var="order">
                                 <div class="user-profile-card">
-                                    <div class="seller-profile-card-title">
+                                    <div style="text-align: right">
+                                        <c:out value="${order.parsedDateTime}"/>
+                                    </div>
+                                    <div class="center seller-profile-card-title">
                                         <c:out value="${order.productName}"/>
                                     </div>
                                     <div class="seller-profile-card-content">
@@ -44,15 +48,11 @@
                                             <c:out value="${order.amount}"/>
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.time"/>
-                                            <c:out value="${order.parsedDateTime}"/>
-                                        </div>
-                                        <div>
-                                            <spring:message code="sellerprofile.orders.seller"/>
+                                            <spring:message code="sellerprofile.orders.seller"/>:
                                             <c:out value="${' '}${order.sellerName}${' '}${order.sellerSurname}"/>
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.buyermail"/>
+                                            <spring:message code="sellerprofile.orders.buyermail"/>:
                                             <c:out value="${' '}${order.sellerEmail}"/>
                                         </div>
                                         <c:forEach items="${users}" var="user">
