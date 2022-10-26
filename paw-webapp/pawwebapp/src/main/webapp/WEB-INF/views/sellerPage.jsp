@@ -16,18 +16,21 @@
     <%@include file="navbar.jsp"%>
     <div class="row">
         <div class="container">
-            <div class="col s3">
-                <div class="row"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                <div class="row"><c:out value="${user.email}"/></div>
-                <div class="row">
+            <div class="col s3 sellerpage-info">
+                <div class="row sellerpage-info-row"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                <div class="row sellerpage-info-row"><c:out value="${user.email}"/></div>
+                <div class="row sellerpage-info-row">
                     <c:forEach items="${areas}" var="area">
                         <c:if test="${area.id == seller.areaId}">
                             <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
                         </c:if>
                     </c:forEach>
                 </div>
+                <div class="row sellerpage-info-row">
+                    <spring:message code="sellerpage.totalorders" arguments="${orders.size()}"/>
+                </div>
             </div>
-            <div class="col s9">
+            <div class="col s8">
                 <c:if test="${news.size() != 0}">
                     <div class="row fit-content">
                         <div style="display:flex; margin-bottom:30px;">

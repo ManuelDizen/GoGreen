@@ -2358,3 +2358,14 @@ input[type=number] {
     padding-bottom:0;
     margin-bottom:0;
 }
+
+.sellerpage-info{
+    margin: 120px 20px 0 0;
+    background-color: var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+}
+
+.sellerpage-info-row{
+    margin: 10px 0 10px 0; !important
+    text-align: center;
+}
