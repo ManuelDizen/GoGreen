@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.Category;
-import ar.edu.itba.paw.models.Ecotag;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
+import ar.edu.itba.paw.models.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +16,13 @@ public interface ProductService {
     Optional<Product> getByName(String name);
     //List<Product> getAll();
     List<Product> getAvailable();
-    List<Product> getRecent(int amount);
+    List<Product> getPopular(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
 
     void sortProducts(List<Product> productList, int sort, int direction);
 
-    List<List<Product>> divideIntoPages(List<Product> list);
+    List<List<Product>> divideIntoPages(List<Product> list, int pageSize);
+
     List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction);
 
     void deleteProduct(long productId);
@@ -51,7 +49,9 @@ public interface ProductService {
 
     List<Product> getProductPage(int page, List<List<Product>> productPages);
 
-    List<Product> getInteresting(Product product);
+    List<Product> getInteresting(Product product, int amount);
+
+    List<Product> getInterestingForUser(List<Order> orders, int amount);
 
     List<List<Product>> productsPerCategory();
     List<Product> getByCategory(Category c);

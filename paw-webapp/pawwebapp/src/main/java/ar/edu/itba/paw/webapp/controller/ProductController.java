@@ -126,7 +126,7 @@ public class ProductController {
 
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
-        List<Product> interesting = productService.getInteresting(productObj);
+        List<Product> interesting = productService.getInteresting(productObj, 4);
         mav.addObject("interesting", interesting);
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
@@ -158,7 +158,9 @@ public class ProductController {
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
         if(!created) throw new OrderCreationException();
 
-        return new ModelAndView("redirect:/userProfile/true#orders");
+        ModelAndView mav = new ModelAndView("redirect:/userProfile");
+        mav.addObject("fromSale", true);
+        return mav;
     }
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)
