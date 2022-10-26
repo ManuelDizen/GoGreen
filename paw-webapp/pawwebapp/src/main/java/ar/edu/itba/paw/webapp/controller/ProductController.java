@@ -109,7 +109,7 @@ public class ProductController {
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
-            @Valid @ModelAttribute("orderForm") final OrderForm form,
+            @ModelAttribute("orderForm") final OrderForm form,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -138,6 +138,8 @@ public class ProductController {
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         mav.addObject("categories", Category.values());
+        mav.addObject("seller", seller.get());
+
 
         //TODO: See how to optimize this 4 states while keeping it parametrized
         mav.addObject("availableId", ProductStatus.AVAILABLE.getId());

@@ -68,6 +68,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
+                        <div class="row center">
+                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                <spring:message code="productpage.linktoseller"/>
+                            </a>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${product.image.id == 0}">
@@ -112,6 +117,11 @@
                                 </c:forEach>
                             </div>
                         </c:if>
+                        <div class="row center">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                <spring:message code="productpage.linktoseller"/>
+                            </a>
+                        </div>
                     </div>
                 </c:if>
             </div>
@@ -121,36 +131,38 @@
     <div class="row" style="width:70%;
     background-color: var(--palette-color-secondary); border:1px solid var(--palette-details-light);
     padding:20px 10px;">
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+            <c:url value="/process/${product.productId}" var="process"/>
+        </c:if>
+        <c:if test="${pageContext.request.userPrincipal.name == null}">
+            <c:url value="/login" var="process"/>
+        </c:if>
         <c:if test="${product.status.id == availableId}">
-            <c:if test="${pageContext.request.userPrincipal.name != null}">
-                <c:url value="/process/${product.productId}" var="process"/>
-            </c:if>
-            <c:if test="${pageContext.request.userPrincipal.name == null}">
-                <c:url value="/login" var="process"/>
-            </c:if>
             <form:form modelAttribute="orderForm" action="${process}" method="post">
-                <div class="" style="">
-                    <div class="input-field col s6">
-                        <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
-                        <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
-                                       data-length="300" style="color:white;"/>
-                        <form:label for="sellerMsg" cssStyle="margin-left:10px" path="message">
-                            <spring:message code="productpage.orderform.msgToSeller"/></form:label>
-                        <div class="errors">
-                            <form:errors path="message" element="p" cssClass="error"/>
-                        </div>
+            <div class="" style="">
+                <div class="input-field col s6">
+                    <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
+                    <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
+                                   data-length="300" style="color:white;"/>
+                    <form:label for="sellerMsg" cssStyle="margin-left:10px; left:0;" path="message">
+                        <spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                    <div class="errors">
+                        <form:errors path="message" element="p" cssClass="error"/>
                     </div>
-                    <div class="input-field col s6" id="orderamount">
-                        <form:select path="amount">
-                            <form:option value="0" disabled="true">
-                                <spring:message code="productpage.orderform.amount.placeholder"/></form:option>
-                            <c:forEach var="i" begin="1" end="5">
-                                <c:if test="${i <= product.stock}">
-                                    <form:option value="${i}"><c:out value="${i}"/></form:option>
-                                </c:if>
-                            </c:forEach>
-                        </form:select>
-                        <form:label for="amount" path="amount"><spring:message code="productpage.orderform.amount"/></form:label>
+                </div>
+                <div class="input-field col s6" id="orderamount">
+                    <form:select path="amount">
+                        <form:option value="0" disabled="true">
+                            <spring:message code="productpage.orderform.amount.placeholder"/></form:option>
+                        <c:forEach var="i" begin="1" end="5">
+                            <c:if test="${i <= product.stock}">
+                                <form:option value="${i}"><c:out value="${i}"/></form:option>
+                            </c:if>
+                        </c:forEach>
+                    </form:select>
+                    <form:label for="amount" path="amount" cssStyle="left:0;"><spring:message code="productpage.orderform.amount"/></form:label>
+                    <form:errors path="amount" element="p" cssClass="error"/>
+                    <div class="errors">
                         <form:errors path="amount" element="p" cssClass="error"/>
                         <div class="errors">
                             <form:errors path="amount" element="p" cssClass="error"/>
@@ -216,42 +228,7 @@
             </div>
             <div class="landing-products">
                 <c:forEach items="${interesting}" var="product">
-                    <div class="card product-card z-depth-1">
-                        <a href="<c:url value="/product/${product.productId}"/>">
-                            <div class="card-image">
-                                <c:if test="${product.image.id != 0}">
-                                    <img src="<c:url value="/image/${product.image.id}"/>">
-                                </c:if>
-                                <c:if test="${product.image.id == 0}">
-                                    <img src="<c:url value="/resources/images/logo.png"/>">
-                                </c:if>
-                            </div>
-                        </a>
-                        <div class="card-content">
-                            <a href="<c:url value="/product/${product.productId}"/>" class="card-title product-card-title"><c:out value="${product.name}"/></a>
-                            <div class="card-price">
-                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
-                            </div>
-                            <div class="card-category">
-                                <i class="tiny material-icons">category</i>
-                                <c:forEach items="${categories}" var="category">
-                                    <c:if test="${category.id == product.categoryId}">
-                                <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
-                                        <spring:message code="${category.name}"/>
-                                </a>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                            <div class="product-card-tags">
-                                <c:forEach items="${product.tagList}" var="ecotag">
-                                    <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">
-                                        <i class="tiny material-icons">${ecotag.icon}</i>
-
-                                    </a>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="productCard.jsp"%>
                 </c:forEach>
             </div>
         </c:if>
