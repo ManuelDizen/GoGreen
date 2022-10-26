@@ -19,13 +19,15 @@
                 <div class="row" style="text-align: right;">
                     <c:out value="${article.parsedDateTime}"/>
                 </div>
-                <div class="row" style="width:100%; text-align:justify; margin:auto 0 20px 20px; ">
-                    <c:out value="${article.message}"/>
-                </div>
                 <c:if test="${article.image.id != 0}">
-                    <div class="row" style="width:100%; text-align: center;">
-                        <div class="news-image">
-                            <img src="<c:url value="/image/${article.image.id}"/>" class="image-restrain">
+                    <div class="row">
+                        <div class="col s6" style="width:50%; text-align: justify; height:200px; margin-left:0; padding-left:20px;">
+                            <c:out value="${article.message}"/>
+                        </div>
+                        <div class="col s6" style="width:50%; text-align: center; height:200px;">
+                            <div class="news-image">
+                                <img src="<c:url value="/image/${article.image.id}"/>" class="materialboxed image-restrain">
+                            </div>
                         </div>
                     </div>
                 </c:if>
@@ -33,4 +35,10 @@
         </c:forEach>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.materialboxed');
+        var instances = M.Materialbox.init(elems, options);
+    });
+</script>
 </html>

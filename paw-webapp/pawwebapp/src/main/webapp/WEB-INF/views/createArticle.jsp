@@ -15,6 +15,9 @@
 <body>
   <%@include file="navbar.jsp"%>
   <div class="row">
+    <h3><spring:message code="createarticle.title"/></h3>
+  </div>
+  <div class="row">
     <div class="container">
       <c:url value="/createArticle" var="postUrl"/>
       <form:form modelAttribute="articleForm" method="post" action="${postUrl}"
