@@ -70,6 +70,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new LoginSuccessHandler("/explore");
+    }
+
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -86,7 +91,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/explore", false)
+                    .successHandler(successHandler())
+                    //.defaultSuccessUrl("/explore", false)
                     .failureUrl("/login?failure=true")
                     .loginPage("/login")
                 .and().rememberMe()

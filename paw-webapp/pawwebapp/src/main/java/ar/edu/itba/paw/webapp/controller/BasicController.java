@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,12 @@ public class BasicController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login() {
+    public ModelAndView login(HttpServletRequest request) {
+        final HttpSession session = request.getSession();
+        final String referer = request.getHeader("Referer");
+        if (session != null && referer != null && !referer.contains("login")) {
+            session.setAttribute("url_prior_login", referer);
+        }
         return new ModelAndView("login");
     }
 
