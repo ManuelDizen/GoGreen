@@ -339,7 +339,7 @@ public class ProductServiceImpl implements ProductService {
                 Optional<Product> aux = getByName(order.getProductName());
                 if(aux.isPresent()) {
                     Product product = aux.get();
-                    Product candidate = getInteresting(product, 1).get(i);
+                    Product candidate = getInteresting(product, i+1).get(i);
                     if (!interesting.contains(candidate) && interesting.size() < amount)
                         interesting.add(candidate);
                 }

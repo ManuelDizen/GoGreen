@@ -55,21 +55,22 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> getAvailable() {
         //TODO: Cambiar esto, pero por algún motivo con p.status.id = availableId dejo de funcionar con el merge
-        //long availableId = ProductStatus.AVAILABLE.getId();
-        long deletedId = ProductStatus.DELETED.getId();
-        long outofstockId = ProductStatus.OUTOFSTOCK.getId();
-        long pausedId = ProductStatus.PAUSED.getId();
+        ProductStatus availableId = ProductStatus.AVAILABLE;
+//        long deletedId = ProductStatus.DELETED.getId();
+//        long outofstockId = ProductStatus.OUTOFSTOCK.getId();
+//        long pausedId = ProductStatus.PAUSED.getId();
 
         final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 " +
-                        "AND p.status.id <> :deletedId " +
-                        "AND p.status.id <> :pausedId " +
-                        "AND p.status.id <> :outofstockId " +
+                        "AND p.status = :availableId " +
+//                        "AND p.status.id <> :deletedId " +
+//                        "AND p.status.id <> :pausedId " +
+//                        "AND p.status.id <> :outofstockId " +
                         "ORDER BY id DESC",
                 Product.class);
-        //query.setParameter("availableId", availableId);
-        query.setParameter("deletedId", deletedId);
-        query.setParameter("pausedId", pausedId);
-        query.setParameter("outofstockId", outofstockId);
+        query.setParameter("availableId", availableId);
+//        query.setParameter("deletedId", deletedId);
+//        query.setParameter("pausedId", pausedId);
+//        query.setParameter("outofstockId", outofstockId);
 
         return query.getResultList();
     }
@@ -121,7 +122,7 @@ public class ProductHibernateDao implements ProductDao {
         for(Object o : jpaQuery.getResultList()) {
 //            BigInteger big = BigInteger.valueOf((Integer)o);
 //            products.add(big.longValue());
-            products.add(((Integer)o).longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
 
