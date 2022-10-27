@@ -118,6 +118,7 @@ public class ProductController {
             @PathVariable("productId") final long productId,
             @Valid @ModelAttribute("orderForm") final OrderForm form,
             @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+            @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -143,9 +144,10 @@ public class ProductController {
         String loggedEmail = user == null ? null : user.getEmail();
         mav.addObject("loggedEmail", loggedEmail);
 
-        List<Comment> comments = commentService.getCommentsForProduct(productId);
-        Collections.reverse(comments);
-        mav.addObject("comments", comments);
+        List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
+        mav.addObject("comments", comments.get(page-1));
+        mav.addObject("commentPages", comments);
+        mav.addObject("currentPage", page);
 
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
         Area area = Area.getById(seller.get().getAreaId());
@@ -162,7 +164,7 @@ public class ProductController {
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors() || form.getAmount() == null){
-            return productPage(productId, form, commentForm,true);
+            return productPage(productId, form, commentForm,1,true);
         }
 
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
@@ -179,7 +181,7 @@ public class ProductController {
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())
-            return productPage(productId, form, commentForm, true);
+            return productPage(productId, form, commentForm, 1, true);
 
         User loggedUser = securityService.getLoggedUser();
 
@@ -201,7 +203,7 @@ public class ProductController {
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())
-            return productPage(productId, form, commentForm, true);
+            return productPage(productId, form, commentForm, 1, true);
 
         User loggedUser = securityService.getLoggedUser();
 

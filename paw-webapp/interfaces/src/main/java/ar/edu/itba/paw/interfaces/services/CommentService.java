@@ -10,7 +10,7 @@ public interface CommentService {
 
     Comment create(User user, Product product, String message);
 
-    List<Comment> getCommentsForProduct(long productId);
+    List<List<Comment>> getCommentsForProduct(long productId);
 
     void replyComment(long parentId, String message);
 
