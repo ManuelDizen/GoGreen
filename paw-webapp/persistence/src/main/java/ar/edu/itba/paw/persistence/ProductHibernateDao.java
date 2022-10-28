@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.ProductStatus;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -29,9 +30,12 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> findBySeller(long sellerId) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId",
+        long deletedId = ProductStatus.DELETED.getId();
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId " +
+                        "AND p.status.id <> :deletedId ORDER BY id DESC",
                 Product.class);
         query.setParameter("sellerId", sellerId);
+        query.setParameter("deletedId", deletedId);
         return query.getResultList();
     }
 
@@ -42,7 +46,7 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public Optional<Product> getByName(String name) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name",
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name ORDER BY id DESC",
                 Product.class);
         query.setParameter("name", name);
         return query.getResultList().stream().findFirst();
@@ -50,8 +54,24 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> getAvailable() {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0",
+        //TODO: Cambiar esto, pero por algún motivo con p.status.id = availableId dejo de funcionar con el merge
+        ProductStatus availableId = ProductStatus.AVAILABLE;
+//        long deletedId = ProductStatus.DELETED.getId();
+//        long outofstockId = ProductStatus.OUTOFSTOCK.getId();
+//        long pausedId = ProductStatus.PAUSED.getId();
+
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 " +
+                        "AND p.status = :availableId " +
+//                        "AND p.status.id <> :deletedId " +
+//                        "AND p.status.id <> :pausedId " +
+//                        "AND p.status.id <> :outofstockId " +
+                        "ORDER BY id DESC",
                 Product.class);
+        query.setParameter("availableId", availableId);
+//        query.setParameter("deletedId", deletedId);
+//        query.setParameter("pausedId", pausedId);
+//        query.setParameter("outofstockId", outofstockId);
+
         return query.getResultList();
     }
 
@@ -86,6 +106,10 @@ public class ProductHibernateDao implements ProductDao {
             query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = :areaId) ");
             args.put("areaId", areaId);
         }
+        long deleteId = ProductStatus.DELETED.getId();
+        query.append("AND productstatus_id = :availableId ");
+        args.put("availableId", ProductStatus.AVAILABLE.getId());
+
         query.append("AND stock <> 0 ORDER BY id DESC");
 
         Query jpaQuery = em.createNativeQuery(query.toString());
@@ -96,9 +120,9 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaQuery.getResultList()) {
-            BigInteger big = BigInteger.valueOf((Integer)o);
-            products.add(big.longValue());
-            //products.add(((BigInteger)o).longValue());
+//            BigInteger big = BigInteger.valueOf((Integer)o);
+//            products.add(big.longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
 
@@ -153,7 +177,7 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> getByCategory(Long categoryId){
         final TypedQuery<Product> query = em.createQuery("FROM Product WHERE categoryId = :categoryId " +
-                        "AND image.id <> 0",
+                        "AND image.id <> 0 ORDER BY id DESC",
                 Product.class);
         query.setParameter("categoryId", categoryId);
         return query.getResultList();

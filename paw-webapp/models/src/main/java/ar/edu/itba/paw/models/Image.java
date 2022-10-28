@@ -18,6 +18,9 @@ public class Image {
     @OneToMany(mappedBy="image")
     private Set<Product> products;
 
+    @OneToMany(mappedBy="image")
+    private Set<Article> articles;
+
     Image(){}
 
     public Image(byte[] source){
