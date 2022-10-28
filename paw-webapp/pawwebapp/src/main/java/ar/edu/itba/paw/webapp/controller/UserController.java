@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,8 +115,6 @@ public class UserController {
 
     @RequestMapping(value="/sellerPage/{sellerId:[0-9]+}")
     public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId){
-
-
         ModelAndView mav = new ModelAndView("sellerPage");
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()) throw new UserNotFoundException();
@@ -139,9 +138,17 @@ public class UserController {
 
         List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
         mav.addObject("orders", orders);
-        mav.addObject("isFavorite", favoriteService.isFavorite(user, seller.get()));
+        mav.addObject("isFavorite", favoriteService.isFavorite(
+                securityService.getLoggedUser(), seller.get()));
 
         return mav;
+    }
+
+    @RequestMapping(value="/setFav/{sellerId:[0-9]+}/{toggle}")
+    public ModelAndView setFavorite(@PathVariable("sellerId") long sellerId,
+                                    @PathVariable("toggle") boolean toggle){
+        favoriteService.toggleFavorite(sellerId, toggle);
+        return new ModelAndView("redirect:/sellerPage/" + sellerId);
     }
 
 }

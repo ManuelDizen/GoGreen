@@ -2513,6 +2513,7 @@ input[type=number] {
     margin: 120px 20px 0 0;
     background-color: var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
+    height:fit-content;
 }
 
 .sellerpage-info-row{
@@ -2527,4 +2528,8 @@ input[type=number] {
 .sellerpage-title{
     font-weight:bolder;
     font-size:30px;
+}
+
+.star-icon{
+    color:yellow !important; line-height:2 !important;
 }

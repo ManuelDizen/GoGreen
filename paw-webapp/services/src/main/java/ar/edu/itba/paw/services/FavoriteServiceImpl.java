@@ -6,15 +6,19 @@ import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Favorite;
+import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
@@ -32,7 +36,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         this.favoriteDao = favoriteDao;
     }
 
-
+    @Transactional
     @Override
     public void toggleFavorite(long sellerId, boolean add) {
         User user = securityService.getLoggedUser();
@@ -49,21 +53,22 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public void removeFavorite(User user, Seller seller){
-        favoriteDao.removeFavorite(user, seller);
-    }
-
-    @Override
     public List<Favorite> getByUserId(long userId) {
         return favoriteDao.getByUserId(userId);
     }
 
+    @Transactional
     @Override
     public boolean isFavorite(User user, Seller seller){
         if(user == null || seller == null) return false;
+        Set<Role> roles = user.getRoles();
+        for(Role role : roles){
+            if(Objects.equals(role.getName(), "SELLER")) return false;
+        }
+
         List<Favorite> favorites = getByUserId(user.getId());
         for(Favorite fav : favorites){
-            if(fav.getSeller() == seller) return true;
+            if(Objects.equals(fav.getSeller().getId(), seller.getId())) return true;
         }
         return false;
     }

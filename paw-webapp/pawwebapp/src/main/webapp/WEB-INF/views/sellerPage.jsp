@@ -30,22 +30,23 @@
                 <div class="row sellerpage-info-row">
                     <spring:message code="sellerpage.totalorders" arguments="${orders.size()}"/>
                 </div>
-                <div class="separate-20-top" style="width:100%; text-align:center;">
-                    <a class="waves-effect waves-light btn">
-                        <sec:authorize access="hasRole('USER')">
+                <sec:authorize access="hasRole('USER')">
+                    <div class="separate-20-top separate-20-bottom" style="width:100%; text-align:center;">
+                        <a class="waves-effect waves-light btn"
+                           href="<c:url value="/setFav/${seller.id}/${!isFavorite}"/>" style="height:fit-content; line-height: 1.5;">
                             <c:choose>
                                 <c:when test="${isFavorite}">
-                                    <i class="material-icons left yellow">star</i>
+                                    <i class="material-icons left star-icon">star</i>
                                     <spring:message code="removefromfavorites"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <i class="material-icons left yellow">star_border</i>
+                                    <i class="material-icons left star-icon">star_border</i>
                                     <spring:message code="addtofavorites"/>
                                 </c:otherwise>
                             </c:choose>
-                    </a>
-
-                </div>
+                        </a>
+                    </div>
+                </sec:authorize>
             </div>
             <div class="col s8">
                 <c:if test="${news.size() != 0}">

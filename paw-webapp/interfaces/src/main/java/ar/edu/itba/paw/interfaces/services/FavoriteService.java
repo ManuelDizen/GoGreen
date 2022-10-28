@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface FavoriteService {
     void toggleFavorite(long sellerId, boolean add);
-    void removeFavorite(User user, Seller seller);
-
     List<Favorite> getByUserId(long userId);
     boolean isFavorite(User user, Seller seller);
 

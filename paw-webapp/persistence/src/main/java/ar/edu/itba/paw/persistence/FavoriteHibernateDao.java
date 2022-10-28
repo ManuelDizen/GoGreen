@@ -38,6 +38,7 @@ public class FavoriteHibernateDao implements FavoriteDao {
     public List<Favorite> getByUserId(long userId) {
         final TypedQuery<Favorite> query = em.createQuery("FROM Favorite AS f WHERE " +
                 "f.user.id = :userId", Favorite.class);
+        query.setParameter("userId", userId);
         return query.getResultList();
     }
 }
