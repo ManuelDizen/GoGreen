@@ -156,6 +156,7 @@ public class UserController {
         List<Article> news = articleService.getForLoggedUser();
         final ModelAndView mav = new ModelAndView("userNewsFeed");
         mav.addObject("news", news);
+        mav.addObject("user", securityService.getLoggedUser());
         return mav;
     }
 
