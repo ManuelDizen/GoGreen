@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
 import ar.edu.itba.paw.models.exceptions.UserRegisterException;
+import ar.edu.itba.paw.webapp.form.PasswordForm;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,16 @@ public class RegisterController {
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
+    public ModelAndView forgotMyPassword(@ModelAttribute("passwordForm") final PasswordForm passwordForm) {
+        return new ModelAndView("forgot_password");
+    }
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm, final BindingResult errors) {
+        return new ModelAndView("forgot_password");
     }
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {
