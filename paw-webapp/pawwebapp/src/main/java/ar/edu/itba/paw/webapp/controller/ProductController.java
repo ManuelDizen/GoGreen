@@ -4,6 +4,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.*;
+import ar.edu.itba.paw.webapp.form.CommentForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.UpdateProdForm;
@@ -33,14 +34,20 @@ public class ProductController {
 
     private final OrderService orderService;
 
+    private final CommentService commentService;
+
+    private final SecurityService securityService;
+
     
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
-                             EcotagService ecotagService, final OrderService orderService) {
+                             EcotagService ecotagService, final OrderService orderService, final CommentService commentService, final SecurityService securityService) {
         this.productService = productService;
         this.sellerService = sellerService;
         this.ecotagService = ecotagService;
         this.orderService = orderService;
+        this.commentService = commentService;
+        this.securityService = securityService;
     }
 
     @RequestMapping(value="/explore")
@@ -109,7 +116,9 @@ public class ProductController {
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
-            @ModelAttribute("orderForm") final OrderForm form,
+            @Valid @ModelAttribute("orderForm") final OrderForm form,
+            @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+            @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -132,6 +141,16 @@ public class ProductController {
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
+        mav.addObject("seller", seller.get().getUser());
+        User user = securityService.getLoggedUser();
+        String loggedEmail = user == null ? null : user.getEmail();
+        mav.addObject("loggedEmail", loggedEmail);
+
+        List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
+        mav.addObject("comments", comments.get(page-1));
+        mav.addObject("commentPages", comments);
+        mav.addObject("currentPage", page);
+
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
         Area area = Area.getById(seller.get().getAreaId());
         mav.addObject("area", area);
@@ -152,9 +171,10 @@ public class ProductController {
     @RequestMapping(value="/process/{productId}", method = {RequestMethod.POST})
     public ModelAndView process(@PathVariable final long productId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors() || form.getAmount() == null){
-            return productPage(productId, form, true);
+            return productPage(productId, form, commentForm,1,true);
         }
 
         Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
@@ -163,6 +183,50 @@ public class ProductController {
         ModelAndView mav = new ModelAndView("redirect:/userProfile");
         mav.addObject("fromSale", true);
         return mav;
+    }
+
+    @RequestMapping(value = "/newComment/{productId}", method = {RequestMethod.POST})
+    public ModelAndView comment(@PathVariable final long productId,
+                                @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+                                final BindingResult errors){
+        if(errors.hasErrors())
+            return productPage(productId, form, commentForm, 1, true);
+
+        User loggedUser = securityService.getLoggedUser();
+
+        System.out.println("comment!!! " + commentForm.getParentId());
+
+        Optional<Product> product = productService.getById(productId);
+
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        final Product productObj = product.get();
+
+        Comment newComment = commentService.create(loggedUser, productObj, commentForm.getMessage());
+
+        return new ModelAndView("redirect:/product/{productId}");
+    }
+
+    @RequestMapping(value = "/reply/{productId}", method = {RequestMethod.POST})
+    public ModelAndView reply(@PathVariable final long productId,
+                                @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+                                final BindingResult errors){
+        if(errors.hasErrors())
+            return productPage(productId, form, commentForm, 1, true);
+
+        User loggedUser = securityService.getLoggedUser();
+
+        Optional<Product> product = productService.getById(productId);
+
+        if(!product.isPresent()) throw new ProductNotFoundException();
+        final Product productObj = product.get();
+
+        System.out.println("comment... " + commentForm.getParentId());
+
+        commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());
+
+        return new ModelAndView("redirect:/product/{productId}");
     }
 
     @RequestMapping(value="/createProduct", method=RequestMethod.GET)

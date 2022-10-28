@@ -1337,6 +1337,71 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
+.comment-box {
+    font-size: 13px;
+    min-height: 75px;
+    width: 96%;
+    /*height: fit-content;*/
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    border: 1px solid var(--palette-details-light);
+    margin: 2vh auto;
+    margin-bottom: 30px;
+    display:flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.comments {
+    margin-bottom: 50px;
+}
+
+.comment-write {
+    margin-left: 2%;
+}
+
+.comment-icon {
+    margin-top: 3px;
+}
+
+.comment-user {
+    display: flex;
+    flex-direction: row;
+}
+
+.comment-username {
+    margin-left: 5px;
+    margin-top: 0;
+}
+
+.comment-reply {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    min-height: 75px;
+    width: 95%;
+    /*height: fit-content;*/
+    background-color: var(--palette-color-secondary);
+    color: var(--text-color-light);
+    border: 1px solid var(--palette-details-light);
+    display:flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.comment-message {
+    margin-left: 35px;
+    font-size: 17px;
+    margin-top: 0;
+    margin-right: 35px;
+    overflow-wrap: break-word;
+}
+
+.comment-button {
+    width: fit-content;
+}
+
 /*.product-card .card-content > div {*/
 /*    margin-bottom: 2px;*/
 /*    margin-top: 2px;*/
@@ -2413,12 +2478,20 @@ input[type=number] {
     font-weight: bolder;
 }
 
-.productpage-info-container{
-    height:100%;
+.productpage-info-container,
+.comments-container {
     width:70%;
     border:1px solid var(--palette-details-light);
     background-color: var(--palette-color-secondary);
     padding:20px 10px;
+}
+
+.productpage-info-container {
+    height:100%;
+}
+
+.comments-container {
+    margin-bottom: 20px;
 }
 
 .productpage-info-title{
@@ -2446,6 +2519,7 @@ input[type=number] {
     max-width: 100%;
     vertical-align: middle;
 }
+
 
 .file-path-wrapper input,
 #image-label-createarticle{
@@ -2521,3 +2595,4 @@ input[type=number] {
     font-weight:bolder;
     font-size:30px;
 }
+
