@@ -112,7 +112,7 @@ public class ArticleServiceImpl implements ArticleService {
         news.sort(new Comparator<Article>() {
             @Override
             public int compare(Article o1, Article o2) {
-                return o1.getDateTime().compareTo(o2.getDateTime());
+                return o2.getDateTime().compareTo(o1.getDateTime());
             }
         });
         return news;
