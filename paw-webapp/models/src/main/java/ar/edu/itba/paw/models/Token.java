@@ -69,4 +69,8 @@ public class Token {
     public void setExpDate(LocalDateTime expDate) {
         this.expDate = expDate;
     }
+
+    public boolean expired() {
+        return getExpDate().isAfter(LocalDateTime.now());
+    }
 }

@@ -41,7 +41,7 @@
                     </div>
                     <div class="col s12 redirect-register">
                         <a href="<c:url value="/forgotPassword"/>">
-                            <span>Olviaste tu contraseña?</span>
+                            <span><spring:message code="password.forgot"/></span>
                         </a>
                     </div>
                     <div class="col s12 center login-submit">

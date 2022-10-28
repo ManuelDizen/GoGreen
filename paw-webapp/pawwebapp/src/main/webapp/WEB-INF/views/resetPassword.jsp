@@ -17,13 +17,13 @@
 <div class="container" style="margin-top: 20px">
     <c:url value="/confirmPassword" var="postUrl"/>
     <form:form modelAttribute="updatePasswordForm" method="post" action="${postUrl}" id="update_password_form" enctype="multipart/form-data">
-        <div class="update-product-body">
+        <div class="password-body">
             <div class="row">
                 <div class="col s12" style="height:fit-content;">
-                    <div class="input-field">
+                    <div class="input-field center ">
                         <form:input path="password" id="password" type="password"/>
                         <spring:message var="passCond" code="registerbuyer.form.passwordCondition"/>
-                        <label for="password"><spring:message code="registerbuyer.form.password"/>
+                        <label for="password"><spring:message code="password.newPassword"/>
                             <spring:message code="forms.obligatorysign"/>
                             <c:out value="${' ('}${passCond}${') '}"/></label>
                     </div>

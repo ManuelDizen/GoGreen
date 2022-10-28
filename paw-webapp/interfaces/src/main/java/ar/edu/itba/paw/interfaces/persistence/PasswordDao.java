@@ -9,6 +9,7 @@ public interface PasswordDao {
 
     Token create(String passToken, User user);
 
+    Optional<Token> getByUserId(long userId);
     Optional<Token> getByToken(String token);
 
 }

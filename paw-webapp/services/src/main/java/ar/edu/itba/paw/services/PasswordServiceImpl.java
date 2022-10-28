@@ -38,11 +38,20 @@ public class PasswordServiceImpl implements PasswordService {
     @Transactional
     @Override
     public void passwordToken(String path, User user) {
-        //if (passwordResetTokenService.hasValidToken(user.getId())) return;
-        Token token = create(UUID.randomUUID().toString(), user);
-        emailService.updatePassword(
-                user, path + token.getPassToken(), user.getLocale());
+        if(!hasToken(user)) {
+            Token token = create(UUID.randomUUID().toString(), user);
+            emailService.updatePassword(
+                    user, path + token.getPassToken(), user.getLocale());
+        }
+    }
 
+    private boolean hasToken(User user) {
+        Optional<Token> maybeToken =  passwordDao.getByUserId(user.getId());
+        if(!maybeToken.isPresent())
+            throw new UserNotFoundException();
+
+        Token userToken = maybeToken.get();
+        return userToken.expired();
     }
 
     public Optional<User> getByToken(String token) {
@@ -51,7 +60,6 @@ public class PasswordServiceImpl implements PasswordService {
             throw new UserNotFoundException();
 
         Token userToken = maybeToken.get();
-        System.out.println("token!! " + userToken.getPassToken());
         return userService.findById(userToken.getUser().getId());
     }
 

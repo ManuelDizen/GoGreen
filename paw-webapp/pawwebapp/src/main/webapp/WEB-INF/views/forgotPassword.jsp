@@ -14,21 +14,37 @@
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
-<div class="container" style="margin-top: 20px">
+<div class="update-form-container container" style="margin-top: 20px">
+    <div class="update"></div>
     <c:url value="/updatePassword" var="postUrl"/>
     <form:form modelAttribute="passwordForm" method="post" action="${postUrl}" id="password_form" enctype="multipart/form-data">
+        <div class="center update-margins">
+            <h5><spring:message code="forgotpassword.title"/></h5>
+        </div>
+        <div class="center update-margins">
+            <p><spring:message code="password.instructions"/></p>
+        </div>
+        <c:if test="${notFound}">
+            <div class="center update-margins">
+                <p class="red error-sign"><spring:message code="password.noEmail"/></p>
+            </div>
+        </c:if>
         <div class="update-product-body">
             <div class="row">
-                <div class="col s12 input-field">
-                    <form:input path="email" id="email" type="text"/>
-                    <label for="email"><spring:message code="registerbuyer.form.email"/>
-                        <spring:message code="forms.obligatorysign"/></label>
-                </div>
+                <div class="col s12">
+                    <div class="input-field">
+                        <form:input path="email" id="email" type="text"/>
+                        <label for="email"><spring:message code="registerbuyer.form.email"/>
+                            <spring:message code="forms.obligatorysign"/></label>
+                    </div>
+                    <div class="errors">
+                        <form:errors path="email" element="p" cssClass="error"/>
+                    </div>
             </div>
         </div>
         <div class="center separated-button">
             <button type="submit" class="decision-button waves-effect waves-light btn publish-button">
-                <spring:message code="updateproduct.submit"/>
+                <spring:message code="password.send"/>
             </button>
         </div>
     </form:form>

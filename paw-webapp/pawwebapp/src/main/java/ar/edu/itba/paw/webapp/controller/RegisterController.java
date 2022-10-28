@@ -102,20 +102,26 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
-    public ModelAndView forgotMyPassword(@ModelAttribute("passwordForm") final PasswordForm passwordForm) {
-        return new ModelAndView("forgotPassword");
+    public ModelAndView forgotMyPassword(@RequestParam(name = "notFound", defaultValue = "false") final boolean notFound, @ModelAttribute("passwordForm") final PasswordForm passwordForm) {
+
+        ModelAndView mav = new ModelAndView("forgotPassword");
+        mav.addObject("notFound", notFound);
+        return mav;
     }
 
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm, final BindingResult errors, HttpServletRequest request) {
 
+        if(errors.hasErrors())
+            return forgotMyPassword(false, passwordForm);
+
         Optional<User> maybeUser = userService.findByEmail(passwordForm.getEmail());
         if(!maybeUser.isPresent())
-            throw new UserNotFoundException();
+            return forgotMyPassword(true, passwordForm);
         User user = maybeUser.get();
         String path = request.getRequestURL().toString().replace(request.getServletPath(), "") + "/newPassword?token=";
         passwordService.passwordToken(path, user);
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("congratulations");
     }
     @RequestMapping(value = "/newPassword")
     public ModelAndView newPassword(@RequestParam(name = "token") final String token, @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
@@ -131,15 +137,13 @@ public class RegisterController {
 
 
         if(errors.hasErrors()) {
-            newPassword(updatePasswordForm.getToken(), updatePasswordForm);
+            return newPassword(updatePasswordForm.getToken(), updatePasswordForm);
         }
 
         Optional<User> maybeUser = passwordService.getByToken(updatePasswordForm.getToken());
 
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
-
-        System.out.println("llegué!! ");
 
         userService.changePassword(maybeUser.get().getId(), updatePasswordForm.getPassword());
 
