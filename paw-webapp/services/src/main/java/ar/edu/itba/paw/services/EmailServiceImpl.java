@@ -136,7 +136,7 @@ public class EmailServiceImpl implements EmailService {
         data.put("username", user.getFirstName());
         data.put("link", link);
         sendThymeleafMail(user.getEmail(), "updatePassword", data,
-                "subject.noMoreStock", userLocale);
+                "subject.resetpassword", userLocale);
     }
 
     void notifyBuyerOrderCancelled(String productName, String buyerEmail, String buyerName, String buyerSurname,

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -78,6 +79,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userDao.getAll();
+    }
+
+    @Transactional
+    @Override
+    public void changePassword(long userId, String newPassword) {
+        Optional<User> maybeUser = userDao.findById(userId);
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+
+        User user = maybeUser.get();
+        user.setPassword(encoder.encode(newPassword));
     }
 
 

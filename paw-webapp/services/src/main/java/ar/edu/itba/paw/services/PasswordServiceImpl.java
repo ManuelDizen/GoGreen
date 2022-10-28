@@ -3,13 +3,15 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.PasswordDao;
 import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.PasswordService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,10 +21,13 @@ public class PasswordServiceImpl implements PasswordService {
 
     private final EmailService emailService;
 
+    private final UserService userService;
+
     @Autowired
-    public PasswordServiceImpl(final PasswordDao passwordDao, final EmailService emailService) {
+    public PasswordServiceImpl(final PasswordDao passwordDao, final EmailService emailService, UserService userService) {
         this.passwordDao = passwordDao;
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     @Override
@@ -39,4 +44,15 @@ public class PasswordServiceImpl implements PasswordService {
                 user, path + token.getPassToken(), user.getLocale());
 
     }
+
+    public Optional<User> getByToken(String token) {
+        Optional<Token> maybeToken =  passwordDao.getByToken(token);
+        if(!maybeToken.isPresent())
+            throw new UserNotFoundException();
+
+        Token userToken = maybeToken.get();
+        System.out.println("token!! " + userToken.getPassToken());
+        return userService.findById(userToken.getUser().getId());
+    }
+
 }
