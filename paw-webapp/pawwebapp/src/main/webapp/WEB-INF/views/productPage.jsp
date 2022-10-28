@@ -69,7 +69,7 @@
                             </div>
                         </c:if>
                         <div class="row center">
-                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
+                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${user.id}"/>">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>
@@ -118,7 +118,7 @@
                             </div>
                         </c:if>
                         <div class="row center">
-                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${user.id}"/>">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>
@@ -168,6 +168,7 @@
                             <form:errors path="amount" element="p" cssClass="error"/>
                         </div>
                     </div>
+                </div>
                     <div class="col s12 center">
                         <sec:authorize access="hasRole('SELLER')">
                             <button type="submit" class="waves-effect waves-light btn disabled">
@@ -217,22 +218,22 @@
             </c:choose>
         </c:if>
     </div>
-    <div class="landing-recent-product-container" style="margin-top:20px;">
-        <c:if test="${interesting.size() != 0}">
-            <div class="row">
-                <div class="col s12">
-                    <hr class="landing-separator">
-                    <h5 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h5>
-                    <hr class = "landing-separator">
-                </div>
+            <div class="landing-recent-product-container" style="margin-top:20px;">
+                <c:if test="${interesting.size() != 0}">
+                    <div class="row">
+                        <div class="col s12">
+                            <hr class="landing-separator">
+                            <h5 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h5>
+                            <hr class = "landing-separator">
+                        </div>
+                    </div>
+                    <div class="landing-products">
+                        <c:forEach items="${interesting}" var="product">
+                            <%@include file="productCard.jsp"%>
+                        </c:forEach>
+                    </div>
+                </c:if>
             </div>
-            <div class="landing-products">
-                <c:forEach items="${interesting}" var="product">
-                    <%@include file="productCard.jsp"%>
-                </c:forEach>
-            </div>
-        </c:if>
-    </div>
     <div class="container comments-container">
         <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
         <c:if test="${comments.size() == 0}">
@@ -281,12 +282,12 @@
                         <div class="comment-user">
                             <i class="tiny comment-icon material-icons">
                                 person
-                            </i><p class="comment-username">${seller.firstName}</p><p class="comment-username">${seller.surname}</p>
+                            </i><p class="comment-username">${user.firstName}</p><p class="comment-username">${user.surname}</p>
                         </div>
                         <div><p class="comment-message">${comment.reply}</p></div>
                     </div>
                 </c:if>
-                <c:if test="${seller.email == loggedEmail}">
+                <c:if test="${user.email == loggedEmail}">
                     <c:if test="${comment.reply == null}">
                         <div id="newform${comment.id}" class="comment-reply">
                             <c:url value="/reply/${product.productId}" var="postUrl"/>

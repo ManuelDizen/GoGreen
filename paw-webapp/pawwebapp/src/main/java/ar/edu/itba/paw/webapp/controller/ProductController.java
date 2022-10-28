@@ -141,7 +141,7 @@ public class ProductController {
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        mav.addObject("seller", seller.get().getUser());
+        mav.addObject("user", seller.get().getUser());
         User user = securityService.getLoggedUser();
         String loggedEmail = user == null ? null : user.getEmail();
         mav.addObject("loggedEmail", loggedEmail);
@@ -195,8 +195,6 @@ public class ProductController {
 
         User loggedUser = securityService.getLoggedUser();
 
-        System.out.println("comment!!! " + commentForm.getParentId());
-
         Optional<Product> product = productService.getById(productId);
 
         if(!product.isPresent()) throw new ProductNotFoundException();
@@ -222,7 +220,6 @@ public class ProductController {
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
-        System.out.println("comment... " + commentForm.getParentId());
 
         commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());
 
