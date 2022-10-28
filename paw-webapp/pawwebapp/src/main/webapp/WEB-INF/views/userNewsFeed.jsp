@@ -6,11 +6,16 @@
 </head>
 <body>
   <%@include file="navbar.jsp"%>
-  <c:forEach items="${news}" var="article">
-    <div>
-      <span><c:out value="${article.seller.user.firstName}${article.seller.user.surname}"/></span>
-      <span><c:out value="${article.message}"/></span>
-    </div>
-  </c:forEach>
+  <h3 class="center"><spring:message code="usernewsfeed.body.title"/></h3>
+  <div class="row">
+    <c:forEach items="${news}" var="article">
+      <%@include file="newsCard.jsp"%>
+    </c:forEach>
+    <c:if test="${news.size() == 0}">
+      <div class="center">
+        <spring:message code="usernewsfeed.nonews"/>
+      </div>
+    </c:if>
+  </div>
 </body>
 </html>

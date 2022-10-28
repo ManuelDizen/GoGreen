@@ -2491,6 +2491,7 @@ input[type=number] {
     margin: 20px auto 20px auto;
     width: 80%;
     min-height:300px;
+    height:fit-content;
 }
 
 .news-image{

@@ -30,6 +30,7 @@ public class Product {
     @Column(nullable=false)
     private Integer price;
 
+    //TODO: Estudiar como cambiar el "eager"
     @ElementCollection(targetClass = Ecotag.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "productid"))
     @Enumerated(EnumType.ORDINAL)

@@ -35,6 +35,9 @@ public class User {
     @OneToOne(mappedBy="user")
     private Seller seller;
 
+    //TODO: Cambiar tipo "eager" a lazy
+    //  Nota: De cualquier manera, en este caso los usuarios tienen como máximo 1 rol, por lo que a nivel
+    //  memoria es muy baja. Igual, hay que cambiarlo
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="user_roles",
