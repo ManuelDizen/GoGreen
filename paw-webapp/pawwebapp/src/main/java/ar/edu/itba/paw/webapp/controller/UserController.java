@@ -151,4 +151,12 @@ public class UserController {
         return new ModelAndView("redirect:/sellerPage/" + sellerId);
     }
 
+    @RequestMapping(value="/newsFeed")
+    public ModelAndView newsFeed(){
+        List<Article> news = articleService.getForLoggedUser();
+        final ModelAndView mav = new ModelAndView("userNewsFeed");
+        mav.addObject("news", news);
+        return mav;
+    }
+
 }

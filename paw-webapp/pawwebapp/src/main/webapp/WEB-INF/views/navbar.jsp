@@ -31,6 +31,11 @@
                     <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
                 </li>
             </sec:authorize>
+            <sec:authorize access="hasRole('USER')">
+                <li class="nav-li">
+                    <a href="<c:url value="/newsFeed"/>"><spring:message code="navbar.news"/></a>
+                </li>
+            </sec:authorize>
             <c:if test="${pageContext.request.userPrincipal.name == null}">
                 <li class="nav-li">
                     <a href="<c:url value="/login"/>"><spring:message code="navbar.login"/></a>
