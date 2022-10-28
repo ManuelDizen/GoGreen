@@ -1513,8 +1513,8 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-card-title{
-    font-size:17px;
-    height: 32%;
+    font-size:18px;
+    height: 22%;
     margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
@@ -2170,7 +2170,7 @@ input[type=number] {
     background-color:var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
-    height:200px;
+    height:220px;
     width:95%;
 }
 
