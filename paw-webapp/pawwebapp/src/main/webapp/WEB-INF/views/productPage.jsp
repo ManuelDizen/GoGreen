@@ -69,7 +69,7 @@
                             </div>
                         </c:if>
                         <div class="row center">
-                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${user.id}"/>">
+                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>
@@ -118,7 +118,7 @@
                             </div>
                         </c:if>
                         <div class="row center">
-                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${user.id}"/>">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>

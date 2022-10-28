@@ -10,7 +10,7 @@
     <div class="seller-profile-main-body-container">
         <div class="row">
             <div id="orders" class="col s12">
-                <div class="seller-profile-container-2-lower-bis">
+                <div class="user-profile-container-2">
                     <div class="information row">
                         <div class="col s6">
                             <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>

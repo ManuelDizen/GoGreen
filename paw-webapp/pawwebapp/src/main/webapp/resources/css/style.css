@@ -1436,8 +1436,9 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
+    padding: 5px;
     font-size: 13px;
-    height: 48vh;
+    height: 44vh;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
@@ -1455,7 +1456,8 @@ ALL CREDITS TO @andrewsims
 .user-profile-card{
     display:flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    max-height: 38vh;
 }
 
 
@@ -1473,7 +1475,7 @@ ALL CREDITS TO @andrewsims
 
 .purchase {
     margin-top: 40px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .userprofile-info-1 {
@@ -1511,8 +1513,8 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-card-title{
-    font-size:25px;
-    margin-top: 8px;
+    font-size:18px;
+    height: 22%;
     margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
@@ -1521,6 +1523,11 @@ ALL CREDITS TO @andrewsims
     margin: 10px 5px 5px 5px;
 
 }
+
+.seller-profile-card-info {
+    max-height: 60%;
+}
+
 
 .buyer-message {
     font-size: 25px;
@@ -2019,7 +2026,8 @@ input[type=number] {
     border-top: 1px solid var(--palette-details-light);
 }
 
-.seller-profile-container-2, .seller-profile-container-2-lower,
+
+.user-profile-container-2, .seller-profile-container-2, .seller-profile-container-2-lower,
 .seller-profile-container-2-lower-bis{
     height:fit-content;
     background:var(--palette-color-secondary);
@@ -2033,8 +2041,13 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
+
+}
+
+.user-profile-container-2 {
     border-top: 1px solid var(--palette-details-light);
 }
+
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
     width:80%;
@@ -2055,6 +2068,11 @@ input[type=number] {
 
 .seller-two-margin {
     margin:25px auto 10px auto;
+    align-content: center;
+}
+
+.seller-btn {
+    margin-bottom: 5px;
 }
 
 .message{
@@ -2148,10 +2166,11 @@ input[type=number] {
 
 .seller-profile-product-card-info{
     text-align:center;
+    padding-top: 10px;
     background-color:var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
-    height:200px;
+    height:220px;
     width:95%;
 }
 
@@ -2290,7 +2309,7 @@ input[type=number] {
 }
 
 .seller-info{
-    font-size: 18px;
+    font-size: 17px;
 }
 
 #orderSuccess .custom-modal-footer{
