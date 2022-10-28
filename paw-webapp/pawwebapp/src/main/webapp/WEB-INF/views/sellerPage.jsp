@@ -9,7 +9,7 @@
 <html>
 <head>
     <%@include file="header.jsp"%>
-    <title><spring:message code="navbar.companyname"/> - <c:out value="${user.firstName}${' '}${user.surname}"/>
+    <title><spring:message code="navbar.companyname.title2" arguments="${user.firstName}, ${user.surname}"/>
     </title>
 </head>
 <body>
@@ -17,8 +17,12 @@
     <div class="row">
         <div class="container">
             <div class="col s3 sellerpage-info">
-                <div class="row sellerpage-info-row sellerpage-title"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
-                <div class="row sellerpage-info-row"><c:out value="${user.email}"/></div>
+                <div class="row sellerpage-info-row sellerpage-title">
+                    <spring:message code="userprofile.fullname" arguments="${user.firstName}, ${user.surname}"/>
+                </div>
+                <div class="row sellerpage-info-row">
+                    <c:out value="${user.email}"/>
+                </div>
                 <div class="row sellerpage-info-row">
                     <c:forEach items="${areas}" var="area">
                         <c:if test="${area.id == seller.areaId}">

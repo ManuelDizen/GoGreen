@@ -15,7 +15,9 @@
     <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
         <div class="information row">
             <div class="col s6">
-                <div class="sellerprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                <div class="sellerprofile-info-1">
+                    <spring:message code="userprofile.fullname" arguments="${user.firstName}, ${user.surname}"/>
+                </div>
                 <div class="sellerprofile-info-1"><c:out value="${user.email}"/></div>
             </div>
             <div class="col s6">
@@ -192,12 +194,10 @@
                                         <c:out value="${order.amount}"/>
                                     </div>
                                     <div>
-                                        <spring:message code="sellerprofile.orders.buyer"/>
-                                        <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                        <spring:message code="sellerprofile.orders.buyer" arguments="${order.buyerName}, ${order.buyerSurname}"/>
                                     </div>
                                     <div>
-                                        <spring:message code="sellerprofile.orders.buyermail"/>:
-                                        <c:out value="${order.buyerEmail}"/>
+                                        <spring:message code="sellerprofile.orders.buyermail" arguments="${order.buyerEmail}"/>:
                                     </div>
                                 </div>
 <%--                                <div style="height:fit-content; overflow-wrap: break-word;">--%>
@@ -231,8 +231,8 @@
                                         <h4><c:out value="${order.productName}"/></h4>
                                         <ul>
                                             <li>
-                                                <spring:message code="sellerprofile.deleteorder.buyer"/>
-                                                <c:out value="${order.buyerName}${' '}${order.buyerSurname}"/>
+                                                <spring:message code="sellerprofile.deleteorder.buyer"
+                                                arguments="${order.buyerName}, ${order.buyerSurname}"/>
                                             </li>
                                             <li>
                                                 <spring:message code="sellerprofile.deleteorder.amount"/>

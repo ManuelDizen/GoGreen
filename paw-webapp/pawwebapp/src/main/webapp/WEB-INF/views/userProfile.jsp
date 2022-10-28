@@ -13,7 +13,9 @@
                 <div class="user-profile-container-2">
                     <div class="information row">
                         <div class="col s6">
-                            <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                            <div class="userprofile-info-1">
+                                <spring:message code="userprofile.fullname" arguments="${user.firstName}, ${user.surname}"/>
+                            </div>
                         </div>
                         <div class="col s6">
                             <div class="userprofile-info-2">
@@ -48,24 +50,21 @@
                                             <c:out value="${order.amount}"/>
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.seller"/>:
-                                            <c:out value="${' '}${order.sellerName}${' '}${order.sellerSurname}"/>
+                                            <spring:message code="sellerprofile.orders.seller"
+                                            arguments="${order.sellerName}, ${order.sellerSurname}"/>:
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.buyermail"/>:
-                                            <c:out value="${' '}${order.sellerEmail}"/>
+                                            <spring:message code="sellerprofile.orders.buyermail" arguments="${order.sellerEmail}"/>:
                                         </div>
                                         <c:forEach items="${users}" var="user">
                                             <c:if test="${user.email == order.sellerEmail}">
                                                 <c:forEach items="${sellers}" var="seller">
                                                     <c:if test="${user.id == seller.user.id}">
                                                         <div>
-                                                            <spring:message code="userprofile.orders.selleraddress"/>
-                                                            <c:out value="${' '}${seller.address}"/>
+                                                            <spring:message code="userprofile.orders.selleraddress" arguments="${seller.address}"/>
                                                         </div>
                                                         <div>
-                                                            <spring:message code="userprofile.orders.sellerphone"/>
-                                                            <c:out value="${' '}${seller.phone}"/>
+                                                            <spring:message code="userprofile.orders.sellerphone" arguments="${seller.phone}"/>
                                                         </div>
                                                     </c:if>
                                                 </c:forEach>
@@ -133,8 +132,7 @@
                             </c:choose>
                             <ul class="seller-info">
                                 <li>
-                                    <spring:message code="sellerprofile.orders.seller"/>
-                                    <c:out value="${': '}${order.sellerName}${' '}${order.sellerSurname}"/>
+                                    <spring:message code="sellerprofile.orders.seller" arguments="${order.sellerName}, ${order.sellerSurname}"/>
                                 </li>
                                 <li>
                                     <spring:message code="sellerprofile.orders.buyermail"/>
