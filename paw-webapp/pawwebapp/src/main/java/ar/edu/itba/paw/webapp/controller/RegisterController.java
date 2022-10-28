@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import ar.edu.itba.paw.webapp.form.PasswordForm;
 import ar.edu.itba.paw.webapp.form.SellerForm;
@@ -36,13 +37,16 @@ public class RegisterController {
     private final SellerService sellerService;
 
     private final UserService userService;
+
+    private final PasswordService passwordService;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public RegisterController(final SellerService sellerService, final UserService userService,
+    public RegisterController(final SellerService sellerService, final UserService userService, final PasswordService passwordService,
                               final AuthenticationManager authenticationManager) {
         this.sellerService = sellerService;
         this.userService = userService;
+        this.passwordService = passwordService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -104,8 +108,15 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-    public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm, final BindingResult errors) {
-        return new ModelAndView("forgot_password");
+    public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm, final BindingResult errors, HttpServletRequest request) {
+
+        Optional<User> maybeUser = userService.findByEmail(passwordForm.getEmail());
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+        User user = maybeUser.get();
+        String path = request.getRequestURL().toString().replace(request.getServletPath(), "") + "/newPassword?token=";
+        passwordService.passwordToken(path, user);
+        return new ModelAndView("redirect:/login");
     }
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {

@@ -129,6 +129,16 @@ public class EmailServiceImpl implements EmailService {
                 order.getSellerSurname(), order.getAmount(), sellerLocale);
     }
 
+    @Async
+    @Override
+    public void updatePassword(User user, String link, Locale userLocale) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", user.getFirstName());
+        data.put("link", link);
+        sendThymeleafMail(user.getEmail(), "updatePassword", data,
+                "subject.noMoreStock", userLocale);
+    }
+
     void notifyBuyerOrderCancelled(String productName, String buyerEmail, String buyerName, String buyerSurname,
                                    String orderDateTime, Integer amount, Locale locale){
         Map<String, Object> data = new HashMap<>();

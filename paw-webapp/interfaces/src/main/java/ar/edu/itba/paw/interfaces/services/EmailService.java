@@ -20,4 +20,6 @@ public interface EmailService {
 
     void orderCancelled(Order order, Locale buyerLocale, Locale sellerLocale);
 
+    void updatePassword(User user, String link, Locale userLocale);
+
 }
