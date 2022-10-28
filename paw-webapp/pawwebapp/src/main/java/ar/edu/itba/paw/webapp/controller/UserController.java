@@ -22,25 +22,25 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
-
     private final SellerService sellerService;
-
     private final SecurityService securityService;
-
     private final OrderService orderService;
     private final ProductService productService;
     private final ArticleService articleService;
+    private final FavoriteService favoriteService;
 
     @Autowired
     public UserController(final UserService userService, final SellerService sellerService,
                           final SecurityService securityService, final OrderService orderService,
-                          final ProductService productService, final ArticleService articleService) {
+                          final ProductService productService, final ArticleService articleService,
+                          final FavoriteService favoriteService) {
         this.userService = userService;
         this.sellerService = sellerService;
         this.securityService = securityService;
         this.orderService = orderService;
         this.productService = productService;
         this.articleService = articleService;
+        this.favoriteService = favoriteService;
     }
 
     @RequestMapping(value="profile")
@@ -139,6 +139,7 @@ public class UserController {
 
         List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
         mav.addObject("orders", orders);
+        mav.addObject("isFavorite", favoriteService.isFavorite(user, seller.get()));
 
         return mav;
     }

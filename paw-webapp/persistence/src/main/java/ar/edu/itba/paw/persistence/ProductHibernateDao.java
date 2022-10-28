@@ -46,32 +46,24 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public Optional<Product> getByName(String name) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name ORDER BY id DESC",
+        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name " +
+                        "AND p.status <> :deleted " +
+                        "ORDER BY id DESC",
                 Product.class);
         query.setParameter("name", name);
+        query.setParameter("deleted", ProductStatus.DELETED);
         return query.getResultList().stream().findFirst();
     }
 
     @Override
     public List<Product> getAvailable() {
-        //TODO: Cambiar esto, pero por algún motivo con p.status.id = availableId dejo de funcionar con el merge
-        ProductStatus availableId = ProductStatus.AVAILABLE;
-//        long deletedId = ProductStatus.DELETED.getId();
-//        long outofstockId = ProductStatus.OUTOFSTOCK.getId();
-//        long pausedId = ProductStatus.PAUSED.getId();
+        ProductStatus available = ProductStatus.AVAILABLE;
 
         final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 " +
-                        "AND p.status = :availableId " +
-//                        "AND p.status.id <> :deletedId " +
-//                        "AND p.status.id <> :pausedId " +
-//                        "AND p.status.id <> :outofstockId " +
+                        "AND p.status = :available " +
                         "ORDER BY id DESC",
                 Product.class);
-        query.setParameter("availableId", availableId);
-//        query.setParameter("deletedId", deletedId);
-//        query.setParameter("pausedId", pausedId);
-//        query.setParameter("outofstockId", outofstockId);
-
+        query.setParameter("available", available);
         return query.getResultList();
     }
 
@@ -106,9 +98,6 @@ public class ProductHibernateDao implements ProductDao {
             query.append("AND sellerId IN (SELECT id FROM sellers WHERE areaId = :areaId) ");
             args.put("areaId", areaId);
         }
-        long deleteId = ProductStatus.DELETED.getId();
-        query.append("AND productstatus_id = :availableId ");
-        args.put("availableId", ProductStatus.AVAILABLE.getId());
 
         query.append("AND stock <> 0 ORDER BY id DESC");
 
@@ -130,8 +119,9 @@ public class ProductHibernateDao implements ProductDao {
             return new ArrayList<>();
 
         final TypedQuery<Product> finalQuery =
-                em.createQuery("FROM Product as p where p.id IN :products", Product.class);
+                em.createQuery("FROM Product as p where p.status = :available AND p.id IN :products", Product.class);
         finalQuery.setParameter("products", products);
+        finalQuery.setParameter("available", ProductStatus.AVAILABLE);
 
         return finalQuery.getResultList();
     }
@@ -141,37 +131,10 @@ public class ProductHibernateDao implements ProductDao {
         String query = "SELECT amount FROM orders WHERE productname = :productName";
         Query jpaQuery = em.createNativeQuery(query);
         jpaQuery.setParameter("productName", productName);
-        for(Object o : jpaQuery.getResultList()) {
-            cant += (Integer)o;
+        for (Object o : jpaQuery.getResultList()) {
+            cant += (Integer) o;
         }
         return cant;
-    }
-
-    @Override
-    public void deleteProduct(long productId) {
-        em.remove(em.find(Product.class, productId));
-    }
-
-    @Override
-    public void updateStock(long productId, int amount) {
-        final Product product = em.find(Product.class, productId);
-        product.setStock(amount);
-        //em.merge(product); //TODO: Is em.merge() permitted?
-    }
-
-    @Override
-    public void updatePrice(long productId, int price) {
-        final Product product = em.find(Product.class, productId);
-        product.setPrice(price);
-    }
-
-    @Override
-    public Boolean addStock(String name, int amount) {
-        //TODO: This logic could be moved completely to service
-        final Optional<Product> product = getByName(name);
-        if(!product.isPresent()) throw new ProductNotFoundException();
-        product.get().setStock(amount);
-        return true; //TODO: This booleans should be removed, no purpose at all
     }
 
     @Override

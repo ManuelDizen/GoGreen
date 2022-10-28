@@ -69,7 +69,7 @@
                             </div>
                         </c:if>
                         <div class="row center">
-                            <a class="productpage-link underline" href="<c:url value="/sellerPage/${seller.id}"/>">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>" style="text-align: center;">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>
@@ -168,24 +168,25 @@
                             <form:errors path="amount" element="p" cssClass="error"/>
                         </div>
                     </div>
-                    <div class="col s12 center">
-                        <sec:authorize access="hasRole('SELLER')">
-                            <button type="submit" class="waves-effect waves-light btn disabled">
-                                <spring:message code="productpage.orderform.sellerblocked"/>
-                            </button>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('USER')">
-                            <button type="submit" class="waves-effect waves-light btn">
-                                <spring:message code="productpage.orderform.submit"/>
-                            </button>
-                        </sec:authorize>
-                        <c:if test="${pageContext.request.userPrincipal.name == null}">
-                            <a href="<c:url value="/login"/>" class="waves-effect waves-light btn">
-                                <spring:message code="productpage.orderform.submit"/>
-                            </a>
-                        </c:if>
-                    </div>
                 </div>
+                <div class="col s12 center">
+                    <sec:authorize access="hasRole('SELLER')">
+                        <button type="submit" class="waves-effect waves-light btn disabled">
+                            <spring:message code="productpage.orderform.sellerblocked"/>
+                        </button>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('USER')">
+                        <button type="submit" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.orderform.submit"/>
+                        </button>
+                    </sec:authorize>
+                    <c:if test="${pageContext.request.userPrincipal.name == null}">
+                        <a href="<c:url value="/login"/>" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.orderform.submit"/>
+                        </a>
+                    </c:if>
+                </div>
+            </div>
             </form:form>
         </c:if>
         <c:if test="${product.status.id != availableId}">

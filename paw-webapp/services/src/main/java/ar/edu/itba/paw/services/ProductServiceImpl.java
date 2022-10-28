@@ -152,7 +152,7 @@ public class ProductServiceImpl implements ProductService {
         /*
         Opción 1: La que estaba antes, una baja física.
          */
-        //productDao.deleteProduct(productId);
+        // productDao.deleteProduct(productId);
 
         /*
         Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
