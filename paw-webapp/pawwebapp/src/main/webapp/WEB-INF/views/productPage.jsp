@@ -81,7 +81,7 @@
                         <div class="productpage-info-nobold" style="font-size:18px;">
                             <c:out value="${product.description}"/>
                         </div>
-                        <div class="productpage-info">
+                        <div class="productpage-info" style="font-size:20px;">
                             <div class="center-in-div-with-flex">
                                 <i class="tiny material-icons">category</i>
                                 <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
@@ -96,15 +96,16 @@
                                 </div>
                             </c:if>
                         </div>
-                        <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
-                            <c:out value="${' '}${product.stock}"/></div>
-                        <c:if test="${product.stock < 6}">
-                            <div>
-                                <a class="btn orange accent-4 cursor-default">
-                                    <spring:message code="productpage.orderform.lastunits"/>
-                                </a>
-                            </div>
-                        </c:if>
+                        <div class="productpage-info-nobold space-around">
+                            <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
+                            <c:if test="${product.stock < 6}">
+                                <div>
+                                    <a class="btn orange accent-4 cursor-default">
+                                        <spring:message code="productpage.orderform.lastunits"/>
+                                    </a>
+                                </div>
+                            </c:if>
+                        </div>
                         <c:if test="${ecotags.size() != 0}">
                             <div class="productpage-ecotags separating-fields">
                                 <c:forEach items="${ecotags}" var="ecotag">
@@ -119,7 +120,7 @@
                         </c:if>
                         <div class="row center">
                             <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                <spring:message code="productpage.linktoseller"/>
+                                <div class="text-center"><spring:message code="productpage.linktoseller"/></div>
                             </a>
                         </div>
                     </div>
