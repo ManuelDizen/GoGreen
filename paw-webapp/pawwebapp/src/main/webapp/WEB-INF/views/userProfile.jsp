@@ -12,13 +12,18 @@
             <div id="orders" class="col s12">
                 <div class="user-profile-container-2">
                     <div class="information row">
-                        <div class="col s6">
+                        <div class="col s4">
                             <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                         </div>
-                        <div class="col s6">
+                        <div class="col s4">
                             <div class="userprofile-info-2">
                                 <c:out value="${user.email}"/>
                             </div>
+                        </div>
+                        <div class="col s4">
+                            <a class="waves-effect waves-light btn margin-btn" href="<c:url value="/updatePasswordFromProfile/${user.id}"/>">
+                                <spring:message code="resetpassword"/>
+                            </a>
                         </div>
                     </div>
                     <div class="purchase underline center"><spring:message code="userprofile.orderstitle"/></div>

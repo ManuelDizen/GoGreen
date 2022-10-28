@@ -1,11 +1,17 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.FieldMatch;
 import ar.edu.itba.paw.webapp.validations.Password;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
+@FieldMatch(
+        first = "password",
+        matching = "confirmationPassword"
+)
 public class UpdatePasswordForm {
+
 
     @Password
     @NotNull
@@ -15,6 +21,8 @@ public class UpdatePasswordForm {
     @NotNull
     @NotEmpty
     private String confirmationPassword;
+
+    private String oldPassword;
 
     private String token;
 
@@ -42,4 +50,11 @@ public class UpdatePasswordForm {
         this.token = token;
     }
 
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 }

@@ -19,10 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -145,9 +142,32 @@ public class RegisterController {
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
 
+        System.out.println("old pass " + updatePasswordForm.getOldPassword());
+    
+//        if(updatePasswordForm.getOldPassword() != null)
+//        {
+//            if(!userService.isValidPassword(maybeUser.get().getId(), updatePasswordForm.getOldPassword())) {
+//                return newPasswordFromProfile(maybeUser.get().getId(), true, updatePasswordForm);
+//            }
+//        }
+
         userService.changePassword(maybeUser.get().getId(), updatePasswordForm.getPassword());
 
         ModelAndView mav = new ModelAndView("redirect:/login");
+        return mav;
+
+    }
+
+    @RequestMapping(value = "/updatePasswordFromProfile/{userId}")
+    public ModelAndView newPasswordFromProfile(@PathVariable final long userId, @RequestParam(name = "notFound", defaultValue = "false") final boolean notFound, @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
+
+        ModelAndView mav = new ModelAndView("/resetPassword");
+        Optional<User> maybeUser=userService.findById(userId);
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+        mav.addObject("notFound", notFound);
+        mav.addObject("token", passwordService.getByUserId(maybeUser.get()).get().getPassToken());
+        mav.addObject("fromProfile", true);
         return mav;
 
     }

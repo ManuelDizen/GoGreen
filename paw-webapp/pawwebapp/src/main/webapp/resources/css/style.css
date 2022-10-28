@@ -2097,6 +2097,10 @@ input[type=number] {
     text-decoration: underline;
 }
 
+.margin-btn {
+    margin-top: 3%;
+}
+
 .left-margin {
     margin-left:1vw;
 }

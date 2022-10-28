@@ -45,8 +45,12 @@ public class PasswordServiceImpl implements PasswordService {
         }
     }
 
+    public Optional<Token> getByUserId(User user) {
+        return passwordDao.getByUserId(user);
+    }
+
     private boolean hasToken(User user) {
-        Optional<Token> maybeToken =  passwordDao.getByUserId(user.getId());
+        Optional<Token> maybeToken =  passwordDao.getByUserId(user);
         if(!maybeToken.isPresent())
             throw new UserNotFoundException();
 

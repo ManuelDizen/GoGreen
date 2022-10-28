@@ -26,10 +26,10 @@ public class PasswordHibernateDao implements PasswordDao {
     }
 
     @Override
-    public Optional<Token> getByUserId(long userId) {
+    public Optional<Token> getByUserId(User user) {
         final TypedQuery<Token> query = em.
-                createQuery("from Token as token where token.user_id = :userId", Token.class);
-        query.setParameter("userId", userId);
+                createQuery("from Token as token where token.user = :user", Token.class);
+        query.setParameter("user", user);
         return query.getResultList().stream().findFirst();
     }
 

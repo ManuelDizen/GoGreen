@@ -92,5 +92,17 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(newPassword));
     }
 
+    @Override
+    public boolean isValidPassword(long userId, String oldPassword) {
+        Optional<User> maybeUser = findById(userId);
+
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+
+        User user = maybeUser.get();
+
+        return encoder.encode(oldPassword).equals(user.getPassword());
+    }
+
 
 }

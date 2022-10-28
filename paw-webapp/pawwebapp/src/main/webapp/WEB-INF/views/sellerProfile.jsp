@@ -14,11 +14,11 @@
 <div class="seller-profile-main-body-container">
     <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
         <div class="information row">
-            <div class="col s6">
+            <div class="col s4">
                 <div class="sellerprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                 <div class="sellerprofile-info-1"><c:out value="${user.email}"/></div>
             </div>
-            <div class="col s6">
+            <div class="col s4">
                 <div class="sellerprofile-info-2">
                     <spring:message code="sellerprofile.address"/>:
                     <c:out value="${seller.address}"/>
@@ -27,6 +27,11 @@
                     <spring:message code="sellerprofile.phone"/>:
                     <c:out value="${seller.phone}"/>
                 </div>
+            </div>
+            <div class="col s4">
+                <a class="waves-effect waves-light btn margin-btn" href="<c:url value="/updatePasswordFromProfile/${seller.user.id}"/>">
+                    <spring:message code="resetpassword"/>
+                </a>
             </div>
         </div>
     </div>

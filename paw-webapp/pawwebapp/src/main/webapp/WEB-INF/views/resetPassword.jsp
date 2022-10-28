@@ -18,6 +18,21 @@
     <c:url value="/confirmPassword" var="postUrl"/>
     <form:form modelAttribute="updatePasswordForm" method="post" action="${postUrl}" id="update_password_form" enctype="multipart/form-data">
         <div class="password-body">
+            <c:if test="${fromProfile}">
+                <div class="row">
+                    <div class="col s12" style="height:fit-content;">
+                        <div class="input-field center ">
+                            <form:input path="oldPassword" id="password" type="password"/>
+                            <label for="password"><spring:message code="password.newPassword"/>
+                                <spring:message code="forms.obligatorysign"/>
+                            </label>
+                        </div>
+                        <div class="errors" style="height:fit-content;">
+                            <form:errors path="oldPassword" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
             <div class="row">
                 <div class="col s12" style="height:fit-content;">
                     <div class="input-field center ">
