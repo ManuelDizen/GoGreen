@@ -129,7 +129,8 @@ public class UserController {
 
         List<Product> products = productService.findBySeller(sellerId);
         //TODO: Move to service
-        mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
+        //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
+        mav.addObject("recentProducts", products);
 
         List<Article> news = articleService.getBySellerId(sellerId);
         //TODO: Move to service
