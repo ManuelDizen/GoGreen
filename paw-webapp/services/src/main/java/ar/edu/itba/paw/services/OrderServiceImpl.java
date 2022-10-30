@@ -85,11 +85,15 @@ public class OrderServiceImpl implements OrderService {
         // resulta pertinente enviarle el mail en ese idioma. Es por eso que el mail de
         // user sale con el locale del navegador actual, y el del vendedor con el guardado
         // (no lo tenemos guardado)
-        emailService.purchase(user.getEmail(), user.getFirstName(),
+
+        //Update 28/10/22: Por corrección de cátedra, se remueve el mail enviado a comprador.
+        // El mismo no debe ser notificado de acciones que él realizó dentro de la página
+
+        /*emailService.purchase(user.getEmail(), user.getFirstName(),
                 product, amount,
                 product.getPrice(), sellerService.getName(seller.getUser().getId()),
                 seller.getPhone(), sellerService.getEmail(seller.getUser().getId()),
-                user.getLocale());
+                user.getLocale());*/
 
         emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
                 sellerService.getName(seller.getUser().getId()), product,

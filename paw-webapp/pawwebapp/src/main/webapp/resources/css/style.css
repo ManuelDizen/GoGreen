@@ -1806,6 +1806,10 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     margin:5vh auto; display:block;
 }
 
+.img-div-createproduct{
+    display:flex;
+}
+
 .registerbuyer-title {
     margin:20px auto; text-align: center; text-decoration: underline;
 }

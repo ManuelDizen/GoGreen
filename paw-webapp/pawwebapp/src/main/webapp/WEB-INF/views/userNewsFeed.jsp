@@ -8,6 +8,7 @@
   <%@include file="navbar.jsp"%>
   <h3 class="center"><spring:message code="usernewsfeed.body.title"/></h3>
   <div class="row">
+    <c:set var="displayName" value="1"/>
     <c:forEach items="${news}" var="article">
       <%@include file="newsCard.jsp"%>
     </c:forEach>

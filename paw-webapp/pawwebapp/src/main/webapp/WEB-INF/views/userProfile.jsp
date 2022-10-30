@@ -137,8 +137,7 @@
                                     <c:out value="${': '}${order.sellerName}${' '}${order.sellerSurname}"/>
                                 </li>
                                 <li>
-                                    <spring:message code="sellerprofile.orders.buyermail"/>
-                                    <c:out value="${': '}${order.sellerEmail}"/>
+                                    <spring:message code="sellerprofile.orders.buyermail" arguments="${order.sellerEmail}"/>
                                 </li>
                                 <c:forEach items="${users}" var="user">
                                     <c:if test="${user.email == order.sellerEmail}">

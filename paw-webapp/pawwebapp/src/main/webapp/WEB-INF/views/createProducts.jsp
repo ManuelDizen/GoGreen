@@ -32,7 +32,8 @@
                                 <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>
                             </c:forEach>
                         </form:select>
-                        <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
+                        <form:label for="category" path="category"><spring:message code="createproduct.form.category"/>
+                        <spring:message code="forms.obligatorysign"/></form:label>
                         <form:errors path="category" element="p" cssClass="error"/>
                     </div>
                     <div class="col s4 input-field">
@@ -68,14 +69,14 @@
                     </div>
                 </div>
             </div>
-            <div class="createproduct_row create-button">
-                <div class="file-field input-field">
-                    <div class="decision-button waves-effect waves-light btn image_button">
+            <div class="createproduct_row create-button col s6">
+                <div class="file-field input-field img-div-createproduct">
+                    <div class="decision-button waves-effect waves-light btn image_button" style="margin: auto 10px;">
                         <span><spring:message code="createproduct.form.image"/></span>
                         <form:input path="image" type="file"/>
                     </div>
-                    <div class="file-path-wrapper-style">
-                        <input class="file-path validate" type="text">
+                    <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                        <input class="file-path validate" type="text" readonly>
                     </div>
                 </div>
                 <form:errors path="image" element="p" cssClass="error"/>

@@ -17,6 +17,7 @@
         <h3 class="text-center"><spring:message code="sellernews.title" arguments="${user.firstName}, ${user.surname}"/></h3>
     </div>
     <div class="row">
+        <c:set var="displayName" value="0"/>
         <c:forEach items="${news}" var="article">
             <%@include file="newsCard.jsp"%>
         </c:forEach>

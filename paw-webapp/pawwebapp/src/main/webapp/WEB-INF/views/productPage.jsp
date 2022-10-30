@@ -77,7 +77,9 @@
                 </c:if>
                 <c:if test="${product.image.id == 0}">
                     <div class="col s12 productpage-info-text">
-                        <div class="productpage-info-price"><c:out value="${'$'}${product.price}"/></div>
+                        <div class="productpage-info-price">
+                            <spring:message code="productpage.price" arguments="${product.price}"/>
+                        </div>
                         <div class="productpage-info-nobold" style="font-size:18px;">
                             <c:out value="${product.description}"/>
                         </div>
@@ -120,7 +122,9 @@
                         </c:if>
                         <div class="row center">
                             <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                <div class="text-center"><spring:message code="productpage.linktoseller"/></div>
+                                <div class="text-center">
+                                    <spring:message code="productpage.linktoseller"/>
+                                </div>
                             </a>
                         </div>
                     </div>

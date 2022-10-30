@@ -296,8 +296,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void addIfNotPresent(List<Product> toReturn, List<Product> list, int amount, Product product) {
+        long availableId = ProductStatus.AVAILABLE.getId();
         for(Product prod : list) {
-            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < amount) {
+            if(prod.getStatus().getId() == availableId &&
+                    prod.getProductId() != product.getProductId() &&
+                    !toReturn.contains(prod) && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }
@@ -307,8 +310,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getInteresting(Product product, int amount) {
         List<Product> toReturn = new ArrayList<>();
         List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
+        long availableId = ProductStatus.AVAILABLE.getId();
         for(Product prod : bySellerAndCategory) {
-            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < amount) {
+            if(prod.getStatus().getId() == availableId &&
+                    prod.getCategoryId() == product.getCategoryId() &&
+                    prod.getProductId() != product.getProductId() && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }

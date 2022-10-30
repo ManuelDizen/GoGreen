@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: manuel
-  Date: 26/10/22
-  Time: 10:26
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <div class="card product-card z-depth-1">

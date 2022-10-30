@@ -36,6 +36,7 @@ public class BasicController {
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
+        //TODO: Pass all this logic onto a service
         User loggedUser = securityService.getLoggedUser();
         List<Product> products;
         boolean popular = false;
