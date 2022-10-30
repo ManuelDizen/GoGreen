@@ -2508,6 +2508,11 @@ input[type=number] {
     height:fit-content;
 }
 
+.flex-center{
+    display:flex;
+    justify-content: center;
+}
+
 .sellerpage-heading{
     text-align: left; width:50%;
     padding-bottom:0;

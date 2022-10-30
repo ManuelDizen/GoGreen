@@ -41,8 +41,8 @@
                     <c:if test="${products.size() == 0}">
                         <div class="seller-profile-no-products-container">
                             <div><spring:message code="sellerprofile.noproducts"/></div>
-                            <div class="seller-margin">
-                                <a class="decision-button waves-effect waves-light btn standard-button seller-margin"
+                            <div class="seller-margin flex-center">
+                                <a class="waves-effect waves-light btn standard-button seller-margin"
                                    href="<c:url value="/createProduct"/>">
                                     <spring:message code="explore.createproduct"/>
                                 </a>

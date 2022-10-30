@@ -55,7 +55,7 @@
                         <c:if test="${loggedEmail != null}">
                             <c:if test="${user.email == loggedEmail}">
                                 <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
-                                    <a class="waves-effect waves-light btn-small"
+                                    <a class="waves-effect waves-light btn-small standard-button"
                                        href="<c:url value="/createArticle"/>">
                                         <spring:message code="newspage.create"/>
                                     </a>
@@ -77,7 +77,7 @@
                             </div>
                         </c:forEach>
                         <div style="text-align: center;">
-                            <a class="waves-effect waves-light btn-small"
+                            <a class="waves-effect waves-light btn-small standard-button"
                                href="<c:url value="/sellerPage/${seller.id}/news"/>">
                                 <spring:message code="explore.products.more"/>
                             </a>

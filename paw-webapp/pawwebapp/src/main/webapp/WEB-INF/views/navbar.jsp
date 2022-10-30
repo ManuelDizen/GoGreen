@@ -30,6 +30,9 @@
                 <li class="nav-li">
                     <a href="<c:url value="/createProduct"/>"><spring:message code="navbar.create"/></a>
                 </li>
+                <li class="nav-li">
+                    <a href="<c:url value="/createArticle"/>"><spring:message code="navbar.createarticle"/></a>
+                </li>
             </sec:authorize>
             <sec:authorize access="hasRole('USER')">
                 <li class="nav-li">
@@ -42,12 +45,17 @@
                 </li>
             </c:if>
             <c:if test="${pageContext.request.userPrincipal.name != null}">
-                <li class="nav-li">
-                    <a href="<c:url value="/profile"/>">
-                        <i class="material-icons">account_circle</i>
-                        <%-- TODO span><c:out value="${pageContext.request.userPrincipal.name}"/></span --%>
+                <li class="nav-li" style="padding:0;">
+                    <a href="<c:url value="/profile"/>" style="padding-left:0; display:flex;">
+                        <i style="padding-right:5px;" class="material-icons">account_circle</i>
+                        <c:out value="${pageContext.request.userPrincipal.name}"/>
                     </a>
                 </li>
+                <%--li>
+                    <a href="<c:url value="/profile"/>">
+                        <spring:message code="navbar.welcomemsg" arguments="${pageContext.request.userPrincipal.name}"/>
+                    </a>
+                </li--%>
                 <li class="nav-li">
                     <a href="<c:url value="/logout"/>">
                         <i class="material-icons">logout</i>
