@@ -2175,7 +2175,7 @@ input[type=number] {
 
 .productpage-info {
     font-size:20px; font-weight:bold; text-align:center;
-    display: flex; justify-content: space-evenly;
+    display: flex; justify-content: space-evenly; margin: 5px 0 5px 0;
 }
 
 .productpage-link {
@@ -2183,7 +2183,8 @@ input[type=number] {
 }
 
 .productpage-info-nobold {
-    font-size: 25px; text-align:center;
+    font-size: 25px; text-align:justify;
+    margin:5px 0 5px 0;
 }
 
 .productpage-info-margin {

@@ -47,8 +47,8 @@
                                 </div>
                             </c:if>
                         </div>
-                        <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
-                            <c:out value="${' '}${product.stock}"/></div>
+                        <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"
+                        arguments="${product.stock}"/></div>
                         <c:if test="${product.stock < 6}">
                             <div>
                                 <a class="btn orange accent-4 cursor-default">
@@ -68,7 +68,7 @@
                                 </c:forEach>
                             </div>
                         </c:if>
-                        <div class="row center">
+                        <div class="row center flex-center">
                             <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>" style="text-align: center;">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
