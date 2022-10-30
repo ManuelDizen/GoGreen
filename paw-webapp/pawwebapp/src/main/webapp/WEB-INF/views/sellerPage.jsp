@@ -49,29 +49,29 @@
                 </sec:authorize>
             </div>
             <div class="col s8">
-                <c:if test="${news.size() != 0}">
-                    <div class="row fit-content">
-                        <div style="display:flex; margin-bottom:30px;">
-                            <h3 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h3>
-                            <c:if test="${loggedEmail != null}">
-                                <c:if test="${user.email == loggedEmail}">
-                                    <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
-                                        <a class="waves-effect waves-light btn-small"
-                                           href="<c:url value="/createArticle"/>">
-                                            <spring:message code="newspage.create"/>
-                                        </a>
-                                    </div>
-                                </c:if>
+                <div class="row fit-content">
+                    <div style="display:flex; margin-bottom:30px;">
+                        <h3 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h3>
+                        <c:if test="${loggedEmail != null}">
+                            <c:if test="${user.email == loggedEmail}">
+                                <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
+                                    <a class="waves-effect waves-light btn-small"
+                                       href="<c:url value="/createArticle"/>">
+                                        <spring:message code="newspage.create"/>
+                                    </a>
+                                </div>
                             </c:if>
-                        </div>
+                        </c:if>
+                    </div>
+                    <c:if test="${news.size() != 0}">
                         <c:forEach items="${news}" var="article">
                             <div class="news-card">
                                 <div class="row" style="text-align: right;">
                                     <c:out value="${article.parsedDateTime}"/>
                                 </div>
                                 <div class="row" style="width:100%; text-align:justify;
-                                padding: 0 20px 20px;
-                                text-overflow:ellipsis; overflow:hidden; margin:auto;">
+                            padding: 0 20px 20px;
+                            text-overflow:ellipsis; overflow:hidden; margin:auto;">
                                     <c:out value="${article.message}"/>
                                 </div>
                             </div>
@@ -82,11 +82,12 @@
                                 <spring:message code="explore.products.more"/>
                             </a>
                         </div>
-                    </div>
-                </c:if>
-                <c:if test="${news.size() == 0}">
-                    <span><spring:message code="sellerpage.nonewsyet"/></span>
-                </c:if>
+                    </c:if>
+                    <c:if test="${news.size() == 0}">
+                        <span><spring:message code="sellerpage.nonewsyet"/></span>
+                    </c:if>
+                </div>
+
                 <h3><spring:message code="sellerpage.products.title"/></h3>
                 <div class="sellerpage-products" style="height:50%;">
                     <c:forEach items="${recentProducts}" var="product">
