@@ -76,7 +76,7 @@
                         <form:input path="image" type="file"/>
                     </div>
                     <div class="file-path-wrapper-style" style="margin: auto 10px;">
-                        <input class="file-path validate" type="text" readonly>
+                        <input class="file-path validate" type="text" readonly id="readonly-input">
                     </div>
                 </div>
                 <form:errors path="image" element="p" cssClass="error"/>
