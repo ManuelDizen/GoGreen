@@ -30,12 +30,12 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> findBySeller(long sellerId) {
-        long deletedId = ProductStatus.DELETED.getId();
+        ProductStatus deleted = ProductStatus.DELETED;
         final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId " +
-                        "AND p.status.id <> :deletedId ORDER BY id DESC",
+                        "AND p.status <> :deleted ORDER BY id DESC",
                 Product.class);
         query.setParameter("sellerId", sellerId);
-        query.setParameter("deletedId", deletedId);
+        query.setParameter("deleted", deleted);
         return query.getResultList();
     }
 

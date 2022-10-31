@@ -31,8 +31,10 @@
     <div class="row">
         <div class="col s12">
             <ul class="tabs tabs-fixed-width" id="sellerprofile_tabs">
-                <li class="tab col s3"><a class="active" href="#products"><spring:message code="sellerprofile.productos"/></a></li>
-                <li class="tab col s3"><a href="#orders"><spring:message code="sellerprofile.orderstitle"/></a></li>
+                <li class="tab col s3"><a class="active" href="#products">
+                    <spring:message code="sellerprofile.productos"/></a></li>
+                <li class="tab col s3"><a href="#orders">
+                    <spring:message code="sellerprofile.orderstitle"/></a></li>
             </ul>
         </div>
         <div id="products" class="col s12">
