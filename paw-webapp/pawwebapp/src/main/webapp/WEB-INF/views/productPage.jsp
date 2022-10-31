@@ -305,9 +305,11 @@
                                     <div style="display: none">
                                         <form:input path="parentId" value="${comment.id}" type="number"/>
                                     </div>
-                                    <button type="submit" class="waves-effect waves-light btn">
-                                        <spring:message code="productpage.comment.respond"/>
-                                    </button>
+                                    <div class="flex-right-align">
+                                        <button type="submit" class="waves-effect waves-light btn comment-btn">
+                                            <spring:message code="productpage.comment.respond"/>
+                                        </button>
+                                    </div>
                                 </div>
                             </form:form>
                         </div>
