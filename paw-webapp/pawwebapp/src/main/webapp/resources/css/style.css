@@ -19,6 +19,7 @@
 
     --palette-details-light: #EDFA8B;
     --palette-edit-button: #30695C;
+    --comment-box-primary: #2d503d;
 }
 
 body{
@@ -1295,9 +1296,9 @@ ALL CREDITS TO @andrewsims
     min-height: 75px;
     width: 96%;
     /*height: fit-content;*/
-    background-color: var(--palette-color-secondary);
+    background-color: var(--comment-box-primary);
     color: var(--text-color-light);
-    border: 1px solid var(--palette-details-light);
+    border: 1px solid white;
     margin: 2vh auto;
     margin-bottom: 30px;
     display:flex;
@@ -1320,6 +1321,7 @@ ALL CREDITS TO @andrewsims
 .comment-user {
     display: flex;
     flex-direction: row;
+    margin: 10px 0 0 10px;
 }
 
 .comment-username {
@@ -1337,14 +1339,14 @@ ALL CREDITS TO @andrewsims
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
-    border: 1px solid var(--palette-details-light);
+    border: 1px solid white;
     display:flex;
     flex-direction: column;
     padding: 8px;
 }
 
 .comment-message {
-    margin-left: 35px;
+    margin-left: 30px;
     font-size: 17px;
     margin-top: 0;
     margin-right: 35px;

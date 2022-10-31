@@ -4,18 +4,18 @@ import javax.validation.constraints.Size;
 
 public class CommentForm {
 
-        @Size(max = 300)
-        private String message;
+    @Size(max = 300)
+    private String message;
 
-        private long parentId;
+    private long parentId;
 
-        public String getMessage() {
-            return message;
-        }
+    public String getMessage() {
+        return message;
+    }
 
-        public void setMessage(String message) {
-            this.message = message;
-        }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public long getParentId() {
         return parentId;
