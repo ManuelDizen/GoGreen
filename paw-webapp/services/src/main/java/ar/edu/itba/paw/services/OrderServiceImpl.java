@@ -3,10 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.OrderNotFoundException;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -64,17 +61,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Boolean createAndNotify(long productId, int amount, String message) {
+    public void createAndNotify(long productId, int amount, String message) {
 
         final Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
 
         Boolean enough = productService.checkForAvailableStock(product, amount);
-        if(!enough){return false;}
+        if(!enough) throw new ProductUpdateException();
 
         User user = securityService.getLoggedUser();
-        if(user == null)return false;
+        if(user == null) throw new UnauthorizedRoleException();
 
         final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -107,11 +104,11 @@ public class OrderServiceImpl implements OrderService {
                 sellerService.getSurname(seller.getUser().getId()),
                 sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
                 message);
-        if(order == null) return false;
+        if(order == null) throw new OrderCreationException();
 
         productService.decreaseStock(product.getProductId(), amount);
         Optional<Product> modified = productService.getById(product.getProductId());
-        if (!modified.isPresent()) return false;
+        if (!modified.isPresent()) throw new ProductNotFoundException();
         if (modified.get().getStock() == 0) {
             Optional<User> seller2 = userService.findById(seller.getUser().getId());
             if (!seller2.isPresent()) throw new UserNotFoundException();
@@ -120,7 +117,6 @@ public class OrderServiceImpl implements OrderService {
                     u.getSurname(), u.getLocale());
             modified.get().setStatus(ProductStatus.OUTOFSTOCK);
         }
-        return true;
     }
 
     @Override
@@ -153,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Boolean deleteOrder(long orderId) {
+    public void deleteOrder(long orderId) {
         Boolean isOwner = checkForOrderOwnership(orderId);
         if(!isOwner) throw new UnauthorizedRoleException();
 
@@ -161,13 +157,13 @@ public class OrderServiceImpl implements OrderService {
         if(!order.isPresent()) throw new OrderNotFoundException();
 
         Boolean delete = orderDao.deleteOrder(orderId);
-        if(!delete) return false;
+        if(!delete) throw new OrderDeleteException();
 
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
         if(!buyer.isPresent()) throw new UserNotFoundException();
         Optional<User> seller = userService.findByEmail(order.get().getSellerEmail());
         if(!seller.isPresent()) throw new UserNotFoundException();
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
-        return productService.addStock(order.get().getProductName(), order.get().getAmount());
+        productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
 }

@@ -8,6 +8,7 @@ import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,15 +25,14 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final PasswordEncoder encoder;
     private final RoleService roleService;
-    private final UserRoleService userRoleService;
     private final EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(final UserDao userDao, final PasswordEncoder encoder, RoleService roleService, UserRoleService userRoleService, EmailService emailService){
+    public UserServiceImpl(final UserDao userDao, final PasswordEncoder encoder,
+                           RoleService roleService, EmailService emailService){
         this.userDao = userDao;
         this.encoder = encoder;
         this.roleService = roleService;
-        this.userRoleService = userRoleService;
         this.emailService = emailService;
     }
 
@@ -44,21 +44,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Boolean registerUser(String firstName, String surname, String email, String password, Locale locale){
+    public void registerUser(String firstName, String surname, String email, String password, Locale locale){
         User user = register(firstName, surname, email, password, locale);
-        if(user == null) return false;
+        if(user == null) throw new UserRegisterException();
         Optional<Role> role = roleService.getByName("USER");
         if(!role.isPresent()) throw new RoleNotFoundException();
         user.addRole(role.get());
-        //userRoleService.create(user, role.get());
         emailService.registration(user, locale);
-        return true;
-    }
 
-//    @Override
-//    public void updateImage(long userId, long imageId) {
-//        userDao.updateImage(userId, imageId);
-//    }addRole
+    }
 
     @Transactional
     @Override

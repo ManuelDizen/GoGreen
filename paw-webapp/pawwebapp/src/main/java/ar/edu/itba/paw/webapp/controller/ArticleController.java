@@ -29,17 +29,14 @@ public class ArticleController {
     private final SecurityService securityService;
     private final SellerService sellerService;
     private final ArticleService articleService;
-    private final UserService userService;
 
     @Autowired
     public ArticleController(final SecurityService securityService,
                              final SellerService sellerService,
-                             final ArticleService articleService,
-                             final UserService userService){
+                             final ArticleService articleService){
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.articleService = articleService;
-        this.userService = userService;
     }
 
     @RequestMapping(value = "/createArticle", method = RequestMethod.GET)

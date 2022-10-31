@@ -1,16 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Area;
-import ar.edu.itba.paw.models.Role;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
-import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import ar.edu.itba.paw.webapp.form.SellerForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,8 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Locale;
-import java.util.Optional;
 
 @Controller
 public class RegisterController {
@@ -63,9 +56,8 @@ public class RegisterController {
         if(errors.hasErrors()) {
             return registerBuyer(form);
         }
-        Boolean success = userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
+        userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
-        if(!success) throw new UserRegisterException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
         return new ModelAndView("redirect:/");
     }
@@ -88,10 +80,9 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
-        Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
+        sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
                 form.getAddress(), form.getArea());
-        if(!success) throw new SellerRegisterException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         return new ModelAndView("redirect:/");

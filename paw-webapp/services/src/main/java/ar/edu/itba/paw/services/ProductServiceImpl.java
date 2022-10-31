@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
@@ -164,21 +165,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Boolean attemptDelete(long productId) {
+    public void attemptDelete(long productId) {
         if(checkForOwnership(productId)){
             deleteProduct(productId);
-            return true; //TODO: Por el amor de dios borrar estos booleans no te olvides
         }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public Boolean attemptUpdate(long productId, int amount){
-        if(checkForOwnership(productId)){
-           return addStock(productId, amount);
-        }
-        return false;
     }
 
     @Transactional
@@ -267,9 +257,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Boolean updateProduct(long prodId, int amount, int price) {
+    public void updateProduct(long prodId, int amount, int price) {
         Boolean isOwner = checkForOwnership(prodId);
-        if(!isOwner) return false;
+        if(!isOwner) throw new ForbiddenActionException();
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         Product prod = product.get();
@@ -278,31 +268,26 @@ public class ProductServiceImpl implements ProductService {
         prod.setStock(amount);
         if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
         prod.setPrice(price);
-        //productDao.updateStock(prodId, amount);
-        //productDao.updatePrice(prodId, price);
-        return true;
     }
 
     @Transactional
     @Override
-    public Boolean addStock(String prodName, int amount) {
+    public void addStock(String prodName, int amount) {
         Optional<Product> prod = getByName(prodName);
-        if(!prod.isPresent()) return true;
+        if(!prod.isPresent()) return;
         Product product = prod.get();
         if(product.getStatus() == ProductStatus.OUTOFSTOCK){
             product.setStatus(ProductStatus.AVAILABLE);
         }
         product.setStock(amount + product.getStock());
-        return true;
-        //return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
     @Transactional
     @Override
-    public Boolean addStock(long prodId, int amount){
+    public void addStock(long prodId, int amount){
         Optional<Product> product = getById(prodId);
-        if(!product.isPresent()) return false;
-        return addStock(product.get().getName(), amount);
+        if(!product.isPresent()) return;
+        addStock(product.get().getName(), amount);
     }
 
     @Override

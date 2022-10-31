@@ -6,7 +6,9 @@ import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,18 +97,16 @@ public class SellerServiceImpl implements SellerService {
 
     @Transactional
     @Override
-    public Boolean registerSeller(String firstName, String surname,
+    public void registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
                         String address, long areaId){
         User user = userService.register(firstName, surname, email, password, locale);
-        if(user == null) return false;
+        if(user == null) throw new UserRegisterException();
         Seller seller = create(user.getId(), phone, address, areaId);
-        if(seller == null) return false;
+        if(seller == null) throw new SellerRegisterException();
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();
         user.addRole(role.get());
-        //userRoleService.create(user, role.get());
         emailService.registration(user, user.getLocale());
-        return true;
     }
 }

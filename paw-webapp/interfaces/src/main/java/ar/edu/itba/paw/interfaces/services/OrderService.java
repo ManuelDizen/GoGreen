@@ -18,11 +18,11 @@ public interface OrderService {
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);
     List<Order> getByBuyerEmail(String buyerEmail);
-    Boolean createAndNotify(long productId, int amount, String message);
+    void createAndNotify(long productId, int amount, String message);
 
     List<List<Order>> divideIntoPages(List<Order> list);
 
     Boolean checkForOrderOwnership(long orderId);
 
-    Boolean deleteOrder(long orderId);
+    void deleteOrder(long orderId);
 }
