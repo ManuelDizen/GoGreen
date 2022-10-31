@@ -11,6 +11,7 @@ public interface CommentService {
     Comment create(User user, Product product, String message);
 
     List<List<Comment>> getCommentsForProduct(long productId);
+    Comment getById(long id);
 
     void replyComment(long parentId, String message);
 
