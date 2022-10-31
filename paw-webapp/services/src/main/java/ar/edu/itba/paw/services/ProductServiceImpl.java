@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());
         }
-        return productDao.filter(name, category, ecotags, maxPrice, areaId);
+        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
     }
 
     private int getSales(String productName) {
@@ -140,7 +140,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
-        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
+        List<Product> productList = filter(parseString(name), category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
         return divideIntoPages(productList, 12);
@@ -211,6 +211,25 @@ public class ProductServiceImpl implements ProductService {
                 product.setStatus(ProductStatus.AVAILABLE);
             }
         }
+    }
+
+    public String parseString(String str){
+        char[] sqlSpecialChars = {'%', '_'};
+        char[] charArray = str.toCharArray();
+        StringBuilder out = new StringBuilder();
+        boolean flag = false;
+        for(char c : charArray) {
+            flag = false;
+            for (char s : sqlSpecialChars) {
+                if (c == s) {
+                    //TODO: Escapar el escape lo appendea dos veces, ver como solucionar
+                    out.append('\\').append(c);
+                    flag = true;
+                }
+            }
+            if(!flag) out.append(c);
+        }
+        return out.toString();
     }
 
     @Override
