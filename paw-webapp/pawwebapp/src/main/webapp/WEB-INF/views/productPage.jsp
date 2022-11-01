@@ -50,14 +50,13 @@
                                     </div>
                                 </c:if>
                             </div>
-                        </c:if>
-                        <div class="row center flex-center" style="margin:auto;">
+                            <div class="row center flex-center" style="margin:auto;">
                             <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>" style="text-align: center;">
                                 <spring:message code="productpage.linktoseller"/>
                             </a>
                         </div>
-                    </div>
-                </c:if>
+                        </div>
+                    </c:if>
                 <c:if test="${product.image.id == 0}">
                     <div class="col s12 productpage-info-text">
                         <div class="productpage-info-price">
@@ -134,22 +133,14 @@
                                     </div>
                                 </c:if>
                             </div>
-                        </c:if>
-                        <div class="row center flex-center" style="margin:auto;">
-                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                <div class="text-center">
-                                    <spring:message code="productpage.linktoseller"/>
-                                </div>
-                            </c:if>
-                            <div class="row center">
+                            <div class="row center flex-center" style="margin:auto;">
                                 <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
                                     <div class="text-center">
                                         <spring:message code="productpage.linktoseller"/>
                                     </div>
                                 </a>
                             </div>
-                        </div>
-                    </c:if>
+                        </c:if>
                 </div>
             </div>
         </div>
