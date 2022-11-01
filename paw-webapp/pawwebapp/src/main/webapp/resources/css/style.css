@@ -1731,6 +1731,11 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     color: white;
 }
 
+.createarticle {
+    margin-top:50px;
+    color: white;
+}
+
 .create-header {
     margin-top: 20px
 }

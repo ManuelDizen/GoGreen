@@ -15,7 +15,7 @@
         <c:url value="/createProduct" var="postUrl"/>
         <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
             <div class="center create-center">
-                <h5><spring:message code="createproduct.title"/></h5>
+                <h4><spring:message code="createproduct.title"/></h4>
             </div>
             <div class="createbody">
                 <div class="row">

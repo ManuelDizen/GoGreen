@@ -14,8 +14,10 @@
 </head>
 <body>
   <%@include file="navbar.jsp"%>
-  <div class="row">
-    <h3 style="text-align: center;"><spring:message code="createarticle.title"/></h3>
+  <div class="container createarticle">
+    <div class="center">
+      <h4><spring:message code="createarticle.title"/></h4>
+    </div>
   </div>
   <div class="row">
     <div class="container">
