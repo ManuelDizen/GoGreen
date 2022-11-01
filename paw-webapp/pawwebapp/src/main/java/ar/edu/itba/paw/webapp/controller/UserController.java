@@ -110,7 +110,8 @@ public class UserController {
     }
 
     @RequestMapping(value="/sellerPage/{sellerId:[0-9]+}")
-    public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId){
+    public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId,
+                                   @RequestParam(name="page", defaultValue = "1") final int page){
         ModelAndView mav = new ModelAndView("sellerPage");
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()) throw new UserNotFoundException();
@@ -126,7 +127,6 @@ public class UserController {
         List<Product> products = productService.findBySeller(sellerId);
         //TODO: Move to service
         //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
-        mav.addObject("recentProducts", products);
 
         List<Article> news = articleService.getBySellerId(sellerId);
         //TODO: Move to service
@@ -137,6 +137,11 @@ public class UserController {
         mav.addObject("orders", orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(
                 securityService.getLoggedUser(), seller.get()));
+
+        List<List<Product>> productPages = productService.divideIntoPages(products, 8);
+        mav.addObject("currentPage", page);
+        mav.addObject("pages", productPages);
+        mav.addObject("recentProducts", productPages.get(page-1));
 
         return mav;
     }

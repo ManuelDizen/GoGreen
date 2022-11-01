@@ -91,7 +91,7 @@
         </div>
         <div class="row">
             <h4><spring:message code="sellerpage.products.title"/></h4>
-            <div class="sellerpage-products" style="height:50%;">
+            <div class="sellerpage-products">
                 <c:forEach items="${recentProducts}" var="product">
                     <%@include file="productCard.jsp"%>
                     <%--%@include file="productCard.jsp"%--%>
@@ -131,6 +131,31 @@
 <%--                    </div>--%>
                 </c:forEach>
             </div>
+            <c:if test="${pages.size() > 1}">
+                <div class="pagin">
+                    <c:set var="nextPage" value="${currentPage+1}"/>
+                    <c:set var="previousPage" value="${currentPage-1}"/>
+                    <div>
+                        <ul class="pagination">
+                            <c:if test="${currentPage <= 1}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPage > 1}">
+                                <li><a href="?page=${previousPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                                <li class="waves-effect"><a href="?page=${previousPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${previousPage}</a></li>
+                            </c:if>
+                            <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                            <c:if test="${currentPage < pages.size()}">
+                                <li class="waves-effect"><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${nextPage}</a></li>
+                                <li><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPage >= pages.size()}">
+                                <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </div>
 </body>

@@ -2541,9 +2541,13 @@ input[type=number] {
     text-align: center;
 }
 
+.sellerpage-products {
+    margin-top: 30px;
+}
+
 .news-col{
     margin-top:25px;
-    height:37%;
+    max-height:37%;
 }
 
 .sellerpage-title{
