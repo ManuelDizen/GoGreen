@@ -2446,11 +2446,10 @@ input[type=number] {
 
 .productpage-purchase-container{
     min-height: 45%;
-    max-height: 90%;
     width:90%;
     border:1px solid var(--palette-details-light);
     background-color: var(--palette-color-secondary);
-    padding:30px 10px;
+    padding:25px 10px;
 }
 
 .productpage-info-title{
