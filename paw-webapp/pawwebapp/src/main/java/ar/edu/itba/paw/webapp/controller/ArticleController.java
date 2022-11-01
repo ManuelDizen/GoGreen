@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -80,6 +81,12 @@ public class ArticleController {
 
         ModelAndView mav = new ModelAndView("sellerNews");
 
+        mav.addObject("user", seller.get().getUser());
+        User user = securityService.getLoggedUser();
+        //TODO: Move to service
+        String loggedEmail = user == null? null : user.getEmail();
+        mav.addObject("loggedEmail", loggedEmail);
+
         List<List<Article>> newsPages = productService.divideIntoPages(news, 8);
 
         mav.addObject("news", newsPages.get(page-1));
@@ -88,5 +95,15 @@ public class ArticleController {
         mav.addObject("pages", newsPages);
         mav.addObject("currentPage", page);
         return mav;
+    }
+
+    @RequestMapping(value = "/deleteArticle/{articleId}", method = RequestMethod.GET)
+    public ModelAndView deleteProduct(@PathVariable final long articleId){
+        Optional<Article> article = articleService.getById(articleId);
+        if(!article.isPresent())
+            throw new NoSuchElementException();
+        long sellerId = article.get().getSeller().getId();
+        articleService.delete(articleId);
+        return new ModelAndView("redirect:/sellerPage/" + sellerId + "/news");
     }
 }

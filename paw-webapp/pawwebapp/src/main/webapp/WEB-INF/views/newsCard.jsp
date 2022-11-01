@@ -39,4 +39,29 @@
             </div>
         </div>
     </c:if>
+    <c:if test="${loggedEmail != null}">
+        <c:if test="${user.email == loggedEmail}">
+            <div class="row">
+                <div class="center">
+                    <a id="delete" class="waves-effect waves-light btn red accent-4 modal-trigger" href="#modal${article.id}">
+                        <i class="material-icons">delete_forever</i>
+                        <spring:message code="sellerprofile.delete.confirmbutton"/>
+                    </a>
+                </div>
+            </div>
+            <div id="modal${article.id}" class="modal green-modal">
+                <div class="modal-content">
+                    <h3 class="underline"><spring:message code="newspage.delete.confirm"/></h3>
+                </div>
+                <div class="row s12" style="display:flex; justify-content: center;">
+                    <a class="modal-close waves-effect waves-green btn-flat white-margin">
+                        <spring:message code="sellerprofile.delete.cancel"/>
+                    </a>
+                    <a class="waves-effect waves-light btn  red accent-4 left-margin" href=<c:url value="/deleteArticle/${article.id}"/>>
+                        <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                    </a>
+                </div>
+            </div>
+        </c:if>
+    </c:if>
 </div>

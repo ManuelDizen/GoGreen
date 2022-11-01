@@ -2333,6 +2333,10 @@ input[type=number] {
     fill:white;
 }
 
+.margin-auto {
+    margin: auto;
+}
+
 .separate-20-top{
     margin-top:20px;
 }

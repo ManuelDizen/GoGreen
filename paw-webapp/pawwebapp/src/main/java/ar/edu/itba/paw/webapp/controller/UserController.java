@@ -156,14 +156,17 @@ public class UserController {
     }
 
     @RequestMapping(value="/newsFeed")
-    public ModelAndView newsFeed(){
+    public ModelAndView newsFeed(@RequestParam(name="page", defaultValue = "1") final int page){
         List<Article> news = articleService.getForLoggedUser();
+        List<List<Article>> newsPages = productService.divideIntoPages(news, 10);
         final ModelAndView mav = new ModelAndView("userNewsFeed");
         User user = securityService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         List<Seller> favs = favoriteService.getFavoriteSellersByUserId(user.getId());
+        mav.addObject("currentPage", page);
+        mav.addObject("pages", newsPages);
         mav.addObject("favs", favs);
-        mav.addObject("news", news);
+        mav.addObject("news", newsPages.get(page-1));
         mav.addObject("user", user);
         return mav;
     }

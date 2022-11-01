@@ -14,7 +14,7 @@
 <body>
     <%@include file="navbar.jsp"%>
     <div class="row">
-        <h3 class="text-center"><spring:message code="sellernews.title" arguments="${user.firstName}, ${user.surname}"/></h3>
+        <h4 class="text-center"><spring:message code="sellernews.title" arguments="${user.firstName}, ${user.surname}"/></h4>
     </div>
     <div class="row">
         <c:set var="displayName" value="0"/>
