@@ -10,7 +10,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="navbar.companyname"/> - <spring:message code="forgotpassword.title"/><c:out value="${' '}${product.name}"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="forgotpassword.title"/></title>
 </head>
 <body>
 <%@ include file="navbar.jsp"%>

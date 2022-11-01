@@ -141,8 +141,6 @@ public class RegisterController {
 
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
-
-        System.out.println("old pass " + updatePasswordForm.getOldPassword());
     
 //        if(updatePasswordForm.getOldPassword() != null)
 //        {
@@ -158,19 +156,19 @@ public class RegisterController {
 
     }
 
-    @RequestMapping(value = "/updatePasswordFromProfile/{userId}")
-    public ModelAndView newPasswordFromProfile(@PathVariable final long userId, @RequestParam(name = "notFound", defaultValue = "false") final boolean notFound, @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
-
-        ModelAndView mav = new ModelAndView("/resetPassword");
-        Optional<User> maybeUser=userService.findById(userId);
-        if(!maybeUser.isPresent())
-            throw new UserNotFoundException();
-        mav.addObject("notFound", notFound);
-        mav.addObject("token", passwordService.getByUserId(maybeUser.get()).get().getPassToken());
-        mav.addObject("fromProfile", true);
-        return mav;
-
-    }
+//    @RequestMapping(value = "/updatePasswordFromProfile/{userId}")
+//    public ModelAndView newPasswordFromProfile(@PathVariable final long userId, @RequestParam(name = "notFound", defaultValue = "false") final boolean notFound, @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
+//
+//        ModelAndView mav = new ModelAndView("/resetPassword");
+//        Optional<User> maybeUser=userService.findById(userId);
+//        if(!maybeUser.isPresent())
+//            throw new UserNotFoundException();
+//        mav.addObject("notFound", notFound);
+//        mav.addObject("token", passwordService.getByUserId(maybeUser.get()).get().getPassToken());
+//        mav.addObject("fromProfile", true);
+//        return mav;
+//
+//    }
 
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {
