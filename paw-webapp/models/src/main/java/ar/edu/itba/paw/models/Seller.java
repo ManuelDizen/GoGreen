@@ -29,11 +29,11 @@ public class Seller {
     private Long areaId;
 
 
-    @OneToMany(mappedBy = "seller")
+    /*@OneToMany(mappedBy = "seller")
     private Set<Product> products;
 
     @OneToMany(mappedBy = "seller")
-    private Set<Article> news;
+    private Set<Article> news;*/
 
     Seller(){}
 

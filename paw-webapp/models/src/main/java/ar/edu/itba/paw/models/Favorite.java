@@ -24,7 +24,7 @@ public class Favorite {
     private User user;
 
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @MapsId("seller_id")
     @JoinColumn(name = "seller_id", nullable = false)
     private Seller seller;

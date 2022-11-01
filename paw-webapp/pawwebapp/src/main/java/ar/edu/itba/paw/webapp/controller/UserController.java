@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -141,17 +143,23 @@ public class UserController {
 
     @RequestMapping(value="/setFav/{sellerId:[0-9]+}/{toggle}")
     public ModelAndView setFavorite(@PathVariable("sellerId") long sellerId,
-                                    @PathVariable("toggle") boolean toggle){
+                                    @PathVariable("toggle") boolean toggle,
+                                    HttpServletRequest request){
         favoriteService.toggleFavorite(sellerId, toggle);
-        return new ModelAndView("redirect:/sellerPage/" + sellerId);
+        String referer = request.getHeader("Referer");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @RequestMapping(value="/newsFeed")
     public ModelAndView newsFeed(){
         List<Article> news = articleService.getForLoggedUser();
         final ModelAndView mav = new ModelAndView("userNewsFeed");
+        User user = securityService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        List<Seller> favs = favoriteService.getFavoriteSellersByUserId(user.getId());
+        mav.addObject("favs", favs);
         mav.addObject("news", news);
-        mav.addObject("user", securityService.getLoggedUser());
+        mav.addObject("user", user);
         return mav;
     }
 

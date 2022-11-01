@@ -2548,3 +2548,33 @@ input[type=number] {
 .space-around{
     display: flex; justify-content: space-around;
 }
+
+.user-favs-container{
+    height:fit-content;
+    background-color: var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    margin-top:20px;
+    margin-left:50px;
+}
+
+.user-fav-card{
+    display:flex;
+}
+
+.fav-card-seller-name{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+
+    width:50%;
+    text-align:left;
+}
+
+.fav-card-star-container{
+    width:45%;
+    text-align:right;
+}
+
+.user-favs-container .big-news-card{
+    margin:20px auto 10px auto;
+}

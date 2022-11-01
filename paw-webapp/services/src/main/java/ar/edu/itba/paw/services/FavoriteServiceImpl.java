@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
@@ -52,9 +49,21 @@ public class FavoriteServiceImpl implements FavoriteService {
         }
     }
 
+    @Transactional
     @Override
     public List<Favorite> getByUserId(long userId) {
         return favoriteDao.getByUserId(userId);
+    }
+
+    @Transactional
+    @Override
+    public List<Seller> getFavoriteSellersByUserId(long userId){
+        List<Favorite> favorites = getByUserId(userId);
+        List<Seller> sellers = new ArrayList<>();
+        for(Favorite f : favorites){
+            if(!sellers.contains(f.getSeller())) sellers.add(f.getSeller());
+        }
+        return sellers;
     }
 
     @Transactional
