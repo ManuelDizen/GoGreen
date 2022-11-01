@@ -65,7 +65,7 @@ public class UserController {
 
         List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
 
-        List<List<Order>> orderPages = orderService.divideIntoPages(orders);
+        List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
 
         mav.addObject("currentPage", page);
         mav.addObject("pages", orderPages);
@@ -88,7 +88,7 @@ public class UserController {
         if(!seller.isPresent()) throw new UserNotFoundException();
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
-        List<List<Order>> orderPages = orderService.divideIntoPages(orders);
+        List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
         List<Product> products = productService.findBySeller(seller.get().getId());
         List<List<Product>> productPages = productService.divideIntoPages(products, 6);
 

@@ -125,8 +125,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> divideIntoPages(List<Product> list, int pageSize) {
-        List<List<Product>> pageList = new ArrayList<>();
+    public <T> List<List<T>> divideIntoPages(List<T> list, int pageSize) {
+        List<List<T>> pageList = new ArrayList<>();
 
         int aux = 1;
         while(aux <= list.size()/pageSize) {

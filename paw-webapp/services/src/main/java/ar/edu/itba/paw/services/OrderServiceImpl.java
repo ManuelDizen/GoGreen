@@ -120,22 +120,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<List<Order>> divideIntoPages(List<Order> list) {
-        List<List<Order>> pageList = new ArrayList<>();
-
-        int aux = 1;
-        while(aux <= list.size()/PAGE_SIZE) {
-            pageList.add(list.subList((aux-1)*PAGE_SIZE, aux*PAGE_SIZE));
-            aux++;
-        }
-        if(list.size() % PAGE_SIZE != 0)
-            pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
-        if(list.size() == 0) pageList.add(new ArrayList<>());
-        return pageList;
-
-    }
-
-    @Override
     public Boolean checkForOrderOwnership(long orderId) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();

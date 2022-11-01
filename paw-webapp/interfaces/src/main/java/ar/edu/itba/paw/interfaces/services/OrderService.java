@@ -20,7 +20,6 @@ public interface OrderService {
     List<Order> getByBuyerEmail(String buyerEmail);
     void createAndNotify(long productId, int amount, String message);
 
-    List<List<Order>> divideIntoPages(List<Order> list);
 
     Boolean checkForOrderOwnership(long orderId);
 

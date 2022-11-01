@@ -1,16 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.ArticleService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
-import ar.edu.itba.paw.interfaces.services.SellerService;
-import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Article;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ArticleForm;
-import ar.edu.itba.paw.webapp.form.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,13 +26,16 @@ public class ArticleController {
     private final SellerService sellerService;
     private final ArticleService articleService;
 
+    private final ProductService productService;
+
     @Autowired
     public ArticleController(final SecurityService securityService,
                              final SellerService sellerService,
-                             final ArticleService articleService){
+                             final ArticleService articleService, final ProductService productService){
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.articleService = articleService;
+        this.productService = productService;
     }
 
     @RequestMapping(value = "/createArticle", method = RequestMethod.GET)
@@ -73,15 +72,21 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/sellerPage/{sellerId:[0-9]+}/news")
-    public ModelAndView sellerNews(@PathVariable("sellerId") long sellerId){
+    public ModelAndView sellerNews(@PathVariable("sellerId") long sellerId,
+                                   @RequestParam(name="page", defaultValue = "1") final int page){
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()) throw new UserNotFoundException();
         List<Article> news = articleService.getBySellerId(sellerId);
 
         ModelAndView mav = new ModelAndView("sellerNews");
-        mav.addObject("news", news);
+
+        List<List<Article>> newsPages = productService.divideIntoPages(news, 8);
+
+        mav.addObject("news", newsPages.get(page-1));
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
+        mav.addObject("pages", newsPages);
+        mav.addObject("currentPage", page);
         return mav;
     }
 }

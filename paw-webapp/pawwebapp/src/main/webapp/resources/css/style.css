@@ -2495,7 +2495,6 @@ input[type=number] {
     border: 1px solid var(--palette-details-light);
     margin: 20px auto 20px auto;
     width: 80%;
-    min-height:300px;
     height:fit-content;
 }
 
