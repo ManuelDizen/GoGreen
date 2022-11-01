@@ -3,10 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ArticleDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.ArticleNotFoundException;
-import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,16 +22,18 @@ public class ArticleServiceImpl implements ArticleService {
     private final SecurityService securityService;
     private final SellerService sellerService;
     private final FavoriteService favoriteService;
+    private final EmailService emailService;
 
     @Autowired
     public ArticleServiceImpl(final ImageService imageService, final ArticleDao articleDao,
                               final SecurityService securityService, final SellerService sellerService,
-                              final FavoriteService favoriteService) {
+                              final FavoriteService favoriteService, final EmailService emailService) {
         this.imageService = imageService;
         this.articleDao = articleDao;
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.favoriteService = favoriteService;
+        this.emailService = emailService;
     }
 
     private Image parseByteArrayToImage(byte[] image){
@@ -52,7 +51,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article create(Seller seller, String message, byte[] image, LocalDateTime dateTime) {
         Image img = parseByteArrayToImage(image);
-        return articleDao.create(seller, message, img, dateTime);
+        Article article = articleDao.create(seller, message, img, dateTime);
+        if(article == null) throw new ArticleCreationException();
+
+        List<User> subscribed = favoriteService.getSubscribedUsers(seller);
+        emailService.newArticleFromSeller(seller, subscribed, message);
+        return article;
     }
 
     @Transactional

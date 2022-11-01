@@ -9,7 +9,26 @@
   <h4 class="center"><spring:message code="usernewsfeed.body.title"/></h4>
   <div class="row flex-center">
     <div class="col s3 user-favs-container">
-      <div class="toggle-notifications">
+      <div class="separate-12-top" style="display:flex;">
+        <div class="left-align flex-column-center-align-vertical" >
+          <spring:message code="newsfeed.notifications"/>
+        </div>
+        <c:choose>
+          <c:when test="${user.notifications}">
+            <i class="material-icons green-text flex-column-center-align-vertical" style="margin:auto 20px;">check_circle</i>
+            <a class="waves-effect waves-light btn-small" href="<c:url value="/toggleNotifications"/>">
+              <spring:message code="newsfeed.deactivatenotifs"/>
+            </a>
+          </c:when>
+          <c:otherwise>
+            <i class="material-icons red-text flex-column-center-align-vertical" style="margin:auto 20px;">do_not_disturb</i>
+            <a class="waves-effect waves-light btn-small" href="<c:url value="/toggleNotifications"/>">
+              <spring:message code="newsfeed.activatenotifs"/>
+            </a>
+          </c:otherwise>
+        </c:choose>
+      </div>
+      <%--div class="toggle-notifications">
         <div class="switch">
           <label>
             <spring:message code="off"/>
@@ -29,10 +48,9 @@
             <spring:message code="on"/>
           </label>
         </div>
-      </div>
-      <a href="<c:url value="/toggleNotifications"/>" class="btn">
-      </a>
-      <div class="left-align"><spring:message code="newsfeed.userfavs"/></div>
+      </div--%>
+
+      <div class="left-align separate-12-top"><spring:message code="newsfeed.userfavs"/></div>
       <c:forEach items="${favs}" var="fav">
         <div class="user-fav-card">
           <a class="fav-card-seller-name underline white-text" href="<c:url value="/sellerPage/${fav.id}"/>">

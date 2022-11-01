@@ -56,7 +56,7 @@ public class ArticleController {
         }
         User logged = securityService.getLoggedUser();
         //Should this check even be done? Doesn't spring security check for SELLER role?
-        if(logged == null)throw new UnauthorizedRoleException();
+        if(logged == null) throw new UnauthorizedRoleException();
         Optional<Seller> seller = sellerService.findByUserId(logged.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 

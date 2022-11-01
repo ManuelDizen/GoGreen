@@ -2427,8 +2427,10 @@ input[type=number] {
     flex-direction: column;
 }
 
-.ecotag-checkbox{
-
+.flex-column-center-align-vertical{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .margin-bottom-filterbox {
@@ -2619,4 +2621,13 @@ input[type=number] {
 .toggle-notifications{
     display:flex;
     justify-content: center;
+}
+
+.flex-space-evenly{
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.separate-12-top{
+    margin-top:12px;
 }

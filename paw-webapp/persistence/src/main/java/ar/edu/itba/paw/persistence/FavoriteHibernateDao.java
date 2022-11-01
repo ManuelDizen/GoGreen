@@ -41,4 +41,13 @@ public class FavoriteHibernateDao implements FavoriteDao {
         query.setParameter("userId", userId);
         return query.getResultList();
     }
+
+    @Override
+    public List<User> getSubscribedUsers(Seller seller){
+        final TypedQuery<User> query = em.createQuery("SELECT DISTINCT(f.user) FROM Favorite f " +
+                        "WHERE f.seller = :seller",
+                User.class);
+        query.setParameter("seller", seller);
+        return query.getResultList();
+    }
 }

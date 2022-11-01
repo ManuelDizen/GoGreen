@@ -19,15 +19,13 @@ import java.util.*;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
-    private final UserService userService;
     private final SellerService sellerService;
     private final SecurityService securityService;
     private final FavoriteDao favoriteDao;
 
     @Autowired
-    public FavoriteServiceImpl(UserService userService, SellerService sellerService,
+    public FavoriteServiceImpl(SellerService sellerService,
                                SecurityService securityService, FavoriteDao favoriteDao){
-        this.userService = userService;
         this.sellerService = sellerService;
         this.securityService = securityService;
         this.favoriteDao = favoriteDao;
@@ -81,4 +79,11 @@ public class FavoriteServiceImpl implements FavoriteService {
         }
         return false;
     }
+
+    @Transactional
+    @Override
+    public List<User> getSubscribedUsers(Seller seller){
+        return favoriteDao.getSubscribedUsers(seller);
+    }
+
 }

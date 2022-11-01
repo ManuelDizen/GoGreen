@@ -10,5 +10,6 @@ public interface FavoriteDao {
     void addFavorite(User user, Seller seller);
     void removeFavorite(User user, Seller seller);
     List<Favorite> getByUserId(long userId);
+    List<User> getSubscribedUsers(Seller seller);
 
 }

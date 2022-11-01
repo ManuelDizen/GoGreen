@@ -10,6 +10,7 @@ public interface FavoriteService {
     void toggleFavorite(long sellerId, boolean add);
     List<Favorite> getByUserId(long userId);
     boolean isFavorite(User user, Seller seller);
-    public List<Seller> getFavoriteSellersByUserId(long userId);
+    List<Seller> getFavoriteSellersByUserId(long userId);
+    List<User> getSubscribedUsers(Seller seller);
 
 }
