@@ -15,8 +15,8 @@
 </head>
 <body>
     <%@include file="navbar.jsp"%>
-    <div class="row">
-        <div class="container">
+    <div class="sellerpage-container">
+        <div class="row">
             <div class="col s3 sellerpage-info">
                 <div class="row sellerpage-info-row sellerpage-title"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
                 <div class="row sellerpage-info-row"><c:out value="${user.email}"/></div>
@@ -49,9 +49,9 @@
                 </sec:authorize>
             </div>
             <div class="col s8">
-                <div class="row fit-content">
+                <div class="row news-col">
                     <div style="display:flex; margin-bottom:30px;">
-                        <h3 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h3>
+                        <h4 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h4>
                         <c:if test="${loggedEmail != null}">
                             <c:if test="${user.email == loggedEmail}">
                                 <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
@@ -87,47 +87,49 @@
                         <span><spring:message code="sellerpage.nonewsyet"/></span>
                     </c:if>
                 </div>
-
-                <h3><spring:message code="sellerpage.products.title"/></h3>
-                <div class="sellerpage-products" style="height:50%;">
-                    <c:forEach items="${recentProducts}" var="product">
-                        <%--%@include file="productCard.jsp"%--%>
-                        <div class="card product-card z-depth-1 product-card-width-30">
-                            <a style="height:50%" href="<c:url value="/product/${product.productId}"/>">
-                                <div class="product-card-image-container">
-                                    <c:if test="${product.image.id != 0}">
-                                        <img class="image-restrain" src="<c:url value="/image/${product.image.id}"/>">
-                                    </c:if>
-                                    <c:if test="${product.image.id == 0}">
-                                        <img class="image-restrain" src="<c:url value="/resources/images/logo.png"/>">
-                                    </c:if>
-                                </div>
-                            </a>
-                            <div class="card-content">
-                                <a href="<c:url value="/product/${product.productId}"/>"
-                                   class="card-title product-card-title"><c:out value="${product.name}"/></a>
-                                <div class="card-price">
-                                    <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
-                                </div>
-                                <div class="card-category">
-                                    <i class="tiny material-icons">category</i>
-                                    <c:forEach items="${categories}" var="category">
-                                        <c:if test="${category.id == product.categoryId}">
-                                            <a href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>"><spring:message code="${category.name}"/></a>
-                                        </c:if>
-                                    </c:forEach>
-                                </div>
-                                <div class="product-card-tags">
-                                    <c:forEach items="${product.tagList}" var="ecotag">
-                                        <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">
-                                            <i class="tiny material-icons">${ecotag.icon}</i>
-                                        </a>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
-                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h4><spring:message code="sellerpage.products.title"/></h4>
+            <div class="sellerpage-products" style="height:50%;">
+                <c:forEach items="${recentProducts}" var="product">
+                    <%@include file="productCard.jsp"%>
+                    <%--%@include file="productCard.jsp"%--%>
+<%--                    <div class="card product-card z-depth-1 product-card-width-30">--%>
+<%--                        <a style="height:50%" href="<c:url value="/product/${product.productId}"/>">--%>
+<%--                            <div class="product-card-image-container">--%>
+<%--                                <c:if test="${product.image.id != 0}">--%>
+<%--                                    <img class="image-restrain" src="<c:url value="/image/${product.image.id}"/>">--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${product.image.id == 0}">--%>
+<%--                                    <img class="image-restrain" src="<c:url value="/resources/images/logo.png"/>">--%>
+<%--                                </c:if>--%>
+<%--                            </div>--%>
+<%--                        </a>--%>
+<%--                        <div class="card-content">--%>
+<%--                            <a href="<c:url value="/product/${product.productId}"/>"--%>
+<%--                               class="card-title product-card-title"><c:out value="${product.name}"/></a>--%>
+<%--                            <div class="card-price">--%>
+<%--                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>--%>
+<%--                            </div>--%>
+<%--                            <div class="card-category">--%>
+<%--                                <i class="tiny material-icons">category</i>--%>
+<%--                                <c:forEach items="${categories}" var="category">--%>
+<%--                                    <c:if test="${category.id == product.categoryId}">--%>
+<%--                                        <a href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>"><spring:message code="${category.name}"/></a>--%>
+<%--                                    </c:if>--%>
+<%--                                </c:forEach>--%>
+<%--                            </div>--%>
+<%--                            <div class="product-card-tags">--%>
+<%--                                <c:forEach items="${product.tagList}" var="ecotag">--%>
+<%--                                    <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">--%>
+<%--                                        <i class="tiny material-icons">${ecotag.icon}</i>--%>
+<%--                                    </a>--%>
+<%--                                </c:forEach>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+                </c:forEach>
             </div>
         </div>
     </div>

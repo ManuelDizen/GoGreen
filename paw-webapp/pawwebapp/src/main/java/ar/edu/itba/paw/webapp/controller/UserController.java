@@ -130,7 +130,7 @@ public class UserController {
 
         List<Article> news = articleService.getBySellerId(sellerId);
         //TODO: Move to service
-        news = news.size() > 3? news.subList(0, 3):news;
+        news = news.size() > 2? news.subList(0, 2):news;
         mav.addObject("news", news);
 
         List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());

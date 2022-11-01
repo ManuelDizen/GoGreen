@@ -2514,26 +2514,36 @@ input[type=number] {
     justify-content: center;
 }
 
-.sellerpage-heading{
+.sellerpage-heading, .seller-title{
     text-align: left; width:50%;
     padding-bottom:0;
     margin-bottom:0;
 }
 
+.seller-title {
+    margin-top:60px;
+}
+
+.sellerpage-container {
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
 .sellerpage-info{
-    margin: 120px 20px 0 0;
+    margin: 50px 70px 0 0;
     background-color: var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     height:fit-content;
 }
 
 .sellerpage-info-row{
-    margin: 10px 0 10px 0 !important ;
+    margin: 20px 0 35px 0 !important ;
     text-align: center;
 }
 
 .news-col{
-    height:300px;
+    margin-top:25px;
+    height:37%;
 }
 
 .sellerpage-title{
