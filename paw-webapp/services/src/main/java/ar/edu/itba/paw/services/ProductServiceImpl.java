@@ -207,7 +207,7 @@ public class ProductServiceImpl implements ProductService {
         char[] sqlSpecialChars = {'%', '_'};
         char[] charArray = str.toCharArray();
         StringBuilder out = new StringBuilder();
-        boolean flag = false;
+        boolean flag;
         for(char c : charArray) {
             flag = false;
             for (char s : sqlSpecialChars) {

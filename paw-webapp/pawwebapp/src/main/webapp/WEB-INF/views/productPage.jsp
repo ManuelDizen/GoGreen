@@ -50,8 +50,39 @@
                                     </div>
                                 </c:if>
                             </div>
-                            <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"
-                                                                                 arguments="${product.stock}"/></div>
+                        </c:if>
+                        <div class="row center flex-center" style="margin:auto;">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>" style="text-align: center;">
+                                <spring:message code="productpage.linktoseller"/>
+                            </a>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${product.image.id == 0}">
+                    <div class="col s12 productpage-info-text">
+                        <div class="productpage-info-price">
+                            <spring:message code="productpage.price" arguments="${product.price}"/>
+                        </div>
+                        <div class="productpage-info-nobold" style="font-size:18px;">
+                            <c:out value="${product.description}"/>
+                        </div>
+                        <div class="productpage-info" style="font-size:20px;">
+                            <div class="center-in-div-with-flex">
+                                <i class="tiny material-icons">category</i>
+                                <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                                    <spring:message code="${category.name}"/>
+                                </a>
+                            </div>
+                            <c:if test="${area != null}">
+                                <div class="center-in-div-with-flex">
+                                    <a class="productpage-link" href="<c:url value="/explore?areaId=${area.id}&sort=${sort}&direction=${direction}"/>">
+                                        <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
+                                    </a>
+                                </div>
+                            </c:if>
+                        </div>
+                        <div class="productpage-info-nobold space-around">
+                            <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
                             <c:if test="${product.stock < 6}">
                                 <div>
                                     <a class="btn orange accent-4 cursor-default">
@@ -103,26 +134,11 @@
                                     </div>
                                 </c:if>
                             </div>
-                            <div class="productpage-info-nobold space-around">
-                                <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
-                                <c:if test="${product.stock < 6}">
-                                    <div>
-                                        <a class="btn orange accent-4 cursor-default">
-                                            <spring:message code="productpage.orderform.lastunits"/>
-                                        </a>
-                                    </div>
-                                </c:if>
-                            </div>
-                            <c:if test="${ecotags.size() != 0}">
-                                <div class="productpage-ecotags separating-fields">
-                                    <c:forEach items="${ecotags}" var="ecotag">
-                                        <div class="productpage-ecotag">
-                                            <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
-                                                <i class="tiny material-icons">${ecotag.icon}</i>
-                                                <spring:message code="${ecotag.tag}"/>
-                                            </a>
-                                        </div>
-                                    </c:forEach>
+                        </c:if>
+                        <div class="row center flex-center" style="margin:auto;">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                <div class="text-center">
+                                    <spring:message code="productpage.linktoseller"/>
                                 </div>
                             </c:if>
                             <div class="row center">

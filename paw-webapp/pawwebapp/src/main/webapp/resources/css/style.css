@@ -2615,3 +2615,8 @@ input[type=number] {
 .user-favs-container .big-news-card{
     margin:20px auto 10px auto;
 }
+
+.toggle-notifications{
+    display:flex;
+    justify-content: center;
+}

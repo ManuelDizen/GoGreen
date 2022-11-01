@@ -171,4 +171,13 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping(value="/toggleNotifications")
+    public ModelAndView toggleNotifications(HttpServletRequest request){
+        User user = securityService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        userService.toggleNotifications(user.getId());
+        String referer = request.getHeader("Referer");
+        return new ModelAndView("redirect:" + referer);
+    }
+
 }

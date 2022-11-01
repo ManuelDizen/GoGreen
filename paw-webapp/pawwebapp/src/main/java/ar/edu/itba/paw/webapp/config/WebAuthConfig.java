@@ -86,7 +86,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
                     .antMatchers("/userProfile").hasRole("USER")
                     .antMatchers("/process/**").hasRole("USER")
-                    .antMatchers("/newsFeed").hasRole("USER")
+                    .antMatchers("/newsFeed", "/toggleNotifications").hasRole("USER")
                     .antMatchers("/sellerProfile", "/deleteProduct/**").hasRole("SELLER")
                     .antMatchers("/createProduct", "/editProduct/**").hasRole("SELLER")
                     .antMatchers("/pauseProduct/**", "/republishProduct/**", "/updateProduct/**").hasRole("SELLER")

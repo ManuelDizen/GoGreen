@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
   <%@include file="header.jsp"%>
@@ -9,6 +9,30 @@
   <h4 class="center"><spring:message code="usernewsfeed.body.title"/></h4>
   <div class="row flex-center">
     <div class="col s3 user-favs-container">
+      <div class="toggle-notifications">
+        <div class="switch">
+          <label>
+            <spring:message code="off"/>
+            <c:choose>
+              <c:when test="${!user.notifications}">
+                <input id="notif_switch"
+                       type="checkbox">
+                <span class="lever"></span>
+              </c:when>
+              <c:otherwise>
+                <input id="notif_switch"
+                       type="checkbox"
+                       checked>
+                <span class="lever"></span>
+              </c:otherwise>
+            </c:choose>
+            <spring:message code="on"/>
+          </label>
+        </div>
+      </div>
+      <a href="<c:url value="/toggleNotifications"/>" class="btn">
+      </a>
+      <div class="left-align"><spring:message code="newsfeed.userfavs"/></div>
       <c:forEach items="${favs}" var="fav">
         <div class="user-fav-card">
           <a class="fav-card-seller-name underline white-text" href="<c:url value="/sellerPage/${fav.id}"/>">

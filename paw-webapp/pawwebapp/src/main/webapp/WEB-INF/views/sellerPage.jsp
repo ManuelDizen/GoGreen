@@ -33,7 +33,7 @@
                 <sec:authorize access="hasRole('USER')">
                     <div class="separate-20-top separate-20-bottom margin-auto" style="width:80%; text-align:center;">
                         <a class="waves-effect waves-light btn"
-                           href="<c:url value="/setFav/${seller.id}/${!isFavorite}"/>" style="height:fit-content; line-height: 1.5;">
+                           href="<c:url value="/setFav/${seller.id}/${!isFavorite}"/>" style="height:fit-content;">
                             <c:choose>
                                 <c:when test="${isFavorite}">
                                     <i class="material-icons left star-icon">star</i>

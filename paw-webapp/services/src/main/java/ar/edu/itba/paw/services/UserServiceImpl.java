@@ -1,16 +1,13 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.RoleService;
-import ar.edu.itba.paw.interfaces.services.UserRoleService;
-import ar.edu.itba.paw.interfaces.services.UserService;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +23,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final EmailService emailService;
-
     @Autowired
     public UserServiceImpl(final UserDao userDao, final PasswordEncoder encoder,
                            RoleService roleService, EmailService emailService){
@@ -70,5 +66,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userDao.getAll();
+    }
+
+    @Transactional
+    @Override
+    public void toggleNotifications(long userId){
+        Optional<User> user = findById(userId);
+        if(!user.isPresent()) throw new ForbiddenActionException();
+        user.get().toggleNotifications();
     }
 }
