@@ -21,13 +21,12 @@ public interface ProductService {
 
     void sortProducts(List<Product> productList, int sort, int direction);
 
-    List<List<Product>> divideIntoPages(List<Product> list, int pageSize);
+    <T> List<List<T>> divideIntoPages(List<T> list, int pageSize);
 
     List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction);
 
     void deleteProduct(long productId);
-    Boolean attemptDelete(long productId);
-    Boolean attemptUpdate(long productId, int amount);
+    void attemptDelete(long productId);
     void attemptPause(long productId);
     void attemptRepublish(long productId);
 
@@ -35,10 +34,10 @@ public interface ProductService {
     Boolean checkForOwnership(long prodId);
     void decreaseStock(long prodId, int amount);
 
-    Boolean updateProduct(long prodId, int amount, int price);
+    void updateProduct(long prodId, int amount, int price);
 
-    Boolean addStock(String prodName, int amount);
-    Boolean addStock(long prodId, int amount);
+    void addStock(String prodName, int amount);
+    void addStock(long prodId, int amount);
 
     String buildPath(String[] strings);
 

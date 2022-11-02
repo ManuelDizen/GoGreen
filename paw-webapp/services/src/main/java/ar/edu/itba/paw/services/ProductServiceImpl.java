@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
@@ -81,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());
         }
-        return productDao.filter(name, category, ecotags, maxPrice, areaId);
+        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
     }
 
     private int getSales(String productName) {
@@ -124,8 +125,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> divideIntoPages(List<Product> list, int pageSize) {
-        List<List<Product>> pageList = new ArrayList<>();
+    public <T> List<List<T>> divideIntoPages(List<T> list, int pageSize) {
+        List<List<T>> pageList = new ArrayList<>();
 
         int aux = 1;
         while(aux <= list.size()/pageSize) {
@@ -140,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
-        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
+        List<Product> productList = filter(parseString(name), category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
         return divideIntoPages(productList, 12);
@@ -152,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
         /*
         Opción 1: La que estaba antes, una baja física.
          */
-        //productDao.deleteProduct(productId);
+        // productDao.deleteProduct(productId);
 
         /*
         Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
@@ -164,21 +165,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Boolean attemptDelete(long productId) {
+    public void attemptDelete(long productId) {
         if(checkForOwnership(productId)){
             deleteProduct(productId);
-            return true; //TODO: Por el amor de dios borrar estos booleans no te olvides
         }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public Boolean attemptUpdate(long productId, int amount){
-        if(checkForOwnership(productId)){
-           return addStock(productId, amount);
-        }
-        return false;
     }
 
     @Transactional
@@ -211,6 +201,25 @@ public class ProductServiceImpl implements ProductService {
                 product.setStatus(ProductStatus.AVAILABLE);
             }
         }
+    }
+
+    public String parseString(String str){
+        char[] sqlSpecialChars = {'%', '_'};
+        char[] charArray = str.toCharArray();
+        StringBuilder out = new StringBuilder();
+        boolean flag;
+        for(char c : charArray) {
+            flag = false;
+            for (char s : sqlSpecialChars) {
+                if (c == s) {
+                    //TODO: Escapar el escape lo appendea dos veces, ver como solucionar
+                    out.append('\\').append(c);
+                    flag = true;
+                }
+            }
+            if(!flag) out.append(c);
+        }
+        return out.toString();
     }
 
     @Override
@@ -248,9 +257,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Boolean updateProduct(long prodId, int amount, int price) {
+    public void updateProduct(long prodId, int amount, int price) {
         Boolean isOwner = checkForOwnership(prodId);
-        if(!isOwner) return false;
+        if(!isOwner) throw new ForbiddenActionException();
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         Product prod = product.get();
@@ -259,31 +268,26 @@ public class ProductServiceImpl implements ProductService {
         prod.setStock(amount);
         if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
         prod.setPrice(price);
-        //productDao.updateStock(prodId, amount);
-        //productDao.updatePrice(prodId, price);
-        return true;
     }
 
     @Transactional
     @Override
-    public Boolean addStock(String prodName, int amount) {
+    public void addStock(String prodName, int amount) {
         Optional<Product> prod = getByName(prodName);
-        if(!prod.isPresent()) return true;
+        if(!prod.isPresent()) return;
         Product product = prod.get();
         if(product.getStatus() == ProductStatus.OUTOFSTOCK){
             product.setStatus(ProductStatus.AVAILABLE);
         }
         product.setStock(amount + product.getStock());
-        return true;
-        //return productDao.addStock(prodName, (amount + prod.get().getStock()));
     }
 
     @Transactional
     @Override
-    public Boolean addStock(long prodId, int amount){
+    public void addStock(long prodId, int amount){
         Optional<Product> product = getById(prodId);
-        if(!product.isPresent()) return false;
-        return addStock(product.get().getName(), amount);
+        if(!product.isPresent()) return;
+        addStock(product.get().getName(), amount);
     }
 
     @Override
@@ -296,8 +300,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void addIfNotPresent(List<Product> toReturn, List<Product> list, int amount, Product product) {
+        long availableId = ProductStatus.AVAILABLE.getId();
         for(Product prod : list) {
-            if(prod.getProductId() != product.getProductId() && !toReturn.contains(prod) && toReturn.size() < amount) {
+            if(prod.getStatus().getId() == availableId &&
+                    prod.getProductId() != product.getProductId() &&
+                    !toReturn.contains(prod) && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }
@@ -307,8 +314,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getInteresting(Product product, int amount) {
         List<Product> toReturn = new ArrayList<>();
         List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
+        long availableId = ProductStatus.AVAILABLE.getId();
         for(Product prod : bySellerAndCategory) {
-            if(prod.getCategoryId() == product.getCategoryId() && prod.getProductId() != product.getProductId() && toReturn.size() < amount) {
+            if(prod.getStatus().getId() == availableId &&
+                    prod.getCategoryId() == product.getCategoryId() &&
+                    prod.getProductId() != product.getProductId() && toReturn.size() < amount) {
                 toReturn.add(prod);
             }
         }

@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="sellers")
@@ -15,7 +12,7 @@ public class Seller {
     @SequenceGenerator(name="sellers_id_seq", sequenceName = "sellers_id_seq", allocationSize = 1)
     private Long id;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name="userid")
     private User user;
 
@@ -32,11 +29,11 @@ public class Seller {
     private Long areaId;
 
 
-    @OneToMany(mappedBy = "seller")
+    /*@OneToMany(mappedBy = "seller")
     private Set<Product> products;
 
     @OneToMany(mappedBy = "seller")
-    private Set<Article> news;
+    private Set<Article> news;*/
 
     Seller(){}
 
@@ -81,5 +78,13 @@ public class Seller {
 
     public void setAreaId(Long areaId) {
         this.areaId = areaId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seller seller = (Seller) o;
+        return Objects.equals(getId(), seller.getId());
     }
 }

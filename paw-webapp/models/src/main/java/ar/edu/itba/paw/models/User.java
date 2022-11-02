@@ -35,6 +35,12 @@ public class User {
     @OneToOne(mappedBy="user")
     private Seller seller;
 
+    @Column(name="notifications")
+    private Boolean notifications;
+
+    //TODO: Cambiar tipo "eager" a lazy
+    //  Nota: De cualquier manera, en este caso los usuarios tienen como máximo 1 rol, por lo que a nivel
+    //  memoria es muy baja. Igual, hay que cambiarlo
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="user_roles",
@@ -42,7 +48,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
     private Set<Role> roles = new HashSet<>();
-    //TODO: Should roles be final?
 
     public void setId(Long id) {
         this.id = id;
@@ -78,6 +83,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.locale = locale;
+        this.notifications = false;
     }
 
     public User(String firstName, String surname, String email, String password, Locale locale){
@@ -136,5 +142,20 @@ public class User {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    public Boolean getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Boolean notifications) {
+        this.notifications = notifications;
+    }
+
+    public void toggleNotifications(){
+        this.notifications = !this.notifications;
+        //this.notifications = this.notifications == 0? 1:0;
+        //System.out.println("Entro a toggle!!!!!!!");
+        //if(this.notifications == 1) System.out.println("Soy true.");
     }
 }

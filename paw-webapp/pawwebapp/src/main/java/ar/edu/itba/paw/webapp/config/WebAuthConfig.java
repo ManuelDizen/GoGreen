@@ -70,6 +70,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new LoginSuccessHandler("/explore");
+    }
+
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -77,16 +82,20 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
         http.sessionManagement().
                 invalidSessionUrl("/").and()
                 .authorizeRequests()
-                    .antMatchers("/", "/explore", "/productpage/**").permitAll()
+                    .antMatchers("/", "/explore", "/product/**", "/sellerPage/**").permitAll()
                     .antMatchers("/login", "/register", "/registerbuyer", "/registerseller").anonymous()
                     .antMatchers("/userProfile").hasRole("USER")
+                    .antMatchers("/process/**").hasRole("USER")
+                    .antMatchers("/newsFeed", "/toggleNotifications").hasRole("USER")
                     .antMatchers("/sellerProfile", "/deleteProduct/**").hasRole("SELLER")
                     .antMatchers("/createProduct", "/editProduct/**").hasRole("SELLER")
+                    .antMatchers("/pauseProduct/**", "/republishProduct/**", "/updateProduct/**").hasRole("SELLER")
                     .antMatchers("/createArticle").hasRole("SELLER")
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/explore", false)
+                    .successHandler(successHandler())
+                    //.defaultSuccessUrl("/explore", false)
                     .failureUrl("/login?failure=true")
                     .loginPage("/login")
                 .and().rememberMe()

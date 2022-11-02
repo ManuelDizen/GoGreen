@@ -78,7 +78,7 @@ public class Article {
     }
 
     public String getParsedDateTime() {
-        return getDateTime().format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy"));
+        return getDateTime().format(DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy"));
     }
 
     public void setDateTime(LocalDateTime dateTime) {

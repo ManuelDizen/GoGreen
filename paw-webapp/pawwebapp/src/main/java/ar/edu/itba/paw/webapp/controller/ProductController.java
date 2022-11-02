@@ -16,12 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-
-import java.util.*;
-
-import static java.lang.Integer.parseInt;
 
 
 @Controller
@@ -93,7 +91,8 @@ public class ProductController {
         //Sorting
         mav.addObject("sort", sort);
         mav.addObject("direction", direction);
-        mav.addObject("sortName", Sort.getById(sort).getName());
+        String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
+        mav.addObject("sortName", sortName);
         mav.addObject("sorting", Sort.values());
 
         //Pagination
@@ -108,8 +107,7 @@ public class ProductController {
 
     @RequestMapping(value = "/deleteProduct/{productId}", method = RequestMethod.GET)
     public ModelAndView deleteProduct(@PathVariable final long productId){
-        Boolean bool = productService.attemptDelete(productId);
-        if(!bool) throw new ProductDeleteException();
+        productService.attemptDelete(productId);
         return new ModelAndView("redirect:/sellerProfile");
     }
 
@@ -177,11 +175,9 @@ public class ProductController {
             return productPage(productId, form, commentForm,1,true);
         }
 
-        Boolean created = orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
-        if(!created) throw new OrderCreationException();
+        orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
 
-        ModelAndView mav = new ModelAndView("redirect:/userProfile");
-        mav.addObject("fromSale", true);
+        ModelAndView mav = new ModelAndView("redirect:/buyerProfile");
         return mav;
     }
 
@@ -297,9 +293,7 @@ public class ProductController {
         if(errors.hasErrors()){
             return updateProduct(productId, form);
         }
-        Boolean success = productService.updateProduct(productId, form.getNewStock(), form.getNewPrice());
-        if(!success) throw new ProductUpdateException();
-
+        productService.updateProduct(productId, form.getNewStock(), form.getNewPrice());
         return new ModelAndView("redirect:/sellerProfile");
     }
 

@@ -33,8 +33,10 @@
     <div class="row">
         <div class="col s12">
             <ul class="tabs tabs-fixed-width" id="sellerprofile_tabs">
-                <li class="tab col s3"><a class="active" href="#products"><spring:message code="sellerprofile.productos"/></a></li>
-                <li class="tab col s3"><a href="#orders"><spring:message code="sellerprofile.orderstitle"/></a></li>
+                <li class="tab col s3"><a class="active" href="#products">
+                    <spring:message code="sellerprofile.productos"/></a></li>
+                <li class="tab col s3"><a href="#orders">
+                    <spring:message code="sellerprofile.orderstitle"/></a></li>
             </ul>
         </div>
         <div id="products" class="col s12">
@@ -43,8 +45,8 @@
                     <c:if test="${products.size() == 0}">
                         <div class="seller-profile-no-products-container">
                             <div><spring:message code="sellerprofile.noproducts"/></div>
-                            <div class="seller-margin">
-                                <a class="decision-button waves-effect waves-light btn standard-button seller-margin"
+                            <div class="seller-margin flex-center">
+                                <a class="waves-effect waves-light btn standard-button seller-margin"
                                    href="<c:url value="/createProduct"/>">
                                     <spring:message code="explore.createproduct"/>
                                 </a>

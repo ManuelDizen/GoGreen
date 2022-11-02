@@ -13,6 +13,6 @@ public interface ArticleService {
     void delete(Long id);
 
     List<Article> getBySellerId(Long sellerId);
-
+    List<Article> getForLoggedUser();
     Optional<Article> getById(Long id);
 }

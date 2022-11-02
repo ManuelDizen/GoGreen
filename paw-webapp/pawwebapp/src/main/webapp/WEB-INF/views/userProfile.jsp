@@ -52,7 +52,7 @@
                                             arguments="${order.sellerName}, ${order.sellerSurname}"/>:
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.buyermail" arguments="${order.sellerEmail}"/>:
+                                            <spring:message code="sellerprofile.neworder.sellermail" arguments="${order.sellerEmail}"/>:
                                         </div>
                                         <c:forEach items="${users}" var="user">
                                             <c:if test="${user.email == order.sellerEmail}">
@@ -133,8 +133,7 @@
                                     <spring:message code="sellerprofile.orders.seller" arguments="${order.sellerName}, ${order.sellerSurname}"/>
                                 </li>
                                 <li>
-                                    <spring:message code="sellerprofile.orders.buyermail"/>
-                                    <c:out value="${': '}${order.sellerEmail}"/>
+                                    <spring:message code="sellerprofile.neworder.sellermail" arguments="${order.sellerEmail}"/>
                                 </li>
                                 <c:forEach items="${users}" var="user">
                                     <c:if test="${user.email == order.sellerEmail}">

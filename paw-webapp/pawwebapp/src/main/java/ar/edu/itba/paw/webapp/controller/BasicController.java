@@ -1,22 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.interfaces.services.OrderService;
+import ar.edu.itba.paw.interfaces.services.ProductService;
+import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.models.Category;
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 @Controller
 public class BasicController {
@@ -35,6 +33,7 @@ public class BasicController {
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
+        //TODO: Pass all this logic onto a service
         User loggedUser = securityService.getLoggedUser();
         List<Product> products;
         boolean popular = false;
@@ -60,14 +59,13 @@ public class BasicController {
     }
 
     @RequestMapping("/login")
-    public ModelAndView login() {
+    public ModelAndView login(HttpServletRequest request) {
+        final HttpSession session = request.getSession();
+        final String referer = request.getHeader("Referer");
+        if (session != null && referer != null && !referer.contains("login")) {
+            session.setAttribute("url_prior_login", referer);
+        }
         return new ModelAndView("login");
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ModelAndView userNotFound(){
-        return new ModelAndView("404");
     }
 
 }

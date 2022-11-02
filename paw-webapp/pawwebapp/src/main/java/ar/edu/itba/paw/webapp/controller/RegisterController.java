@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.interfaces.services.PasswordService;
+import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Area;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
@@ -64,9 +66,8 @@ public class RegisterController {
         if(errors.hasErrors()) {
             return registerBuyer(form);
         }
-        Boolean success = userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
+        userService.registerUser(form.getFirstName(), form.getSurname(), form.getEmail(),
                 form.getPassword(), LocaleContextHolder.getLocale());
-        if(!success) throw new UserRegisterException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
         return new ModelAndView("redirect:/");
     }
@@ -89,10 +90,9 @@ public class RegisterController {
         if(errors.hasErrors()){
             return registerSeller(form);
         }
-        Boolean success = sellerService.registerSeller(form.getFirstName(), form.getSurname(),
+        sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
                 form.getAddress(), form.getArea());
-        if(!success) throw new SellerRegisterException();
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         return new ModelAndView("redirect:/");

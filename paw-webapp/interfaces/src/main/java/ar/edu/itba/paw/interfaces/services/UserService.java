@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserService {
 
     User register(String firstName, String surname, String email, String password, Locale locale);
-    Boolean registerUser(String firstName, String surname, String email, String password, Locale locale);
+    void registerUser(String firstName, String surname, String email, String password, Locale locale);
 
     //void updateImage(long userId, long imageId);
 
@@ -18,6 +18,7 @@ public interface UserService {
     Optional<User> findById(long userId);
 
     List<User> getAll();
+    void toggleNotifications(long userId);
 
     void changePassword(long userId, String newPassword);
 

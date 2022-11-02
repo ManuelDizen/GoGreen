@@ -14,8 +14,8 @@
 </head>
 <body>
     <%@include file="navbar.jsp"%>
-    <div class="row">
-        <div class="container">
+    <div class="sellerpage-container">
+        <div class="row">
             <div class="col s3 sellerpage-info">
                 <div class="row sellerpage-info-row sellerpage-title">
                     <spring:message code="userprofile.fullname" arguments="${user.firstName}, ${user.surname}"/>
@@ -33,50 +33,133 @@
                 <div class="row sellerpage-info-row">
                     <spring:message code="sellerpage.totalorders" arguments="${orders.size()}"/>
                 </div>
+                <sec:authorize access="hasRole('USER')">
+                    <div class="separate-20-top separate-20-bottom margin-auto" style="width:80%; text-align:center;">
+                        <a class="waves-effect waves-light btn"
+                           href="<c:url value="/setFav/${seller.id}/${!isFavorite}"/>" style="line-height:1.5;
+                           height:fit-content;">
+                            <c:choose>
+                                <c:when test="${isFavorite}">
+                                    <i class="material-icons left star-icon">star</i>
+                                    <spring:message code="removefromfavorites"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="material-icons left star-icon">star_border</i>
+                                    <spring:message code="addtofavorites"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </div>
+                </sec:authorize>
             </div>
             <div class="col s8">
-                <c:if test="${news.size() != 0}">
-                    <div class="row fit-content">
-                        <div style="display:flex; margin-bottom:30px;">
-                            <h3 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h3>
-                            <c:if test="${loggedEmail != null}">
-                                <c:if test="${user.email == loggedEmail}">
-                                    <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
-                                        <a class="waves-effect waves-light btn-small"
-                                           href="<c:url value="/createArticle"/>">
-                                            <spring:message code="newspage.create"/>
-                                        </a>
-                                    </div>
-                                </c:if>
+                <div class="row news-col">
+                    <div style="display:flex; margin-bottom:30px;">
+                        <h4 class="sellerpage-heading"><spring:message code="sellerpage.news.title"/></h4>
+                        <c:if test="${loggedEmail != null}">
+                            <c:if test="${user.email == loggedEmail}">
+                                <div style="width:50%; text-align:right; margin:auto auto 0 auto;">
+                                    <a class="waves-effect waves-light btn-small standard-button"
+                                       href="<c:url value="/createArticle"/>">
+                                        <spring:message code="newspage.create"/>
+                                    </a>
+                                </div>
                             </c:if>
-                        </div>
+                        </c:if>
+                    </div>
+                    <c:if test="${news.size() != 0}">
                         <c:forEach items="${news}" var="article">
                             <div class="news-card">
                                 <div class="row" style="text-align: right;">
                                     <c:out value="${article.parsedDateTime}"/>
                                 </div>
                                 <div class="row" style="width:100%; text-align:justify;
-                                padding: 0 20px 20px;
-                                text-overflow:ellipsis; overflow:hidden; margin:auto;">
+                            padding: 0 20px 20px;
+                            text-overflow:ellipsis; overflow:hidden; margin:auto;">
                                     <c:out value="${article.message}"/>
                                 </div>
                             </div>
                         </c:forEach>
                         <div style="text-align: center;">
-                            <a class="waves-effect waves-light btn-small"
+                            <a class="waves-effect waves-light btn-small standard-button"
                                href="<c:url value="/sellerPage/${seller.id}/news"/>">
                                 <spring:message code="explore.products.more"/>
                             </a>
                         </div>
-                    </div>
-                </c:if>
-                <h3><spring:message code="sellerpage.products.title"/></h3>
-                <div class="sellerpage-products" style="height:50%;">
-                    <c:forEach items="${recentProducts}" var="product">
-                        <%@include file="productCard.jsp"%>
-                    </c:forEach>
+                    </c:if>
+                    <c:if test="${news.size() == 0}">
+                        <span><spring:message code="sellerpage.nonewsyet"/></span>
+                    </c:if>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <h4><spring:message code="sellerpage.products.title"/></h4>
+            <div class="sellerpage-products">
+                <c:forEach items="${recentProducts}" var="product">
+                    <%@include file="productCard.jsp"%>
+                    <%--%@include file="productCard.jsp"%--%>
+<%--                    <div class="card product-card z-depth-1 product-card-width-30">--%>
+<%--                        <a style="height:50%" href="<c:url value="/product/${product.productId}"/>">--%>
+<%--                            <div class="product-card-image-container">--%>
+<%--                                <c:if test="${product.image.id != 0}">--%>
+<%--                                    <img class="image-restrain" src="<c:url value="/image/${product.image.id}"/>">--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${product.image.id == 0}">--%>
+<%--                                    <img class="image-restrain" src="<c:url value="/resources/images/logo.png"/>">--%>
+<%--                                </c:if>--%>
+<%--                            </div>--%>
+<%--                        </a>--%>
+<%--                        <div class="card-content">--%>
+<%--                            <a href="<c:url value="/product/${product.productId}"/>"--%>
+<%--                               class="card-title product-card-title"><c:out value="${product.name}"/></a>--%>
+<%--                            <div class="card-price">--%>
+<%--                                <spring:message code="explore.products.price"/><c:out value="${product.price}"/>--%>
+<%--                            </div>--%>
+<%--                            <div class="card-category">--%>
+<%--                                <i class="tiny material-icons">category</i>--%>
+<%--                                <c:forEach items="${categories}" var="category">--%>
+<%--                                    <c:if test="${category.id == product.categoryId}">--%>
+<%--                                        <a href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>"><spring:message code="${category.name}"/></a>--%>
+<%--                                    </c:if>--%>
+<%--                                </c:forEach>--%>
+<%--                            </div>--%>
+<%--                            <div class="product-card-tags">--%>
+<%--                                <c:forEach items="${product.tagList}" var="ecotag">--%>
+<%--                                    <a class="${ecotag.color} white-text chip eco_chip" href="<c:url value="/explore?strings=${ecotag.id}&sort=${sort}&direction=${direction}"/>">--%>
+<%--                                        <i class="tiny material-icons">${ecotag.icon}</i>--%>
+<%--                                    </a>--%>
+<%--                                </c:forEach>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+                </c:forEach>
+            </div>
+            <c:if test="${pages.size() > 1}">
+                <div class="pagin">
+                    <c:set var="nextPage" value="${currentPage+1}"/>
+                    <c:set var="previousPage" value="${currentPage-1}"/>
+                    <div>
+                        <ul class="pagination">
+                            <c:if test="${currentPage <= 1}">
+                                <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPage > 1}">
+                                <li><a href="?page=${previousPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                                <li class="waves-effect"><a href="?page=${previousPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${previousPage}</a></li>
+                            </c:if>
+                            <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                            <c:if test="${currentPage < pages.size()}">
+                                <li class="waves-effect"><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${nextPage}</a></li>
+                                <li><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                            <c:if test="${currentPage >= pages.size()}">
+                                <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </div>
 </body>

@@ -15,11 +15,11 @@ public class Image {
     @Column(nullable = false)
     private byte[] source;
 
-    @OneToMany(mappedBy="image")
+    /*@OneToMany(mappedBy="image")
     private Set<Product> products;
 
     @OneToMany(mappedBy="image")
-    private Set<Article> articles;
+    private Set<Article> articles;*/
 
     Image(){}
 

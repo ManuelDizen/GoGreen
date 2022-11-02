@@ -19,6 +19,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -127,6 +128,19 @@ public class EmailServiceImpl implements EmailService {
                 order.getBuyerSurname(), order.getParsedDateTime(), order.getAmount(), buyerLocale);
         notifySellerOrderCancelled(order.getProductName(), order.getSellerEmail(), order.getSellerName(),
                 order.getSellerSurname(), order.getAmount(), sellerLocale);
+    }
+
+    @Async
+    @Override
+    public void newArticleFromSeller(Seller seller, List<User> subscribed, String message) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("sellerName", seller.getUser().getFirstName());
+        data.put("sellerSurname", seller.getUser().getSurname());
+        data.put("articleMessage", message);
+        for(User u : subscribed){
+            sendThymeleafMail(u.getEmail(), "newArticle", data, "subject.newArticle",
+                    u.getLocale());
+        }
     }
 
     @Async
