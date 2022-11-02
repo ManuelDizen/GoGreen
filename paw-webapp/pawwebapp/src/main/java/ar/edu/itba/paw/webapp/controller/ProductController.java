@@ -162,8 +162,7 @@ public class ProductController {
 
         orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
 
-        ModelAndView mav = new ModelAndView("redirect:/userProfile");
-        mav.addObject("fromSale", true);
+        ModelAndView mav = new ModelAndView("redirect:/buyerProfile");
         return mav;
     }
 

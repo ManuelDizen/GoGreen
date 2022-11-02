@@ -76,6 +76,11 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping(value="/buyerProfile")
+    public ModelAndView buyerProfileFromSale() {
+        return buyerProfile(1, true);
+    }
+
     @RequestMapping(value="/sellerProfile")
     public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
                                       @RequestParam(name="pageO", defaultValue="1") final int pageO){
