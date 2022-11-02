@@ -50,11 +50,34 @@
                                     </div>
                                 </c:if>
                             </div>
-                            <div class="row center flex-center" style="margin:auto;">
-                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>" style="text-align: center;">
-                                <spring:message code="productpage.linktoseller"/>
-                            </a>
-                        </div>
+                            <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"
+                                                                                 arguments="${product.stock}"/></div>
+                            <c:if test="${product.stock < 6}">
+                                <div>
+                                    <a class="btn orange accent-4 cursor-default">
+                                        <spring:message code="productpage.orderform.lastunits"/>
+                                    </a>
+                                </div>
+                            </c:if>
+                            <c:if test="${ecotags.size() != 0}">
+                                <div class="productpage-ecotags separating-fields">
+                                    <c:forEach items="${ecotags}" var="ecotag">
+                                        <div class="productpage-ecotag">
+                                            <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
+                                                <i class="tiny material-icons">${ecotag.icon}</i>
+                                                <spring:message code="${ecotag.tag}"/>
+                                            </a>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+                            <div class="productpage-info">
+                                <div class="center-in-div-with-flex">
+                                    <a class="productpage-link" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                        <i class="tiny material-icons separate-icon">person</i><span><c:out value="${seller.user.firstName} ${seller.user.surname}"/></span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </c:if>
                 <c:if test="${product.image.id == 0}">
