@@ -66,7 +66,7 @@
                             <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"
                                                                                  arguments="${product.stock}"/></div>
                             <c:if test="${product.stock < 6}">
-                                <div>
+                                <div style="margin-top: 10px; margin-bottom: 10px">
                                     <a class="btn orange accent-4 cursor-default">
                                         <spring:message code="productpage.orderform.lastunits"/>
                                     </a>
