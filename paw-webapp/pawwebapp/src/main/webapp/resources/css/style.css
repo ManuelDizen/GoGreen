@@ -569,13 +569,13 @@ nav {
 }
 
 .chip {
-    max-height: 5vh;
     overflow: hidden;
     font-size: 10px;
     font-weight: 300;
     line-height: 24px;
     padding: 8px 6px;
     border-radius: 12px;
+    height: fit-content;
 }
 
 .chip_filter {
@@ -957,7 +957,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .explore-products, .productpage-ecotags, .landing-products,
-.landing-categories-container{
+.sellerpage-products,
+.landing-categories-container,
+.sellerprofile-action-buttons{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -1216,8 +1218,50 @@ ALL CREDITS TO @andrewsims
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
-    height:fit-content;
+    height:420px;
     margin:10px auto;
+    border-radius:10px 10px 0 0;
+    overflow:hidden;
+}
+
+.product-card-2{
+    width: 46%;
+    background: var(--palette-color-secondary);
+    box-shadow:none;
+    transition: 0.3s;
+    margin:10px auto;
+    display:flex;
+    text-align:center;
+    height:300px;
+    border-radius:10px;
+    border: 1px solid var(--palette-details-light);
+}
+
+.product-card-2:hover{
+    transform: translate(0, -10px);
+}
+
+.product-card-2-img-container{
+    flex:40%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.product-card-2-img{
+    max-width:100%;
+    max-height:100%;
+    vertical-align: middle;
+    border-radius:10px;
+}
+
+.product-card-2-info-container{
+    flex:60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 20px;
 }
 
 .product-card:hover{
@@ -1274,6 +1318,8 @@ ALL CREDITS TO @andrewsims
 
 .eco_chip {
     width: fit-content;
+    display: flex;
+    justify-content: center;
 }
 
 .eco_chip_small {
@@ -1289,6 +1335,7 @@ ALL CREDITS TO @andrewsims
 
 .product-card-tags {
    margin-top: 10px;
+    display:flex;
 }
 
 .comment-box {
@@ -1379,7 +1426,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .explore-products .product-card .card-content, .landing-products .product-card .card-content{
-    height:28vh;
+    height:40%;
 }
 
 .explore-products .card-image img, .landing-products .card-image img {
@@ -1402,8 +1449,9 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
+    padding: 5px;
     font-size: 13px;
-    height: 48vh;
+    height: 44vh;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
@@ -1421,7 +1469,8 @@ ALL CREDITS TO @andrewsims
 .user-profile-card{
     display:flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    max-height: 38vh;
 }
 
 
@@ -1439,7 +1488,7 @@ ALL CREDITS TO @andrewsims
 
 .purchase {
     margin-top: 40px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .userprofile-info-1 {
@@ -1477,12 +1526,21 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-card-title{
-    font-size:25px;
-    margin-top: 8px;
+    font-size:18px;
+    height: 22%;
     margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 10px 5px 5px 5px;
+
 }
+
+.seller-profile-card-info {
+    max-height: 60%;
+}
+
 
 .buyer-message {
     font-size: 25px;
@@ -1515,7 +1573,9 @@ ALL CREDITS TO @andrewsims
 
 .seller-profile-product-card-info #stockless i,
 .seller-profile-product-card-info #edit i,
-.seller-profile-product-card-info #delete i{
+.seller-profile-product-card-info #delete i,
+.seller-profile-product-card-info #pause i,
+.seller-profile-product-card-info #republish i{
     margin-right:10px;
 }
 
@@ -1526,8 +1586,10 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-product-card-info #edit,
-.seller-profile-product-card-info #delete{
-    margin: auto 1vw auto 1vw;
+.seller-profile-product-card-info #delete,
+.seller-profile-product-card-info #pause,
+.seller-profile-product-card-info #republish{
+    margin: 10px 4px 10px 4px;
     display:inline-flex;
     align-items:center;
 }
@@ -1603,7 +1665,9 @@ ALL CREDITS TO @andrewsims
     margin-bottom:4vh;
 }
 
-.register-form-container div .errors .error{
+.register-form-container div .errors .error,
+.update-form-container div .errors .error,
+.password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
     color: red;
@@ -1810,7 +1874,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     display: none;
 }
 
-.file-path-wrapper {
+.file-path-wrapper-style {
     max-width: 100px;
 }
 
@@ -1977,7 +2041,8 @@ input[type=number] {
     border-top: 1px solid var(--palette-details-light);
 }
 
-.seller-profile-container-2, .seller-profile-container-2-lower,
+
+.user-profile-container-2, .seller-profile-container-2, .seller-profile-container-2-lower,
 .seller-profile-container-2-lower-bis{
     height:fit-content;
     background:var(--palette-color-secondary);
@@ -1991,8 +2056,13 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
+
+}
+
+.user-profile-container-2 {
     border-top: 1px solid var(--palette-details-light);
 }
+
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
     width:80%;
@@ -2013,6 +2083,11 @@ input[type=number] {
 
 .seller-two-margin {
     margin:25px auto 10px auto;
+    align-content: center;
+}
+
+.seller-btn {
+    margin-bottom: 5px;
 }
 
 .message{
@@ -2020,7 +2095,7 @@ input[type=number] {
 }
 
 .seller-inline-flex {
-    display:inline-flex; margin-bottom: 15px; margin-top:20px;
+    display:inline-flex; margin-bottom: 5px; margin-top:10px;
 }
 
 .green-modal {
@@ -2033,6 +2108,10 @@ input[type=number] {
 
 .underline {
     text-decoration: underline;
+}
+
+.margin-btn {
+    margin-top: 3%;
 }
 
 .left-margin {
@@ -2080,7 +2159,7 @@ input[type=number] {
 
 
 .text-center{
-    text-align:center;
+    text-align:center !important;
 }
 
 .seller-profile-products-2, .seller-profile-orders-2{
@@ -2106,10 +2185,11 @@ input[type=number] {
 
 .seller-profile-product-card-info{
     text-align:center;
+    padding-top: 10px;
     background-color:var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
-    height:100%;
+    height:220px;
     width:95%;
 }
 
@@ -2135,7 +2215,15 @@ input[type=number] {
     color:white;
 }
 
+.error-sign {
+    width: fit-content;
+    margin: auto;
+}
+
+
+
 /* UPDATE PRODUCT */
+
 
 .update-margins {
     margin-top: 25px; margin-bottom: 35px;
@@ -2143,6 +2231,11 @@ input[type=number] {
 
 .update-product-body{
     width:50%;
+    margin: 0 auto;
+}
+
+.password-body {
+    width:80%;
     margin: 0 auto;
 }
 
@@ -2155,7 +2248,8 @@ input[type=number] {
     color:white;
 }
 
-.update-product-body label{
+.update-product-body label,
+.password-body label{
     color:white;
 }
 
@@ -2225,6 +2319,7 @@ input[type=number] {
 .order-form-container{
     border-left:1px solid white;
     height: 100%;
+
 }
 
 #orderamount{
@@ -2247,7 +2342,7 @@ input[type=number] {
 }
 
 .seller-info{
-    font-size: 18px;
+    font-size: 17px;
 }
 
 #orderSuccess .custom-modal-footer{
@@ -2381,6 +2476,46 @@ input[type=number] {
     padding-bottom:0;
 }
 
+.vertical-align{
+    display:flex;
+    justify-content: center;
+    margin:0 auto;
+}
+
+.icon-margins{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.product-card-2-info-container a {
+    color: white;
+}
+
+.ecotag-icon{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 4px;
+}
+
+.align-with-icon{
+    line-height: 1;
+}
+
+.ecotag-container{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-column-center-align{
+    display:flex;
+    flex-direction: column;
+}
+
 .ecotag-checkbox{
 
 }
@@ -2436,3 +2571,80 @@ input[type=number] {
     max-width: 100%;
     vertical-align: middle;
 }
+
+
+.file-path-wrapper input,
+#image-label-createarticle{
+    color:white;
+}
+
+#readonly-input{
+    cursor: default;
+}
+
+.product-card-image-container{
+    height: 50%;
+    width: 100%;
+    background: white;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto 0;
+}
+
+.image-restrain{
+    max-height:100%;
+    max-width:100%;
+    vertical-align:middle;
+}
+
+.news-card{
+    background-color: var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    margin: auto 0 20px auto;
+}
+
+.big-news-card{
+    background-color: var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+    margin: 20px auto 20px auto;
+    width: 80%;
+    min-height:300px;
+}
+
+.news-image{
+    max-width:50%;
+    max-height:50%;
+    margin:auto;
+}
+
+.fit-content{
+    height:fit-content;
+}
+
+.sellerpage-heading{
+    text-align: left; width:50%;
+    padding-bottom:0;
+    margin-bottom:0;
+}
+
+.sellerpage-info{
+    margin: 120px 20px 0 0;
+    background-color: var(--palette-color-secondary);
+    border: 1px solid var(--palette-details-light);
+}
+
+.sellerpage-info-row{
+    margin: 10px 0 10px 0 !important ;
+    text-align: center;
+}
+
+.news-col{
+    height:300px;
+}
+
+.sellerpage-title{
+    font-weight:bolder;
+    font-size:30px;
+}
+

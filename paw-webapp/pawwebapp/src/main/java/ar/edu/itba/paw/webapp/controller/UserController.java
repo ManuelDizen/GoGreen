@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
@@ -32,15 +29,18 @@ public class UserController {
 
     private final OrderService orderService;
     private final ProductService productService;
+    private final ArticleService articleService;
 
     @Autowired
     public UserController(final UserService userService, final SellerService sellerService,
-                          final SecurityService securityService, final OrderService orderService, ProductService productService) {
+                          final SecurityService securityService, final OrderService orderService,
+                          final ProductService productService, final ArticleService articleService) {
         this.userService = userService;
         this.sellerService = sellerService;
         this.securityService = securityService;
         this.orderService = orderService;
         this.productService = productService;
+        this.articleService = articleService;
     }
 
     @RequestMapping(value="profile")
@@ -103,6 +103,39 @@ public class UserController {
         mav.addObject("orderPages", orderPages);
         mav.addObject("orders", orderPages.get(pageO-1));
         mav.addObject("products", productPages.get(pageP-1));
+
+        //TODO: See how to optimize this 4 states while keeping it parametrized
+        mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
+        mav.addObject("pausedId", ProductStatus.PAUSED.getId());
+        mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
+        mav.addObject("deletedId", ProductStatus.DELETED.getId());
+        return mav;
+    }
+
+    @RequestMapping(value="/sellerPage/{sellerId:[0-9]+}")
+    public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId){
+
+
+        ModelAndView mav = new ModelAndView("sellerPage");
+        Optional<Seller> seller = sellerService.findById(sellerId);
+        if(!seller.isPresent()) throw new UserNotFoundException();
+        mav.addObject("seller", seller.get());
+        mav.addObject("user", seller.get().getUser());
+        User user = securityService.getLoggedUser();
+        String loggedEmail = user == null? null : user.getEmail();
+        mav.addObject("loggedEmail", loggedEmail);
+        mav.addObject("areas", Area.values());
+        mav.addObject("categories", Category.values());
+
+        List<Product> products = productService.findBySeller(sellerId);
+        mav.addObject("recentProducts", products.size() >= 3? products.subList(0,2):products);
+
+        List<Article> news = articleService.getBySellerId(sellerId);
+        mav.addObject("news", news);
+
+        List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
+        mav.addObject("orders", orders);
+
         return mav;
     }
 

@@ -127,9 +127,11 @@ public class ProductController {
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
-        if(productObj.getStock() == 0){
+        // Change over previous functionality:
+        // Product should now load whether stock is available or not
+        /*if(productObj.getStock() == 0){
             return new ModelAndView("redirect:/404");
-        }
+        }*/
 
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
@@ -139,7 +141,7 @@ public class ProductController {
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        mav.addObject("seller", seller.get().getUser());
+        mav.addObject("user", seller.get().getUser());
         User user = securityService.getLoggedUser();
         String loggedEmail = user == null ? null : user.getEmail();
         mav.addObject("loggedEmail", loggedEmail);
@@ -155,6 +157,14 @@ public class ProductController {
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         mav.addObject("categories", Category.values());
+        mav.addObject("seller", seller.get());
+
+
+        //TODO: See how to optimize this 4 states while keeping it parametrized
+        mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
+        mav.addObject("pausedId", ProductStatus.PAUSED.getId());
+        mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
+        mav.addObject("deletedId", ProductStatus.DELETED.getId());
         return mav;
     }
 
@@ -185,8 +195,6 @@ public class ProductController {
 
         User loggedUser = securityService.getLoggedUser();
 
-        System.out.println("comment!!! " + commentForm.getParentId());
-
         Optional<Product> product = productService.getById(productId);
 
         if(!product.isPresent()) throw new ProductNotFoundException();
@@ -213,7 +221,6 @@ public class ProductController {
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
-        System.out.println("comment... " + commentForm.getParentId());
 
         commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());
 
@@ -226,6 +233,25 @@ public class ProductController {
         mav.addObject("tagList", Arrays.asList(Ecotag.values()));
         mav.addObject("categories", Category.values());
         return mav;
+    }
+
+    @RequestMapping(value="/pauseProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView pauseProduct(@PathVariable("productId") final long productId) {
+        /*
+        como hago
+        1) Chequeo que el usuario loggeado sea dueño del producto
+        2) Si es, chequeo estado de producto.
+        3) Si esta available/out of stock, pauso.
+        4) Si esta paused/deleted, lo dejo como esta.
+         */
+        productService.attemptPause(productId);
+        return new ModelAndView("redirect:/sellerProfile");
+    }
+
+    @RequestMapping(value="/republishProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView republishProduct(@PathVariable("productId") final long productId) {
+        productService.attemptRepublish(productId);
+        return new ModelAndView("redirect:/sellerProfile");
     }
 
     @RequestMapping(value = "/createProduct", method = RequestMethod.POST)

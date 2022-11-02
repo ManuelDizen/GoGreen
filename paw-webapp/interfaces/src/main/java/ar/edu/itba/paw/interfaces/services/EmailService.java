@@ -22,4 +22,6 @@ public interface EmailService {
     void newComment(User user, Product product, String message);
     void replyComment(User user, Product product, String message);
 
+    void updatePassword(User user, String link, Locale userLocale);
+
 }

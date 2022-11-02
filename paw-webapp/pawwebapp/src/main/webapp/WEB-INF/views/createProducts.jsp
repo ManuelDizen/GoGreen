@@ -74,7 +74,7 @@
                         <span><spring:message code="createproduct.form.image"/></span>
                         <form:input path="image" type="file"/>
                     </div>
-                    <div class="file-path-wrapper">
+                    <div class="file-path-wrapper-style">
                         <input class="file-path validate" type="text">
                     </div>
                 </div>
