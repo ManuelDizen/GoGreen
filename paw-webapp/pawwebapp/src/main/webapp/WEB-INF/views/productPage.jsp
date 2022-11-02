@@ -297,7 +297,7 @@
                         <div id="newform${comment.id}" class="comment-reply">
                             <c:url value="/reply/${product.productId}" var="postUrl"/>
                             <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
-                                <div class="" style="">
+                                <div class="" style="display:flex; flex-direction:column;">
                                     <div class="input-field col s12">
                                         <spring:message var="textareaMsg" code="comment.reply.placeholder"/>
                                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
