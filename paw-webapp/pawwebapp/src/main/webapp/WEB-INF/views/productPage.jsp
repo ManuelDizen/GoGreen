@@ -252,7 +252,7 @@
                     <div class="input-field col s12">
                         <spring:message var="textareaMsg" code="comment.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
-                                       data-length="500" style="color:white;"/>
+                                       data-length="300" style="color:white;"/>
                         <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
                         <div class="errors">
                             <form:errors path="message" element="p" cssClass="error"/>
@@ -271,14 +271,19 @@
         </div>
         <c:forEach items="${comments}" var="comment">
             <div class="comment-box">
-                <div class="comment-user">
-                    <i class="tiny comment-icon material-icons">
-                        person
-                    </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
+                <div  style="align-self: start; width:50%; text-align:left; margin: 5px 0 10px 0; color:black; border-radius:10px;
+                    background-color: #ffffff;">
+                    <div class="comment-user">
+                        <i class="tiny comment-icon material-icons">
+                            person
+                        </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
+                    </div>
+                    <div><p class="comment-message">${comment.message}</p></div>
                 </div>
-                <div><p class="comment-message">${comment.message}</p></div>
                 <c:if test="${comment.reply != null}">
-                    <div class="comment-reply">
+                    <div class="comment-reply" style="align-self:end    ; width:50%; text-align:right; margin: 10px 0 5px 0;
+                    color:black; border-radius:10px;
+                    background-color: #aaaaaa;">
                         <div class="comment-user">
                             <i class="tiny comment-icon material-icons">
                                 person
@@ -292,7 +297,7 @@
                         <div id="newform${comment.id}" class="comment-reply">
                             <c:url value="/reply/${product.productId}" var="postUrl"/>
                             <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
-                                <div class="" style="">
+                                <div class="" style="display:flex; flex-direction:column;">
                                     <div class="input-field col s12">
                                         <spring:message var="textareaMsg" code="comment.reply.placeholder"/>
                                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
@@ -305,9 +310,11 @@
                                     <div style="display: none">
                                         <form:input path="parentId" value="${comment.id}" type="number"/>
                                     </div>
-                                    <button type="submit" class="waves-effect waves-light btn">
-                                        <spring:message code="productpage.comment.respond"/>
-                                    </button>
+                                    <div class="flex-right-align">
+                                        <button type="submit" class="waves-effect waves-light btn comment-btn">
+                                            <spring:message code="productpage.comment.respond"/>
+                                        </button>
+                                    </div>
                                 </div>
                             </form:form>
                         </div>

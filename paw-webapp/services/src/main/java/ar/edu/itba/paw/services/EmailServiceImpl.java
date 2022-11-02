@@ -131,6 +131,31 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
+    public void newComment(User user, Product product, String message) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("userName", user.getFirstName());
+        data.put("userSurname", user.getSurname());
+        data.put("message", message);
+        data.put("productName", product.getName());
+        sendThymeleafMail(product.getSeller().getUser().getEmail(),
+                "newComment", data, "subject.newComment", product.getSeller().getUser().getLocale());
+    }
+
+    @Async
+    @Override
+    public void replyComment(User user, Product product, String message){
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", product.getName());
+        data.put("userName", user.getFirstName());
+        data.put("userSurname", user.getSurname());
+        data.put("message", message);
+        sendThymeleafMail(user.getEmail(), "replyComment", data,
+                "subject.replyComment",
+                user.getLocale());
+    }
+
+    @Async
+    @Override
     public void updatePassword(User user, String link, Locale userLocale) {
         Map<String, Object> data = new HashMap<>();
         data.put("username", user.getFirstName());

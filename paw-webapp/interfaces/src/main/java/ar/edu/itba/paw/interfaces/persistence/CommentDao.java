@@ -14,6 +14,6 @@ public interface CommentDao {
 
     Comment getById(long commentId);
 
-    void replyComment(long parentId, String message);
+    Comment replyComment(long parentId, String message);
 
 }

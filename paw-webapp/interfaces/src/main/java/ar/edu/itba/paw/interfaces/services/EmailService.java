@@ -19,6 +19,8 @@ public interface EmailService {
                             String sellerSurname, Locale locale);
 
     void orderCancelled(Order order, Locale buyerLocale, Locale sellerLocale);
+    void newComment(User user, Product product, String message);
+    void replyComment(User user, Product product, String message);
 
     void updatePassword(User user, String link, Locale userLocale);
 

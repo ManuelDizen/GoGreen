@@ -213,6 +213,7 @@ public class ProductController {
         if(errors.hasErrors())
             return productPage(productId, form, commentForm, 1, true);
 
+        //TODO: Estos parametros no se usan. No los saco pero creo que no hacen falta
         User loggedUser = securityService.getLoggedUser();
 
         Optional<Product> product = productService.getById(productId);

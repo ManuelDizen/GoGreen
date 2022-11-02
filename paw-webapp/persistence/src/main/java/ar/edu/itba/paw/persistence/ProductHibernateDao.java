@@ -122,7 +122,7 @@ public class ProductHibernateDao implements ProductDao {
         for(Object o : jpaQuery.getResultList()) {
 //            BigInteger big = BigInteger.valueOf((Integer)o);
 //            products.add(big.longValue());
-            products.add(((BigInteger)o).longValue());
+            products.add(((Integer)o).longValue());
         }
 
 

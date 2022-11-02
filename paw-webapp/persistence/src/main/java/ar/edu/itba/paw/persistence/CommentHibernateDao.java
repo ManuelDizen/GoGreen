@@ -40,10 +40,10 @@ public class CommentHibernateDao implements CommentDao {
     }
 
     @Override
-    public void replyComment(long parentId, String message) {
+    public Comment replyComment(long parentId, String message) {
         Comment comment = em.find(Comment.class, parentId);
         comment.setReply(message);
-        //em.persist(comment);
+        return comment;
 
     }
 
