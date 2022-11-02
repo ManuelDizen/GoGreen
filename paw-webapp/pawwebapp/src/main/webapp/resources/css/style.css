@@ -525,6 +525,18 @@ nav {
     margin-bottom: 10px;
 }
 
+.created-product{
+    padding: 10px;
+    background-color: #34971e;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    width:80%;
+    margin:auto;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 .order-failure{
     background-color: #FC100D;
     border-color: #FFFFFF;
@@ -595,6 +607,34 @@ nav {
 
 .eco_input {
     /*margin-left: 40px;*/
+}
+
+.star {
+    visibility:hidden;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.star:before {
+    color: yellow;
+    content: "\2606";
+    position: absolute;
+    visibility:visible;
+}
+
+.star:checked:before {
+    color: yellow;
+    content: "\2605";
+    position: absolute;
+}
+
+.star-table-cell {
+    display:table-cell; vertical-align:middle; margin-bottom: 40px
+}
+
+
+.fav_input {
+    margin-left: 3px;
 }
 
 .eco_div {
@@ -1480,7 +1520,7 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    max-height: 38vh;
+    max-height: 42vh;
 }
 
 
@@ -1535,16 +1575,22 @@ ALL CREDITS TO @andrewsims
     color: white; font-weight: bold; max-width: 100px;
 }
 
-.seller-profile-card-title{
+.seller-profile-card-title,
+.user-profile-card-title {
     font-size:18px;
     height: 22%;
-    margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 5px 5px 5px;
+}
 
+.user-profile-card-title {
+    margin: 5px 5px 0 5px;
+}
+
+.seller-profile-card-title {
+    margin: 10px 5px 5px 5px;
 }
 
 .seller-profile-card-info {
@@ -1554,6 +1600,10 @@ ALL CREDITS TO @andrewsims
 
 .buyer-message {
     font-size: 25px;
+}
+
+.sellerprofile-modal {
+    overflow-wrap: break-word;
 }
 
 .seller-profile-card-content {
@@ -2462,6 +2512,10 @@ input[type=number] {
     margin: auto;
 }
 
+.margin-top-25 {
+    margin-top: 25px;
+}
+
 .margin-left-20 {
     margin-left: 20px;
 }
@@ -2735,8 +2789,7 @@ input[type=number] {
     display:flex;
     flex-direction:column;
     justify-content: center;
-
-    width:50%;
+    width:90%;
     text-align:left;
 }
 

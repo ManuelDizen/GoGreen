@@ -15,6 +15,19 @@
             <spring:message code="productpage.orderfail"/>
         </div>
     </c:if>
+    <c:if test="${created}">
+        <sec:authorize access="hasRole('SELLER')">
+        <div class="created-product">
+            <spring:message code="productpage.created"/>
+            <div style="text-align: center; margin-top: 20px; margin-bottom: 20px">
+                <a class="waves-effect waves-light btn-small standard-button"
+                   href="<c:url value="/createArticle"/>">
+                    <spring:message code="navbar.createarticle"/>
+                </a>
+            </div>
+        </div>
+        </sec:authorize>
+    </c:if>
     <div class="row">
         <div class="col s8">
             <div class="container productpage-info-container">
@@ -53,7 +66,7 @@
                             <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"
                                                                                  arguments="${product.stock}"/></div>
                             <c:if test="${product.stock < 6}">
-                                <div>
+                                <div style="margin-top: 10px; margin-bottom: 10px">
                                     <a class="btn orange accent-4 cursor-default">
                                         <spring:message code="productpage.orderform.lastunits"/>
                                     </a>
@@ -182,7 +195,7 @@
                                 <div class="input-field">
                                     <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
                                     <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
-                                                   data-length="300" style="color:white;"/>
+                                                   data-length="255" style="color:white;"/>
                                     <form:label for="sellerMsg" cssStyle="margin-left:10px; left:0;" path="message">
                                         <spring:message code="productpage.orderform.msgToSeller"/></form:label>
                                     <div class="errors">

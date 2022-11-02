@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.form.CommentForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.UpdateProdForm;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,7 @@ public class ProductController {
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1") final Integer maxPrice,
             @RequestParam(name="areaId", defaultValue="-1") final long areaId,
+            @RequestParam(name="favorite", defaultValue="false") final boolean favorite,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
@@ -70,6 +72,7 @@ public class ProductController {
         mav.addObject("chosenCategory", category);
         mav.addObject("areas", Area.values());
         mav.addObject("chosenArea", areaId);
+        mav.addObject("favorite", favorite);
         if(maxPrice > -1)
             mav.addObject("maxPrice", maxPrice);
         else
@@ -85,8 +88,17 @@ public class ProductController {
         mav.addObject("ecotagList", Ecotag.values());
         mav.addObject("boolTags", boolTags);
 
+        String favoritePath = "";
         //Product filter
-        List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
+        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
+        if(favorite) {
+            productService.onlyFavorites(filteredProducts, securityService.getLoggedUser().getId());
+            favoritePath = "favorite=on&";
+        }
+
+        mav.addObject("favoritePath", favoritePath);
+
+        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts, 12);
 
         //Sorting
         mav.addObject("sort", sort);
@@ -117,6 +129,7 @@ public class ProductController {
             @Valid @ModelAttribute("orderForm") final OrderForm form,
             @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
             @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="created", defaultValue = "false") final boolean created,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -133,6 +146,7 @@ public class ProductController {
 
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
+        mav.addObject("created", created);
         List<Product> interesting = productService.getInteresting(productObj, 4);
         mav.addObject("interesting", interesting);
 
@@ -166,13 +180,14 @@ public class ProductController {
         return mav;
     }
 
+
     @RequestMapping(value="/process/{productId}", method = {RequestMethod.POST})
     public ModelAndView process(@PathVariable final long productId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors() || form.getAmount() == null){
-            return productPage(productId, form, commentForm,1,true);
+            return productPage(productId, form, commentForm,1,false, true);
         }
 
         orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
@@ -181,13 +196,20 @@ public class ProductController {
         return mav;
     }
 
+    @RequestMapping(value="/createdProduct/{productId}")
+    public ModelAndView createdProduct(@PathVariable final long productId,
+                                       @ModelAttribute("orderForm") final OrderForm form,
+                                       @ModelAttribute("commentForm") final CommentForm commentForm) {
+        return productPage(productId, form, commentForm, 1, true, false);
+    }
+
     @RequestMapping(value = "/newComment/{productId}", method = {RequestMethod.POST})
     public ModelAndView comment(@PathVariable final long productId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())
-            return productPage(productId, form, commentForm, 1, true);
+            return productPage(productId, form, commentForm, 1, false, true);
 
         User loggedUser = securityService.getLoggedUser();
 
@@ -207,7 +229,7 @@ public class ProductController {
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())
-            return productPage(productId, form, commentForm, 1, true);
+            return productPage(productId, form, commentForm, 1, false,true);
 
         //TODO: Estos parametros no se usan. No los saco pero creo que no hacen falta
         User loggedUser = securityService.getLoggedUser();
@@ -265,7 +287,7 @@ public class ProductController {
                 form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
         if(product == null) throw new ProductNotFoundException();
 
-        return new ModelAndView("redirect:/product/" + product.getProductId());
+        return new ModelAndView("redirect:/createdProduct/" + product.getProductId());
     }
 
     @RequestMapping(value="/updateProduct/{productId:[0-9]+}", method=RequestMethod.GET)
