@@ -525,6 +525,18 @@ nav {
     margin-bottom: 10px;
 }
 
+.created-product{
+    padding: 10px;
+    background-color: #34971e;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    width:80%;
+    margin:auto;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 .order-failure{
     background-color: #FC100D;
     border-color: #FFFFFF;

@@ -15,6 +15,19 @@
             <spring:message code="productpage.orderfail"/>
         </div>
     </c:if>
+    <c:if test="${created}">
+        <sec:authorize access="hasRole('SELLER')">
+        <div class="created-product">
+            <spring:message code="productpage.created"/>
+            <div style="text-align: center; margin-top: 20px; margin-bottom: 20px">
+                <a class="waves-effect waves-light btn-small standard-button"
+                   href="<c:url value="/createArticle"/>">
+                    <spring:message code="navbar.createarticle"/>
+                </a>
+            </div>
+        </div>
+        </sec:authorize>
+    </c:if>
     <div class="row">
         <div class="col s8">
             <div class="container productpage-info-container">
