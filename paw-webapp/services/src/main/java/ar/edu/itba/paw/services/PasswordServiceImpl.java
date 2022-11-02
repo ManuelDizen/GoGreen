@@ -51,9 +51,9 @@ public class PasswordServiceImpl implements PasswordService {
 
     private boolean hasToken(User user) {
         Optional<Token> maybeToken =  passwordDao.getByUserId(user);
-        if(!maybeToken.isPresent())
-            throw new UserNotFoundException();
-
+        if(!maybeToken.isPresent()) {
+            return false;
+        }
         Token userToken = maybeToken.get();
         return userToken.expired();
     }
