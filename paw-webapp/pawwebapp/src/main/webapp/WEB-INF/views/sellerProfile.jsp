@@ -216,7 +216,7 @@
                                 </div>
                             </div>
                             <div id="messagemodal${order.id}" class="modal green-modal">
-                                <div class="modal-content">
+                                <div class="modal-content sellerprofile-modal">
                                     <h3 class="underline"><spring:message code="sellerprofile.orders.message"/></h3>
                                     <div>
                                         <h4><c:out value="${order.productName}"/></h4>
