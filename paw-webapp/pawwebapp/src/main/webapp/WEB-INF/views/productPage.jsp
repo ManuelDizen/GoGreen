@@ -249,12 +249,53 @@
                     <h5 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h5>
                     <hr class = "landing-separator">
                 </div>
+            </div>
+            <div class="landing-products">
+                <c:forEach items="${interesting}" var="product">
+                    <%@include file="productCard.jsp"%>
+                </c:forEach>
+            </div>
+        </c:if>
+    </div>
+    <div class="container comments-container">
+        <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
+        <c:if test="${comments.size() == 0}">
+            <span><spring:message code="nocommentsyet"/></span>
+        </c:if>
+        <sec:authorize access="hasRole('USER')">
+            <div class="center">
+                <a id="button" style="margin-bottom: 20px" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger">
+                    <spring:message code="productpage.commentmsg"/></a>
+            </div>
+        </sec:authorize>
+        <div id="newform" class="comment-box comment-write" style="display: none">
+            <c:url value="/newComment/${product.productId}" var="postUrl"/>
+            <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
+                <div class="" style="">
+                    <div class="input-field col s12">
+                        <spring:message var="textareaMsg" code="comment.message.placeholder"/>
+                        <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
+                                       data-length="300" style="color:white;"/>
+                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                        <div class="errors">
+                            <form:errors path="message" element="p" cssClass="error"/>
+                        </div>
+                    </div>
+                    <div style="display: none">
+                        <form:input path="parentId" value="-1" type="number"/>
+                    </div>
+                    <div class="center">
+                        <button type="submit" class="waves-effect waves-light btn">
+                            <spring:message code="productpage.comment.submit"/>
+                        </button>
+                    </div>
+                </div>
             </form:form>
         </div>
         <c:forEach items="${comments}" var="comment">
             <div class="comment-box">
                 <div  style="align-self: start; width:50%; text-align:left; margin: 5px 0 10px 0; color:black; border-radius:10px;
-                    background-color: #ffffff;">
+            background-color: #ffffff;">
                     <div class="comment-user">
                         <i class="tiny comment-icon material-icons">
                             person
@@ -264,8 +305,8 @@
                 </div>
                 <c:if test="${comment.reply != null}">
                     <div class="comment-reply" style="align-self:end    ; width:50%; text-align:right; margin: 10px 0 5px 0;
-                    color:black; border-radius:10px;
-                    background-color: #aaaaaa;">
+            color:black; border-radius:10px;
+            background-color: #aaaaaa;">
                         <div class="comment-user">
                             <i class="tiny comment-icon material-icons">
                                 person

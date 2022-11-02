@@ -2573,6 +2573,8 @@ input[type=number] {
     border:1px solid var(--palette-details-light);
     background-color: var(--palette-color-secondary);
     padding:20px 10px;
+    margin-bottom: 20px;
+    text-align:center;
 }
 
 .productpage-purchase-container{
@@ -2585,10 +2587,6 @@ input[type=number] {
 
 .productpage-info-container {
     height:100%;
-}
-
-.comments-container {
-    margin-bottom: 20px;
 }
 
 .productpage-info-title{
