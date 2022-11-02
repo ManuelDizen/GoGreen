@@ -39,6 +39,11 @@
                             <span><spring:message code="loginpage.registerbutton"/></span>
                         </a>
                     </div>
+                    <div class="col s12 redirect-register">
+                        <a href="<c:url value="/forgotPassword"/>">
+                            <span><spring:message code="password.forgot"/></span>
+                        </a>
+                    </div>
                     <div class="col s12 center login-submit">
                         <button type="submit" class="waves-effect waves-light btn decision-button">
                             <spring:message code="loginpage.submit"/>

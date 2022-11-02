@@ -47,8 +47,8 @@
                                 </div>
                             </c:if>
                         </div>
-                        <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
-                            <c:out value="${' '}${product.stock}"/></div>
+                        <div class="productpage-info-nobold">
+                            <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
                         <c:if test="${product.stock < 6}">
                             <div>
                                 <a class="btn orange accent-4 cursor-default">
@@ -96,8 +96,8 @@
                                 </div>
                             </c:if>
                         </div>
-                        <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"/>
-                            <c:out value="${' '}${product.stock}"/></div>
+                        <div class="productpage-info-nobold">
+                            <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
                         <c:if test="${product.stock < 6}">
                             <div>
                                 <a class="btn orange accent-4 cursor-default">

@@ -18,4 +18,9 @@ public interface UserService {
     Optional<User> findById(long userId);
 
     List<User> getAll();
+
+    void changePassword(long userId, String newPassword);
+
+    boolean isValidPassword(long userId, String oldPassword);
+
 }

@@ -1652,7 +1652,9 @@ ALL CREDITS TO @andrewsims
     margin-bottom:4vh;
 }
 
-.register-form-container div .errors .error{
+.register-form-container div .errors .error,
+.update-form-container div .errors .error,
+.password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
     color: red;
@@ -2095,6 +2097,10 @@ input[type=number] {
     text-decoration: underline;
 }
 
+.margin-btn {
+    margin-top: 3%;
+}
+
 .left-margin {
     margin-left:1vw;
 }
@@ -2196,7 +2202,15 @@ input[type=number] {
     color:white;
 }
 
+.error-sign {
+    width: fit-content;
+    margin: auto;
+}
+
+
+
 /* UPDATE PRODUCT */
+
 
 .update-margins {
     margin-top: 25px; margin-bottom: 35px;
@@ -2204,6 +2218,11 @@ input[type=number] {
 
 .update-product-body{
     width:50%;
+    margin: 0 auto;
+}
+
+.password-body {
+    width:80%;
     margin: 0 auto;
 }
 
@@ -2216,7 +2235,8 @@ input[type=number] {
     color:white;
 }
 
-.update-product-body label{
+.update-product-body label,
+.password-body label{
     color:white;
 }
 

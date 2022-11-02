@@ -3,7 +3,7 @@
 <html>
 <head>
     <%@ include file="header.jsp"%>
-    <title><spring:message code="navbar.companyname"/> - <spring:message code="updateProducts.title"/><c:out value="${' '}${product.name}"/></title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="updateProducts.title" arguments="${product.name}"/></title>
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
