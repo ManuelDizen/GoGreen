@@ -10,7 +10,6 @@ import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +26,18 @@ public class ProductServiceImpl implements ProductService {
     private final UserService userService;
     private final EcotagService ecotagService;
 
+    private final FavoriteService favoriteService;
+
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService, FavoriteService favoriteService){
         this.productDao = productDao;
         this.imageService = imageService;
         this.securityService = securityService;
         this.sellerService = sellerService;
         this.userService = userService;
         this.ecotagService = ecotagService;
+        this.favoriteService = favoriteService;
     }
 
     @Transactional
@@ -83,6 +85,12 @@ public class ProductServiceImpl implements ProductService {
             ecotags.add(tag.getId());
         }
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
+    }
+
+    @Override
+    public void onlyFavorites(List<Product> productList, long userId) {
+        List<Seller> sellers = favoriteService.getFavoriteSellersByUserId(userId);
+        productList.removeIf(product -> !sellers.contains(product.getSeller()));
     }
 
     private int getSales(String productName) {
@@ -140,11 +148,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
+    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
-        return divideIntoPages(productList, 12);
+        return productList;
     }
 
     @Transactional

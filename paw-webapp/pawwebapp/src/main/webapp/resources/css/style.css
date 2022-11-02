@@ -597,6 +597,34 @@ nav {
     /*margin-left: 40px;*/
 }
 
+.star {
+    visibility:hidden;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.star:before {
+    color: yellow;
+    content: "\2606";
+    position: absolute;
+    visibility:visible;
+}
+
+.star:checked:before {
+    color: yellow;
+    content: "\2605";
+    position: absolute;
+}
+
+.star-table-cell {
+    display:table-cell; vertical-align:middle; margin-bottom: 40px
+}
+
+
+.fav_input {
+    margin-left: 3px;
+}
+
 .eco_div {
     margin-top: 15px;
     margin-bottom:15px;
@@ -2460,6 +2488,10 @@ input[type=number] {
 
 .margin-auto {
     margin: auto;
+}
+
+.margin-top-25 {
+    margin-top: 25px;
 }
 
 .margin-left-20 {

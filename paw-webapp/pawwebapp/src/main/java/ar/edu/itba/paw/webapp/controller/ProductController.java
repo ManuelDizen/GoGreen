@@ -55,6 +55,7 @@ public class ProductController {
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1") final Integer maxPrice,
             @RequestParam(name="areaId", defaultValue="-1") final long areaId,
+            @RequestParam(name="favorite", defaultValue="false") final boolean favorite,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
@@ -70,6 +71,7 @@ public class ProductController {
         mav.addObject("chosenCategory", category);
         mav.addObject("areas", Area.values());
         mav.addObject("chosenArea", areaId);
+        mav.addObject("favorite", favorite);
         if(maxPrice > -1)
             mav.addObject("maxPrice", maxPrice);
         else
@@ -85,8 +87,17 @@ public class ProductController {
         mav.addObject("ecotagList", Ecotag.values());
         mav.addObject("boolTags", boolTags);
 
+        String favoritePath = "";
         //Product filter
-        List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
+        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
+        if(favorite) {
+            productService.onlyFavorites(filteredProducts, securityService.getLoggedUser().getId());
+            favoritePath = "favorite=on&";
+        }
+
+        mav.addObject("favoritePath", favoritePath);
+
+        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts, 12);
 
         //Sorting
         mav.addObject("sort", sort);

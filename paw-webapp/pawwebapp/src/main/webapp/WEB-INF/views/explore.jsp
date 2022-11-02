@@ -13,7 +13,7 @@
     <c:if test="${products.size()!=0}">
         <div class="sort">
             <c:if test="${direction == 0}">
-                <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=1"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
+                <a class="custom-chip" href="?${favoritePath}name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=1"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
         width:100%;
         display:flex;
         flex-direction: column;
@@ -21,7 +21,7 @@
         color:white;">north</i></a>
             </c:if>
             <c:if test="${direction == 1}">
-                <a class="custom-chip" href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=0"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
+                <a class="custom-chip" href="?${favoritePath}name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=0"><i class="tiny material-icons sort-arrow" style="font-size:1.3rem;height:100%;
         width:100%;
         display:flex;
         flex-direction: column;
@@ -34,7 +34,7 @@
             <!-- Dropdown Structure -->
             <ul id='dropdown1' class='dropdown-content'>
                 <c:forEach items="${sorting}" var="sortVal">
-                    <li><a href="?name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sortVal.id}&direction=${direction}"><spring:message code="${sortVal.name}"/></a></li>
+                    <li><a href="?${favoritePath}name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sortVal.id}&direction=${direction}"><spring:message code="${sortVal.name}"/></a></li>
                 </c:forEach>
             </ul>
             <span class="sortby">

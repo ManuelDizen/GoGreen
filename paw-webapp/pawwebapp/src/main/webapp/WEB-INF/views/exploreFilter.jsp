@@ -3,7 +3,25 @@
 <body>
 <c:url value="/explore" var="explore"/>
 <form action="${explore}" method="get" id="filter_form" class="filter-form">
-    <div class="row margin-bottom-filterbox">
+    <sec:authorize access="hasRole('USER')">
+        <div class="row" style="margin: 0">
+            <c:if test="${!favorite}">
+                <div class="eco_input fav_input" style="padding:0;">
+                    <input class="star star-table-cell" name="favorite" type="checkbox" id="favorite">
+                    <label style="margin: 0 10px;" for="favorite">
+                        <spring:message code="explore.filterform.favorite"/></label>
+                </div>
+            </c:if>
+            <c:if test="${favorite}">
+                <div class="eco_input fav_input" style="padding:0;">
+                    <input class="star star-table-cell" name="favorite" type="checkbox" checked="checked" id="favorite2">
+                    <label style="margin: 0 10px;" for="favorite2">
+                        <spring:message code="explore.filterform.favorite"/></label>
+                </div>
+            </c:if>
+        </div>
+    </sec:authorize>
+    <div class="row margin-bottom-filterbox" style="margin-top: 0">
         <div class="input-field col s12 filterinputs">
             <input name="name" id="name" type="text" value="${name}">
             <label for="name"><spring:message code="explore.filterform.name"/></label>
@@ -30,7 +48,7 @@
             <label><spring:message code="explore.filterform.category"/></label>
         </div>
     </div>
-    <div class="row">
+    <div class="row margin-top-25">
         <div class="input-field col s12 filterinputs">
             <input id="maxPrice" name="maxPrice" type="number" min="0" value="${maxPrice}">
             <label for="maxPrice"><spring:message code="explore.filterform.maxprice"/></label>
@@ -92,6 +110,18 @@
                 </c:if>
             </c:if>
         </c:forEach>
+    </div>
+    <div class="row" style="display:none;">
+        <div class="input-field col s12">
+            <input style="display: none" id="sort" name="sort" type="text" value="${sort}">
+            <label style="display: none" for="sort"><spring:message code="explore.filterform.maxprice"/></label>
+        </div>
+    </div>
+    <div class="row" style="display:none;">
+        <div class="input-field col s12">
+            <input style="display: none" id="direction" name="direction" type="text" value="${direction}">
+            <label style="display: none" for="direction"><spring:message code="explore.filterform.maxprice"/></label>
+        </div>
     </div>
     <div class="filter-submit">
         <button type="submit" class="decision-button waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
