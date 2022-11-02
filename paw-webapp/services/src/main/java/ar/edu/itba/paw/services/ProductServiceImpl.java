@@ -141,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
-        List<Product> productList = filter(parseString(name), category, tags, maxPrice, areaId);
+        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
         return divideIntoPages(productList, 12);
@@ -212,9 +212,9 @@ public class ProductServiceImpl implements ProductService {
             flag = false;
             for (char s : sqlSpecialChars) {
                 if (c == s) {
-                    //TODO: Escapar el escape lo appendea dos veces, ver como solucionar
-                    out.append('\\').append(c);
+                    out.append("\\").append(c);
                     flag = true;
+                    break;
                 }
             }
             if(!flag) out.append(c);
