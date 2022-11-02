@@ -1520,7 +1520,7 @@ ALL CREDITS TO @andrewsims
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    max-height: 38vh;
+    max-height: 42vh;
 }
 
 
@@ -1575,16 +1575,22 @@ ALL CREDITS TO @andrewsims
     color: white; font-weight: bold; max-width: 100px;
 }
 
-.seller-profile-card-title{
+.seller-profile-card-title,
+.user-profile-card-title {
     font-size:18px;
     height: 22%;
-    margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 5px 5px 5px;
+}
 
+.user-profile-card-title {
+    margin: 5px 5px 0 5px;
+}
+
+.seller-profile-card-title {
+    margin: 10px 5px 5px 5px;
 }
 
 .seller-profile-card-info {

@@ -35,7 +35,7 @@
                                     <div style="text-align: right">
                                         <c:out value="${order.parsedDateTime}"/>
                                     </div>
-                                    <div class="center seller-profile-card-title">
+                                    <div class="center user-profile-card-title">
                                         <c:out value="${order.productName}"/>
                                     </div>
                                     <div class="seller-profile-card-content">
