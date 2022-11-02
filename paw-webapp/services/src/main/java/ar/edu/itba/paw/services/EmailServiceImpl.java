@@ -19,6 +19,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -127,6 +128,54 @@ public class EmailServiceImpl implements EmailService {
                 order.getBuyerSurname(), order.getParsedDateTime(), order.getAmount(), buyerLocale);
         notifySellerOrderCancelled(order.getProductName(), order.getSellerEmail(), order.getSellerName(),
                 order.getSellerSurname(), order.getAmount(), sellerLocale);
+    }
+
+    @Async
+    @Override
+    public void newArticleFromSeller(Seller seller, List<User> subscribed, String message) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("sellerName", seller.getUser().getFirstName());
+        data.put("sellerSurname", seller.getUser().getSurname());
+        data.put("articleMessage", message);
+        for(User u : subscribed){
+            sendThymeleafMail(u.getEmail(), "newArticle", data, "subject.newArticle",
+                    u.getLocale());
+        }
+    }
+
+    @Async
+    @Override
+    public void newComment(User user, Product product, String message) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("userName", user.getFirstName());
+        data.put("userSurname", user.getSurname());
+        data.put("message", message);
+        data.put("productName", product.getName());
+        sendThymeleafMail(product.getSeller().getUser().getEmail(),
+                "newComment", data, "subject.newComment", product.getSeller().getUser().getLocale());
+    }
+
+    @Async
+    @Override
+    public void replyComment(User user, Product product, String message){
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", product.getName());
+        data.put("userName", user.getFirstName());
+        data.put("userSurname", user.getSurname());
+        data.put("message", message);
+        sendThymeleafMail(user.getEmail(), "replyComment", data,
+                "subject.replyComment",
+                user.getLocale());
+    }
+
+    @Async
+    @Override
+    public void updatePassword(User user, String link, Locale userLocale) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", user.getFirstName());
+        data.put("link", link);
+        sendThymeleafMail(user.getEmail(), "updatePassword", data,
+                "subject.resetpassword", userLocale);
     }
 
     void notifyBuyerOrderCancelled(String productName, String buyerEmail, String buyerName, String buyerSurname,

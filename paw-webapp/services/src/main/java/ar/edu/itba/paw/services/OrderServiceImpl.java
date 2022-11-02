@@ -2,14 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.OrderNotFoundException;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,7 +17,7 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    final static int PAGE_SIZE = 3;
+    final static int PAGE_SIZE = 8;
     private final OrderDao orderDao;
     private final ProductService productService;
     private final EmailService emailService;
@@ -67,19 +61,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Boolean createAndNotify(long productId, int amount, String message) {
+    public void createAndNotify(long productId, int amount, String message) {
 
         final Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
 
         Boolean enough = productService.checkForAvailableStock(product, amount);
-        if(!enough){return false;}
+        if(!enough) throw new ProductUpdateException();
 
         User user = securityService.getLoggedUser();
-        if(user == null)return false;
+        if(user == null) throw new UnauthorizedRoleException();
 
-        final Optional<Seller> maybeSeller = sellerService.findById(product.getSellerId());
+        final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
         final Seller seller = maybeSeller.get();
 
@@ -88,53 +82,41 @@ public class OrderServiceImpl implements OrderService {
         // resulta pertinente enviarle el mail en ese idioma. Es por eso que el mail de
         // user sale con el locale del navegador actual, y el del vendedor con el guardado
         // (no lo tenemos guardado)
-        emailService.purchase(user.getEmail(), user.getFirstName(),
-                product, amount,
-                product.getPrice(), sellerService.getName(seller.getUserId()),
-                seller.getPhone(), sellerService.getEmail(seller.getUserId()),
-                user.getLocale());
 
-        emailService.itemsold(sellerService.getEmail(seller.getUserId()),
-                sellerService.getName(seller.getUserId()), product,
+        //Update 28/10/22: Por corrección de cátedra, se remueve el mail enviado a comprador.
+        // El mismo no debe ser notificado de acciones que él realizó dentro de la página
+
+        /*emailService.purchase(user.getEmail(), user.getFirstName(),
+                product, amount,
+                product.getPrice(), sellerService.getName(seller.getUser().getId()),
+                seller.getPhone(), sellerService.getEmail(seller.getUser().getId()),
+                user.getLocale());*/
+
+        emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
+                sellerService.getName(seller.getUser().getId()), product,
                 amount, product.getPrice(), user.getFirstName(), user.getEmail(),
-                message, sellerService.getLocale(seller.getUserId()));
+                message, sellerService.getLocale(seller.getUser().getId()));
 
         LocalDateTime dateTime = LocalDateTime.now();
 
         Order order = orderDao.create(product.getName(), user.getFirstName(),
-                user.getSurname(), user.getEmail(), sellerService.getName(seller.getUserId()),
-                sellerService.getSurname(seller.getUserId()),
-                sellerService.getEmail(seller.getUserId()), amount, product.getPrice(), dateTime,
+                user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
+                sellerService.getSurname(seller.getUser().getId()),
+                sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
                 message);
-        if(order == null) return false;
+        if(order == null) throw new OrderCreationException();
 
-        productService.updateStock(product.getProductId(), amount);
+        productService.decreaseStock(product.getProductId(), amount);
         Optional<Product> modified = productService.getById(product.getProductId());
-        if (!modified.isPresent()) return false;
+        if (!modified.isPresent()) throw new ProductNotFoundException();
         if (modified.get().getStock() == 0) {
-            Optional<User> seller2 = userService.findById(seller.getUserId());
+            Optional<User> seller2 = userService.findById(seller.getUser().getId());
             if (!seller2.isPresent()) throw new UserNotFoundException();
             User u = seller2.get();
             emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
                     u.getSurname(), u.getLocale());
+            modified.get().setStatus(ProductStatus.OUTOFSTOCK);
         }
-        return true;
-    }
-
-    @Override
-    public List<List<Order>> divideIntoPages(List<Order> list) {
-        List<List<Order>> pageList = new ArrayList<>();
-
-        int aux = 1;
-        while(aux <= list.size()/PAGE_SIZE) {
-            pageList.add(list.subList((aux-1)*PAGE_SIZE, aux*PAGE_SIZE));
-            aux++;
-        }
-        if(list.size() % PAGE_SIZE != 0)
-            pageList.add(list.subList((aux-1)*PAGE_SIZE, list.size()));
-        if(list.size() == 0) pageList.add(new ArrayList<>());
-        return pageList;
-
     }
 
     @Override
@@ -151,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Boolean deleteOrder(long orderId) {
+    public void deleteOrder(long orderId) {
         Boolean isOwner = checkForOrderOwnership(orderId);
         if(!isOwner) throw new UnauthorizedRoleException();
 
@@ -159,13 +141,13 @@ public class OrderServiceImpl implements OrderService {
         if(!order.isPresent()) throw new OrderNotFoundException();
 
         Boolean delete = orderDao.deleteOrder(orderId);
-        if(!delete) return false;
+        if(!delete) throw new OrderDeleteException();
 
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
         if(!buyer.isPresent()) throw new UserNotFoundException();
         Optional<User> seller = userService.findByEmail(order.get().getSellerEmail());
         if(!seller.isPresent()) throw new UserNotFoundException();
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
-        return productService.addStock(order.get().getProductName(), order.get().getAmount());
+        productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
 }

@@ -82,24 +82,7 @@ public class SecurityServiceImpl implements SecurityService {
         User user= getLoggedUser();
         if(user == null) return roles;
         long userId = user.getId();
-        for(UserRole ur : userRoleService.getById(userId)){
-            Optional<Role> role = roleService.getById(ur.getRoleId());
-            if(!role.isPresent()) throw new RoleNotFoundException();
-            roles.add(role.get());
-        }
+        roles.addAll(user.getRoles());
         return roles;
-    }
-
-    @Override
-    public Boolean loggedUserIsSeller() {
-        List<Role> roles = getLoggedUserRoles();
-        boolean isSeller = false;
-        for(Role role:roles){
-            if (role.getName().equals("SELLER")) {
-                isSeller = true;
-                break;
-            }
-        }
-        return isSeller;
     }
 }

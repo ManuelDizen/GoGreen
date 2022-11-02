@@ -2,8 +2,10 @@ package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 
+import java.util.List;
 import java.util.Locale;
 
 public interface EmailService {
@@ -19,5 +21,11 @@ public interface EmailService {
                             String sellerSurname, Locale locale);
 
     void orderCancelled(Order order, Locale buyerLocale, Locale sellerLocale);
+    void newComment(User user, Product product, String message);
+    void replyComment(User user, Product product, String message);
+
+    void updatePassword(User user, String link, Locale userLocale);
+
+    void newArticleFromSeller(Seller seller, List<User> subscribed, String message);
 
 }

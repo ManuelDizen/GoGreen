@@ -36,15 +36,12 @@ public class EcotagJdbcDaoTest {
     private static final int IMAGEID = 0;
 
     @Autowired
-    private EcotagJdbcDao dao;
-
-    @Autowired
     private DataSource ds;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert insert;
     private SimpleJdbcInsert insert2;
-
+/*
     @Before
     public void setUp() {
         this.dao = new EcotagJdbcDao(ds);
@@ -96,5 +93,5 @@ public class EcotagJdbcDaoTest {
         assertEquals(1, getTags.get(0).getId());
         assertEquals(3, getTags.get(1).getId());
     }
-
+*/
 }

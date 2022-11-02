@@ -98,4 +98,25 @@ public class AdviceController {
         return new ModelAndView("forward:/error500");
     }
 
+    @ExceptionHandler(ArticleNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Article Not Found")
+    public ModelAndView articleNotFoundError(ArticleNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error404");
+    }
+
+    @ExceptionHandler(ArticleCreationException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Error creating article")
+    public ModelAndView articleNotFoundError(ArticleCreationException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(ForbiddenActionException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason="Unauthorized")
+    public ModelAndView forbiddenActionError(ForbiddenActionException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error401");
+    }
+
 }

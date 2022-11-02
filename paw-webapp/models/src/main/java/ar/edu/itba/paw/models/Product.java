@@ -1,35 +1,75 @@
 package ar.edu.itba.paw.models;
 
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
+@Entity
+@Table(name="products")
 public class Product {
 
-    private long productId;
-    private long sellerId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_id_seq")
+    @SequenceGenerator(name = "products_id_seq", sequenceName = "products_id_seq", allocationSize = 1)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name="sellerid", nullable = false)
+    private Seller seller;
+
+    @Column(nullable = false)
     private long categoryId;
+
+    @Column(unique = true, nullable = false, length=255)
     private String name;
+
+    @Column(length=1023)
     private String description;
+
+    @Column(nullable=false)
     private int stock;
+    @Column(nullable=false)
     private Integer price;
-    private List<Ecotag> tagList;
 
-    private long imageId;
+    //TODO: Estudiar como cambiar el "eager"
+    @ElementCollection(targetClass = Ecotag.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "tags_to_products", joinColumns = @JoinColumn(name = "productid"))
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "tag")
+    private List<Ecotag> tagList = new ArrayList<>();
 
-    public Product(long productId, long sellerId, long categoryId, String name, String description, int stock,
-                   Integer price, long imageId) {
-        this.productId = productId;
-        this.sellerId = sellerId;
+    @ManyToOne
+    @JoinColumn(name="imageid", nullable = false)
+    private Image image;
+
+    @Column(name="productstatus_id")
+    @Enumerated(EnumType.ORDINAL)
+    private ProductStatus status;
+
+    public void addEcotag(Ecotag tag) {
+        tagList.add(tag);
+    }
+    Product(){}
+
+    public Product(Long id, Seller seller, long categoryId, String name, String description, int stock,
+                   Integer price, Image image) {
+        this.id = id;
+        this.seller = seller;
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
-        this.imageId = imageId;
+        this.image = image;
+        this.status = ProductStatus.AVAILABLE;
+    }
+
+    public Product(Seller seller, long categoryId, String name, String description, int stock,
+                   Integer price, Image image) {
+        this(null, seller, categoryId, name, description, stock, price, image);
     }
 
     public long getProductId() {
-        return productId;
+        return id;
     }
 
     public String getName() {
@@ -64,16 +104,16 @@ public class Product {
         this.price = price;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setProductId(long id) {
+        this.id = id;
     }
 
-    public long getSellerId() {
-        return sellerId;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setSellerId(long sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public long getCategoryId() {
@@ -84,11 +124,11 @@ public class Product {
         this.categoryId = categoryId;
     }
 
-    public long getImageId() {
-        return imageId;
+    public Image getImage() {
+        return image;
     }
-    public void setImageId(long imageId) {
-        this.imageId = imageId;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public List<Ecotag> getTagList() {
@@ -104,11 +144,19 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return productId == product.productId;
+        return Objects.equals(id, product.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId);
+        return Objects.hash(id);
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 }

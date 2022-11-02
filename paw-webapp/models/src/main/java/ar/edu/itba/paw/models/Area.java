@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.models;
 
+import java.util.Objects;
+
 public enum Area {
 
-    AGRONOMIA(70, "Agronomía"),
+    AGRONOMIA(0, "Agronomía"),
     ALMAGRO(1, "Almagro"),
     ALMIRANTE_BROWN(2, "Almirante Brown"),
     AVELLANEDA(3, "Avellaneda"),
@@ -73,7 +75,7 @@ public enum Area {
     VILLA_DEL_PARQUE(68, "Villa del Parque"),
     VELEZ_SARSFIELD(69, "Vélez Sársfield");
 
-    private final long id;
+    private final Long id;
 
     private final String name;
 
@@ -82,7 +84,7 @@ public enum Area {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -90,9 +92,9 @@ public enum Area {
         return name;
     }
 
-    public static Area getById(long id) {
+    public static Area getById(Long id) {
         for(Area area : Area.values()) {
-            if(area.getId() == id)
+            if(Objects.equals(area.getId(), id))
                 return area;
         }
         return null;

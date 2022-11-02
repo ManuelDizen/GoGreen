@@ -6,7 +6,9 @@ import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,10 @@ public class SellerServiceImpl implements SellerService {
     @Transactional
     @Override
     public Seller create(long userid, String phone, String address, long areaId) {
-        return sellerDao.create(userid, phone, address, areaId);
+        Optional<User> maybeUser = userService.findById(userid);
+        if(!maybeUser.isPresent()) throw new UserNotFoundException();
+        User user = maybeUser.get();
+        return sellerDao.create(user, phone, address, areaId);
     }
 
     @Override
@@ -90,18 +95,18 @@ public class SellerServiceImpl implements SellerService {
         return user.getLocale();
     }
 
+    @Transactional
     @Override
-    public Boolean registerSeller(String firstName, String surname,
+    public void registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
                         String address, long areaId){
         User user = userService.register(firstName, surname, email, password, locale);
-        if(user == null) return false;
+        if(user == null) throw new UserRegisterException();
         Seller seller = create(user.getId(), phone, address, areaId);
-        if(seller == null) return false;
+        if(seller == null) throw new SellerRegisterException();
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();
-        userRoleService.create(user.getId(), role.get().getId());
+        user.addRole(role.get());
         emailService.registration(user, user.getLocale());
-        return true;
     }
 }

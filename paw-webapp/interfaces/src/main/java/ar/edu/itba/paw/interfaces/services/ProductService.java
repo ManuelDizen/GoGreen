@@ -1,14 +1,14 @@
 package ar.edu.itba.paw.interfaces.services;
 
-import ar.edu.itba.paw.models.Ecotag;
-import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ProductService {
 
-    Product create(long sellerId, long categoryId, String name, String description, int stock,
+    Product create(Seller seller, long categoryId, String name, String description, int stock,
                    Integer price, byte[] image);
 
     List<Product> findBySeller(long sellerId);
@@ -16,26 +16,28 @@ public interface ProductService {
     Optional<Product> getByName(String name);
     //List<Product> getAll();
     List<Product> getAvailable();
-    List<Product> getRecent(int amount);
+    List<Product> getPopular(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
 
     void sortProducts(List<Product> productList, int sort, int direction);
 
-    List<List<Product>> divideIntoPages(List<Product> list);
+    <T> List<List<T>> divideIntoPages(List<T> list, int pageSize);
+
     List<List<Product>> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction);
 
     void deleteProduct(long productId);
-    Boolean attemptDelete(long productId);
-    Boolean attemptUpdate(long productId, int amount);
+    void attemptDelete(long productId);
+    void attemptPause(long productId);
+    void attemptRepublish(long productId);
 
     Boolean checkForAvailableStock(Product p, int amount);
     Boolean checkForOwnership(long prodId);
-    void updateStock(long prodId, int amount);
+    void decreaseStock(long prodId, int amount);
 
-    Boolean updateProduct(long prodId, int amount, int price);
+    void updateProduct(long prodId, int amount, int price);
 
-    Boolean addStock(String prodName, int amount);
-    Boolean addStock(long prodId, int amount);
+    void addStock(String prodName, int amount);
+    void addStock(long prodId, int amount);
 
     String buildPath(String[] strings);
 
@@ -46,5 +48,11 @@ public interface ProductService {
 
     List<Product> getProductPage(int page, List<List<Product>> productPages);
 
-    List<Product> getInteresting(Product product);
+    List<Product> getInteresting(Product product, int amount);
+
+    List<Product> getInterestingForUser(List<Order> orders, int amount);
+
+    List<List<Product>> productsPerCategory();
+    List<Product> getByCategory(Category c);
+
 }

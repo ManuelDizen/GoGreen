@@ -6,6 +6,7 @@ import ar.edu.itba.paw.webapp.validations.FileSize;
 import ar.edu.itba.paw.webapp.validations.FileType;
 
 import ar.edu.itba.paw.webapp.validations.UniqueProductName;
+import ar.edu.itba.paw.webapp.validations.ValidImage;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ProductForm {
 
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 35)
     @NotNull
     @UniqueProductName
     private String name;
@@ -33,6 +34,7 @@ public class ProductForm {
 
     @FileType(types = {"image/png", "image/jpeg"})
     @FileSize(bytes = (10*1024*1024))
+    @ValidImage
     private MultipartFile image;
 
 

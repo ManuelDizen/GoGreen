@@ -15,7 +15,7 @@
         <c:url value="/createProduct" var="postUrl"/>
         <form:form modelAttribute="productForm" method="post" action="${postUrl}" id="product_form" enctype="multipart/form-data">
             <div class="center create-center">
-                <h5><spring:message code="createproduct.title"/></h5>
+                <h4><spring:message code="createproduct.title"/></h4>
             </div>
             <div class="createbody">
                 <div class="row">
@@ -32,7 +32,8 @@
                                 <form:option value="${category.id}"><spring:message code="${category.name}"/></form:option>
                             </c:forEach>
                         </form:select>
-                        <form:label for="category" path="category"><spring:message code="createproduct.form.category"/></form:label>
+                        <form:label for="category" path="category"><spring:message code="createproduct.form.category"/>
+                        <spring:message code="forms.obligatorysign"/></form:label>
                         <form:errors path="category" element="p" cssClass="error"/>
                     </div>
                     <div class="col s4 input-field">
@@ -58,7 +59,9 @@
                         <spring:message code="createproduct.form.taglist" var="placeholder"/>
                         <form:select path="ecotag" multiple="true" data-placeholder="${placeholder}">
                             <c:forEach items="${tagList}" var="ecotag">
-                                <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
+                                <c:if test="${ecotag.id != 0}">
+                                    <form:option value="${ecotag.id}"><spring:message code="${ecotag.tag}"/></form:option>
+                                </c:if>
                             </c:forEach>
                         </form:select>
                         <form:label for="ecotag" path="ecotag"><spring:message code="createproduct.form.taglist"/></form:label>
@@ -66,14 +69,14 @@
                     </div>
                 </div>
             </div>
-            <div class="createproduct_row create-button">
-                <div class="file-field input-field">
-                    <div class="decision-button waves-effect waves-light btn image_button">
+            <div class="createproduct_row create-button col s6">
+                <div class="file-field input-field img-div-createproduct">
+                    <div class="decision-button waves-effect waves-light btn image_button" style="margin: auto 10px;">
                         <span><spring:message code="createproduct.form.image"/></span>
                         <form:input path="image" type="file"/>
                     </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text">
+                    <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                        <input class="file-path validate" type="text" readonly id="readonly-input">
                     </div>
                 </div>
                 <form:errors path="image" element="p" cssClass="error"/>
