@@ -19,4 +19,9 @@ public interface UserService {
 
     List<User> getAll();
     void toggleNotifications(long userId);
+
+    void changePassword(long userId, String newPassword);
+
+    boolean isValidPassword(long userId, String oldPassword);
+
 }

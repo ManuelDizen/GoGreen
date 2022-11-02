@@ -3,18 +3,22 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Role;
+import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,6 +34,7 @@ public class UserServiceImpl implements UserService {
         this.encoder = encoder;
         this.roleService = roleService;
         this.emailService = emailService;
+
     }
 
     @Transactional
@@ -67,6 +72,31 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         return userDao.getAll();
     }
+
+    @Transactional
+    @Override
+    public void changePassword(long userId, String newPassword) {
+        Optional<User> maybeUser = userDao.findById(userId);
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+
+        User user = maybeUser.get();
+        user.setPassword(encoder.encode(newPassword));
+    }
+
+    @Override
+    public boolean isValidPassword(long userId, String oldPassword) {
+        Optional<User> maybeUser = findById(userId);
+
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+
+        User user = maybeUser.get();
+
+        return encoder.encode(oldPassword).equals(user.getPassword());
+    }
+
+
 
     @Transactional
     @Override

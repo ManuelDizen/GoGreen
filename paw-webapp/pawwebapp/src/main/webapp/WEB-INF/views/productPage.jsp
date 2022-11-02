@@ -249,15 +249,89 @@
                     <h5 class="landing-page-title"><spring:message code="productpage.otherinteresting"/></h5>
                     <hr class = "landing-separator">
                 </div>
-            </div>
-            <div class="landing-products">
-                <c:forEach items="${interesting}" var="product">
-                    <%@include file="productCard.jsp"%>
-                </c:forEach>
-            </div>
-        </c:if>
-    </div>
+            </form:form>
+        </div>
+        <c:forEach items="${comments}" var="comment">
+            <div class="comment-box">
+                <div  style="align-self: start; width:50%; text-align:left; margin: 5px 0 10px 0; color:black; border-radius:10px;
+                    background-color: #ffffff;">
+                    <div class="comment-user">
+                        <i class="tiny comment-icon material-icons">
+                            person
+                        </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
+                    </div>
+                    <div><p class="comment-message">${comment.message}</p></div>
+                </div>
+                <c:if test="${comment.reply != null}">
+                    <div class="comment-reply" style="align-self:end    ; width:50%; text-align:right; margin: 10px 0 5px 0;
+                    color:black; border-radius:10px;
+                    background-color: #aaaaaa;">
+                        <div class="comment-user">
+                            <i class="tiny comment-icon material-icons">
+                                person
+                            </i><p class="comment-username">${user.firstName}</p><p class="comment-username">${user.surname}</p>
+                        </div>
+                        <div><p class="comment-message">${comment.reply}</p></div>
+                    </div>
+                </c:if>
+                <c:if test="${user.email == loggedEmail}">
+                    <c:if test="${comment.reply == null}">
+                        <div id="newform${comment.id}" class="comment-reply">
+                            <c:url value="/reply/${product.productId}" var="postUrl"/>
+                            <form:form modelAttribute="commentForm" action="${postUrl}" method="post">
+                                <div class="" style="display:flex; flex-direction:column;">
+                                    <div class="input-field col s12">
+                                        <spring:message var="textareaMsg" code="comment.reply.placeholder"/>
+                                        <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
+                                                       data-length="300" style="color:white;"/>
+                                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                                        <div class="errors">
+                                            <form:errors path="message" element="p" cssClass="error"/>
+                                        </div>
+                                    </div>
+                                    <div style="display: none">
+                                        <form:input path="parentId" value="${comment.id}" type="number"/>
+                                    </div>
+                                    <div class="flex-right-align">
+                                        <button type="submit" class="waves-effect waves-light btn comment-btn">
+                                            <spring:message code="productpage.comment.respond"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form:form>
+                        </div>
 
+                    </c:if>
+                </c:if>
+            </div>
+        </c:forEach>
+
+    </div>
+    <c:if test="${commentPages.size() > 1}">
+        <div class="pagin">
+            <c:set var="nextPage" value="${currentPage+1}"/>
+            <c:set var="previousPage" value="${currentPage-1}"/>
+            <div>
+                <ul class="pagination">
+                    <c:if test="${currentPage <= 1}">
+                        <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                    </c:if>
+                    <c:if test="${currentPage > 1}">
+                        <li><a href="?page=${previousPage}"><i class="material-icons pagination-arrow">navigate_before</i></a></li>
+                        <li class="waves-effect"><a href="?page=${previousPage}" style="color: #EDFA8B">${previousPage}</a></li>
+                    </c:if>
+                    <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
+                    <c:if test="${currentPage < commentPages.size()}">
+                        <li class="waves-effect"><a href="?page=${nextPage}" style="color: #EDFA8B">${nextPage}</a></li>
+                        <li><a href="?page=${nextPage}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                    </c:if>
+                    <c:if test="${currentPage >= commentPages.size()}">
+                        <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
+                    </c:if>
+                </ul>
+            </div>
+        </div>
+    </c:if>
 </body>
 <script>
 
@@ -268,6 +342,23 @@
         var elems = document.querySelectorAll('.materialboxed');
         var instances = M.Materialbox.init(elems, options);
     });
+
+    var button = document.getElementById('button');
+
+    button.onclick = function() {
+        var div = document.getElementById('newform');
+        if (div.style.display !== 'none') {
+            div.style.display = 'none';
+        }
+        else {
+            div.style.display = 'block';
+        }
+        if (button.style.display !== 'none') {
+            button.style.display = 'none';
+        }
+    };
+
+
 
 </script>
 </html>

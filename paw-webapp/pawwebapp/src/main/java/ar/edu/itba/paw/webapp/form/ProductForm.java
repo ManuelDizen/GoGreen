@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProductForm {
 
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 35)
     @NotNull
     @UniqueProductName
     private String name;

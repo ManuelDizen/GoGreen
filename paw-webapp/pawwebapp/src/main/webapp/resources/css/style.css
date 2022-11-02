@@ -19,6 +19,7 @@
 
     --palette-details-light: #EDFA8B;
     --palette-edit-button: #30695C;
+    --comment-box-primary: #2d503d;
 }
 
 body{
@@ -1341,6 +1342,83 @@ ALL CREDITS TO @andrewsims
     display:flex;
 }
 
+.comment-box {
+    font-size: 13px;
+    min-height: 75px;
+    width: 96%;
+    /*height: fit-content;*/
+    background-color: var(--comment-box-primary);
+    color: var(--text-color-light);
+    border: 1px solid white;
+    margin: 2vh auto;
+    margin-bottom: 30px;
+    display:flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.comments {
+    margin-bottom: 50px;
+}
+
+.comment-write {
+    margin-left: 2%;
+}
+
+.comment-icon {
+    margin-top: 3px;
+}
+
+.comment-user {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 0 10px;
+}
+
+.comment-username {
+    margin-left: 5px;
+    margin-top: 0;
+}
+
+.comment-reply {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    min-height: 75px;
+    width: 95%;
+    /*height: fit-content;*/
+    background-color: var(--comment-box-primary);
+    color: var(--text-color-light);
+    border: 1px solid white;
+    display:flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.comment-btn{
+    border-radius:10px;
+    background-color:white;
+    color:black;
+}
+
+.flex-right-align{
+    display:flex;
+    justify-content:end;
+}
+
+.comment-message {
+    margin-left: 30px;
+    font-size: 17px;
+    margin-top: 0;
+    margin-right: 35px;
+    overflow-wrap: break-word;
+}
+
+.comment-button {
+    width: fit-content;
+}
+
 /*.product-card .card-content > div {*/
 /*    margin-bottom: 2px;*/
 /*    margin-top: 2px;*/
@@ -1381,8 +1459,9 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
+    padding: 5px;
     font-size: 13px;
-    height: 48vh;
+    height: 44vh;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
@@ -1400,7 +1479,8 @@ ALL CREDITS TO @andrewsims
 .user-profile-card{
     display:flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    max-height: 38vh;
 }
 
 
@@ -1418,7 +1498,7 @@ ALL CREDITS TO @andrewsims
 
 .purchase {
     margin-top: 40px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .userprofile-info-1 {
@@ -1456,8 +1536,8 @@ ALL CREDITS TO @andrewsims
 }
 
 .seller-profile-card-title{
-    font-size:25px;
-    margin-top: 8px;
+    font-size:18px;
+    height: 22%;
     margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
@@ -1466,6 +1546,11 @@ ALL CREDITS TO @andrewsims
     margin: 10px 5px 5px 5px;
 
 }
+
+.seller-profile-card-info {
+    max-height: 60%;
+}
+
 
 .buyer-message {
     font-size: 25px;
@@ -1590,7 +1675,9 @@ ALL CREDITS TO @andrewsims
     margin-bottom:4vh;
 }
 
-.register-form-container div .errors .error{
+.register-form-container div .errors .error,
+.update-form-container div .errors .error,
+.password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
     color: red;
@@ -1973,7 +2060,8 @@ input[type=number] {
     border-top: 1px solid var(--palette-details-light);
 }
 
-.seller-profile-container-2, .seller-profile-container-2-lower,
+
+.user-profile-container-2, .seller-profile-container-2, .seller-profile-container-2-lower,
 .seller-profile-container-2-lower-bis{
     height:fit-content;
     background:var(--palette-color-secondary);
@@ -1987,8 +2075,13 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
+
+}
+
+.user-profile-container-2 {
     border-top: 1px solid var(--palette-details-light);
 }
+
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
     width:80%;
@@ -2009,6 +2102,11 @@ input[type=number] {
 
 .seller-two-margin {
     margin:25px auto 10px auto;
+    align-content: center;
+}
+
+.seller-btn {
+    margin-bottom: 5px;
 }
 
 .message{
@@ -2029,6 +2127,10 @@ input[type=number] {
 
 .underline {
     text-decoration: underline;
+}
+
+.margin-btn {
+    margin-top: 3%;
 }
 
 .left-margin {
@@ -2102,10 +2204,11 @@ input[type=number] {
 
 .seller-profile-product-card-info{
     text-align:center;
+    padding-top: 10px;
     background-color:var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
     border-radius: 10px;
-    height:200px;
+    height:220px;
     width:95%;
 }
 
@@ -2131,7 +2234,15 @@ input[type=number] {
     color:white;
 }
 
+.error-sign {
+    width: fit-content;
+    margin: auto;
+}
+
+
+
 /* UPDATE PRODUCT */
+
 
 .update-margins {
     margin-top: 25px; margin-bottom: 35px;
@@ -2139,6 +2250,11 @@ input[type=number] {
 
 .update-product-body{
     width:50%;
+    margin: 0 auto;
+}
+
+.password-body {
+    width:80%;
     margin: 0 auto;
 }
 
@@ -2151,7 +2267,8 @@ input[type=number] {
     color:white;
 }
 
-.update-product-body label{
+.update-product-body label,
+.password-body label{
     color:white;
 }
 
@@ -2245,7 +2362,7 @@ input[type=number] {
 }
 
 .seller-info{
-    font-size: 18px;
+    font-size: 17px;
 }
 
 #orderSuccess .custom-modal-footer{
@@ -2451,12 +2568,27 @@ input[type=number] {
     padding:10px 10px;
 }
 
+.comments-container{
+    width:70%;
+    border:1px solid var(--palette-details-light);
+    background-color: var(--palette-color-secondary);
+    padding:20px 10px;
+}
+
 .productpage-purchase-container{
     min-height: 45%;
     width:90%;
     border:1px solid var(--palette-details-light);
     background-color: var(--palette-color-secondary);
     padding:25px 10px;
+}
+
+.productpage-info-container {
+    height:100%;
+}
+
+.comments-container {
+    margin-bottom: 20px;
 }
 
 .productpage-info-title{
@@ -2484,6 +2616,7 @@ input[type=number] {
     max-width: 100%;
     vertical-align: middle;
 }
+
 
 .file-path-wrapper input,
 #image-label-createarticle{
