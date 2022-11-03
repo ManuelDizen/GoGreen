@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -55,15 +56,25 @@ public class ProductHibernateDao implements ProductDao {
         return query.getResultList().stream().findFirst();
     }
 
-    @Override
-    public List<Product> getAvailable() {
+    private TypedQuery<Product> buildAvailableQuery(){
         ProductStatus available = ProductStatus.AVAILABLE;
-
         final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 " +
                         "AND p.status = :available " +
                         "ORDER BY id DESC",
                 Product.class);
         query.setParameter("available", available);
+        return query;
+    }
+    @Override
+    public List<Product> getAvailable() {
+        final TypedQuery<Product> query = buildAvailableQuery();
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Product> getAvailable(int limit) {
+        final TypedQuery<Product> query = buildAvailableQuery();
+        query.setMaxResults(limit);
         return query.getResultList();
     }
 

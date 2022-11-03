@@ -16,6 +16,7 @@ public interface ProductService {
     Optional<Product> getByName(String name);
     //List<Product> getAll();
     List<Product> getAvailable();
+    List<Product> getAvailable(int limit);
     List<Product> getPopular(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
 

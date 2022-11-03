@@ -17,6 +17,7 @@ public interface ProductDao {
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
     List<Product> getAvailable();
+    List<Product> getAvailable(int limit);
 
     List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId);
 

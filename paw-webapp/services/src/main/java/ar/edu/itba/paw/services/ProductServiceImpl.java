@@ -18,7 +18,6 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SecurityService securityService;
@@ -79,6 +78,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAvailable(){return productDao.getAvailable();}
 
     @Override
+    public List<Product> getAvailable(int limit){return productDao.getAvailable(limit);}
+
+    @Override
     public List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
@@ -98,37 +100,34 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
-        productList.sort(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                if (sort == 3) {
-                    if (direction == 0) {
-                        return (getSales(o1.getName())- getSales(o2.getName()));
-                    } else {
-                        return (getSales(o2.getName()) - getSales(o1.getName()));
-                    }
-
-                } else if (sort == 2) {
-                    if (direction == 0) {
-                        return (o1.getPrice() - o2.getPrice());
-                    } else {
-                        return (o2.getPrice() - o1.getPrice());
-                    }
-                } else if (sort == 1) {
-                    if (direction == 0) {
-                        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-                    } else {
-                        return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
-                    }
-                } else if (sort == 0) {
-                    if (direction == 0)
-                        return (int) (o1.getProductId() - o2.getProductId());
-                    else {
-                        return (int) (o2.getProductId() - o1.getProductId());
-                    }
+        productList.sort((o1, o2) -> {
+            if (sort == 3) {
+                if (direction == 0) {
+                    return (getSales(o1.getName())- getSales(o2.getName()));
+                } else {
+                    return (getSales(o2.getName()) - getSales(o1.getName()));
                 }
-                return 0;
+
+            } else if (sort == 2) {
+                if (direction == 0) {
+                    return (o1.getPrice() - o2.getPrice());
+                } else {
+                    return (o2.getPrice() - o1.getPrice());
+                }
+            } else if (sort == 1) {
+                if (direction == 0) {
+                    return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+                } else {
+                    return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
+                }
+            } else if (sort == 0) {
+                if (direction == 0)
+                    return (int) (o1.getProductId() - o2.getProductId());
+                else {
+                    return (int) (o2.getProductId() - o1.getProductId());
+                }
             }
+            return 0;
         });
     }
 
@@ -300,7 +299,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String buildPath(String[] strings) {
-        StringBuilder str = new StringBuilder("");
+        StringBuilder str = new StringBuilder();
         for(String s : strings) {
             str.append("&strings=").append(s);
         }
@@ -399,21 +398,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getPopular(int amount) {
 
-        List<Product> products = getAvailable();
+        List<Product> products = getAvailable(4);
 
-        products.sort(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                return getSales(o2.getName()) - getSales(o1.getName());
-            }
-        });
+        products.sort((o1, o2) -> getSales(o2.getName()) - getSales(o1.getName()));
 
-        List<Product> popular = products.size() < amount? products:products.subList(0, amount);
+        //List<Product> popular = products.size() < amount? products:products.subList(0, amount);
 
-        for(Product product : popular) {
+        /*for(Product product : popular) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
-        }
-        return popular;
+        }*/
+        return products;
     }
 
     @Transactional

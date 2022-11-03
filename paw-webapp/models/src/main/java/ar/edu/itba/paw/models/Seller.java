@@ -23,9 +23,6 @@ public class Seller {
     private String address;
 
     @Column(name = "areaid", nullable = true)
-    //@Enumerated(EnumType.ORDINAL)
-    //TODO: This should work except for AGRONOMÍA, check for solutions
-    //  Update: Changed default value of areaid to -1, and changed agronomia ID to 0 (now matches ordinal)
     private Long areaId;
 
 
