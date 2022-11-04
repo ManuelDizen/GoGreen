@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,26 +36,18 @@ public class BasicController {
     public ModelAndView landingPage() {
         //TODO: Pass all this logic onto a service
         User loggedUser = securityService.getLoggedUser();
-        List<Product> products;
-        boolean popular = false;
-        if(loggedUser == null) {
-            products = productService.getPopular(4);
-            popular = true;
-        }
-        else {
-            List<Order> ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
-            if(ordersForUser.isEmpty()){
-                popular = true;
-                products = productService.getPopular(4);
-            } else {
-                products = productService.getInterestingForUser(ordersForUser, 4);
-            }
-        }
+        List<Order> ordersForUser = new ArrayList<>();
+        if(loggedUser!=null) ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
+        List<Product> products = productService.getLandingProducts(loggedUser, ordersForUser);
+        boolean popular = loggedUser != null &&
+                (orderService.getByBuyerEmail(loggedUser.getEmail()).size() != 0);
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("products", products);
         mav.addObject("popular", popular);
+        //mav.addObject("products", new ArrayList<>());
+        //mav.addObject("popular", true);
         mav.addObject("categories", Category.values());
-        mav.addObject("productsPerCategory", productService.productsPerCategory());
+        //mav.addObject("productsPerCategory", productService.productsPerCategory());
         return mav;
     }
 

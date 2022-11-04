@@ -7,8 +7,6 @@ import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +22,14 @@ public class ProductServiceImpl implements ProductService {
     private final SellerService sellerService;
     private final UserService userService;
     private final EcotagService ecotagService;
-
     private final FavoriteService favoriteService;
 
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService, FavoriteService favoriteService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService,
+                              SecurityService securityService, SellerService sellerService,
+                              UserService userService, EcotagService ecotagService,
+                              FavoriteService favoriteService){
         this.productDao = productDao;
         this.imageService = imageService;
         this.securityService = securityService;
@@ -380,6 +380,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getByCategory(Category c){
         return productDao.getByCategory(c.getId());
+    }
+
+    @Override
+    public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser) {
+        List<Product> products;
+        if(loggedUser == null) {
+            products = getPopular(4);
+        }
+        else {
+            if(ordersForUser.isEmpty()){
+                products = getPopular(4);
+            } else {
+                //products = getInterestingForUser(ordersForUser, 4);
+                products = getPopular(4);
+            }
+        }
+        return products;
     }
 
     public void setTagList(List<Product> productList) {

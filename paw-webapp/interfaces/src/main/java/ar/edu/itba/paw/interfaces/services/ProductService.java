@@ -57,4 +57,5 @@ public interface ProductService {
     List<List<Product>> productsPerCategory();
     List<Product> getByCategory(Category c);
 
+    List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser);
 }
