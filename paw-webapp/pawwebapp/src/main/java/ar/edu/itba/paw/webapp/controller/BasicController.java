@@ -34,9 +34,10 @@ public class BasicController {
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
-        //TODO: Pass all this logic onto a service
         User loggedUser = securityService.getLoggedUser();
         List<Order> ordersForUser = new ArrayList<>();
+        //The orders are called from the controller as creating a method on either the productService
+        //  or the orderService would produce a circular dependency
         if(loggedUser!=null) ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
         List<Product> products = productService.getLandingProducts(loggedUser, ordersForUser);
         boolean popular = loggedUser != null &&
@@ -44,10 +45,7 @@ public class BasicController {
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("products", products);
         mav.addObject("popular", popular);
-        //mav.addObject("products", new ArrayList<>());
-        //mav.addObject("popular", true);
         mav.addObject("categories", Category.values());
-        //mav.addObject("productsPerCategory", productService.productsPerCategory());
         return mav;
     }
 

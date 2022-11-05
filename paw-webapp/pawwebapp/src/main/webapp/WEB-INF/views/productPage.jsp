@@ -35,7 +35,7 @@
                     <c:out value="${product.name}"/>
                 </div>
                 <div class="row productpage-info-content">
-                    <c:if test="${product.image.id != 0}">
+                <c:if test="${product.image.id != 0}">
                         <div class="col s7">
                             <div class = "productpage-image-container productpage-img">
                                 <img class="materialboxed alt limit" src="<c:url value="/image/${product.image.id}"/>" alt="${product.name}">
@@ -95,13 +95,13 @@
                     </c:if>
                 <c:if test="${product.image.id == 0}">
                     <div class="col s12 productpage-info-text">
-                        <div class="productpage-info-price">
+                        <div class="productpage-info-price center">
                             <spring:message code="productpage.price" arguments="${product.price}"/>
                         </div>
-                        <div class="productpage-info-nobold" style="font-size:18px;">
+                        <div class="productpage-info-nobold center" style="font-size:18px;">
                             <c:out value="${product.description}"/>
                         </div>
-                        <div class="productpage-info" style="font-size:20px;">
+                        <div class="productpage-info center justify-content-center" style="font-size:20px;">
                             <div class="center-in-div-with-flex">
                                 <i class="tiny material-icons">category</i>
                                 <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
@@ -116,7 +116,7 @@
                                 </div>
                             </c:if>
                         </div>
-                        <div class="productpage-info-nobold space-around">
+                        <div class="productpage-info-nobold space-around flex-column-center-align center">
                             <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
                             <c:if test="${product.stock < 6}">
                                 <div>
@@ -126,7 +126,7 @@
                                 </div>
                             </c:if>
                             <c:if test="${ecotags.size() != 0}">
-                                <div class="productpage-ecotags separating-fields">
+                                <div class="productpage-ecotags separating-fields justify-content-center">
                                     <c:forEach items="${ecotags}" var="ecotag">
                                         <div class="productpage-ecotag">
                                             <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
@@ -137,7 +137,7 @@
                                     </c:forEach>
                                 </div>
                             </c:if>
-                            <div class="productpage-info">
+                            <div class="productpage-info justify-content-center">
                                 <div class="center-in-div-with-flex">
                                     <a class="productpage-link" href="<c:url value="/sellerPage/${seller.id}"/>">
                                         <i class="tiny material-icons separate-icon">person</i><span><c:out value="${seller.user.firstName} ${seller.user.surname}"/></span>
@@ -145,38 +145,15 @@
                                 </div>
                             </div>
                         </div>
-                    </c:if>
-                    <c:if test="${product.image.id == 0}">
-                        <div class="col s12 productpage-info-text">
-                            <div class="productpage-info-price">
-                                <spring:message code="productpage.price" arguments="${product.price}"/>
-                            </div>
-                            <div class="productpage-info-nobold">
-                                <c:out value="${product.description}"/>
-                            </div>
-                            <div class="productpage-info">
-                                <div class="center-in-div-with-flex">
-                                    <i class="tiny material-icons">category</i>
-                                    <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
-                                        <spring:message code="${category.name}"/>
-                                    </a>
+                        <div class="row center flex-center" style="margin:auto;">
+                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
+                                <div class="text-center">
+                                    <spring:message code="productpage.linktoseller"/>
                                 </div>
-                                <c:if test="${area != null}">
-                                    <div class="center-in-div-with-flex">
-                                        <a class="productpage-link" href="<c:url value="/explore?areaId=${area.id}&sort=${sort}&direction=${direction}"/>">
-                                            <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
-                                        </a>
-                                    </div>
-                                </c:if>
-                            </div>
-                            <div class="row center flex-center" style="margin:auto;">
-                                <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                    <div class="text-center">
-                                        <spring:message code="productpage.linktoseller"/>
-                                    </div>
-                                </a>
-                            </div>
-                        </c:if>
+                            </a>
+                        </div>
+                    </div>
+                </c:if>
                 </div>
             </div>
         </div>

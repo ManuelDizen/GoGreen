@@ -16,6 +16,8 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private final static int N_LANDING = 4;
+
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SecurityService securityService;
@@ -349,7 +351,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getInterestingForUser(List<Order> orders, int amount) {
-        List<Product> interesting = new ArrayList<>();
+        return getPopular(N_LANDING);
+        // TODO: Rebuild this whole method
+        /*List<Product> interesting = new ArrayList<>();
         int i=0;
         while(interesting.size() < amount) {
             for(Order order : orders) {
@@ -363,7 +367,7 @@ public class ProductServiceImpl implements ProductService {
             }
             i++;
         }
-        return interesting;
+        return interesting;*/
     }
 
 
@@ -386,14 +390,15 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser) {
         List<Product> products;
         if(loggedUser == null) {
-            products = getPopular(4);
+            products = getPopular(N_LANDING);
         }
         else {
             if(ordersForUser.isEmpty()){
-                products = getPopular(4);
+                products = getPopular(N_LANDING);
             } else {
-                //products = getInterestingForUser(ordersForUser, 4);
-                products = getPopular(4);
+                //TODO: Rebuild getInterestingForUser method
+                products = getInterestingForUser(ordersForUser, N_LANDING);
+                //products = getPopular(4);
             }
         }
         return products;
