@@ -3,9 +3,9 @@ import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.UserRole;
 
-import java.util.List;
+import java.util.Set;
 
 public interface UserRoleDao {
-    List<UserRole> getById(long userId);
+    Set<Role> getById(long userId);
     UserRole create(User user, Role role);
 }

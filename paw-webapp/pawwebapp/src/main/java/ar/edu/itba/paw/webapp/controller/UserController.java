@@ -140,8 +140,7 @@ public class UserController {
 
         List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
         mav.addObject("orders", orders);
-        mav.addObject("isFavorite", favoriteService.isFavorite(
-                securityService.getLoggedUser(), seller.get()));
+        mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
 
         List<List<Product>> productPages = productService.divideIntoPages(products, 8);
         mav.addObject("currentPage", page);

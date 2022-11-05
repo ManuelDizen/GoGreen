@@ -63,6 +63,7 @@ public class ProductController {
     ) {
         final ModelAndView mav = new ModelAndView("explore");
 
+        //TODO: This could be optimized
         List<Product> allProducts = productService.getAvailable();
         mav.addObject("isEmpty", allProducts.isEmpty());
 

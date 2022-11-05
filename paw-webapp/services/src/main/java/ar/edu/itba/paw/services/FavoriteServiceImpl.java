@@ -19,13 +19,15 @@ import java.util.*;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
+    private final UserService userService;
     private final SellerService sellerService;
     private final SecurityService securityService;
     private final FavoriteDao favoriteDao;
 
     @Autowired
-    public FavoriteServiceImpl(SellerService sellerService,
+    public FavoriteServiceImpl(UserService userService, SellerService sellerService,
                                SecurityService securityService, FavoriteDao favoriteDao){
+        this.userService = userService;
         this.sellerService = sellerService;
         this.securityService = securityService;
         this.favoriteDao = favoriteDao;
@@ -73,6 +75,18 @@ public class FavoriteServiceImpl implements FavoriteService {
             if(Objects.equals(role.getName(), "SELLER")) return false;
         }
 
+        List<Favorite> favorites = getByUserId(user.getId());
+        for(Favorite fav : favorites){
+            if(Objects.equals(fav.getSeller().getId(), seller.getId())) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isFavorite(Seller seller) {
+        User user = securityService.getLoggedUser();
+        if(user == null || seller == null) return false;
+        if(userService.isSeller(user.getId())) return false;
         List<Favorite> favorites = getByUserId(user.getId());
         for(Favorite fav : favorites){
             if(Objects.equals(fav.getSeller().getId(), seller.getId())) return true;

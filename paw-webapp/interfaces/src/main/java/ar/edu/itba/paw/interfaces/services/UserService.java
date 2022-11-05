@@ -24,4 +24,7 @@ public interface UserService {
 
     boolean isValidPassword(long userId, String oldPassword);
 
+    boolean isSeller(long userId);
+
+    boolean isBuyer(long userId);
 }

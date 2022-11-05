@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Role;
-import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
@@ -14,11 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -96,13 +94,31 @@ public class UserServiceImpl implements UserService {
         return encoder.encode(oldPassword).equals(user.getPassword());
     }
 
-
-
     @Transactional
     @Override
     public void toggleNotifications(long userId){
         Optional<User> user = findById(userId);
         if(!user.isPresent()) throw new ForbiddenActionException();
         user.get().toggleNotifications();
+    }
+
+    @Transactional
+    @Override
+    public boolean isSeller(long userId) {
+        return isRole(userId, "SELLER");
+    }
+
+    @Transactional
+    @Override
+    public boolean isBuyer(long userId) {
+        return isRole(userId, "USER");
+    }
+
+    private boolean isRole(long userId, String role) {
+        Optional<User> user = userDao.findById(userId);
+        if(!user.isPresent()) throw new UserNotFoundException();
+        Optional<Role> userRole = roleService.getByName(role);
+        if(!userRole.isPresent()) throw new RoleNotFoundException();
+        return user.get().getRoles().contains(userRole.get());
     }
 }

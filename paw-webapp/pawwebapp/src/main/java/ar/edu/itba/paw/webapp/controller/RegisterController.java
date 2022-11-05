@@ -95,6 +95,7 @@ public class RegisterController {
                 form.getAddress(), form.getArea());
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
+        //TODO: Check how to link if coming from product page
         return new ModelAndView("redirect:/");
     }
 

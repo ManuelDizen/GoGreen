@@ -38,10 +38,7 @@ public class User {
     @Column(name="notifications")
     private Boolean notifications;
 
-    //TODO: Cambiar tipo "eager" a lazy
-    //  Nota: De cualquier manera, en este caso los usuarios tienen como máximo 1 rol, por lo que a nivel
-    //  memoria es muy baja. Igual, hay que cambiarlo
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(
             name="user_roles",
             joinColumns = @JoinColumn(name="user_id"),
