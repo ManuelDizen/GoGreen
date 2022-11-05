@@ -32,8 +32,9 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> findBySeller(long sellerId) {
         ProductStatus deleted = ProductStatus.DELETED;
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE seller.id = :sellerId " +
-                        "AND p.status <> :deleted ORDER BY id DESC",
+        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.seller.id = :sellerId " +
+                        "AND p.status <> :deleted ORDER BY p.id DESC",
                 Product.class);
         query.setParameter("sellerId", sellerId);
         query.setParameter("deleted", deleted);
@@ -42,14 +43,22 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public Optional<Product> getById(long productId) {
-        return Optional.ofNullable(em.find(Product.class, productId));
+        //TODO: Preguntar si esta manera es mejor, me queda la duda si poner lazy pero traer los
+        // taglist de esta manera es mejor que ponerlo como eager directamente (la realidad es que casi
+        // siempre que necesitamos el producto necesitamos el tagList).
+        return em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.id = :id " +
+                        "ORDER BY p.id DESC",
+                Product.class).setParameter("id", productId).getResultList().stream().findFirst();
+        //return Optional.ofNullable(em.find(Product.class, productId));
     }
 
     @Override
     public Optional<Product> getByName(String name) {
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.name = :name " +
+        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.name = :name " +
                         "AND p.status <> :deleted " +
-                        "ORDER BY id DESC",
+                        "ORDER BY p.id DESC",
                 Product.class);
         query.setParameter("name", name);
         query.setParameter("deleted", ProductStatus.DELETED);
@@ -58,9 +67,10 @@ public class ProductHibernateDao implements ProductDao {
 
     private TypedQuery<Product> buildAvailableQuery(){
         ProductStatus available = ProductStatus.AVAILABLE;
-        final TypedQuery<Product> query = em.createQuery("FROM Product AS p WHERE p.stock > 0 " +
+        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.stock > 0 " +
                         "AND p.status = :available " +
-                        "ORDER BY id DESC",
+                        "ORDER BY p.id DESC",
                 Product.class);
         query.setParameter("available", available);
         return query;
@@ -130,7 +140,8 @@ public class ProductHibernateDao implements ProductDao {
             return new ArrayList<>();
 
         final TypedQuery<Product> finalQuery =
-                em.createQuery("FROM Product as p where p.status = :available AND p.id IN :products", Product.class);
+                em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.status = :available AND p.id IN :products", Product.class);
         finalQuery.setParameter("products", products);
         finalQuery.setParameter("available", ProductStatus.AVAILABLE);
 
@@ -150,8 +161,9 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public List<Product> getByCategory(Long categoryId){
-        final TypedQuery<Product> query = em.createQuery("FROM Product WHERE categoryId = :categoryId " +
-                        "AND image.id <> 0 ORDER BY id DESC",
+        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.categoryId = :categoryId " +
+                        "AND p.image.id <> 0 ORDER BY p.id DESC",
                 Product.class);
         query.setParameter("categoryId", categoryId);
         return query.getResultList();
