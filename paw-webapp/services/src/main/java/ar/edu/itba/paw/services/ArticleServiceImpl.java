@@ -65,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getById(id);
     }
 
-    public Boolean checkForArticleOwnership(long id) {
+    public boolean checkForArticleOwnership(long id) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Seller> maybeSeller = sellerService.findByUserId(user.getId());

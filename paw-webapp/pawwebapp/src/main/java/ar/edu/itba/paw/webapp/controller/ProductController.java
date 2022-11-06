@@ -297,7 +297,7 @@ public class ProductController {
             @PathVariable("productId") final long productId,
             @ModelAttribute("updateProdForm") final UpdateProdForm form
     ){
-        Boolean isOwner = productService.checkForOwnership(productId);
+        boolean isOwner = productService.checkForOwnership(productId);
         if(!isOwner) throw new UnauthorizedRoleException();
 
         Optional<Product> product = productService.getById(productId);

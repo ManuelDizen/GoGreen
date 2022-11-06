@@ -4,7 +4,6 @@ import ar.edu.itba.paw.models.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface ProductService {
 
@@ -32,8 +31,8 @@ public interface ProductService {
     void attemptPause(long productId);
     void attemptRepublish(long productId);
 
-    Boolean checkForAvailableStock(Product p, int amount);
-    Boolean checkForOwnership(long prodId);
+    boolean checkForAvailableStock(Product p, int amount);
+    boolean checkForOwnership(long prodId);
     void decreaseStock(long prodId, int amount);
 
     void updateProduct(long prodId, int amount, int price);

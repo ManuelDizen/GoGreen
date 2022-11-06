@@ -232,12 +232,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean checkForAvailableStock(Product p, int amount) {
+    public boolean checkForAvailableStock(Product p, int amount) {
         return p.getStock() >= amount;
     }
 
     @Override
-    public Boolean checkForOwnership(long prodId) {
+    public boolean checkForOwnership(long prodId) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Product> prodToDelete = getById(prodId);
@@ -267,7 +267,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void updateProduct(long prodId, int amount, int price) {
-        Boolean isOwner = checkForOwnership(prodId);
+        boolean isOwner = checkForOwnership(prodId);
         if(!isOwner) throw new ForbiddenActionException();
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();

@@ -5,12 +5,10 @@ import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
 
-        Boolean enough = productService.checkForAvailableStock(product, amount);
+        boolean enough = productService.checkForAvailableStock(product, amount);
         if(!enough) throw new ProductUpdateException();
 
         User user = securityService.getLoggedUser();
@@ -120,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean checkForOrderOwnership(long orderId) {
+    public boolean checkForOrderOwnership(long orderId) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Order> maybeOrder = getById(orderId);
@@ -134,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void deleteOrder(long orderId) {
-        Boolean isOwner = checkForOrderOwnership(orderId);
+        boolean isOwner = checkForOrderOwnership(orderId);
         if(!isOwner) throw new UnauthorizedRoleException();
 
         Optional<Order> order = orderDao.getById(orderId);

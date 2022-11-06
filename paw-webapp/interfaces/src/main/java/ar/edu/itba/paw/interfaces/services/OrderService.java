@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +18,7 @@ public interface OrderService {
     void createAndNotify(long productId, int amount, String message);
 
 
-    Boolean checkForOrderOwnership(long orderId);
+    boolean checkForOrderOwnership(long orderId);
 
     void deleteOrder(long orderId);
 }
