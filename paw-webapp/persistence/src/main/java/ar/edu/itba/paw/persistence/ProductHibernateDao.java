@@ -42,6 +42,18 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     @Override
+    public List<Product> findBySellerNoEcotag(long sellerId) {
+        ProductStatus deleted = ProductStatus.DELETED;
+        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p" +
+                        " WHERE p.seller.id = :sellerId " +
+                        "AND p.status <> :deleted ORDER BY p.id DESC",
+                Product.class);
+        query.setParameter("sellerId", sellerId);
+        query.setParameter("deleted", deleted);
+        return query.getResultList();
+    }
+
+    @Override
     public Optional<Product> getById(long productId) {
         //TODO: Preguntar si esta manera es mejor, me queda la duda si poner lazy pero traer los
         // taglist de esta manera es mejor que ponerlo como eager directamente (la realidad es que casi
