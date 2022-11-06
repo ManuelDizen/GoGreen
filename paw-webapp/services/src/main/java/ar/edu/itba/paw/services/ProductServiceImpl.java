@@ -61,6 +61,20 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findBySeller(sellerId);
     }
 
+    private List<Product> findBySellerNoEcotag(long sellerId) {
+        return productDao.findBySellerNoEcotag(sellerId);
+    }
+
+    @Override
+    public List<Product> findBySeller(long sellerId, boolean ecotag) {
+        if(ecotag){
+            return findBySeller(sellerId);
+        }
+        else{
+            return findBySellerNoEcotag(sellerId);
+        }
+    }
+
     @Override
     public Optional<Product> getById(long productId) {
         return productDao.getById(productId);
@@ -322,7 +336,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getInteresting(Product product, int amount) {
         List<Product> toReturn = new ArrayList<>();
-        List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
+        List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId(), true);
         long availableId = ProductStatus.AVAILABLE.getId();
         for(Product prod : bySellerAndCategory) {
             if(prod.getStatus().getId() == availableId &&
@@ -337,7 +351,7 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if(toReturn.size() < amount) {
-            List<Product> bySeller = findBySeller(product.getSeller().getId());
+            List<Product> bySeller = findBySeller(product.getSeller().getId(), true);
             addIfNotPresent(toReturn, bySeller, amount, product);
         }
         if(toReturn.size() < amount) {

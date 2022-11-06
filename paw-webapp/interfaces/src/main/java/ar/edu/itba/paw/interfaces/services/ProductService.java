@@ -11,6 +11,7 @@ public interface ProductService {
                    Integer price, byte[] image);
 
     List<Product> findBySeller(long sellerId);
+    List<Product> findBySeller(long sellerId, boolean ecotag);
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
     //List<Product> getAll();

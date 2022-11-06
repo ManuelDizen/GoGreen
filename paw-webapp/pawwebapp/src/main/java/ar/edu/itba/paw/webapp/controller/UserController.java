@@ -94,7 +94,7 @@ public class UserController {
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
         List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
-        List<Product> products = productService.findBySeller(seller.get().getId());
+        List<Product> products = productService.findBySeller(seller.get().getId(), false);
         List<List<Product>> productPages = productService.divideIntoPages(products, 6);
 
         mav.addObject("seller", seller.get());
@@ -129,7 +129,7 @@ public class UserController {
         mav.addObject("areas", Area.values());
         mav.addObject("categories", Category.values());
 
-        List<Product> products = productService.findBySeller(sellerId);
+        List<Product> products = productService.findBySeller(sellerId, true);
         //TODO: Move to service
         //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
 
