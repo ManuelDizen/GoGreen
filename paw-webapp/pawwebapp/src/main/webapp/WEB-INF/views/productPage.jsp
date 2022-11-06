@@ -140,7 +140,11 @@
                             <div class="productpage-info justify-content-center">
                                 <div class="center-in-div-with-flex">
                                     <a class="productpage-link" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                        <i class="tiny material-icons separate-icon">person</i><span><c:out value="${seller.user.firstName} ${seller.user.surname}"/></span>
+                                        <i class="tiny material-icons separate-icon">person</i>
+                                        <span>
+                                            <spring:message code="fullname"
+                                                            arguments="${seller.user.firstName}, ${seller.user.surname}"/>
+                                        </span>
                                     </a>
                                 </div>
                             </div>
@@ -174,7 +178,8 @@
                                     <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
                                                    data-length="255" style="color:white;"/>
                                     <form:label for="sellerMsg" cssStyle="margin-left:10px; left:0;" path="message">
-                                        <spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                                        <spring:message code="productpage.orderform.msgToSeller"/>
+                                    </form:label>
                                     <div class="errors">
                                         <form:errors path="message" element="p" cssClass="error"/>
                                     </div>
@@ -184,14 +189,17 @@
                                 <div class="input-field" id="orderamount">
                                     <form:select path="amount">
                                         <form:option value="0" disabled="true">
-                                            <spring:message code="productpage.orderform.amount.placeholder"/></form:option>
+                                            <spring:message code="productpage.orderform.amount.placeholder"/>
+                                        </form:option>
                                         <c:forEach var="i" begin="1" end="5">
                                             <c:if test="${i <= product.stock}">
                                                 <form:option value="${i}"><c:out value="${i}"/></form:option>
                                             </c:if>
                                         </c:forEach>
                                     </form:select>
-                                    <form:label for="amount" path="amount" cssStyle="left:0;"><spring:message code="productpage.orderform.amount"/></form:label>
+                                    <form:label for="amount" path="amount" cssStyle="left:0;">
+                                        <spring:message code="productpage.orderform.amount"/>
+                                    </form:label>
                                     <form:errors path="amount" element="p" cssClass="error"/>
                                     <div class="errors">
                                         <form:errors path="amount" element="p" cssClass="error"/>
@@ -278,7 +286,8 @@
         <sec:authorize access="hasRole('USER')">
             <div class="center">
                 <a id="button" style="margin-bottom: 20px" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger">
-                    <spring:message code="productpage.commentmsg"/></a>
+                    <spring:message code="productpage.commentmsg"/>
+                </a>
             </div>
         </sec:authorize>
         <div id="newform" class="comment-box comment-write" style="display: none">
@@ -289,7 +298,7 @@
                         <spring:message var="textareaMsg" code="comment.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
                                        data-length="300" style="color:white;"/>
-                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                        <form:label for="message" cssStyle="margin-left:10px" path="message"/>
                         <div class="errors">
                             <form:errors path="message" element="p" cssClass="error"/>
                         </div>
@@ -312,9 +321,11 @@
                     <div class="comment-user">
                         <i class="tiny comment-icon material-icons">
                             person
-                        </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
+                        </i>
+                        <p class="comment-username"><c:out value="${comment.user.firstName}"/></p>
+                        <p class="comment-username"><c:out value="${comment.user.surname}"/></p>
                     </div>
-                    <div><p class="comment-message">${comment.message}</p></div>
+                    <div><p class="comment-message"><c:out value="${comment.message}"/></p></div>
                 </div>
                 <c:if test="${comment.reply != null}">
                     <div class="comment-reply" style="align-self:end    ; width:50%; text-align:right; margin: 10px 0 5px 0;
@@ -323,9 +334,19 @@
                         <div class="comment-user">
                             <i class="tiny comment-icon material-icons">
                                 person
-                            </i><p class="comment-username">${user.firstName}</p><p class="comment-username">${user.surname}</p>
+                            </i>
+                            <p class="comment-username">
+                                <c:out value="${user.firstName}"/>
+                            </p>
+                            <p class="comment-username">
+                                <c:out value="${user.surname}"/>
+                            </p>
                         </div>
-                        <div><p class="comment-message">${comment.reply}</p></div>
+                        <div>
+                            <p class="comment-message">
+                                <c:out value="${comment.reply}"/>
+                            </p>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${user.email == loggedEmail}">
@@ -338,7 +359,7 @@
                                         <spring:message var="textareaMsg" code="comment.reply.placeholder"/>
                                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
                                                        data-length="300" style="color:white;"/>
-                                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                                        <form:label for="message" cssStyle="margin-left:10px" path="message"/>
                                         <div class="errors">
                                             <form:errors path="message" element="p" cssClass="error"/>
                                         </div>

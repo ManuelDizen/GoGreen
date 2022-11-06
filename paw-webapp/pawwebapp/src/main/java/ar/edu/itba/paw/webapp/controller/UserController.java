@@ -184,4 +184,31 @@ public class UserController {
         return new ModelAndView("redirect:" + referer);
     }
 
+    @RequestMapping(value = "/exploreSellers")
+    public ModelAndView exploreSellers(
+            @RequestParam(name="name", defaultValue="") final String name,
+            @RequestParam(name="strings", defaultValue = "null") final String[] strings,
+            @RequestParam(name="areaId", defaultValue="-1") final long areaId,
+            @RequestParam(name="favorite", defaultValue="false") final boolean favorite,
+            @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="sort", defaultValue = "0") final int sort,
+            @RequestParam(name="direction", defaultValue = "1") final int direction
+                                        ){
+        //TODO: Paginate queries not to load all sellers in memory simultaneously
+        List<Seller> sellers = sellerService.getAll();
+        final ModelAndView mav = new ModelAndView("exploreSellers");
+        mav.addObject("sellers", sellers);
+        mav.addObject("name", name);
+        mav.addObject("categories", Category.values());
+        mav.addObject("areas", Area.values());
+        mav.addObject("chosenArea", areaId);
+        mav.addObject("favorite", favorite);
+
+        //Ecotag management (TODO no se si este estaba medio legacy pero por las dudas lo dejo)
+        mav.addObject("path", productService.buildPath(strings));
+        return mav;
+
+    }
+
+
 }

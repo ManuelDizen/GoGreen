@@ -43,9 +43,10 @@
                     <div class="input-field">
                         <form:input path="password" id="password" type="password"/>
                         <spring:message var="passCond" code="registerbuyer.form.passwordCondition"/>
-                        <label for="password"><spring:message code="registerbuyer.form.password"/>
-                            <spring:message code="forms.obligatorysign"/>
-                            <c:out value="${' ('}${passCond}${') '}"/></label>
+                        <label for="password">
+                            <spring:message code="registerbuyer.form.password"
+                            arguments="${passCond}"/>
+                        </label>
                     </div>
                     <div class="errors" style="height:fit-content;">
                         <form:errors path="password" element="p" cssClass="error"/>
@@ -80,7 +81,9 @@
                         <form:select path="area">
                             <form:option value="0" disabled="true"><spring:message code="explore.select"/></form:option>
                             <c:forEach items="${areas}" var="area">
-                                <form:option value="${area.id}">${area.name}</form:option>
+                                <form:option value="${area.id}">
+                                    <c:out value="${area.name}"/>
+                                </form:option>
                             </c:forEach>
                         </form:select>
                         <form:label for="area" path="area"><spring:message code="registerseller.area"/><spring:message code="forms.obligatorysign"/></form:label>
