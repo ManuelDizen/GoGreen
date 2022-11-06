@@ -60,8 +60,6 @@ public class ArticleController {
         Optional<Seller> seller = sellerService.findByUserId(logged.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        //TODO: Pass this logic onto image service and make a single call
-        //  (this code block is also used to process product image)
         byte[] image;
         try {
             image = form.getImage().getBytes();
@@ -83,7 +81,6 @@ public class ArticleController {
 
         mav.addObject("user", seller.get().getUser());
         User user = securityService.getLoggedUser();
-        //TODO: Move to service
         String loggedEmail = user == null? null : user.getEmail();
         mav.addObject("loggedEmail", loggedEmail);
 

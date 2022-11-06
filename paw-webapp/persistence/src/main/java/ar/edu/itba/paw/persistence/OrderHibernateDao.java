@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.models.Order;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -52,9 +51,7 @@ public class OrderHibernateDao implements OrderDao {
     }
 
     @Override
-    public Boolean deleteOrder(long orderId) {
+    public void deleteOrder(long orderId) {
         em.remove(em.find(Order.class, orderId));
-        return true;
-        // TODO: MODIFY!!!
     }
 }

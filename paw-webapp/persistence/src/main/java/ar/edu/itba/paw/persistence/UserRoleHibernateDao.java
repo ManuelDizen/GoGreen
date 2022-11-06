@@ -21,16 +21,9 @@ public class UserRoleHibernateDao implements UserRoleDao {
 
     @Override
     public Set<Role> getById(long userId) {
-
         Optional<User> user = em.createQuery("SELECT u from User u JOIN FETCH u.roles WHERE u.id = :userId",
                 User.class).setParameter("userId", userId).getResultList().stream().findFirst();
         return user.orElseThrow(UserNotFoundException::new).getRoles();
-
-        //TODO: Refactor
-        /*final TypedQuery<UserRole> query = em.createQuery("FROM UserRole WHERE user.id = :userId",
-                UserRole.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();*/
     }
 
     @Override

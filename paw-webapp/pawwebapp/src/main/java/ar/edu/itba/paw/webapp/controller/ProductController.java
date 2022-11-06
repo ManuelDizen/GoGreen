@@ -233,12 +233,13 @@ public class ProductController {
             return productPage(productId, form, commentForm, 1, false,true);
 
         //TODO: Estos parametros no se usan. No los saco pero creo que no hacen falta
-        User loggedUser = securityService.getLoggedUser();
+        // Update 5/11: Dejo comentado, en cleanup lo sacamos si estaba sin usar
+        /*User loggedUser = securityService.getLoggedUser();
 
         Optional<Product> product = productService.getById(productId);
 
         if(!product.isPresent()) throw new ProductNotFoundException();
-        final Product productObj = product.get();
+        final Product productObj = product.get();*/
 
 
         commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());

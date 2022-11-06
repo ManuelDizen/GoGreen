@@ -104,6 +104,12 @@ public class AdviceController {
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Comment Not Found")
+    public ModelAndView commentNotFoundError(CommentNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error404");
+    }
 
     @ExceptionHandler(ArticleCreationException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Error creating article")

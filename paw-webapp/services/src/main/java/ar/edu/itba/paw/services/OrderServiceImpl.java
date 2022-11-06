@@ -140,8 +140,7 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> order = orderDao.getById(orderId);
         if(!order.isPresent()) throw new OrderNotFoundException();
 
-        Boolean delete = orderDao.deleteOrder(orderId);
-        if(!delete) throw new OrderDeleteException();
+        orderDao.deleteOrder(orderId);
 
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
         if(!buyer.isPresent()) throw new UserNotFoundException();

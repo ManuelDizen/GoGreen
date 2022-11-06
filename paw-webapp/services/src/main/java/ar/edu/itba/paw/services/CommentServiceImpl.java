@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.models.Comment;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.CommentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment create(User user, Product product, String message) {
         Comment comment = commentDao.create(user, product, message);
-        if(comment == null) throw new RuntimeException(); //TODO: Make custom exc
+        if(comment == null) throw new CommentNotFoundException();
         emailService.newComment(user, product, message);
         return comment;
     }
@@ -64,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void replyComment(long parentId, String message) {
         Comment comment = commentDao.replyComment(parentId, message);
-        //TODO: Check that reply creation was successful to send email
-        emailService.replyComment(comment.getUser(), comment.getProduct(), comment.getReply());
+        if(comment != null)
+            emailService.replyComment(comment.getUser(), comment.getProduct(), comment.getReply());
     }
 }
