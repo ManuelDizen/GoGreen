@@ -11,8 +11,24 @@
     <%@include file="header.jsp"%>
     <title>Explore sellers</title>
 </head>
+
 <body>
     <%@include file="navbar.jsp"%>
     <h3>Explore sellers woohoo</h3>
+    <div class="row" style="width:100%;">
+        <div class="col s4" style="height:500px;">
+
+        </div>
+        <div class="col s7" style="height:500px;">
+            <c:forEach items="${sellers}" var="seller">
+                <div>
+                    <h4>
+                        <spring:message code="fullname"
+                        arguments="${seller.user.firstName}, ${seller.user.surname}"/>
+                    </h4>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
 </body>
 </html>
