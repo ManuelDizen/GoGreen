@@ -116,6 +116,7 @@ public class RegisterController {
             return forgotMyPassword(false, passwordForm);
         Optional<User> maybeUser = userService.findByEmail(passwordForm.getEmail());
         if(!maybeUser.isPresent())
+            //TODO: Esto tiene que ser un validator del form. no tiene que ir así.
             return forgotMyPassword(true, passwordForm);
         User user = maybeUser.get();
         String path = request.getRequestURL().toString().replace(request.getServletPath(), "") + "/newPassword?token=";
@@ -142,6 +143,8 @@ public class RegisterController {
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
         userService.changePassword(maybeUser.get().getId(), updatePasswordForm.getPassword());
+        //TODO: Esto tiene que ir a servicio, pero no puedo por como esta armado.
+        passwordService.burnToken(maybeUser.get());
         return new ModelAndView("redirect:/login");
 
     }

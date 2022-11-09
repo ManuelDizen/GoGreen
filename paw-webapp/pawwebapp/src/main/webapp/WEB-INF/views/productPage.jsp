@@ -78,7 +78,7 @@
                                         <div class="productpage-ecotag">
                                             <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                                <spring:message code="${ecotag.tag}"/>
+                                                <div class="flex-column-center-align-vertical"><span><spring:message code="${ecotag.tag}"/></span></div>
                                             </a>
                                         </div>
                                     </c:forEach>
@@ -131,7 +131,7 @@
                                         <div class="productpage-ecotag">
                                             <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                                <spring:message code="${ecotag.tag}"/>
+                                                <div class="flex-column-center-align-vertical"><span><spring:message code="${ecotag.tag}"/></span></div>
                                             </a>
                                         </div>
                                     </c:forEach>
