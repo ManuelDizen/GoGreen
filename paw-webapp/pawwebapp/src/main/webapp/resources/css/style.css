@@ -1303,9 +1303,9 @@ ALL CREDITS TO @andrewsims
     font-size: 20px;
 }
 
-.product-card:hover{
+/*.product-card:hover{
     transform: translate(0, -10px);
-}
+}*/
 
 .product-card .card-image{
     background:white;
@@ -1494,27 +1494,24 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
-    padding: 5px;
     font-size: 13px;
-    height: 44vh;
+    height: fit-content;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
-    padding-bottom:2vh;
     margin: 2vh auto;
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right:10px;
+    padding: 5px 10px;
 }
 
 .user-profile-card{
     display:flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     max-height: 42vh;
 }
 
@@ -1581,7 +1578,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .user-profile-card-title {
-    margin: 5px 5px 0 5px;
+    margin: 6px auto;
 }
 
 .seller-profile-card-title {

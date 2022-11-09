@@ -97,7 +97,7 @@
                 <div class="col s6">
                     <div class="input-field">
                         <form:input path="address" id="address" type="text"/>
-                        <label for="address"><spring:message code="registerbuyer.form.address"/>
+                        <label for="address"><spring:message code="registerseller.form.address"/>
                             <spring:message code="forms.obligatorysign"/></label>
                     </div>
                     <div class="errors">
@@ -107,7 +107,7 @@
                 <div class="col s6">
                     <div class="input-field">
                         <form:input path="phone" id="phone" type="text"/>
-                        <label for="phone"><spring:message code="registerbuyer.form.phone"/>
+                        <label for="phone"><spring:message code="registerseller.form.phone"/>
                             <spring:message code="forms.obligatorysign"/></label>
                     </div>
                     <div class="errors">
