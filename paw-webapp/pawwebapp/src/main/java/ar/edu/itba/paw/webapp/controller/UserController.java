@@ -88,7 +88,8 @@ public class UserController {
     }
 
     @RequestMapping(value="/sellerProfile")
-    public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
+    public ModelAndView sellerProfile(@ModelAttribute("profilePicForm") final ProfilePicForm form,
+                                      @RequestParam(name="pageP", defaultValue="1") final int pageP,
                                       @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
@@ -218,7 +219,8 @@ public class UserController {
     }
 
     @RequestMapping(value="/updateProfilePic", method= RequestMethod.POST)
-    public ModelAndView updateProfilePic(@Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
+    public ModelAndView updateProfilePic(HttpServletRequest request,
+                                         @Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
                                          final BindingResult errors){
         if (errors.hasErrors()) return buyerProfile(form,1,false);
         byte[] image;
@@ -230,16 +232,17 @@ public class UserController {
         User user = securityService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         userService.setProfilePic(user, image);
-
-        return new ModelAndView("redirect:/userProfile");
+        String referer = request.getHeader("Referer");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @RequestMapping(value="/deleteProfilePic")
-    public ModelAndView deleteProfilePic(){
+    public ModelAndView deleteProfilePic(HttpServletRequest request){
         User user = securityService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         userService.deleteProfilePic(user);
-        return new ModelAndView("redirect:/userProfile");
+        String referer = request.getHeader("Referer");
+        return new ModelAndView("redirect:" + referer);
     }
 
 

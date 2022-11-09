@@ -30,6 +30,67 @@
                     arguments="${seller.phone}"/>
                 </div>
             </div>
+            <c:choose>
+                <c:when test="${user.image != null}">
+                    <div class="col s6 separate-20-top">
+                        <div class="flex-center">
+                            <img src="<c:url value="/image/${user.image.id}"/>" class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
+                        </div>
+                        <div class="flex-center separate-12-top">
+                            <a href="<c:url value="/deleteProfilePic"/>">
+                                <i class="center-align small material-icons white-text">
+                                    delete
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col s6 separate-20-top">
+                        <c:url value="/updateProfilePic" var="url"/>
+                        <form:form modelAttribute="profilePicForm" method="post" action="${url}">
+                            <div class="file-field input-field flex-center">
+                                <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
+                                    <span><spring:message code="createproduct.form.image"/></span>
+                                    <form:input path="image" type="file"/>
+                                </div>
+                                <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                    <input class="file-path validate" type="text" readonly id="readonly-input">
+                                </div>
+                            </div>
+                            <form:errors path="image" element="p" cssClass="error"/>
+                            <div class="center create-submit flex-center">
+                                <button type="submit" class="waves-effect waves-light btn flex-center">
+                                    <spring:message code="updateprofilepic.form.submit"/>
+                                </button>
+                            </div>
+                        </form:form>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col s12">
+                        <c:url value="/updateProfilePic" var="url"/>
+                        <form:form modelAttribute="profilePicForm" method="post" action="${url}"
+                                   enctype="multipart/form-data">
+                            <div class="file-field input-field flex-center">
+                                <div class="waves-effect waves-light btn image_button add-image-btn"
+                                     style="margin: auto 10px;">
+                                    <span><spring:message code="createproduct.form.image"/></span>
+                                    <form:input path="image" type="file"/>
+                                </div>
+                                <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                    <input class="file-path validate" type="text" readonly id="readonly-input">
+                                </div>
+                            </div>
+                            <form:errors path="image" element="p" cssClass="error"/>
+                            <div class="center create-submit flex-center">
+                                <button type="submit" class="waves-effect waves-light btn">
+                                    <spring:message code="updateprofilepic.form.submit"/>
+                                </button>
+                            </div>
+                        </form:form>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
     <div class="row">
