@@ -16,11 +16,8 @@
 <%@ include file="navbar.jsp"%>
 <div class="update-form-container container" style="margin-top: 20px">
   <div class="update"></div>
-  <div class="center update-margins">
-    <h5><spring:message code="congratulations.title"/></h5>
-  </div>
-  <div class="center update-margins">
-    <p><spring:message code="congratulations.instructions"/></p>
+  <div class="center update-margins" style="margin:50px auto;">
+    <p style="font-size: 25px;"><spring:message code="congratulations.instructions"/></p>
   </div>
 </div>
 </body>
