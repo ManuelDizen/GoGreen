@@ -589,6 +589,12 @@ nav {
     padding: 8px 6px;
     border-radius: 12px;
     height:30px;
+
+    display:flex;
+}
+
+.chip div{
+    margin:0 5px;
 }
 
 .chip_filter {
@@ -1024,6 +1030,8 @@ input[type=number]::-webkit-outer-spin-button {
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
+
+    margin-top:10px;
 }
 
 .explore-products {
@@ -1347,11 +1355,12 @@ ALL CREDITS TO @andrewsims
 
 .explore-container #filter_form .row .input-field .select-wrapper ul {
     background: var(--palette-color-secondary);
+    background: var(--text-color-light)
 }
 
 
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
-    color: white;
+    color: var(--text-color-dark);
 }
 
 
@@ -1719,6 +1728,7 @@ ALL CREDITS TO @andrewsims
 
 .register-form-container div .errors .error,
 .update-form-container div .errors .error,
+.update-product-body div .errors .error,
 .password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
@@ -2811,4 +2821,13 @@ input[type=number] {
 
 .separate-12-top{
     margin-top:12px;
+}
+
+.filter-category li{
+    border-bottom: 1px solid lightgrey;
+}
+
+.filter-button{
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
 }

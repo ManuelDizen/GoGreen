@@ -18,8 +18,7 @@ public class PasswordHibernateDao implements PasswordDao {
     private EntityManager em;
 
     @Override
-    public Token create(String passToken, User user) {
-        LocalDateTime dateTime = LocalDateTime.now();
+    public Token create(String passToken, User user, LocalDateTime dateTime) {
         Token token = new Token(passToken, user, dateTime);
         em.persist(token);
         return token;

@@ -4,14 +4,15 @@
 <c:url value="/explore" var="explore"/>
 <form action="${explore}" method="get" id="filter_form" class="filter-form">
     <sec:authorize access="hasRole('USER')">
-        <div class="row" style="margin: 0">
+        <div class="row" style="margin: 0; display:flex; justify-content:space-between;">
             <c:if test="${!favorite}">
-                <div class="eco_input" style="padding:0; text-align:left; width:58%;">
-                    <label style="margin: 0 10px;" for="favorite">
+                <div class="eco_input flex-column-center-align-vertical" style="padding:0; text-align:left;
+                width:58%; font-size:20px;">
+                    <label style="margin: 0 10px; font-size: 15px;" for="favorite">
                         <spring:message code="explore.filterform.favorite"/>
                     </label>
                 </div>
-                <div style="text-align: right; width:40%;">
+                <div style="text-align: center;">
                     <input class="star star-table-cell" name="favorite" type="checkbox" id="favorite">
                 </div>
             </c:if>
@@ -137,7 +138,8 @@
         </div>
     </div>
     <div class="filter-submit">
-        <button type="submit" class="decision-button waves-effect waves-light btn"><spring:message code="explore.filterform.submit"/></button>
+        <button type="submit" class="filter-button waves-effect waves-light btn">
+            <spring:message code="explore.filterform.submit"/></button>
     </div>
 </form>
 </body>

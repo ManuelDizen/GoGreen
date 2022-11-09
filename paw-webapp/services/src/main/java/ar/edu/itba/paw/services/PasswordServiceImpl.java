@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,30 +33,31 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public Token create(String passToken, User user) {
-        return passwordDao.create(passToken, user);
+        LocalDateTime dateTime = LocalDateTime.now();
+        return passwordDao.create(passToken, user, dateTime);
     }
 
     @Transactional
     @Override
     public void passwordToken(String path, User user) {
-        if(!hasToken(user)) {
+        if(!hasUsableToken(user)) {
             Token token = create(UUID.randomUUID().toString(), user);
             emailService.updatePassword(
                     user, path + token.getPassToken(), user.getLocale());
         }
     }
 
-    public Optional<Token> getByUserId(User user) {
+    public Optional<Token> getByUser(User user) {
         return passwordDao.getByUserId(user);
     }
 
-    private boolean hasToken(User user) {
+    private boolean hasUsableToken(User user) {
         Optional<Token> maybeToken =  passwordDao.getByUserId(user);
         if(!maybeToken.isPresent()) {
             return false;
         }
         Token userToken = maybeToken.get();
-        return userToken.expired();
+        return userToken.isValid();
     }
 
     public Optional<User> getByToken(String token) {
@@ -65,6 +67,12 @@ public class PasswordServiceImpl implements PasswordService {
 
         Token userToken = maybeToken.get();
         return userService.findById(userToken.getUser().getId());
+    }
+
+    public void burnToken(User user){
+        Optional<Token> token = getByUser(user);
+        if(!token.isPresent()) return; //TODO: Create custom exception
+        token.get().use();
     }
 
 }

@@ -14,9 +14,7 @@ public class UniqueProductNameValidator implements ConstraintValidator<UniquePro
     private ProductService productService;
 
     @Override
-    public void initialize(UniqueProductName uniqueProductName) {
-
-    }
+    public void initialize(UniqueProductName uniqueProductName) {}
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {

@@ -24,6 +24,9 @@ public class Token {
     @Column(name = "exp_date", nullable = false)
     private LocalDateTime expDate;
 
+    @Column(name = "used", nullable = false)
+    private Boolean used;
+
     Token() {
     }
 
@@ -36,6 +39,7 @@ public class Token {
         this.passToken = passToken;
         this.user = user;
         this.expDate = expDate.plusMinutes(EXP_TIME);
+        this.used = false;
     }
 
     public Long getId() {
@@ -50,10 +54,6 @@ public class Token {
         return passToken;
     }
 
-    public void setPassToken(String passToken) {
-        this.passToken = passToken;
-    }
-
     public User getUser() {
         return user;
     }
@@ -66,11 +66,18 @@ public class Token {
         return expDate;
     }
 
-    public void setExpDate(LocalDateTime expDate) {
-        this.expDate = expDate;
-    }
-
     public boolean expired() {
         return getExpDate().isAfter(LocalDateTime.now());
     }
+
+    public Boolean getUsed() {
+        return used;
+    }
+    public void setUsed(Boolean used) {
+        this.used = used;
+    }
+
+    public boolean isUsed(){ return used; }
+    public void use(){used = true;}
+    public boolean isValid(){return !this.expired() && !this.isUsed();}
 }
