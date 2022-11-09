@@ -2817,3 +2817,8 @@ input[type=number] {
 .filter-category li{
     border-bottom: 1px solid lightgrey;
 }
+
+.filter-button{
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
+}
