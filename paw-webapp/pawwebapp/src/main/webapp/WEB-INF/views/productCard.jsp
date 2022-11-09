@@ -13,15 +13,19 @@
     </a>
     <div class="card-content">
         <a href="<c:url value="/product/${product.productId}"/>"
-           class="card-title product-card-title"><c:out value="${product.name}"/></a>
+           class="card-title product-card-title">
+            <c:out value="${product.name}"/>
+        </a>
         <div class="card-price">
-            <spring:message code="explore.products.price"/><c:out value="${product.price}"/>
+            <spring:message code="explore.products.price" arguments="${product.price}"/>
         </div>
         <div class="card-category">
             <i class="tiny material-icons">category</i>
             <c:forEach items="${categories}" var="category">
                 <c:if test="${category.id == product.categoryId}">
-                    <a href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>"><spring:message code="${category.name}"/></a>
+                    <a href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
+                        <spring:message code="${category.name}"/>
+                    </a>
                 </c:if>
             </c:forEach>
         </div>

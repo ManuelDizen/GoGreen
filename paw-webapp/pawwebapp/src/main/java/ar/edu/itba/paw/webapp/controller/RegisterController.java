@@ -100,7 +100,8 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
-    public ModelAndView forgotMyPassword(@RequestParam(name = "notFound", defaultValue = "false") final boolean notFound, @ModelAttribute("passwordForm") final PasswordForm passwordForm) {
+    public ModelAndView forgotMyPassword(@RequestParam(name = "notFound", defaultValue = "false") final boolean notFound,
+                                         @ModelAttribute("passwordForm") final PasswordForm passwordForm) {
 
         ModelAndView mav = new ModelAndView("forgotPassword");
         mav.addObject("notFound", notFound);
@@ -108,11 +109,11 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-    public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm, final BindingResult errors, HttpServletRequest request) {
-
+    public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm,
+                                         final BindingResult errors,
+                                         HttpServletRequest request) {
         if(errors.hasErrors())
             return forgotMyPassword(false, passwordForm);
-
         Optional<User> maybeUser = userService.findByEmail(passwordForm.getEmail());
         if(!maybeUser.isPresent())
             return forgotMyPassword(true, passwordForm);
@@ -122,55 +123,28 @@ public class RegisterController {
         return new ModelAndView("congratulations");
     }
     @RequestMapping(value = "/newPassword")
-    public ModelAndView newPassword(@RequestParam(name = "token") final String token, @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
-
+    public ModelAndView newPassword(@RequestParam(name = "token") final String token,
+                    @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
         ModelAndView mav = new ModelAndView("/resetPassword");
         mav.addObject("token", token);
         return mav;
-
     }
 
     @RequestMapping(value = "/confirmPassword", method = RequestMethod.POST)
-    public ModelAndView confirmPassword(@Valid @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm, final BindingResult errors) {
-
+    public ModelAndView confirmPassword(
+            @Valid @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm,
+            final BindingResult errors) {
 
         if(errors.hasErrors()) {
             return newPassword(updatePasswordForm.getToken(), updatePasswordForm);
         }
-
         Optional<User> maybeUser = passwordService.getByToken(updatePasswordForm.getToken());
-
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
-    
-//        if(updatePasswordForm.getOldPassword() != null)
-//        {
-//            if(!userService.isValidPassword(maybeUser.get().getId(), updatePasswordForm.getOldPassword())) {
-//                return newPasswordFromProfile(maybeUser.get().getId(), true, updatePasswordForm);
-//            }
-//        }
-
         userService.changePassword(maybeUser.get().getId(), updatePasswordForm.getPassword());
-
-        ModelAndView mav = new ModelAndView("redirect:/login");
-        return mav;
+        return new ModelAndView("redirect:/login");
 
     }
-
-//    @RequestMapping(value = "/updatePasswordFromProfile/{userId}")
-//    public ModelAndView newPasswordFromProfile(@PathVariable final long userId, @RequestParam(name = "notFound", defaultValue = "false") final boolean notFound, @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm) {
-//
-//        ModelAndView mav = new ModelAndView("/resetPassword");
-//        Optional<User> maybeUser=userService.findById(userId);
-//        if(!maybeUser.isPresent())
-//            throw new UserNotFoundException();
-//        mav.addObject("notFound", notFound);
-//        mav.addObject("token", passwordService.getByUserId(maybeUser.get()).get().getPassToken());
-//        mav.addObject("fromProfile", true);
-//        return mav;
-//
-//    }
-
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);

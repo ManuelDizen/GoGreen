@@ -13,6 +13,8 @@ public interface ProductDao {
                    Integer price, Image image);
 
     List<Product> findBySeller(long sellerId);
+    List<Product> findBySellerNoEcotag(long sellerId);
+
 
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);

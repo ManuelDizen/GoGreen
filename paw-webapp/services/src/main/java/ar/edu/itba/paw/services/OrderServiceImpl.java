@@ -5,12 +5,10 @@ import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,8 +65,12 @@ public class OrderServiceImpl implements OrderService {
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
 
-        Boolean enough = productService.checkForAvailableStock(product, amount);
-        if(!enough) throw new ProductUpdateException();
+        boolean enough = productService.checkForAvailableStock(product, amount);
+        if(!enough){
+            //TODO: Preguntar que hacer acá. Capaz podríamos handlearlo sin un 500
+            // De momento quedo con un 400, pero preguntar.
+            throw new InsufficientStockException();
+        }
 
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
@@ -120,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean checkForOrderOwnership(long orderId) {
+    public boolean checkForOrderOwnership(long orderId) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Order> maybeOrder = getById(orderId);
@@ -134,14 +136,13 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void deleteOrder(long orderId) {
-        Boolean isOwner = checkForOrderOwnership(orderId);
+        boolean isOwner = checkForOrderOwnership(orderId);
         if(!isOwner) throw new UnauthorizedRoleException();
 
         Optional<Order> order = orderDao.getById(orderId);
         if(!order.isPresent()) throw new OrderNotFoundException();
 
-        Boolean delete = orderDao.deleteOrder(orderId);
-        if(!delete) throw new OrderDeleteException();
+        orderDao.deleteOrder(orderId);
 
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
         if(!buyer.isPresent()) throw new UserNotFoundException();

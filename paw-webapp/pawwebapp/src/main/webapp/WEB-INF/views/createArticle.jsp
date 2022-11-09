@@ -35,7 +35,8 @@
         <div class="input-field col s12">
           <div class="file-field input-field">
             <div class="decision-button waves-effect waves-light btn image_button">
-              <form:label path="image" id="image-label-createarticle"><spring:message code="createproduct.form.image"/>
+              <form:label path="image" id="image-label-createarticle">
+                <spring:message code="createproduct.form.image"/>
               </form:label>
               <form:input path="image" type="file"/>
             </div>

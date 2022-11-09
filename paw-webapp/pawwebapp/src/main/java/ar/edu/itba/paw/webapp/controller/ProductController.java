@@ -63,7 +63,9 @@ public class ProductController {
     ) {
         final ModelAndView mav = new ModelAndView("explore");
 
-        //TODO: This could be optimized
+        //TODO: This could (should definitely) be optimized
+        // Howto: create method in service called "atLeastOne" which takes the COUNT(*)
+        // of the query, and does not need to load all products in memory...
         List<Product> allProducts = productService.getAvailable();
         mav.addObject("isEmpty", allProducts.isEmpty());
 
@@ -139,12 +141,6 @@ public class ProductController {
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
-        // Change over previous functionality:
-        // Product should now load whether stock is available or not
-        /*if(productObj.getStock() == 0){
-            return new ModelAndView("redirect:/404");
-        }*/
-
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
         mav.addObject("created", created);
@@ -156,8 +152,7 @@ public class ProductController {
 
         mav.addObject("user", seller.get().getUser());
         User user = securityService.getLoggedUser();
-        String loggedEmail = user == null ? null : user.getEmail();
-        mav.addObject("loggedEmail", loggedEmail);
+        mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
         List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
         mav.addObject("comments", comments.get(page-1));
@@ -197,12 +192,14 @@ public class ProductController {
         return mav;
     }
 
+    //TODO: Este método se usa? Dejo comentado para probar, si no cambia nada borro
+    /*
     @RequestMapping(value="/createdProduct/{productId}")
     public ModelAndView createdProduct(@PathVariable final long productId,
                                        @ModelAttribute("orderForm") final OrderForm form,
                                        @ModelAttribute("commentForm") final CommentForm commentForm) {
         return productPage(productId, form, commentForm, 1, true, false);
-    }
+    }*/
 
     @RequestMapping(value = "/newComment/{productId}", method = {RequestMethod.POST})
     public ModelAndView comment(@PathVariable final long productId,
@@ -211,16 +208,7 @@ public class ProductController {
                                 final BindingResult errors){
         if(errors.hasErrors())
             return productPage(productId, form, commentForm, 1, false, true);
-
-        User loggedUser = securityService.getLoggedUser();
-
-        Optional<Product> product = productService.getById(productId);
-
-        if(!product.isPresent()) throw new ProductNotFoundException();
-        final Product productObj = product.get();
-
-        Comment newComment = commentService.create(loggedUser, productObj, commentForm.getMessage());
-
+        commentService.create(productId, commentForm.getMessage());
         return new ModelAndView("redirect:/product/{productId}");
     }
 
@@ -231,18 +219,7 @@ public class ProductController {
                                 final BindingResult errors){
         if(errors.hasErrors())
             return productPage(productId, form, commentForm, 1, false,true);
-
-        //TODO: Estos parametros no se usan. No los saco pero creo que no hacen falta
-        User loggedUser = securityService.getLoggedUser();
-
-        Optional<Product> product = productService.getById(productId);
-
-        if(!product.isPresent()) throw new ProductNotFoundException();
-        final Product productObj = product.get();
-
-
         commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());
-
         return new ModelAndView("redirect:/product/{productId}");
     }
 
@@ -256,13 +233,6 @@ public class ProductController {
 
     @RequestMapping(value="/pauseProduct/{productId:[0-9]+}", method=RequestMethod.GET)
     public ModelAndView pauseProduct(@PathVariable("productId") final long productId) {
-        /*
-        como hago
-        1) Chequeo que el usuario loggeado sea dueño del producto
-        2) Si es, chequeo estado de producto.
-        3) Si esta available/out of stock, pauso.
-        4) Si esta paused/deleted, lo dejo como esta.
-         */
         productService.attemptPause(productId);
         return new ModelAndView("redirect:/sellerProfile");
     }
@@ -278,16 +248,12 @@ public class ProductController {
             @Valid @ModelAttribute("productForm") final ProductForm form,
             final BindingResult errors) {
         if (errors.hasErrors()) return createProduct(form);
-
         byte[] image;
         try {
             image = form.getImage().getBytes();
         } catch (IOException e) {throw new RuntimeException(e);}
-
         Product product = productService.createProduct(Integer.parseInt(form.getStock()), Integer.parseInt(form.getPrice()),
                 form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
-        if(product == null) throw new ProductNotFoundException();
-
         return new ModelAndView("redirect:/createdProduct/" + product.getProductId());
     }
 
@@ -296,14 +262,11 @@ public class ProductController {
             @PathVariable("productId") final long productId,
             @ModelAttribute("updateProdForm") final UpdateProdForm form
     ){
-        Boolean isOwner = productService.checkForOwnership(productId);
-        if(!isOwner) throw new UnauthorizedRoleException();
-
-        Optional<Product> product = productService.getById(productId);
-        if(!product.isPresent()) throw new ProductNotFoundException();
-
+        productService.checkForOwnership(productId);
         ModelAndView mav = new ModelAndView("/updateProduct");
-        mav.addObject("product", product.get());
+        // Note on "getById()" call: As I have called "checkForOwnership()", I can assure that
+        // the product exists. Therefore, I can directly use the Product object.
+        mav.addObject("product", productService.getById(productId).get());
         return mav;
     }
 

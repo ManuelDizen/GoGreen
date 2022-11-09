@@ -28,28 +28,6 @@
           </c:otherwise>
         </c:choose>
       </div>
-      <%--div class="toggle-notifications">
-        <div class="switch">
-          <label>
-            <spring:message code="off"/>
-            <c:choose>
-              <c:when test="${!user.notifications}">
-                <input id="notif_switch"
-                       type="checkbox">
-                <span class="lever"></span>
-              </c:when>
-              <c:otherwise>
-                <input id="notif_switch"
-                       type="checkbox"
-                       checked>
-                <span class="lever"></span>
-              </c:otherwise>
-            </c:choose>
-            <spring:message code="on"/>
-          </label>
-        </div>
-      </div--%>
-
       <div class="left-align separate-12-top"><spring:message code="newsfeed.userfavs"/></div>
       <c:forEach items="${favs}" var="fav">
         <div class="user-fav-card">

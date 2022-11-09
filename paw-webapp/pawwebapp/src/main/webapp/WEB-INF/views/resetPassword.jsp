@@ -38,9 +38,10 @@
                     <div class="input-field center ">
                         <form:input path="password" id="password" type="password"/>
                         <spring:message var="passCond" code="registerbuyer.form.passwordCondition"/>
-                        <label for="password"><spring:message code="password.newPassword"/>
-                            <spring:message code="forms.obligatorysign"/>
-                            <c:out value="${' ('}${passCond}${') '}"/></label>
+                        <label for="password">
+                            <spring:message code="password.newPassword"
+                            arguments="${passCond}"/>
+                        </label>
                     </div>
                     <div class="errors" style="height:fit-content;">
                         <form:errors path="password" element="p" cssClass="error"/>
@@ -51,8 +52,10 @@
                 <div class="col s12">
                     <div class="input-field">
                         <form:input path="confirmationPassword" id="confirmationPassword" type="password"/>
-                        <label for="password"><spring:message code="registerbuyer.form.confirmpassword"/>
-                            <spring:message code="forms.obligatorysign"/></label>
+                        <label for="password">
+                            <spring:message code="registerbuyer.form.confirmpassword"/>
+                            <spring:message code="forms.obligatorysign"/>
+                        </label>
                     </div>
                     <div class="errors">
                         <form:errors path="confirmationPassword" element="p" cssClass="error"/>
@@ -61,7 +64,8 @@
             </div>
             <div style="display: none">
                 <label for="token">
-                    <spring:message code="forms.obligatorysign"/></label>
+                    <spring:message code="forms.obligatorysign"/>
+                </label>
                 <form:input path="token" id="token" type="text"/>
                 <form:errors path="token" cssClass="error" element="p"/>
             </div>

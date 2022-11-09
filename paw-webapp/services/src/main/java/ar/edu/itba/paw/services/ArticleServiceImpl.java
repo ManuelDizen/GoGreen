@@ -49,7 +49,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Transactional
     @Override
-    public Article create(Seller seller, String message, byte[] image, LocalDateTime dateTime) {
+    public Article create(String message, byte[] image, LocalDateTime dateTime) {
+
+        User logged = securityService.getLoggedUser();
+        //Should this check even be done? Doesn't spring security check for SELLER role?
+        if(logged == null) throw new UnauthorizedRoleException();
+        Optional<Seller> maybeSeller = sellerService.findByUserId(logged.getId());
+        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
+        Seller seller = maybeSeller.get();
+
         Image img = parseByteArrayToImage(image);
         Article article = articleDao.create(seller, message, img, dateTime);
         if(article == null) throw new ArticleCreationException();
@@ -65,7 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getById(id);
     }
 
-    public Boolean checkForArticleOwnership(long id) {
+    public boolean checkForArticleOwnership(long id) {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Seller> maybeSeller = sellerService.findByUserId(user.getId());

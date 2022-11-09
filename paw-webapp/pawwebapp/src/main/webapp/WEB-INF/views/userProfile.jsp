@@ -13,7 +13,9 @@
                 <div class="user-profile-container-2">
                     <div class="information row">
                         <div class="col s6">
-                            <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                            <div class="userprofile-info-1">
+                                <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
+                            </div>
                         </div>
                         <div class="col s6">
                             <div class="userprofile-info-2">
@@ -25,7 +27,9 @@
                     <div class="seller-profile-container-orders-2">
                         <c:if test="${orders.size() == 0}">
                             <div class="seller-margin">
-                                <div class="text-center"><spring:message code="userprofile.noorders"/></div>
+                                <div class="text-center">
+                                    <spring:message code="userprofile.noorders"/>
+                                </div>
                             </div>
                         </c:if>
                         <c:if test="${orders.size() != 0}">
@@ -40,19 +44,20 @@
                                     </div>
                                     <div class="seller-profile-card-content">
                                         <div>
-                                            <spring:message code="sellerprofile.orders.price"/>
-                                            <c:out value="${'$'}${order.price}"/>
+                                            <spring:message code="sellerprofile.orders.price"
+                                            arguments="${order.price}"/>
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.amount"/>
-                                            <c:out value="${order.amount}"/>
+                                            <spring:message code="sellerprofile.orders.amount"
+                                            arguments="${order.amount}"/>
                                         </div>
                                         <div>
                                             <spring:message code="sellerprofile.orders.seller"
                                             arguments="${order.sellerName}, ${order.sellerSurname}"/>:
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.neworder.sellermail" arguments="${order.sellerEmail}"/>:
+                                            <spring:message code="sellerprofile.neworder.sellermail"
+                                                            arguments="${order.sellerEmail}"/>:
                                         </div>
                                         <c:forEach items="${users}" var="user">
                                             <c:if test="${user.email == order.sellerEmail}">
@@ -118,34 +123,40 @@
                         <div>
                             <c:choose>
                                 <c:when test="${order.amount > 1}">
-                                    <p class="orderSuccessModal"><spring:message code="userprofile.ordercompleted.message"
-                                                                                 arguments="${user.firstName}, ${user.surname},
-                        ${order.productName}, ${order.amount}"/></p>
+                                    <p class="orderSuccessModal">
+                                        <spring:message code="userprofile.ordercompleted.message"
+                                         arguments="${user.firstName}, ${user.surname},
+                                        ${order.productName}, ${order.amount}"/>
+                                    </p>
                                 </c:when>
                                 <c:otherwise>
-                                    <p class="orderSuccessModal"><spring:message code="userprofile.ordercompleted.oneunit.message"
-                                                                                 arguments="${user.firstName}, ${user.surname},
-                        ${order.productName}, ${order.amount}"/></p>
+                                    <p class="orderSuccessModal">
+                                        <spring:message code="userprofile.ordercompleted.oneunit.message"
+                                        arguments="${user.firstName}, ${user.surname},
+                                        ${order.productName}, ${order.amount}"/>
+                                    </p>
                                 </c:otherwise>
                             </c:choose>
                             <ul class="seller-info">
                                 <li>
-                                    <spring:message code="sellerprofile.orders.seller" arguments="${order.sellerName}, ${order.sellerSurname}"/>
+                                    <spring:message code="sellerprofile.orders.seller"
+                                    arguments="${order.sellerName}, ${order.sellerSurname}"/>
                                 </li>
                                 <li>
-                                    <spring:message code="sellerprofile.neworder.sellermail" arguments="${order.sellerEmail}"/>
+                                    <spring:message code="sellerprofile.neworder.sellermail"
+                                    arguments="${order.sellerEmail}"/>
                                 </li>
                                 <c:forEach items="${users}" var="user">
                                     <c:if test="${user.email == order.sellerEmail}">
                                         <c:forEach items="${sellers}" var="seller">
                                             <c:if test="${user.id == seller.user.id}">
                                                 <li>
-                                                    <spring:message code="registerbuyer.form.address"/>
-                                                    <c:out value="${': '}${seller.address}"/>
+                                                    <spring:message code="registerbuyer.form.address"
+                                                    arguments="${seller.address}"/>
                                                 </li>
                                                 <li>
-                                                    <spring:message code="registerbuyer.form.phone"/>
-                                                    <c:out value="${': '}${seller.phone}"/>
+                                                    <spring:message code="registerbuyer.form.phone"
+                                                    arguments="${seller.phone}"/>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
