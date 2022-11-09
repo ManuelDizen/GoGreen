@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 public class PasswordForm {
     //TODO: Could set a validator to check if a current token has been created.
     //   If so, notify of error to user
+    // Update: Ya arme este, me falta armar otro que valide que el mail exista
     @Email
     @Size(min = 8, max = 50)
     @NotNull
