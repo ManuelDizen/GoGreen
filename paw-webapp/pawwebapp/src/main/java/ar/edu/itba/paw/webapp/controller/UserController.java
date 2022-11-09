@@ -30,12 +30,13 @@ public class UserController {
     private final ProductService productService;
     private final ArticleService articleService;
     private final FavoriteService favoriteService;
+    private final RoleService roleService;
 
     @Autowired
     public UserController(final UserService userService, final SellerService sellerService,
                           final SecurityService securityService, final OrderService orderService,
                           final ProductService productService, final ArticleService articleService,
-                          final FavoriteService favoriteService) {
+                          final FavoriteService favoriteService, final RoleService roleService) {
         this.userService = userService;
         this.sellerService = sellerService;
         this.securityService = securityService;
@@ -43,6 +44,7 @@ public class UserController {
         this.productService = productService;
         this.articleService = articleService;
         this.favoriteService = favoriteService;
+        this.roleService = roleService;
     }
 
     @RequestMapping(value="profile")
@@ -222,7 +224,16 @@ public class UserController {
     public ModelAndView updateProfilePic(HttpServletRequest request,
                                          @Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
                                          final BindingResult errors){
-        if (errors.hasErrors()) return buyerProfile(form,1,false);
+        if (errors.hasErrors()){
+            //TODO: This should definitely be optimized.
+            User user = securityService.getLoggedUser();
+            if(user == null) throw new ForbiddenActionException();
+            if(userService.isBuyer(user.getId()))
+                return buyerProfile(form,1,false);
+            else if(userService.isSeller(user.getId()))
+                return sellerProfile(form,1,1);
+            else throw new ForbiddenActionException();
+        }
         byte[] image;
         try {
             image = form.getImage().getBytes();
@@ -242,6 +253,12 @@ public class UserController {
         if(user == null) throw new ForbiddenActionException();
         userService.deleteProfilePic(user);
         String referer = request.getHeader("Referer");
+        if(referer.contains("updateProfilePic")){
+            if(userService.isBuyer(user.getId()))
+                referer = "/userProfile";
+            else if(userService.isSeller(user.getId()))
+                referer = "/sellerProfile";
+        }
         return new ModelAndView("redirect:" + referer);
     }
 

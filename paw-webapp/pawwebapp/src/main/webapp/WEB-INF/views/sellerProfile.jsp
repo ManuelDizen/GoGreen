@@ -46,7 +46,8 @@
                     </div>
                     <div class="col s6 separate-20-top">
                         <c:url value="/updateProfilePic" var="url"/>
-                        <form:form modelAttribute="profilePicForm" method="post" action="${url}">
+                        <form:form modelAttribute="profilePicForm" method="post" action="${url}"
+                                   enctype="multipart/form-data">
                             <div class="file-field input-field flex-center">
                                 <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
                                     <span><spring:message code="createproduct.form.image"/></span>

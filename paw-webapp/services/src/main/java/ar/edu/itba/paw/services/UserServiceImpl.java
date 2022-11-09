@@ -127,17 +127,32 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void setProfilePic(User user, byte[] image){
-        /*TODO: I think that, for it to work, I need to bring the instance of user here
+        /*TODO: I think that, for it to work, I need to bring the instance of user within the transactional method
             What is written below is an attempt to test this, and does not represent a solution
             Update: This was effectively the solution. Rethink circular service dependency and retry
         */
-        Optional<User> maybeUser = findByEmail(user.getEmail()); //OF COURSE, this is momentary
+
+        /*
+
+        Lógica: Tengo un src de imagen. Opciones:
+        1) Usuario no teine una imagen asociada aún -> Crear imagen con source apropiado, y setearla
+        2) Usuario tiene una imagen asociada -> No hace falta crear otra instancia de imagen, al fin
+        y al cabo, la imagen anterior no se usa para nada, puedo cambiar el source nomas.
+
+
+         */
+        Optional<User> maybeUser = findByEmail(user.getEmail()); //MOMENTARY; TODO CHANGE
         if(!maybeUser.isPresent()) throw new IllegalStateException();
-        Image img = null;
-        if(image != null && image.length > 0){
-            img = imageService.create(image);
+        Image img = maybeUser.get().getImage();
+        if(img == null){
+            if(image != null && image.length > 0){
+                img = imageService.create(image);
+            }
+            maybeUser.get().setImage(img);
         }
-        maybeUser.get().setImage(img);
+        else{
+            img.setSource(image);
+        }
     }
 
     @Transactional
