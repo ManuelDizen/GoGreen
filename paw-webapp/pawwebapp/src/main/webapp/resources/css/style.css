@@ -1347,11 +1347,12 @@ ALL CREDITS TO @andrewsims
 
 .explore-container #filter_form .row .input-field .select-wrapper ul {
     background: var(--palette-color-secondary);
+    background: var(--text-color-light)
 }
 
 
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
-    color: white;
+    color: var(--text-color-dark);
 }
 
 
@@ -2811,4 +2812,8 @@ input[type=number] {
 
 .separate-12-top{
     margin-top:12px;
+}
+
+.filter-category li{
+    border-bottom: 1px solid lightgrey;
 }
