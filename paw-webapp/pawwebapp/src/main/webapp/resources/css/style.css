@@ -1538,18 +1538,18 @@ ALL CREDITS TO @andrewsims
 }
 
 .purchase {
-    margin-top: 40px;
+    margin-top: 12px;
     font-size: 30px;
 }
 
 .userprofile-info-1 {
     font-weight: bold; font-size: 20px;
-    margin-left: 40%;
+    display:flex; justify-content: center;
 }
 
 .userprofile-info-2 {
     font-weight: bold; font-size: 20px;
-    margin-left: 20%;
+    display:flex; justify-content:center;
 }
 
 .sellerprofile-info-1 {
@@ -2703,8 +2703,8 @@ input[type=number] {
 }
 
 .profile-pic{
-    height:100px;
-    width:100px;
+    height:140px;
+    width:140px;
     border-radius:50%;
 }
 
