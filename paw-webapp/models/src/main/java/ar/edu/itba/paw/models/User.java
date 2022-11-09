@@ -109,14 +109,6 @@ public class User {
         return id;
     }
 
-    /*public long getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(long imageId) {
-        this.imageId = imageId;
-    }*/
-
     public void setId(long id) {
         this.id = id;
     }
@@ -155,9 +147,6 @@ public class User {
 
     public void toggleNotifications(){
         this.notifications = !this.notifications;
-        //this.notifications = this.notifications == 0? 1:0;
-        //System.out.println("Entro a toggle!!!!!!!");
-        //if(this.notifications == 1) System.out.println("Soy true.");
     }
 
     public Image getImage() {
@@ -167,4 +156,5 @@ public class User {
     public void setImage(Image image) {
         this.image = image;
     }
+    public void deleteImage(){this.image = null;}
 }

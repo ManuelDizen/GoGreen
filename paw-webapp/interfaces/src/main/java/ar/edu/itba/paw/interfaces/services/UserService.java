@@ -28,4 +28,5 @@ public interface UserService {
 
     boolean isBuyer(long userId);
     void setProfilePic(User user, byte[] image);
+    void deleteProfilePic(User user);
 }

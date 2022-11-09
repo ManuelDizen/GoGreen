@@ -139,4 +139,12 @@ public class UserServiceImpl implements UserService {
         }
         maybeUser.get().setImage(img);
     }
+
+    @Transactional
+    @Override
+    public void deleteProfilePic(User user){
+        Optional<User> maybeUser = findByEmail(user.getEmail()); //OF COURSE, this is momentary
+        if(!maybeUser.isPresent()) throw new IllegalStateException();
+        maybeUser.get().deleteImage();
+    }
 }

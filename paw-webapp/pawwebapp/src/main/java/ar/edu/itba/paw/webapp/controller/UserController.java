@@ -234,5 +234,13 @@ public class UserController {
         return new ModelAndView("redirect:/userProfile");
     }
 
+    @RequestMapping(value="/deleteProfilePic")
+    public ModelAndView deleteProfilePic(){
+        User user = securityService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        userService.deleteProfilePic(user);
+        return new ModelAndView("redirect:/userProfile");
+    }
+
 
 }
