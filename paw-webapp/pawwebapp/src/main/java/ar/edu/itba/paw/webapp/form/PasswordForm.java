@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.validations.EmailExists;
 import ar.edu.itba.paw.webapp.validations.NoValidToken;
 import ar.edu.itba.paw.webapp.validations.UniqueUserMail;
 import org.hibernate.validator.constraints.Email;
@@ -15,6 +16,7 @@ public class PasswordForm {
     @Size(min = 8, max = 50)
     @NotNull
     @NoValidToken
+    @EmailExists
     private String email;
 
     public String getEmail() {

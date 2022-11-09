@@ -1728,6 +1728,7 @@ ALL CREDITS TO @andrewsims
 
 .register-form-container div .errors .error,
 .update-form-container div .errors .error,
+.update-product-body div .errors .error,
 .password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
