@@ -5,14 +5,16 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.ProfilePicForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +60,7 @@ public class UserController {
 
     @RequestMapping(value="/userProfile")
     public ModelAndView buyerProfile(
+            @ModelAttribute("profilePicForm") final ProfilePicForm form,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="fromSale", defaultValue="false") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
@@ -79,8 +82,9 @@ public class UserController {
     }
 
     @RequestMapping(value="/buyerProfile")
-    public ModelAndView buyerProfileFromSale() {
-        return buyerProfile(1, true);
+    public ModelAndView buyerProfileFromSale(@ModelAttribute("profilePicForm") final ProfilePicForm form) {
+        //TODO: No me gusta esto, habría que cambiarlo
+        return buyerProfile(form, 1, true);
     }
 
     @RequestMapping(value="/sellerProfile")
@@ -211,7 +215,23 @@ public class UserController {
         //Ecotag management (TODO no se si este estaba medio legacy pero por las dudas lo dejo)
         mav.addObject("path", productService.buildPath(strings));
         return mav;
+    }
 
+    @RequestMapping(value="/updateProfilePic", method= RequestMethod.POST)
+    public ModelAndView updateProfilePic(@Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
+                                         final BindingResult errors){
+        if (errors.hasErrors()) return buyerProfile(form,1,false);
+        byte[] image;
+        try {
+            image = form.getImage().getBytes();
+        } catch (IOException e) {throw new RuntimeException(e);}
+        //TODO: Check how to migrate this logic to service in order to make this call from there
+        // (Current problem: Circular initialization)
+        User user = securityService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        userService.setProfilePic(user, image);
+
+        return new ModelAndView("redirect:/userProfile");
     }
 
 

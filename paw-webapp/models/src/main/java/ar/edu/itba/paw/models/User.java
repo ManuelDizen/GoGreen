@@ -38,6 +38,10 @@ public class User {
     @Column(name="notifications")
     private Boolean notifications;
 
+    @OneToOne
+    @JoinColumn(name = "image_id", nullable = true)
+    private Image image;
+
     @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(
             name="user_roles",
@@ -154,5 +158,13 @@ public class User {
         //this.notifications = this.notifications == 0? 1:0;
         //System.out.println("Entro a toggle!!!!!!!");
         //if(this.notifications == 1) System.out.println("Soy true.");
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

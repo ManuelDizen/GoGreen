@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,14 +25,16 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final EmailService emailService;
+    private final ImageService imageService;
     @Autowired
     public UserServiceImpl(final UserDao userDao, final PasswordEncoder encoder,
-                           RoleService roleService, EmailService emailService){
+                           final RoleService roleService, final EmailService emailService,
+                           final ImageService imageService){
         this.userDao = userDao;
         this.encoder = encoder;
         this.roleService = roleService;
         this.emailService = emailService;
-
+        this.imageService = imageService;
     }
 
     @Transactional
@@ -120,5 +122,21 @@ public class UserServiceImpl implements UserService {
         Optional<Role> userRole = roleService.getByName(role);
         if(!userRole.isPresent()) throw new RoleNotFoundException();
         return user.get().getRoles().contains(userRole.get());
+    }
+
+    @Transactional
+    @Override
+    public void setProfilePic(User user, byte[] image){
+        /*TODO: I think that, for it to work, I need to bring the instance of user here
+            What is written below is an attempt to test this, and does not represent a solution
+            Update: This was effectively the solution. Rethink circular service dependency and retry
+        */
+        Optional<User> maybeUser = findByEmail(user.getEmail()); //OF COURSE, this is momentary
+        if(!maybeUser.isPresent()) throw new IllegalStateException();
+        Image img = null;
+        if(image != null && image.length > 0){
+            img = imageService.create(image);
+        }
+        maybeUser.get().setImage(img);
     }
 }

@@ -2702,6 +2702,12 @@ input[type=number] {
     vertical-align:middle;
 }
 
+.profile-pic{
+    height:100px;
+    width:100px;
+    border-radius:50%;
+}
+
 .news-card{
     background-color: var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);

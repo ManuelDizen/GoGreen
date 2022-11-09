@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,6 +23,63 @@
                                 <c:out value="${user.email}"/>
                             </div>
                         </div>
+                        <c:choose>
+                            <c:when test="${user.image != null}">
+                                <div class="col s6">
+                                    <img src="<c:url value="/image/${user.image.id}"/>" class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
+                                    <div>
+                                        <a href="<c:url value="/deleteProfilePic"/>">
+                                            <i class="left-align tiny tiny_filter material-icons">
+                                                    delete
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col s6">
+                                    <c:url value="/updateProfilePic" var="url"/>
+                                    <form:form modelAttribute="profilePicForm" method="post" action="${url}">
+                                        <div class="file-field input-field img-div-createproduct">
+                                            <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
+                                                <span><spring:message code="createproduct.form.image"/></span>
+                                                <form:input path="image" type="file"/>
+                                            </div>
+                                            <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                                <input class="file-path validate" type="text" readonly id="readonly-input">
+                                            </div>
+                                        </div>
+                                        <form:errors path="image" element="p" cssClass="error"/>
+                                        <div class="center create-submit">
+                                            <button type="submit" class="waves-effect waves-light btn publish-button">
+                                                <spring:message code="updateprofilepic.form.submit"/>
+                                            </button>
+                                        </div>
+                                    </form:form>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col s12">
+                                    <c:url value="/updateProfilePic" var="url"/>
+                                    <form:form modelAttribute="profilePicForm" method="post" action="${url}"
+                                               enctype="multipart/form-data">
+                                        <div class="file-field input-field img-div-createproduct">
+                                            <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
+                                                <span><spring:message code="createproduct.form.image"/></span>
+                                                <form:input path="image" type="file"/>
+                                            </div>
+                                            <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                                <input class="file-path validate" type="text" readonly id="readonly-input">
+                                            </div>
+                                        </div>
+                                        <form:errors path="image" element="p" cssClass="error"/>
+                                        <div class="center create-submit">
+                                            <button type="submit" class="waves-effect waves-light btn publish-button">
+                                                <spring:message code="updateprofilepic.form.submit"/>
+                                            </button>
+                                        </div>
+                                    </form:form>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <div class="purchase underline center"><spring:message code="userprofile.orderstitle"/></div>
                     <div class="seller-profile-container-orders-2">
