@@ -149,8 +149,11 @@ public class UserController {
 
         //TODO: Estamos trayendo TODAS las ordenes de un vendedor para hacer una suma, hay que traerse
         // directamente el entero
-        List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
-        mav.addObject("orders", orders);
+
+        int n_orders = orderService.getTotalOrdersForSeller(seller.get().getUser().getEmail());
+
+        //List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
+        mav.addObject("n_orders", n_orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
 
         List<List<Product>> productPages = productService.divideIntoPages(products, 8);

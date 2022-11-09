@@ -151,4 +151,9 @@ public class OrderServiceImpl implements OrderService {
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
         productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
+
+    @Override
+    public int getTotalOrdersForSeller(String sellerEmail){
+        return orderDao.getTotalOrdersForSeller(sellerEmail);
+    }
 }

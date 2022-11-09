@@ -17,5 +17,6 @@ public interface OrderDao {
     List<Order> getByBuyerEmail(String buyerEmail);
 
     void deleteOrder(long orderId);
+    int getTotalOrdersForSeller(String sellerEmail);
 
 }

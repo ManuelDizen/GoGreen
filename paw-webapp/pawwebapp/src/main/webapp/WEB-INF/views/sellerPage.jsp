@@ -37,7 +37,7 @@
                     </c:forEach>
                 </div>
                 <div class="row sellerpage-info-row">
-                    <spring:message code="sellerpage.totalorders" arguments="${orders.size()}"/>
+                    <spring:message code="sellerpage.totalorders" arguments="${n_orders}"/>
                 </div>
                 <sec:authorize access="hasRole('USER')">
                     <div class="separate-20-top separate-20-bottom margin-auto" style="width:80%; text-align:center;">

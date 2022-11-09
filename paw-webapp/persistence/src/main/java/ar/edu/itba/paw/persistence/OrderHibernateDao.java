@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +55,13 @@ public class OrderHibernateDao implements OrderDao {
     @Override
     public void deleteOrder(long orderId) {
         em.remove(em.find(Order.class, orderId));
+    }
+
+    @Override
+    public int getTotalOrdersForSeller(String sellerEmail){
+        String queryStr = "SELECT COALESCE(SUM(amount), 0) FROM orders WHERE selleremail = :selleremail";
+        Query query = em.createNativeQuery(queryStr);
+        query.setParameter("selleremail", sellerEmail);
+        return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
     }
 }

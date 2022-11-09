@@ -21,4 +21,5 @@ public interface OrderService {
     boolean checkForOrderOwnership(long orderId);
 
     void deleteOrder(long orderId);
+    int getTotalOrdersForSeller(String sellerEmail);
 }

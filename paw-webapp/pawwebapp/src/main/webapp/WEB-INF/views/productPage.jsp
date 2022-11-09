@@ -149,13 +149,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row center flex-center" style="margin:auto;">
-                            <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                <div class="text-center">
-                                    <spring:message code="productpage.linktoseller"/>
-                                </div>
-                            </a>
-                        </div>
                     </div>
                 </c:if>
                 </div>
