@@ -3,10 +3,14 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.CommentDao;
 import ar.edu.itba.paw.interfaces.services.CommentService;
 import ar.edu.itba.paw.interfaces.services.EmailService;
+import ar.edu.itba.paw.interfaces.services.ProductService;
+import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.models.Comment;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.CommentNotFoundException;
+import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,23 +18,34 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentDao commentDao;
     private final EmailService emailService;
+    private final SecurityService securityService;
+    private final ProductService productService;
     private static final int PAGESIZE = 10;
 
     @Autowired
-    public CommentServiceImpl(CommentDao commentDao, EmailService emailService) {
+    public CommentServiceImpl(CommentDao commentDao, EmailService emailService, SecurityService securityService, ProductService productService) {
         this.commentDao = commentDao;
         this.emailService = emailService;
+        this.securityService = securityService;
+        this.productService = productService;
     }
 
     @Transactional
     @Override
-    public Comment create(User user, Product product, String message) {
+    public Comment create(long productId, String message) {
+        User user = securityService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        Optional<Product> maybeProduct = productService.getById(productId);
+        if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
+        final Product product = maybeProduct.get();
+
         Comment comment = commentDao.create(user, product, message);
         if(comment == null) throw new CommentNotFoundException();
         emailService.newComment(user, product, message);

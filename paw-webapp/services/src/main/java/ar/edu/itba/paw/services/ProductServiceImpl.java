@@ -3,10 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +14,8 @@ import java.util.*;
 public class ProductServiceImpl implements ProductService {
 
     private final static int N_LANDING = 4;
+    private final static int ASCENDING = 0;
+    private final static int DESCENDING = 1;
 
     private final ProductDao productDao;
     private final ImageService imageService;
@@ -117,27 +116,27 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
         productList.sort((o1, o2) -> {
-            if (sort == 3) {
-                if (direction == 0) {
+            if (sort == Sort.SORT_POPULAR.getId()) {
+                if (direction == ASCENDING) {
                     return (getSales(o1.getName())- getSales(o2.getName()));
                 } else {
                     return (getSales(o2.getName()) - getSales(o1.getName()));
                 }
 
-            } else if (sort == 2) {
-                if (direction == 0) {
+            } else if (sort == Sort.SORT_PRICE.getId()) {
+                if (direction == ASCENDING) {
                     return (o1.getPrice() - o2.getPrice());
                 } else {
                     return (o2.getPrice() - o1.getPrice());
                 }
-            } else if (sort == 1) {
-                if (direction == 0) {
+            } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
+                if (direction == ASCENDING) {
                     return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
                 } else {
                     return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
                 }
-            } else if (sort == 0) {
-                if (direction == 0)
+            } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
+                if (direction == ASCENDING)
                     return (int) (o1.getProductId() - o2.getProductId());
                 else {
                     return (int) (o2.getProductId() - o1.getProductId());
@@ -163,7 +162,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
+    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
+                                        Integer maxPrice, long areaId, int sort, int direction) {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
@@ -198,12 +198,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void attemptPause(long productId) {
         if(checkForOwnership(productId)){
-            System.out.println("Entro a if de attemptPause");
             Optional<Product> prod = getById(productId);
             if(!prod.isPresent()) throw new ProductNotFoundException();
             Product product = prod.get();
             if(product.getStatus().getId() == ProductStatus.AVAILABLE.getId()){
-                System.out.println("Entro al if de estado");
                 prod.get().setStatus(ProductStatus.PAUSED);
             }
             // Aclaración: Si el status está out of stock, no tiene sentido pausar.
@@ -255,7 +253,8 @@ public class ProductServiceImpl implements ProductService {
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Product> prodToDelete = getById(prodId);
-        if(prodToDelete.isPresent()){
+        if(!prodToDelete.isPresent()) throw new ProductNotFoundException();
+        else{
             Product prod = prodToDelete.get();
             Optional<Seller> prodOwner = sellerService.findById(prod.getSeller().getId());
             if(!prodOwner.isPresent()) throw new UserNotFoundException();
@@ -264,7 +263,6 @@ public class ProductServiceImpl implements ProductService {
 
             return userProdOwner.get().getEmail().equals(user.getEmail());
         }
-        return false;
     }
 
     @Transactional
@@ -356,7 +354,7 @@ public class ProductServiceImpl implements ProductService {
         }
         if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable();
-            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
+            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), DESCENDING);
             addIfNotPresent(toReturn, sorted, amount, product);
         }
         setTagList(toReturn);
@@ -455,6 +453,7 @@ public class ProductServiceImpl implements ProductService {
         Optional<Seller> seller = sellerService.findByUserId(user.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
         Product product = create(seller.get(), categoryId, name, description, stock, price, image);
+        if(product == null) throw new ProductCreationException();
         for (long id : ecotagIds) {
             ecotagService.addTag(Ecotag.getById(id), product.getProductId());
         }

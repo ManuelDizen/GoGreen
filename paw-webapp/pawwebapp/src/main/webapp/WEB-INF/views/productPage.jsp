@@ -285,7 +285,7 @@
         </c:if>
         <sec:authorize access="hasRole('USER')">
             <div class="center">
-                <a id="button" style="margin-bottom: 20px" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger">
+                <a id="button" style="margin:20px 0;" class="waves-effect waves-light btn-small gray accent-4 modal-trigger">
                     <spring:message code="productpage.commentmsg"/>
                 </a>
             </div>

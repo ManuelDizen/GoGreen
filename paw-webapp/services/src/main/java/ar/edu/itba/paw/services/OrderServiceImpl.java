@@ -66,7 +66,11 @@ public class OrderServiceImpl implements OrderService {
         final Product product = maybeProduct.get();
 
         boolean enough = productService.checkForAvailableStock(product, amount);
-        if(!enough) throw new ProductUpdateException();
+        if(!enough){
+            //TODO: Preguntar que hacer acá. Capaz podríamos handlearlo sin un 500
+            // De momento quedo con un 400, pero preguntar.
+            throw new InsufficientStockException();
+        }
 
         User user = securityService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();

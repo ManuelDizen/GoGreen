@@ -18,6 +18,9 @@ import java.util.Optional;
 
 @Controller
 public class UserController {
+
+    private static final int ORDERS_PER_PAGE = 8;
+    private static final int PRODUCTS_PER_PAGE = 6;
     private final UserService userService;
     private final SellerService sellerService;
     private final SecurityService securityService;
@@ -47,7 +50,6 @@ public class UserController {
             throw new UnauthorizedRoleException();
         }
         if(sellerService.findByMail(user.getEmail()).isPresent()){
-            // It's a seller
             return new ModelAndView("redirect:/sellerProfile");
         }
         return new ModelAndView("redirect:/userProfile");
@@ -64,8 +66,8 @@ public class UserController {
         mav.addObject("user", user.get());
 
         List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
-
-        List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
+        //TODO: este método debería estar en algun "utils"
+        List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
 
         mav.addObject("currentPage", page);
         mav.addObject("pages", orderPages);
@@ -93,9 +95,9 @@ public class UserController {
         if(!seller.isPresent()) throw new UserNotFoundException();
 
         List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
-        List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
+        List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
         List<Product> products = productService.findBySeller(seller.get().getId(), false);
-        List<List<Product>> productPages = productService.divideIntoPages(products, 6);
+        List<List<Product>> productPages = productService.divideIntoPages(products, PRODUCTS_PER_PAGE);
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user.get());
@@ -138,6 +140,8 @@ public class UserController {
         news = news.size() > 2? news.subList(0, 2):news;
         mav.addObject("news", news);
 
+        //TODO: Estamos trayendo TODAS las ordenes de un vendedor para hacer una suma, hay que traerse
+        // directamente el entero
         List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
         mav.addObject("orders", orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));

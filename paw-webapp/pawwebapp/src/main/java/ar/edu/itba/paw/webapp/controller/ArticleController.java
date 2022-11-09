@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Article;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.ArticleCreationException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ArticleForm;
@@ -54,20 +55,15 @@ public class ArticleController {
         if(errors.hasErrors()){
             return createArticle(form);
         }
-        User logged = securityService.getLoggedUser();
-        //Should this check even be done? Doesn't spring security check for SELLER role?
-        if(logged == null) throw new UnauthorizedRoleException();
-        Optional<Seller> seller = sellerService.findByUserId(logged.getId());
-        if(!seller.isPresent()) throw new UserNotFoundException();
-
         byte[] image;
         try {
             image = form.getImage().getBytes();
         } catch (IOException e) {throw new RuntimeException(e);}
 
-        articleService.create(seller.get(), form.getMessage(), image, LocalDateTime.now());
+        Article article = articleService.create(form.getMessage(), image, LocalDateTime.now());
+        if(article == null) throw new ArticleCreationException();
 
-        return new ModelAndView("redirect:/sellerPage/" + seller.get().getId());
+        return new ModelAndView("redirect:/sellerPage/" + article.getSeller().getId());
     }
 
     @RequestMapping(value = "/sellerPage/{sellerId:[0-9]+}/news")
@@ -81,8 +77,7 @@ public class ArticleController {
 
         mav.addObject("user", seller.get().getUser());
         User user = securityService.getLoggedUser();
-        String loggedEmail = user == null? null : user.getEmail();
-        mav.addObject("loggedEmail", loggedEmail);
+        mav.addObject("loggedEmail", user == null? null : user.getEmail());
 
         List<List<Article>> newsPages = productService.divideIntoPages(news, 8);
 

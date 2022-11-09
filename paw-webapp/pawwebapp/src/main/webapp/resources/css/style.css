@@ -1918,7 +1918,8 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     justify-content: center;
 }
 
-.createbody div .error {
+.createbody div .error,
+.create-button p{
     font-size: 13px;
     font-weight: bold;
     color: red;
