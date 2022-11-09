@@ -2708,6 +2708,12 @@ input[type=number] {
     border-radius:50%;
 }
 
+.profile-pic-public{
+    height:160px;
+    width:160px;
+    border-radius:50%;
+}
+
 .news-card{
     background-color: var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);

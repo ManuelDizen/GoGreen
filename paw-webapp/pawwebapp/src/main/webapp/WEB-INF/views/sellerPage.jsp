@@ -17,6 +17,10 @@
     <div class="sellerpage-container">
         <div class="row">
             <div class="col s3 sellerpage-info">
+                <div class="flex-center separate-20-top">
+                    <img src="<c:url value="/image/${user.image.id}"/>"
+                         class="image-restrain profile-pic-public flex-column-center-align-vertical" alt=""/>
+                </div>
                 <div class="row sellerpage-info-row sellerpage-title">
                     <spring:message code="userprofile.fullname" arguments="${user.firstName}, ${user.surname}"/>
                 </div>
