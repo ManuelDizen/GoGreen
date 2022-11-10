@@ -1374,7 +1374,7 @@ ALL CREDITS TO @andrewsims
 .eco_chip_small {
     margin:auto;
     max-height: 22px;
-    max-width: 22px;
+    width: 22px;
 }
 
 .tiny_filter {
@@ -1535,7 +1535,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .information {
-    margin-bottom: 5px;
+    margin:auto 0;
 }
 
 .purchase {
@@ -2852,3 +2852,5 @@ input[type=number] {
 .add-image-btn{
     height:36px!important;width:fit-content!important;line-height:36px!important;
 }
+
+.space-icons{margin:0 5px;}
