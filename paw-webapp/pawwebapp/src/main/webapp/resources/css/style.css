@@ -999,6 +999,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .explore-products, .landing-products,
+.explore-sellers,
 .sellerpage-products,
 .landing-categories-container,
 .sellerprofile-action-buttons,
@@ -1040,6 +1041,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin-bottom: 10px;
     width: 100%;
 }
+
+.explore-sellers{width:95%;}
 
 .productpage-ecotag {
     margin-top: 5px; margin-bottom: 5px;
@@ -2687,7 +2690,8 @@ input[type=number] {
     cursor: default;
 }
 
-.product-card-image-container{
+.product-card-image-container,
+.seller-card-image-container{
     height: 50%;
     width: 100%;
     background: white;
@@ -2697,9 +2701,9 @@ input[type=number] {
     margin:auto 0;
 }
 
-.seller-card-image-container{
-    height: 150px; width:150px; border-radius:50%;
-}
+/*.seller-card-image-container{
+    height: 50%; width:100%; border-radius:50%;
+}*/
 
 .image-restrain{
     max-height:100%;

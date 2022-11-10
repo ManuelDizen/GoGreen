@@ -95,6 +95,7 @@ public class ProductController {
         //Product filter
         List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
         if(favorite) {
+            //TODO: esto va en el servicio
             productService.onlyFavorites(filteredProducts, securityService.getLoggedUser().getId());
             favoritePath = "favorite=on&";
         }

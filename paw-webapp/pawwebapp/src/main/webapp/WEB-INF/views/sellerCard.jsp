@@ -16,6 +16,7 @@
            class="card-title product-card-title">
           <c:out value="${seller.user.firstName}"/>
         </a>
+        
 
       </div>
 

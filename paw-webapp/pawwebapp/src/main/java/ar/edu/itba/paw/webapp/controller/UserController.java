@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -201,7 +202,6 @@ public class UserController {
     @RequestMapping(value = "/exploreSellers")
     public ModelAndView exploreSellers(
             @RequestParam(name="name", defaultValue="") final String name,
-            @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="areaId", defaultValue="-1") final long areaId,
             @RequestParam(name="favorite", defaultValue="false") final boolean favorite,
             @RequestParam(name="page", defaultValue = "1") final int page,
@@ -212,6 +212,7 @@ public class UserController {
         //Pagination<Seller> sellers = sellerService.filter(name, areaId, favorite, page, sort, direction);
         List<Seller> sellers = sellerService.getAll();
         final ModelAndView mav = new ModelAndView("exploreSellers");
+        mav.addObject("isEmpty", sellers.isEmpty()); //TODO: Change the "getAll()" call
         mav.addObject("sellers", sellers);
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
@@ -219,8 +220,18 @@ public class UserController {
         mav.addObject("chosenArea", areaId);
         mav.addObject("favorite", favorite);
 
-        //Ecotag management (TODO no se si este estaba medio legacy pero por las dudas lo dejo)
-        mav.addObject("path", productService.buildPath(strings));
+        String favoritePath = "";
+        if(favorite) {
+            //TODO: Filter by favorites (en realidad se debería hacer directo en el servicio inicial)
+            //productService.onlyFavorites(filteredProducts, securityService.getLoggedUser().getId());
+            favoritePath = "favorite=on&";
+        }
+        mav.addObject("favoritePath", favoritePath);
+        mav.addObject("direction", direction);
+        String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
+        mav.addObject("sortName", sortName);
+        mav.addObject("sorting", Sort.values());
+
         return mav;
     }
 
