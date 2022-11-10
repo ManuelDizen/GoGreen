@@ -131,17 +131,7 @@ public class UserServiceImpl implements UserService {
             What is written below is an attempt to test this, and does not represent a solution
             Update: This was effectively the solution. Rethink circular service dependency and retry
         */
-
-        /*
-
-        Lógica: Tengo un src de imagen. Opciones:
-        1) Usuario no teine una imagen asociada aún -> Crear imagen con source apropiado, y setearla
-        2) Usuario tiene una imagen asociada -> No hace falta crear otra instancia de imagen, al fin
-        y al cabo, la imagen anterior no se usa para nada, puedo cambiar el source nomas.
-
-
-         */
-        Optional<User> maybeUser = findByEmail(user.getEmail()); //MOMENTARY; TODO CHANGE
+        Optional<User> maybeUser = findByEmail(user.getEmail()); //MOMENTARY, TODO CHANGE
         if(!maybeUser.isPresent()) throw new IllegalStateException();
         Image img = maybeUser.get().getImage();
         if(img == null){

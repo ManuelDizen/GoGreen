@@ -22,20 +22,17 @@ import java.util.Optional;
 public class SecurityServiceImpl implements SecurityService {
 
     private final UserService userService;
-    private final UserRoleService userRoleService;
-    private final RoleService roleService;
 
     @Autowired
-    public SecurityServiceImpl(final UserService userService, UserRoleService userRoleService, RoleService roleService){
+    public SecurityServiceImpl(final UserService userService){
         this.userService = userService;
-        this.userRoleService = userRoleService;
-        this.roleService = roleService;
     }
 
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    //TODO: Move to UserService
     public User getLoggedUser(){
         Authentication auth = getAuthentication();
         if(auth != null){

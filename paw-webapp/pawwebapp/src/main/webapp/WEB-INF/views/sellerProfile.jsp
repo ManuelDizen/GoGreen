@@ -32,7 +32,25 @@
             </div>
             <c:choose>
                 <c:when test="${user.image != null}">
-                    <div class="col s6 separate-20-top">
+                    <div class="col s12 separate-20-top">
+                        <div class="flex-center">
+                            <img src="<c:url value="/image/${user.image.id}"/>"
+                                 class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
+                        </div>
+                        <div class="flex-center separate-12-top">
+                            <a href="<c:url value="/deleteProfilePic"/>">
+                                <i class="center-align small material-icons white-text">
+                                    delete
+                                </i>
+                            </a>
+                            <a class="modal-trigger" href="#updatePicModal">
+                                <i class="center-align small material-icons white-text">
+                                    edit
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    <%--div class="col s6 separate-20-top">
                         <div class="flex-center">
                             <img src="<c:url value="/image/${user.image.id}"/>" class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
                         </div>
@@ -64,10 +82,15 @@
                                 </button>
                             </div>
                         </form:form>
-                    </div>
+                    </div--%>
                 </c:when>
                 <c:otherwise>
-                    <div class="col s12">
+                    <div class="col s12 text-center separate-20-top">
+                        <a class="waves-effect waves-light btn modal-trigger" href="#updatePicModal">
+                            <spring:message code="updateprofilepic.newpic.msg"/>
+                        </a>
+                    </div>
+                    <%--div class="col s12">
                         <c:url value="/updateProfilePic" var="url"/>
                         <form:form modelAttribute="profilePicForm" method="post" action="${url}"
                                    enctype="multipart/form-data">
@@ -88,10 +111,37 @@
                                 </button>
                             </div>
                         </form:form>
-                    </div>
+                    </div--%>
                 </c:otherwise>
             </c:choose>
-
+            <div id="updatePicModal" class="modal green-modal">
+                <div class="modal-content">
+                    <h3 class="underline text-center">
+                        <spring:message code="updateprofilepic.msg"/>
+                    </h3>
+                    <div class="col s12 separate-20-top">
+                    <c:url value="/updateProfilePic" var="url"/>
+                        <form:form modelAttribute="profilePicForm" method="post" action="${url}"
+                                   enctype="multipart/form-data">
+                            <div class="file-field input-field flex-center">
+                                <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
+                                    <span><spring:message code="createproduct.form.image"/></span>
+                                    <form:input path="image" type="file"/>
+                                </div>
+                                <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                    <input class="file-path validate" type="text" readonly id="readonly-input">
+                                </div>
+                            </div>
+                            <form:errors path="image" element="p" cssClass="error"/>
+                            <div class="center create-submit flex-center">
+                                <button type="submit" class="waves-effect waves-light btn flex-center">
+                                    <spring:message code="updateprofilepic.form.submit"/>
+                                </button>
+                            </div>
+                        </form:form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -124,7 +174,8 @@
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
                                             <div class="seller-inline-flex">
-                                                <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
+                                                <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger"
+                                                   href="#stockModal${product.productId}">
                                                     <i class="material-icons">warning</i>
                                                     <spring:message code="sellerprofile.warning.nostock"/>
                                                 </a>

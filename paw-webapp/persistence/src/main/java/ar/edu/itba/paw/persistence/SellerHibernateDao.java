@@ -1,18 +1,22 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
+import ar.edu.itba.paw.models.Area;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class SellerHibernateDao implements SellerDao {
+
+    private static int EXPLORE_SELLER_PAGE_SIZE = 8;
 
     @PersistenceContext
     private EntityManager em;
@@ -48,5 +52,41 @@ public class SellerHibernateDao implements SellerDao {
     @Override
     public List<Seller> getAll() {
         return em.createQuery("FROM Seller", Seller.class).getResultList();
+    }
+
+    public Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
+                              int direction){
+        //TODO: Creo que direction no tiene mucho sentido acá considerando que después vamos a sortear
+        StringBuilder nativeQuery = new StringBuilder();
+        Map<String, Object> args = new HashMap<>();
+        nativeQuery.append("SELECT id FROM sellers WHERE true");
+        if(name != null && !name.equals("")){
+            nativeQuery.append(" AND userid = (SELECT id FROM users WHERE LOWER(name) like :name");
+            args.put("name", '%' + name.toLowerCase() + '%');
+        }
+        if(area != null){
+            nativeQuery.append(" AND areaid = :areaid");
+            args.put("areaid", area.getId());
+        }
+        //TODO: Filter by favorites (creo que vamos a necesitar user y sellerpara comparar los ids)
+        nativeQuery.append(" LIMIT :limit OFFSET :offset");
+        Query finalNativeQuery = em.createNativeQuery(nativeQuery.toString());
+        for(String key : args.keySet()){
+            finalNativeQuery.setParameter(key, args.get(key));
+        }
+        finalNativeQuery.setParameter("limit", EXPLORE_SELLER_PAGE_SIZE);
+        finalNativeQuery.setParameter("offset", (page-1)*EXPLORE_SELLER_PAGE_SIZE);
+
+        final List<Long> sellerIds = new ArrayList<>();
+        for (Object o : finalNativeQuery.getResultList()) {
+            sellerIds.add(((Integer) o).longValue());
+        }
+
+        //TODO: Finish!!!
+
+
+
+        return new Pagination<>(new ArrayList<>(), (long) page,
+(finalNativeQuery.getResultList().size() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
     }
 }

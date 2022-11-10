@@ -19,14 +19,9 @@
         <div class="col s4" style="height:500px;">
 
         </div>
-        <div class="col s7" style="height:500px;">
+        <div class="col s7 explore-sellers-card-container">
             <c:forEach items="${sellers}" var="seller">
-                <div>
-                    <h4>
-                        <spring:message code="fullname"
-                        arguments="${seller.user.firstName}, ${seller.user.surname}"/>
-                    </h4>
-                </div>
+                <%@include file="sellerCard.jsp"%>
             </c:forEach>
         </div>
     </div>

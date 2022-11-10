@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces.services;
 
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 
 import java.util.List;
@@ -21,5 +22,6 @@ public interface SellerService {
     void registerSeller(String firstName, String surname,
                                   String email, String password, Locale locale, String phone,
                                   String address, long areaId);
-
+    Pagination<Seller> filter(String name, long areaId, boolean favorite, int page,
+                              int sort, int direction);
 }

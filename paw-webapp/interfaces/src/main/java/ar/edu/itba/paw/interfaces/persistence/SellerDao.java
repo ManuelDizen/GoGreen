@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.interfaces.persistence;
 
+import ar.edu.itba.paw.models.Area;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 
@@ -14,5 +16,6 @@ public interface SellerDao {
     Optional<Seller> findByUserId(long userId);
     Optional<Seller> findByMail(String mail);
     List<Seller> getAll();
-
+    Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
+                              int direction);
 }

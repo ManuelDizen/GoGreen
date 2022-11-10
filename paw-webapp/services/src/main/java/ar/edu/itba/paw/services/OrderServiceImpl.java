@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void createAndNotify(long productId, int amount, String message) {
-
+        //TODO: Cambiar nombre (métodos tienen que usar unitarios)
         final Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
@@ -99,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
                 amount, product.getPrice(), user.getFirstName(), user.getEmail(),
                 message, sellerService.getLocale(seller.getUser().getId()));
 
-        LocalDateTime dateTime = LocalDateTime.now();
+        LocalDateTime dateTime = LocalDateTime.now(); //TODO: Explorar acá
 
         Order order = orderDao.create(product.getName(), user.getFirstName(),
                 user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),

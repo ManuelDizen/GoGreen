@@ -2,9 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Role;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
 import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
@@ -108,5 +106,13 @@ public class SellerServiceImpl implements SellerService {
         if(!role.isPresent()) throw new RoleNotFoundException();
         user.addRole(role.get());
         emailService.registration(user, user.getLocale());
+    }
+
+    public Pagination<Seller> filter(String name, long areaId, boolean favorite, int page,
+                              int sort, int direction){
+        Area area = Area.getById(areaId);
+        Pagination<Seller> toReturn = sellerDao.filter(name, area, favorite, page, direction);
+        // sortSellers(toReturn, sortType);
+        return toReturn;
     }
 }
