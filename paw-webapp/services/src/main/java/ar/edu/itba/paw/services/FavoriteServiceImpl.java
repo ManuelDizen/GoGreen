@@ -100,4 +100,13 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteDao.getSubscribedUsers(seller);
     }
 
+    @Override
+    public List<Long> getFavIdsByUser(User user){
+        List<Long> toReturn = new ArrayList<>();
+        if(user == null) return toReturn;
+        List<Favorite> favorites = getByUserId(user.getId());
+        for(Favorite f : favorites) toReturn.add(f.getSeller().getId());
+        return toReturn;
+    }
+
 }

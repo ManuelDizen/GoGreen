@@ -231,6 +231,7 @@ public class UserController {
         String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
         mav.addObject("sortName", sortName);
         mav.addObject("sorting", Sort.values());
+        mav.addObject("favIds", favoriteService.getFavIdsByUser(securityService.getLoggedUser()));
 
         return mav;
     }

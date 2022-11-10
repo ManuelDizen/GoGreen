@@ -41,6 +41,11 @@
           </div>
         </div>
       </c:forEach>
+      <div class="separate-12-top flex-center">
+        <a class="waves-effect waves-light btn-small" href="<c:url value="/exploreSellers"/>">
+          <spring:message code="newsfeed.exploresellers"/>
+        </a>
+      </div>
     </div>
     <div class="col s8">
       <c:set var="displayName" value="1"/>

@@ -15,4 +15,5 @@ public interface FavoriteService {
     List<Seller> getFavoriteSellersByUserId(long userId);
     List<User> getSubscribedUsers(Seller seller);
 
+    List<Long> getFavIdsByUser(User user);
 }

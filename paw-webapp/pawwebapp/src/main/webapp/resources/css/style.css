@@ -2807,6 +2807,7 @@ input[type=number] {
     border: 1px solid var(--palette-details-light);
     margin-top:20px;
     margin-left:50px;
+    padding: 5px 20px 20px 20px !important;
 }
 
 .user-fav-card{
