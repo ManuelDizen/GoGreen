@@ -184,6 +184,18 @@ nav {
     color: #ADE28A;
 }
 
+.green-font {
+    color: #ADE28A;
+    margin-top: 10px;
+}
+
+.seller-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
 [type="checkbox"] {
     margin-top: 10px;
     margin-right: 5px;
@@ -1264,16 +1276,18 @@ ALL CREDITS TO @andrewsims
     max-height: 100px;
 }
 
+
 .product-card{
     width: 22%;
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
-    height:420px;
+    height: 420px;
     margin:10px auto;
     border-radius:10px 10px 0 0;
     overflow:hidden;
 }
+
 
 .product-card-2{
     width: 46%;
@@ -1333,6 +1347,7 @@ ALL CREDITS TO @andrewsims
 .product-card .card-content > a{
     color: #ADE28A;
 }
+
 
 .product-card .card-content > a {
     margin-top: 0;
@@ -1471,6 +1486,7 @@ ALL CREDITS TO @andrewsims
 /*    margin-bottom: 2px;*/
 /*    margin-top: 2px;*/
 /*}*/
+
 
 .product-card .card-content .center {
     margin-top: 25px;

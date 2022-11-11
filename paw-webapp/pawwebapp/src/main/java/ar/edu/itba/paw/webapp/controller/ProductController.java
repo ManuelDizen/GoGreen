@@ -161,7 +161,7 @@ public class ProductController {
         mav.addObject("currentPage", page);
 
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
-        Area area = Area.getById(seller.get().getAreaId());
+        Area area = seller.get().getArea();
         mav.addObject("area", area);
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);

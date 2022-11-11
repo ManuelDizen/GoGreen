@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface SellerDao {
 
-    Seller create(User user, String phone, String address, long areaId);
+    Seller create(User user, String phone, String address, Area area);
+
     Optional<Seller> findById(long id);
     Optional<Seller> findByUserId(long userId);
     Optional<Seller> findByMail(String mail);

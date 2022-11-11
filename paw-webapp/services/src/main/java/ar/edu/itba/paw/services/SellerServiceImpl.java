@@ -33,11 +33,11 @@ public class SellerServiceImpl implements SellerService {
 
     @Transactional
     @Override
-    public Seller create(long userid, String phone, String address, long areaId) {
+    public Seller create(long userid, String phone, String address, Area area) {
         Optional<User> maybeUser = userService.findById(userid);
         if(!maybeUser.isPresent()) throw new UserNotFoundException();
         User user = maybeUser.get();
-        return sellerDao.create(user, phone, address, areaId);
+        return sellerDao.create(user, phone, address, area);
     }
 
     @Override
@@ -97,10 +97,10 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public void registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
-                        String address, long areaId){
+                        String address, Area area){
         User user = userService.register(firstName, surname, email, password, locale);
         if(user == null) throw new UserRegisterException();
-        Seller seller = create(user.getId(), phone, address, areaId);
+        Seller seller = create(user.getId(), phone, address, area);
         if(seller == null) throw new SellerRegisterException();
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();

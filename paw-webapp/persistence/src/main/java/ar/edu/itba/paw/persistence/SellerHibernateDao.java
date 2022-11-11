@@ -22,8 +22,8 @@ public class SellerHibernateDao implements SellerDao {
     private EntityManager em;
 
     @Override
-    public Seller create(User user, String phone, String address, long areaId) {
-        final Seller seller = new Seller(user, phone, address, areaId);
+    public Seller create(User user, String phone, String address, Area area) {
+        final Seller seller = new Seller(user, phone, address, area);
         em.persist(seller);
         return seller;
     }

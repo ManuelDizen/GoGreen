@@ -92,7 +92,7 @@ public class RegisterController {
         }
         sellerService.registerSeller(form.getFirstName(), form.getSurname(),
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
-                form.getAddress(), form.getArea());
+                form.getAddress(), Area.getById(form.getArea()));
         authWithAuthManager(request, form.getEmail(), form.getPassword());
 
         //TODO: Check how to link if coming from product page
