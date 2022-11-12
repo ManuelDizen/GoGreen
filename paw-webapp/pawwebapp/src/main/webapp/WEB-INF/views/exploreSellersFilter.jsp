@@ -17,12 +17,13 @@
                 </div>
             </c:if>
             <c:if test="${favorite}">
-                <div class="eco_input" style="padding:0; text-align:left; width:58%;">
-                    <label style="margin: 0 10px;" for="favorite2">
+                <div class="eco_input flex-column-center-align-vertical" style="padding:0; text-align:left;
+                width:58%; font-size:20px;">
+                    <label style="margin: 0 10px; font-size: 15px;" for="favorite2">
                         <spring:message code="explore.filterform.favorite"/>
                     </label>
                 </div>
-                <div style="text-align: right; width: 40%;">
+                <div style="text-align: center">
                     <input class="star star-table-cell" name="favorite" type="checkbox" checked="checked" id="favorite2">
                 </div>
             </c:if>
