@@ -17,6 +17,5 @@ public interface SellerDao {
     Optional<Seller> findByUserId(long userId);
     Optional<Seller> findByMail(String mail);
     List<Seller> getAll();
-    Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
-                              int direction);
+    Pagination<Seller> filter(String name, Area area, boolean favorite, int page, long userId);
 }

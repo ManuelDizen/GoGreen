@@ -23,6 +23,5 @@ public interface SellerService {
     void registerSeller(String firstName, String surname,
                                   String email, String password, Locale locale, String phone,
                                   String address, Area area);
-    Pagination<Seller> filter(String name, long areaId, boolean favorite, int page,
-                              int sort, int direction);
+    Pagination<Seller> filter(String name, long areaId, boolean favorite, int page, long userId);
 }

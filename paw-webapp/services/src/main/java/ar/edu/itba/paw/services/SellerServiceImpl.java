@@ -115,9 +115,9 @@ public class SellerServiceImpl implements SellerService {
     }
 
     public Pagination<Seller> filter(String name, long areaId, boolean favorite, int page,
-                              int sort, int direction){
+                              long userId){
         Area area = Area.getById(areaId);
-        Pagination<Seller> toReturn = sellerDao.filter(name, area, favorite, page, direction);
+        Pagination<Seller> toReturn = sellerDao.filter(name, area, favorite, page, userId);
         // sortSellers(toReturn, sortType);
         return toReturn;
     }

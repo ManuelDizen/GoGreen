@@ -56,13 +56,13 @@ public class SellerHibernateDao implements SellerDao {
     }
 
     public Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
-                              int direction){
+                              long userId){
 
         //TODO: Creo que direction no tiene mucho sentido acá considerando que después vamos a sortear
         StringBuilder nativeQuery = new StringBuilder();
         Map<String, Object> args = new HashMap<>();
         nativeQuery.append("SELECT id FROM sellers WHERE true");
-        System.out.println("name!! " + name.toLowerCase());
+
         if(name != null && !name.equals("")){
             nativeQuery.append(" AND userid IN (SELECT id FROM users WHERE LOWER(firstName) like :name)");
             args.put("name", '%' + name.toLowerCase() + '%');
@@ -71,8 +71,13 @@ public class SellerHibernateDao implements SellerDao {
             nativeQuery.append(" AND areaid = :areaid");
             args.put("areaid", area.getId());
         }
-        //TODO: Filter by favorites (creo que vamos a necesitar user y sellerpara comparar los ids)
+        if(favorite) {
+            nativeQuery.append(" AND id IN (SELECT seller_id FROM favorites WHERE user_id = :userId)");
+            args.put("userId", userId);
+        }
+
         nativeQuery.append(" LIMIT :limit OFFSET :offset");
+
         Query finalNativeQuery = em.createNativeQuery(nativeQuery.toString());
         for(String key : args.keySet()){
             finalNativeQuery.setParameter(key, args.get(key));
@@ -85,7 +90,6 @@ public class SellerHibernateDao implements SellerDao {
             sellerIds.add(((BigInteger) o).longValue());
         }
 
-        //TODO: Finish!!!
         if(sellerIds.isEmpty())
             return new Pagination<>(new ArrayList<>(), (long) page,
                     0);
