@@ -112,6 +112,12 @@ public class AdviceController {
         return new ModelAndView("forward:/error500");
     }
 
+    @ExceptionHandler(TokenNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Token Not Found")
+    public ModelAndView articleNotFoundError(TokenNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error400");
+    }
     @ExceptionHandler(ArticleNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Article Not Found")
     public ModelAndView articleNotFoundError(ArticleNotFoundException e){

@@ -126,9 +126,13 @@ public class UserController {
     @RequestMapping(value="/sellerPage/{sellerId:[0-9]+}")
     public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId,
                                    @RequestParam(name="page", defaultValue = "1") final int page){
+
         ModelAndView mav = new ModelAndView("sellerPage");
         Optional<Seller> seller = sellerService.findById(sellerId);
-        if(!seller.isPresent()) throw new UserNotFoundException();
+        if(!seller.isPresent()){
+            System.out.println("!!! No encontre seller con sellerId " + sellerId + "!!!\n\n");
+            throw new UserNotFoundException();
+        }
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
         mav.addObject("loggedEmail", userService.getLoggedEmail());

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.services.PasswordService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.TokenNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class PasswordServiceImpl implements PasswordService {
     @Transactional
     public void burnToken(User user){
         Optional<Token> token = getByUser(user);
-        if(!token.isPresent()) return; //TODO: Create custom exception
+        if(!token.isPresent()) throw new TokenNotFoundException(); //TODO: Create custom exception
         token.get().use();
     }
 

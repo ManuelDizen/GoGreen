@@ -154,10 +154,7 @@ public class UserServiceImpl implements UserService {
         if(auth != null) {
             Optional<User> user = findByEmail(auth.getName());
             // Remember username is given by email and not a proper username
-            if (!user.isPresent()) {
-                throw new UserNotFoundException();
-            }
-            return user.get().getEmail();
+            return user.map(User::getEmail).orElse(null);
         }
         return null;
     }

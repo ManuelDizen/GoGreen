@@ -31,7 +31,7 @@
                 </div>
                 <div class="row sellerpage-info-row">
                     <c:forEach items="${areas}" var="area">
-                        <c:if test="${area.id == seller.areaId}">
+                        <c:if test="${area.id == seller.area.id}">
                             <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
                         </c:if>
                     </c:forEach>
