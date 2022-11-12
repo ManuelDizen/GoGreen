@@ -28,7 +28,9 @@ public interface UserService {
 
     boolean isBuyer(long userId);
     void setProfilePic(User user, byte[] image);
-    void deleteProfilePic(User user);
+    void deleteProfilePic();
     User getLoggedUser();
     String getLoggedEmail();
+    boolean isLoggedUser();
+    boolean isLoggedSeller();
 }

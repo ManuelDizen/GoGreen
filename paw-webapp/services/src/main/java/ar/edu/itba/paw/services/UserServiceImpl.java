@@ -149,10 +149,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteProfilePic(User user){
-        Optional<User> maybeUser = findByEmail(user.getEmail()); //OF COURSE, this is momentary
-        if(!maybeUser.isPresent()) throw new IllegalStateException();
-        maybeUser.get().deleteImage();
+    public void deleteProfilePic(){
+        User user = getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        user.deleteImage();
     }
 
     @Override
@@ -177,6 +177,17 @@ public class UserServiceImpl implements UserService {
             return user.get().getEmail();
         }
         return null;
+    }
+    @Override
+    public boolean isLoggedUser(){
+        User user = getLoggedUser();
+        return user != null && user.getRoles().contains("SELLER");
+    }
+
+    @Override
+    public boolean isLoggedSeller(){
+        User user = getLoggedUser();
+        return user != null && user.getRoles().contains("USER");
     }
     private Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();

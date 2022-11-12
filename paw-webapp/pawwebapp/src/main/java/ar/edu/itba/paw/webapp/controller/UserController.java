@@ -260,18 +260,14 @@ public class UserController {
 
     @RequestMapping(value="/deleteProfilePic")
     public ModelAndView deleteProfilePic(HttpServletRequest request){
-        User user = userService.getLoggedUser();
-        if(user == null) throw new ForbiddenActionException();
-        userService.deleteProfilePic(user);
+        userService.deleteProfilePic();
         String referer = request.getHeader("Referer");
         if(referer.contains("updateProfilePic")){
-            if(userService.isBuyer(user.getId()))
+            if(userService.isLoggedUser())
                 referer = "/userProfile";
-            else if(userService.isSeller(user.getId()))
+            else if(userService.isLoggedSeller())
                 referer = "/sellerProfile";
         }
         return new ModelAndView("redirect:" + referer);
     }
-
-
 }
