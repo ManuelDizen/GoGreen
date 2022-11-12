@@ -62,8 +62,9 @@ public class SellerHibernateDao implements SellerDao {
         StringBuilder nativeQuery = new StringBuilder();
         Map<String, Object> args = new HashMap<>();
         nativeQuery.append("SELECT id FROM sellers WHERE true");
+        System.out.println("name!! " + name.toLowerCase());
         if(name != null && !name.equals("")){
-            nativeQuery.append(" AND userid = (SELECT id FROM users WHERE LOWER(name) like :name");
+            nativeQuery.append(" AND userid IN (SELECT id FROM users WHERE LOWER(firstName) like :name)");
             args.put("name", '%' + name.toLowerCase() + '%');
         }
         if(area != null){
@@ -87,7 +88,7 @@ public class SellerHibernateDao implements SellerDao {
         //TODO: Finish!!!
         if(sellerIds.isEmpty())
             return new Pagination<>(new ArrayList<>(), (long) page,
-                    (finalNativeQuery.getResultList().size() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
+                    0);
 
         final TypedQuery<Seller> finalQuery =
                 em.createQuery("SELECT DISTINCT s FROM Seller s WHERE s.id IN :sellers", Seller.class);
