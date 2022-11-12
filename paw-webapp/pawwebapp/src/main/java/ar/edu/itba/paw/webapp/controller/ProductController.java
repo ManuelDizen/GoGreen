@@ -8,7 +8,6 @@ import ar.edu.itba.paw.webapp.form.CommentForm;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 import ar.edu.itba.paw.webapp.form.ProductForm;
 import ar.edu.itba.paw.webapp.form.UpdateProdForm;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,6 +37,8 @@ public class ProductController {
     private final UserService userService;
 
     private static final int INTERESTING_SIZE = 4;
+    private static final int PRODUCTS_PER_PAGE = 12;
+
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
                              EcotagService ecotagService, final OrderService orderService,
@@ -88,7 +89,8 @@ public class ProductController {
 
         List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter,
                 maxPrice, areaId, sort, direction, favorite);
-        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts, 12);
+        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts,
+                PRODUCTS_PER_PAGE);
 
         //Sorting
         mav.addObject("sort", sort);
@@ -153,9 +155,6 @@ public class ProductController {
         mav.addObject("ecotags", ecotags);
         mav.addObject("categories", Category.values());
         mav.addObject("seller", seller.get());
-
-
-        //TODO: See how to optimize this 4 states while keeping it parametrized
         mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
         mav.addObject("pausedId", ProductStatus.PAUSED.getId());
         mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
@@ -169,24 +168,13 @@ public class ProductController {
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
-        if(errors.hasErrors() || form.getAmount() == null){
+        if(errors.hasErrors()){
             return productPage(productId, form, commentForm,1,false, true);
         }
-
-        orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
-
+        orderService.create(productId, form.getAmount(), form.getMessage());
         ModelAndView mav = new ModelAndView("redirect:/buyerProfile");
         return mav;
     }
-
-    //TODO: Este método se usa? Dejo comentado para probar, si no cambia nada borro
-    /*
-    @RequestMapping(value="/createdProduct/{productId}")
-    public ModelAndView createdProduct(@PathVariable final long productId,
-                                       @ModelAttribute("orderForm") final OrderForm form,
-                                       @ModelAttribute("commentForm") final CommentForm commentForm) {
-        return productPage(productId, form, commentForm, 1, true, false);
-    }*/
 
     @RequestMapping(value = "/newComment/{productId}", method = {RequestMethod.POST})
     public ModelAndView comment(@PathVariable final long productId,
@@ -251,8 +239,6 @@ public class ProductController {
     ){
         productService.checkForOwnership(productId);
         ModelAndView mav = new ModelAndView("/updateProduct");
-        // Note on "getById()" call: As I have called "checkForOwnership()", I can assure that
-        // the product exists. Therefore, I can directly use the Product object.
         mav.addObject("product", productService.getById(productId).get());
         return mav;
     }

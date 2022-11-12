@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void createAndNotify(long productId, int amount, String message) {
+    public void create(long productId, int amount, String message) {
         //TODO: Cambiar nombre (métodos tienen que usar unitarios)
         final Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();

@@ -15,7 +15,7 @@ public interface OrderService {
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);
     List<Order> getByBuyerEmail(String buyerEmail);
-    void createAndNotify(long productId, int amount, String message);
+    void create(long productId, int amount, String message);
 
 
     boolean checkForOrderOwnership(long orderId);

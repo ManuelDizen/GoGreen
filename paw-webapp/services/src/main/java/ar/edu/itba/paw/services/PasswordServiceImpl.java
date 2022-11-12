@@ -75,4 +75,13 @@ public class PasswordServiceImpl implements PasswordService {
         token.get().use();
     }
 
+    @Override
+    public void updatePassword(String token, String password){
+        Optional<User> maybeUser = getByToken(token);
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+        userService.changePassword(maybeUser.get().getId(), password);
+        burnToken(maybeUser.get());
+    }
+
 }

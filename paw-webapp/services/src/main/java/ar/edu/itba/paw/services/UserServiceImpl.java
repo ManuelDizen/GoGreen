@@ -81,7 +81,6 @@ public class UserServiceImpl implements UserService {
         Optional<User> maybeUser = userDao.findById(userId);
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
-
         User user = maybeUser.get();
         user.setPassword(encoder.encode(newPassword));
     }

@@ -77,7 +77,7 @@ public class RegisterController {
             @ModelAttribute("sellerForm") final SellerForm form
     ){
         final ModelAndView mav = new ModelAndView("registerseller");
-        mav.addObject("areas", Area.values()); //solo esta línea
+        mav.addObject("areas", Area.values());
         return mav;
     }
 
@@ -135,18 +135,11 @@ public class RegisterController {
     public ModelAndView confirmPassword(
             @Valid @ModelAttribute("updatePasswordForm") final UpdatePasswordForm updatePasswordForm,
             final BindingResult errors) {
-
         if(errors.hasErrors()) {
             return newPassword(updatePasswordForm.getToken(), updatePasswordForm);
         }
-        Optional<User> maybeUser = passwordService.getByToken(updatePasswordForm.getToken());
-        if(!maybeUser.isPresent())
-            throw new UserNotFoundException();
-        userService.changePassword(maybeUser.get().getId(), updatePasswordForm.getPassword());
-        //TODO: Esto tiene que ir a servicio, pero no puedo por como esta armado.
-        passwordService.burnToken(maybeUser.get());
+        passwordService.updatePassword(updatePasswordForm.getToken(), updatePasswordForm.getPassword());
         return new ModelAndView("redirect:/login");
-
     }
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {

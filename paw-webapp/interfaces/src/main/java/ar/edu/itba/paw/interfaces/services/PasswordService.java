@@ -14,5 +14,6 @@ public interface PasswordService {
 
     Optional<User> getByToken(String token);
     void burnToken(User user);
+    void updatePassword(String token, String password);
 
 }
