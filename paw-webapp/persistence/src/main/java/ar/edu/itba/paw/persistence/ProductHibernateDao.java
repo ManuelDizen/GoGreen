@@ -180,4 +180,11 @@ public class ProductHibernateDao implements ProductDao {
         query.setParameter("categoryId", categoryId);
         return query.getResultList();
     }
+
+    @Override
+    public boolean atLeastOneProduct(){
+        String queryStr = "SELECT COUNT(*) FROM products";
+        Query query = em.createNativeQuery(queryStr);
+        return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue() > 0;
+    }
 }

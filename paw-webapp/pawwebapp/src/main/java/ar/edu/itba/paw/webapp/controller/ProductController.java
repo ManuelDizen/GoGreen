@@ -37,7 +37,7 @@ public class ProductController {
 
     private final UserService userService;
 
-    
+    private static final int INTERESTING_SIZE = 4;
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
                              EcotagService ecotagService, final OrderService orderService,
@@ -63,12 +63,8 @@ public class ProductController {
             @RequestParam(name="direction", defaultValue = "1") final int direction
     ) {
         final ModelAndView mav = new ModelAndView("explore");
-
-        //TODO: This could (should definitely) be optimized
-        // Howto: create method in service called "atLeastOne" which takes the COUNT(*)
-        // of the query, and does not need to load all products in memory...
-        List<Product> allProducts = productService.getAvailable();
-        mav.addObject("isEmpty", allProducts.isEmpty());
+        boolean atLeastOne = productService.atLeastOneProduct();
+        mav.addObject("isEmpty", atLeastOne);
 
         //Parameters for filter
         mav.addObject("name", name);
@@ -77,10 +73,7 @@ public class ProductController {
         mav.addObject("areas", Area.values());
         mav.addObject("chosenArea", areaId);
         mav.addObject("favorite", favorite);
-        if(maxPrice > -1)
-            mav.addObject("maxPrice", maxPrice);
-        else
-            mav.addObject("maxPrice", null);
+        mav.addObject("maxPrice", maxPrice > -1?maxPrice:null);
 
         //Ecotag management
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
@@ -91,18 +84,10 @@ public class ProductController {
         List<Ecotag> tagsToFilter = ecotagService.filterByTags(strings, boolTags);
         mav.addObject("ecotagList", Ecotag.values());
         mav.addObject("boolTags", boolTags);
+        mav.addObject("favoritePath", favorite?"favorite=on&":"");
 
-        String favoritePath = "";
-        //Product filter
-        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
-        if(favorite) {
-            //TODO: esto va en el servicio
-            productService.onlyFavorites(filteredProducts, userService.getLoggedUser().getId());
-            favoritePath = "favorite=on&";
-        }
-
-        mav.addObject("favoritePath", favoritePath);
-
+        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter,
+                maxPrice, areaId, sort, direction, favorite);
         List<List<Product>> productPages = productService.divideIntoPages(filteredProducts, 12);
 
         //Sorting
@@ -146,8 +131,7 @@ public class ProductController {
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
         mav.addObject("created", created);
-        List<Product> interesting = productService.getInteresting(productObj, 4);
-        mav.addObject("interesting", interesting);
+        mav.addObject("interesting", productService.getInteresting(productObj, INTERESTING_SIZE));
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
@@ -156,6 +140,7 @@ public class ProductController {
         User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
+        //TODO: nooo esto hay que cambiarlo
         List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
         mav.addObject("comments", comments.get(page-1));
         mav.addObject("commentPages", comments);

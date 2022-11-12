@@ -19,13 +19,12 @@ public interface ProductService {
     List<Product> getAvailable(int limit);
     List<Product> getPopular(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
-
-    void onlyFavorites(List<Product> productList, long userId);
     void sortProducts(List<Product> productList, int sort, int direction);
 
     <T> List<List<T>> divideIntoPages(List<T> list, int pageSize);
 
-    List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction);
+    List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice,
+                                 long areaId, int sort, int direction, boolean favorite);
 
     void deleteProduct(long productId);
     void attemptDelete(long productId);
@@ -58,4 +57,5 @@ public interface ProductService {
     List<Product> getByCategory(Category c);
 
     List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser);
+    boolean atLeastOneProduct();
 }

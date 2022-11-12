@@ -22,4 +22,5 @@ public interface OrderService {
 
     void deleteOrder(long orderId);
     int getTotalOrdersForSeller(String sellerEmail);
+    int getTotalOrdersForUser(String userEmail);
 }

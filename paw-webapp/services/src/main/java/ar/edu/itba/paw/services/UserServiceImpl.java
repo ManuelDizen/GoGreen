@@ -100,10 +100,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void toggleNotifications(long userId){
-        Optional<User> user = findById(userId);
-        if(!user.isPresent()) throw new ForbiddenActionException();
-        user.get().toggleNotifications();
+    public void toggleNotifications(){
+        User user = getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        user.toggleNotifications();
     }
 
     @Transactional
@@ -128,19 +128,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void setProfilePic(User user, byte[] image){
+    public void setProfilePic(byte[] image){
         /*TODO: I think that, for it to work, I need to bring the instance of user within the transactional method
             What is written below is an attempt to test this, and does not represent a solution
             Update: This was effectively the solution. Rethink circular service dependency and retry
         */
-        Optional<User> maybeUser = findByEmail(user.getEmail()); //MOMENTARY, TODO CHANGE
-        if(!maybeUser.isPresent()) throw new IllegalStateException();
-        Image img = maybeUser.get().getImage();
+        User user = getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        Image img = user.getImage();
         if(img == null){
             if(image != null && image.length > 0){
                 img = imageService.create(image);
             }
-            maybeUser.get().setImage(img);
+            user.setImage(img);
         }
         else{
             img.setSource(image);

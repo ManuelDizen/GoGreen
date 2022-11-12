@@ -18,7 +18,7 @@ public interface UserService {
     Optional<User> findById(long userId);
 
     List<User> getAll();
-    void toggleNotifications(long userId);
+    void toggleNotifications();
 
     void changePassword(long userId, String newPassword);
 
@@ -27,7 +27,7 @@ public interface UserService {
     boolean isSeller(long userId);
 
     boolean isBuyer(long userId);
-    void setProfilePic(User user, byte[] image);
+    void setProfilePic(byte[] image);
     void deleteProfilePic();
     User getLoggedUser();
     String getLoggedEmail();

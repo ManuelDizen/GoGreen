@@ -22,7 +22,6 @@ public class BasicController {
 
     private final ProductService productService;
     private final UserService userService;
-
     private final OrderService orderService;
 
     @Autowired
@@ -44,8 +43,7 @@ public class BasicController {
         // solo para ver si es un conjunto vacio. Revisar.
         if(loggedUser!=null) ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
         List<Product> products = productService.getLandingProducts(loggedUser, ordersForUser);
-        boolean popular = loggedUser != null &&
-                (orderService.getByBuyerEmail(loggedUser.getEmail()).size() != 0);
+        boolean popular = loggedUser != null && (orderService.getTotalOrdersForUser(loggedUser.getEmail()) != 0);
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("products", products);
         mav.addObject("popular", popular);

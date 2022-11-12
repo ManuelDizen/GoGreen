@@ -152,6 +152,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public int getTotalOrdersForUser(String userEmail){
+        return orderDao.getTotalOrdersForSeller(userEmail);
+    }
+    @Override
     public int getTotalOrdersForSeller(String sellerEmail){
         return orderDao.getTotalOrdersForSeller(sellerEmail);
     }

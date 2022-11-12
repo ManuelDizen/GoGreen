@@ -12,7 +12,9 @@ public interface FavoriteService {
     boolean isFavorite(User user, Seller seller);
     boolean isFavorite(Seller seller);
 
+    List<Seller> getFavoriteSellersByUserId();
     List<Seller> getFavoriteSellersByUserId(long userId);
+
     List<User> getSubscribedUsers(Seller seller);
 
     List<Long> getFavIdsByUser(User user);

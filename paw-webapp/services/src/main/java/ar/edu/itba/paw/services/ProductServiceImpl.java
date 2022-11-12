@@ -102,12 +102,6 @@ public class ProductServiceImpl implements ProductService {
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
     }
 
-    @Override
-    public void onlyFavorites(List<Product> productList, long userId) {
-        List<Seller> sellers = favoriteService.getFavoriteSellersByUserId(userId);
-        productList.removeIf(product -> !sellers.contains(product.getSeller()));
-    }
-
     private int getSales(String productName) {
         return productDao.getSales(productName);
     }
@@ -161,10 +155,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
-                                        Integer maxPrice, long areaId, int sort, int direction) {
+                                        Integer maxPrice, long areaId, int sort, int direction,
+                                        boolean favorite) {
         List<Product> productList = filter(name, category, tags, maxPrice, areaId);
         setTagList(productList);
         sortProducts(productList, sort, direction);
+        if(favorite) {
+            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
+            productList.removeIf(product -> !sellers.contains(product.getSeller()));
+        }
         return productList;
     }
 
@@ -457,4 +456,7 @@ public class ProductServiceImpl implements ProductService {
         }
         return product;
     }
+
+    @Override
+    public boolean atLeastOneProduct(){return productDao.atLeastOneProduct();}
 }

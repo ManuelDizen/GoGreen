@@ -61,12 +61,14 @@ public class UserController {
             @ModelAttribute("profilePicForm") final ProfilePicForm form,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="fromSale", defaultValue="false") final boolean fromSale){
-        final ModelAndView mav = new ModelAndView("userProfile");
-        Optional<User> user = userService.findByEmail(userService.getLoggedEmail());
-        if(!user.isPresent()) throw new UserNotFoundException();
-        mav.addObject("user", user.get());
 
-        List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
+        final ModelAndView mav = new ModelAndView("userProfile");
+        User user = userService.getLoggedUser();
+        if(user == null) throw new UserNotFoundException();
+        mav.addObject("user", user);
+
+        //TODO: Cambiar por paginación
+        List<Order> orders = orderService.getByBuyerEmail(user.getEmail());
         //TODO: este método debería estar en algun "utils"
         List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
 
@@ -74,6 +76,8 @@ public class UserController {
         mav.addObject("pages", orderPages);
         mav.addObject("orders", orderPages.get(page-1));
         mav.addObject("fromSale", fromSale);
+        //TODO: Che esto esta muy mal, hay que cambiarlo urgente por un
+        // "getUsersForLogged" y "getSellersForLogged"
         mav.addObject("users", userService.getAll());
         mav.addObject("sellers", sellerService.getAll());
         return mav;
@@ -91,19 +95,19 @@ public class UserController {
                                       @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
-        Optional<User> user = userService.findByEmail(userService.getLoggedEmail());
-        if(!user.isPresent()) throw new UserNotFoundException();
+        User user = userService.getLoggedUser();
+        if(user==null) throw new UserNotFoundException();
 
-        Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
+        Optional<Seller> seller = sellerService.findByMail(user.getEmail());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
+        List<Order> orders = orderService.getBySellerEmail(user.getEmail());
         List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
         List<Product> products = productService.findBySeller(seller.get().getId(), false);
         List<List<Product>> productPages = productService.divideIntoPages(products, PRODUCTS_PER_PAGE);
 
         mav.addObject("seller", seller.get());
-        mav.addObject("user", user.get());
+        mav.addObject("user", user);
         mav.addObject("currentPageP", pageP);
         mav.addObject("currentPageO", pageO);
         mav.addObject("productPages", productPages);
@@ -127,10 +131,7 @@ public class UserController {
         if(!seller.isPresent()) throw new UserNotFoundException();
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
-        User user = userService.getLoggedUser();
-        //TODO: Move to service
-        String loggedEmail = user == null? null : user.getEmail();
-        mav.addObject("loggedEmail", loggedEmail);
+        mav.addObject("loggedEmail", userService.getLoggedEmail());
         mav.addObject("areas", Area.values());
         mav.addObject("categories", Category.values());
 
@@ -143,12 +144,7 @@ public class UserController {
         news = news.size() > 2? news.subList(0, 2):news;
         mav.addObject("news", news);
 
-        //TODO: Estamos trayendo TODAS las ordenes de un vendedor para hacer una suma, hay que traerse
-        // directamente el entero
-
         int n_orders = orderService.getTotalOrdersForSeller(seller.get().getUser().getEmail());
-
-        //List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
         mav.addObject("n_orders", n_orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
 
@@ -172,24 +168,21 @@ public class UserController {
     @RequestMapping(value="/newsFeed")
     public ModelAndView newsFeed(@RequestParam(name="page", defaultValue = "1") final int page){
         List<Article> news = articleService.getForLoggedUser();
+        //TODO: This method should go to an utils service, which should definitely not be seen by the controller
         List<List<Article>> newsPages = productService.divideIntoPages(news, 10);
         final ModelAndView mav = new ModelAndView("userNewsFeed");
-        User user = userService.getLoggedUser();
-        if(user == null) throw new ForbiddenActionException();
-        List<Seller> favs = favoriteService.getFavoriteSellersByUserId(user.getId());
+        List<Seller> favs = favoriteService.getFavoriteSellersByUserId();
         mav.addObject("currentPage", page);
         mav.addObject("pages", newsPages);
         mav.addObject("favs", favs);
         mav.addObject("news", newsPages.get(page-1));
-        mav.addObject("user", user);
+        mav.addObject("user", userService.getLoggedUser());
         return mav;
     }
 
     @RequestMapping(value="/toggleNotifications")
     public ModelAndView toggleNotifications(HttpServletRequest request){
-        User user = userService.getLoggedUser();
-        if(user == null) throw new ForbiddenActionException();
-        userService.toggleNotifications(user.getId());
+        userService.toggleNotifications();
         String referer = request.getHeader("Referer");
         return new ModelAndView("redirect:" + referer);
     }
@@ -236,12 +229,9 @@ public class UserController {
                                          @Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
                                          final BindingResult errors){
         if (errors.hasErrors()){
-            //TODO: This should definitely be optimized.
-            User user = userService.getLoggedUser();
-            if(user == null) throw new ForbiddenActionException();
-            if(userService.isBuyer(user.getId()))
+            if(userService.isLoggedUser())
                 return buyerProfile(form,1,false);
-            else if(userService.isSeller(user.getId()))
+            else if(userService.isLoggedSeller())
                 return sellerProfile(form,1,1);
             else throw new ForbiddenActionException();
         }
@@ -249,11 +239,7 @@ public class UserController {
         try {
             image = form.getImage().getBytes();
         } catch (IOException e) {throw new RuntimeException(e);}
-        //TODO: Check how to migrate this logic to service in order to make this call from there
-        // (Current problem: Circular initialization)
-        User user = userService.getLoggedUser();
-        if(user == null) throw new ForbiddenActionException();
-        userService.setProfilePic(user, image);
+        userService.setProfilePic(image);
         String referer = request.getHeader("Referer");
         return new ModelAndView("redirect:" + referer);
     }

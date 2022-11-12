@@ -64,4 +64,12 @@ public class OrderHibernateDao implements OrderDao {
         query.setParameter("selleremail", sellerEmail);
         return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
     }
+
+    @Override
+    public int getTotalOrdersForUser(String buyerEmail){
+        String queryStr = "SELECT COALESCE(SUM(amount), 0) FROM orders WHERE buyeremail = :buyeremail";
+        Query query = em.createNativeQuery(queryStr);
+        query.setParameter("buyeremail", buyerEmail);
+        return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
+    }
 }

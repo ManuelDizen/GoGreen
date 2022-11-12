@@ -25,4 +25,5 @@ public interface ProductDao {
 
     int getSales(String productName);
     List<Product> getByCategory(Long id);
+    boolean atLeastOneProduct();
 }

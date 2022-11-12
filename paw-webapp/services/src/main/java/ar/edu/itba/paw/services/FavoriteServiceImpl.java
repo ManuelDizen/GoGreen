@@ -52,7 +52,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteDao.getByUserId(userId);
     }
 
-    @Transactional
     @Override
     public List<Seller> getFavoriteSellersByUserId(long userId){
         List<Favorite> favorites = getByUserId(userId);
@@ -61,6 +60,13 @@ public class FavoriteServiceImpl implements FavoriteService {
             if(!sellers.contains(f.getSeller())) sellers.add(f.getSeller());
         }
         return sellers;
+    }
+
+    @Override
+    public List<Seller> getFavoriteSellersByUserId(){
+        User user = userService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        return getFavoriteSellersByUserId(user.getId());
     }
 
     @Transactional
