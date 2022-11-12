@@ -34,6 +34,7 @@ public class BasicController {
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
+        //TODO: refactor
         User loggedUser = userService.getLoggedUser();
         List<Order> ordersForUser = new ArrayList<>();
         if(loggedUser!=null) ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());

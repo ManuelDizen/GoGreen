@@ -152,6 +152,7 @@ public class UserController {
         mav.addObject("n_orders", n_orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
 
+        //TODO: Refactor for pagination!
         List<List<Product>> productPages = productService.divideIntoPages(products, 8);
         mav.addObject("currentPage", page);
         mav.addObject("pages", productPages);

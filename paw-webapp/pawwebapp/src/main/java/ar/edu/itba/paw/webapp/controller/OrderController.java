@@ -19,6 +19,6 @@ public class OrderController {
     @RequestMapping(value="/deleteOrder/{orderId:[0-9]+}")
     public ModelAndView deleteOrder(@PathVariable("orderId") final long orderId){
         orderService.deleteOrder(orderId);
-        return new ModelAndView("redirect:/sellerProfile#orders");
+        return new ModelAndView("redirect:/sellerProfile");
     }
 }

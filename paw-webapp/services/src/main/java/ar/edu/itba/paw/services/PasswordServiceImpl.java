@@ -80,7 +80,7 @@ public class PasswordServiceImpl implements PasswordService {
     @Transactional
     public void burnToken(User user){
         Optional<Token> token = getByUser(user);
-        if(!token.isPresent()) throw new TokenNotFoundException(); //TODO: Create custom exception
+        if(!token.isPresent()) throw new TokenNotFoundException();
         token.get().use();
     }
 

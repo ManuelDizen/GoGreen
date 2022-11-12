@@ -360,7 +360,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getInterestingForUser(List<Order> orders, int amount) {
-        return getPopular(N_LANDING);
         // TODO: Rebuild this whole method
         /*List<Product> interesting = new ArrayList<>();
         int i=0;
@@ -376,7 +375,14 @@ public class ProductServiceImpl implements ProductService {
             }
             i++;
         }
-        return interesting;*/
+        return interesting;
+         */
+        return getPopular(amount);
+
+        /*
+        Que hace: Se trae los productos de las ordenes de un usuario.
+
+         */
     }
 
 
@@ -398,17 +404,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser) {
         List<Product> products;
-        if(loggedUser == null) {
-            products = getPopular(N_LANDING);
-        }
-        else {
-            if(ordersForUser.isEmpty()){
-                products = getPopular(N_LANDING);
-            } else {
-                //TODO: Rebuild getInterestingForUser method
-                products = getInterestingForUser(ordersForUser, N_LANDING);
-                //products = getPopular(4);
-            }
+        if(loggedUser == null || ordersForUser.isEmpty()) products = getPopular(N_LANDING);
+        else{
+            //TODO: Rebuild getInterestingForUser method
+            products = getInterestingForUser(ordersForUser, N_LANDING);
         }
         return products;
     }

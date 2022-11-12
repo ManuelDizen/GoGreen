@@ -64,8 +64,7 @@ public class ProductController {
             @RequestParam(name="direction", defaultValue = "1") final int direction
     ) {
         final ModelAndView mav = new ModelAndView("explore");
-        boolean atLeastOne = productService.atLeastOneProduct();
-        mav.addObject("isEmpty", !atLeastOne);
+        mav.addObject("isEmpty", !productService.atLeastOneProduct());
 
         //Parameters for filter
         mav.addObject("name", name);
@@ -87,6 +86,7 @@ public class ProductController {
         mav.addObject("boolTags", boolTags);
         mav.addObject("favoritePath", favorite?"favorite=on&":"");
 
+        //TODO: FIX PAGINATION!
         List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter,
                 maxPrice, areaId, sort, direction, favorite);
         List<List<Product>> productPages = productService.divideIntoPages(filteredProducts,
