@@ -88,8 +88,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public boolean isFavorite(Seller seller) {
         User user = userService.getLoggedUser();
-        if(user == null || seller == null) return false;
-        if(userService.isSeller(user.getId())) return false;
+        if(user == null || seller == null || userService.isSeller(user.getId())) return false;
         List<Favorite> favorites = getByUserId(user.getId());
         for(Favorite fav : favorites){
             if(Objects.equals(fav.getSeller().getId(), seller.getId())) return true;

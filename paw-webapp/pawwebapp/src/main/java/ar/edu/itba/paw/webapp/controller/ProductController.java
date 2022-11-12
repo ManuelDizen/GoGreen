@@ -65,7 +65,7 @@ public class ProductController {
     ) {
         final ModelAndView mav = new ModelAndView("explore");
         boolean atLeastOne = productService.atLeastOneProduct();
-        mav.addObject("isEmpty", atLeastOne);
+        mav.addObject("isEmpty", !atLeastOne);
 
         //Parameters for filter
         mav.addObject("name", name);
@@ -142,7 +142,6 @@ public class ProductController {
         User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
-        //TODO: nooo esto hay que cambiarlo
         List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
         mav.addObject("comments", comments.get(page-1));
         mav.addObject("commentPages", comments);

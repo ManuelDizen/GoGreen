@@ -85,18 +85,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(newPassword));
     }
 
-    @Override
-    public boolean isValidPassword(long userId, String oldPassword) {
-        Optional<User> maybeUser = findById(userId);
-
-        if(!maybeUser.isPresent())
-            throw new UserNotFoundException();
-
-        User user = maybeUser.get();
-
-        return encoder.encode(oldPassword).equals(user.getPassword());
-    }
-
     @Transactional
     @Override
     public void toggleNotifications(){
@@ -128,10 +116,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void setProfilePic(byte[] image){
-        /*TODO: I think that, for it to work, I need to bring the instance of user within the transactional method
-            What is written below is an attempt to test this, and does not represent a solution
-            Update: This was effectively the solution. Rethink circular service dependency and retry
-        */
         User user = getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         Image img = user.getImage();

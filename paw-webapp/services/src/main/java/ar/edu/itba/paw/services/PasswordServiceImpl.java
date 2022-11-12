@@ -48,6 +48,10 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     public Optional<Token> getByUser(User user) {
+        //TODO: Este método esta mal. Un usuario puede solicitar mas de un cambio de contraseña,
+        //  y ahi se va a romper porque va a encontrar dos por userId.
+        //  Opción A: Borrar tupla de token cuando se usa
+        //  Opción B: modificar este método y que traiga el último
         return passwordDao.getByUserId(user);
     }
 
@@ -69,6 +73,7 @@ public class PasswordServiceImpl implements PasswordService {
         return userService.findById(userToken.getUser().getId());
     }
 
+    @Transactional
     public void burnToken(User user){
         Optional<Token> token = getByUser(user);
         if(!token.isPresent()) return; //TODO: Create custom exception

@@ -71,13 +71,13 @@ public class Token {
     }
 
     public Boolean getUsed() {
-        return used;
+        return this.used;
     }
     public void setUsed(Boolean used) {
         this.used = used;
     }
 
-    public boolean isUsed(){ return used; }
-    public void use(){used = true;}
+    public boolean isUsed(){ return this.used; }
+    public void use(){ this.used = true;}
     public boolean isValid(){return !this.expired() && !this.isUsed();}
 }

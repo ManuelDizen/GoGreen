@@ -36,11 +36,6 @@ public class BasicController {
     public ModelAndView landingPage() {
         User loggedUser = userService.getLoggedUser();
         List<Order> ordersForUser = new ArrayList<>();
-        //  The orders are called from the controller as creating a method on either the productService
-        //  or the orderService would produce a circular dependency
-        //TODO: Refactor this logic to a service (at least to get popular products or not)
-        // Acá hay otro error conceptual donde me traigo TODAS las tuplas por vendedor
-        // solo para ver si es un conjunto vacio. Revisar.
         if(loggedUser!=null) ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
         List<Product> products = productService.getLandingProducts(loggedUser, ordersForUser);
         boolean popular = loggedUser != null && (orderService.getTotalOrdersForUser(loggedUser.getEmail()) != 0);
