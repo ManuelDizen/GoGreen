@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.OrderService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Category;
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
@@ -21,20 +21,21 @@ import java.util.List;
 public class BasicController {
 
     private final ProductService productService;
-    private final SecurityService securityService;
+    private final UserService userService;
 
     private final OrderService orderService;
 
     @Autowired
-    public BasicController(final ProductService productService, final SecurityService securityService, final OrderService orderService) {
+    public BasicController(final ProductService productService, final UserService userService,
+                           final OrderService orderService) {
         this.productService = productService;
-        this.securityService = securityService;
+        this.userService = userService;
         this.orderService = orderService;
     }
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
-        User loggedUser = securityService.getLoggedUser();
+        User loggedUser = userService.getLoggedUser();
         List<Order> ordersForUser = new ArrayList<>();
         //  The orders are called from the controller as creating a method on either the productService
         //  or the orderService would produce a circular dependency

@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.CommentDao;
-import ar.edu.itba.paw.interfaces.services.CommentService;
-import ar.edu.itba.paw.interfaces.services.EmailService;
-import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
+import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Comment;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
@@ -25,22 +22,23 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentDao commentDao;
     private final EmailService emailService;
-    private final SecurityService securityService;
+    private final UserService userService;
     private final ProductService productService;
     private static final int PAGESIZE = 10;
 
     @Autowired
-    public CommentServiceImpl(CommentDao commentDao, EmailService emailService, SecurityService securityService, ProductService productService) {
+    public CommentServiceImpl(CommentDao commentDao, EmailService emailService,
+                              UserService userService, ProductService productService) {
         this.commentDao = commentDao;
         this.emailService = emailService;
-        this.securityService = securityService;
+        this.userService = userService;
         this.productService = productService;
     }
 
     @Transactional
     @Override
     public Comment create(long productId, String message) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();

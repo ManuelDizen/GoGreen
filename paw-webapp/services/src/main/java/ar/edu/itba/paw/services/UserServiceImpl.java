@@ -10,6 +10,8 @@ import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserRegisterException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,4 +154,32 @@ public class UserServiceImpl implements UserService {
         if(!maybeUser.isPresent()) throw new IllegalStateException();
         maybeUser.get().deleteImage();
     }
+
+    @Override
+    public User getLoggedUser(){
+        Authentication auth = getAuthentication();
+        if(auth != null){
+            Optional<User> user = findByEmail(auth.getName());
+            return user.orElse(null);
+        }
+        return null;
+    }
+
+    @Override
+    public String getLoggedEmail(){
+        Authentication auth = getAuthentication();
+        if(auth != null) {
+            Optional<User> user = findByEmail(auth.getName());
+            // Remember username is given by email and not a proper username
+            if (!user.isPresent()) {
+                throw new UserNotFoundException();
+            }
+            return user.get().getEmail();
+        }
+        return null;
+    }
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
 }

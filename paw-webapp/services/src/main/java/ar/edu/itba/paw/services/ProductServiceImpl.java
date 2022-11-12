@@ -19,7 +19,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductDao productDao;
     private final ImageService imageService;
-    private final SecurityService securityService;
     private final SellerService sellerService;
     private final UserService userService;
     private final EcotagService ecotagService;
@@ -28,12 +27,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     public ProductServiceImpl(final ProductDao productDao, final ImageService imageService,
-                              SecurityService securityService, SellerService sellerService,
+                              SellerService sellerService,
                               UserService userService, EcotagService ecotagService,
                               FavoriteService favoriteService){
         this.productDao = productDao;
         this.imageService = imageService;
-        this.securityService = securityService;
         this.sellerService = sellerService;
         this.userService = userService;
         this.ecotagService = ecotagService;
@@ -250,7 +248,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean checkForOwnership(long prodId) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Product> prodToDelete = getById(prodId);
         if(!prodToDelete.isPresent()) throw new ProductNotFoundException();
@@ -448,7 +446,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(Integer stock, Integer price, long categoryId, String name,
                                  String description, byte[] image, long[] ecotagIds){
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null)  throw new UnauthorizedRoleException();
         Optional<Seller> seller = sellerService.findByUserId(user.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();

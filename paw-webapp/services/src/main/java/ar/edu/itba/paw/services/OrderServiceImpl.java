@@ -20,17 +20,16 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
     private final EmailService emailService;
     private final SellerService sellerService;
-    private final SecurityService securityService;
     private final UserService userService;
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ProductService productService,
-                            EmailService emailService, SellerService sellerService, SecurityService securityService, UserService userService) {
+                            EmailService emailService, SellerService sellerService,
+                            UserService userService) {
         this.orderDao = orderDao;
         this.productService = productService;
         this.emailService = emailService;
         this.sellerService = sellerService;
-        this.securityService = securityService;
         this.userService = userService;
     }
 
@@ -72,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
             throw new InsufficientStockException();
         }
 
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
 
         final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
@@ -123,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean checkForOrderOwnership(long orderId) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Order> maybeOrder = getById(orderId);
         if(maybeOrder.isPresent()){

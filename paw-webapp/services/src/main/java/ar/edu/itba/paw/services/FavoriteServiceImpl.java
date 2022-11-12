@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.FavoriteDao;
 import ar.edu.itba.paw.interfaces.services.FavoriteService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Favorite;
@@ -21,22 +20,20 @@ import java.util.*;
 public class FavoriteServiceImpl implements FavoriteService {
     private final UserService userService;
     private final SellerService sellerService;
-    private final SecurityService securityService;
     private final FavoriteDao favoriteDao;
 
     @Autowired
     public FavoriteServiceImpl(UserService userService, SellerService sellerService,
-                               SecurityService securityService, FavoriteDao favoriteDao){
+                               FavoriteDao favoriteDao){
         this.userService = userService;
         this.sellerService = sellerService;
-        this.securityService = securityService;
         this.favoriteDao = favoriteDao;
     }
 
     @Transactional
     @Override
     public void toggleFavorite(long sellerId, boolean add) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         Optional<Seller> maybeSeller = sellerService.findById(sellerId);
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -84,7 +81,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public boolean isFavorite(Seller seller) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null || seller == null) return false;
         if(userService.isSeller(user.getId())) return false;
         List<Favorite> favorites = getByUserId(user.getId());

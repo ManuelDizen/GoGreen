@@ -35,18 +35,19 @@ public class ProductController {
 
     private final CommentService commentService;
 
-    private final SecurityService securityService;
+    private final UserService userService;
 
     
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
-                             EcotagService ecotagService, final OrderService orderService, final CommentService commentService, final SecurityService securityService) {
+                             EcotagService ecotagService, final OrderService orderService,
+                             final CommentService commentService, final UserService userService) {
         this.productService = productService;
         this.sellerService = sellerService;
         this.ecotagService = ecotagService;
         this.orderService = orderService;
         this.commentService = commentService;
-        this.securityService = securityService;
+        this.userService = userService;
     }
 
     @RequestMapping(value="/explore")
@@ -96,7 +97,7 @@ public class ProductController {
         List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
         if(favorite) {
             //TODO: esto va en el servicio
-            productService.onlyFavorites(filteredProducts, securityService.getLoggedUser().getId());
+            productService.onlyFavorites(filteredProducts, userService.getLoggedUser().getId());
             favoritePath = "favorite=on&";
         }
 
@@ -152,7 +153,7 @@ public class ProductController {
         if(!seller.isPresent()) throw new UserNotFoundException();
 
         mav.addObject("user", seller.get().getUser());
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
         List<List<Comment>> comments = commentService.getCommentsForProduct(productId);

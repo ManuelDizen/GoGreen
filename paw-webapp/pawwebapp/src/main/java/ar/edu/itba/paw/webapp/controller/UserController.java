@@ -26,31 +26,26 @@ public class UserController {
     private static final int PRODUCTS_PER_PAGE = 6;
     private final UserService userService;
     private final SellerService sellerService;
-    private final SecurityService securityService;
     private final OrderService orderService;
     private final ProductService productService;
     private final ArticleService articleService;
     private final FavoriteService favoriteService;
-    private final RoleService roleService;
 
     @Autowired
     public UserController(final UserService userService, final SellerService sellerService,
-                          final SecurityService securityService, final OrderService orderService,
-                          final ProductService productService, final ArticleService articleService,
-                          final FavoriteService favoriteService, final RoleService roleService) {
+                          final OrderService orderService, final ProductService productService,
+                          final ArticleService articleService, final FavoriteService favoriteService) {
         this.userService = userService;
         this.sellerService = sellerService;
-        this.securityService = securityService;
         this.orderService = orderService;
         this.productService = productService;
         this.articleService = articleService;
         this.favoriteService = favoriteService;
-        this.roleService = roleService;
     }
 
     @RequestMapping(value="profile")
     public ModelAndView profile(){
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null){
             throw new UnauthorizedRoleException();
         }
@@ -67,7 +62,7 @@ public class UserController {
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="fromSale", defaultValue="false") final boolean fromSale){
         final ModelAndView mav = new ModelAndView("userProfile");
-        Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
+        Optional<User> user = userService.findByEmail(userService.getLoggedEmail());
         if(!user.isPresent()) throw new UserNotFoundException();
         mav.addObject("user", user.get());
 
@@ -96,7 +91,7 @@ public class UserController {
                                       @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
-        Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
+        Optional<User> user = userService.findByEmail(userService.getLoggedEmail());
         if(!user.isPresent()) throw new UserNotFoundException();
 
         Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
@@ -132,7 +127,7 @@ public class UserController {
         if(!seller.isPresent()) throw new UserNotFoundException();
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         //TODO: Move to service
         String loggedEmail = user == null? null : user.getEmail();
         mav.addObject("loggedEmail", loggedEmail);
@@ -179,7 +174,7 @@ public class UserController {
         List<Article> news = articleService.getForLoggedUser();
         List<List<Article>> newsPages = productService.divideIntoPages(news, 10);
         final ModelAndView mav = new ModelAndView("userNewsFeed");
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         List<Seller> favs = favoriteService.getFavoriteSellersByUserId(user.getId());
         mav.addObject("currentPage", page);
@@ -192,7 +187,7 @@ public class UserController {
 
     @RequestMapping(value="/toggleNotifications")
     public ModelAndView toggleNotifications(HttpServletRequest request){
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         userService.toggleNotifications(user.getId());
         String referer = request.getHeader("Referer");
@@ -223,7 +218,7 @@ public class UserController {
         String favoritePath = "";
         if(favorite) {
             //TODO: Filter by favorites (en realidad se debería hacer directo en el servicio inicial)
-            //productService.onlyFavorites(filteredProducts, securityService.getLoggedUser().getId());
+            //productService.onlyFavorites(filteredProducts, userService.getLoggedUser().getId());
             favoritePath = "favorite=on&";
         }
         mav.addObject("favoritePath", favoritePath);
@@ -231,7 +226,7 @@ public class UserController {
         String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
         mav.addObject("sortName", sortName);
         mav.addObject("sorting", Sort.values());
-        mav.addObject("favIds", favoriteService.getFavIdsByUser(securityService.getLoggedUser()));
+        mav.addObject("favIds", favoriteService.getFavIdsByUser(userService.getLoggedUser()));
 
         return mav;
     }
@@ -242,7 +237,7 @@ public class UserController {
                                          final BindingResult errors){
         if (errors.hasErrors()){
             //TODO: This should definitely be optimized.
-            User user = securityService.getLoggedUser();
+            User user = userService.getLoggedUser();
             if(user == null) throw new ForbiddenActionException();
             if(userService.isBuyer(user.getId()))
                 return buyerProfile(form,1,false);
@@ -256,7 +251,7 @@ public class UserController {
         } catch (IOException e) {throw new RuntimeException(e);}
         //TODO: Check how to migrate this logic to service in order to make this call from there
         // (Current problem: Circular initialization)
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         userService.setProfilePic(user, image);
         String referer = request.getHeader("Referer");
@@ -265,7 +260,7 @@ public class UserController {
 
     @RequestMapping(value="/deleteProfilePic")
     public ModelAndView deleteProfilePic(HttpServletRequest request){
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         userService.deleteProfilePic(user);
         String referer = request.getHeader("Referer");

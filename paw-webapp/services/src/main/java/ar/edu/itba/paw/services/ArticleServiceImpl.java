@@ -19,18 +19,18 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ImageService imageService;
     private final ArticleDao articleDao;
-    private final SecurityService securityService;
+    private final UserService userService;
     private final SellerService sellerService;
     private final FavoriteService favoriteService;
     private final EmailService emailService;
 
     @Autowired
     public ArticleServiceImpl(final ImageService imageService, final ArticleDao articleDao,
-                              final SecurityService securityService, final SellerService sellerService,
+                              final UserService userService, final SellerService sellerService,
                               final FavoriteService favoriteService, final EmailService emailService) {
         this.imageService = imageService;
         this.articleDao = articleDao;
-        this.securityService = securityService;
+        this.userService = userService;
         this.sellerService = sellerService;
         this.favoriteService = favoriteService;
         this.emailService = emailService;
@@ -51,7 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article create(String message, byte[] image, LocalDateTime dateTime) {
 
-        User logged = securityService.getLoggedUser();
+        User logged = userService.getLoggedUser();
         //Should this check even be done? Doesn't spring security check for SELLER role?
         if(logged == null) throw new UnauthorizedRoleException();
         Optional<Seller> maybeSeller = sellerService.findByUserId(logged.getId());
@@ -74,7 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public boolean checkForArticleOwnership(long id) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Seller> maybeSeller = sellerService.findByUserId(user.getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -114,7 +114,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     @Override
     public List<Article> getForLoggedUser() {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         List<Favorite> favorites = favoriteService.getByUserId(user.getId());
         List<Article> news = new ArrayList<>();

@@ -5,7 +5,6 @@ import ar.edu.itba.paw.models.Article;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ArticleCreationException;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ArticleForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +23,17 @@ import java.util.Optional;
 @Controller
 public class ArticleController {
 
-    private final SecurityService securityService;
+    private final UserService userService;
     private final SellerService sellerService;
     private final ArticleService articleService;
 
     private final ProductService productService;
 
     @Autowired
-    public ArticleController(final SecurityService securityService,
+    public ArticleController(final UserService userService,
                              final SellerService sellerService,
                              final ArticleService articleService, final ProductService productService){
-        this.securityService = securityService;
+        this.userService = userService;
         this.sellerService = sellerService;
         this.articleService = articleService;
         this.productService = productService;
@@ -76,7 +75,7 @@ public class ArticleController {
         ModelAndView mav = new ModelAndView("sellerNews");
 
         mav.addObject("user", seller.get().getUser());
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null? null : user.getEmail());
 
         List<List<Article>> newsPages = productService.divideIntoPages(news, 8);
