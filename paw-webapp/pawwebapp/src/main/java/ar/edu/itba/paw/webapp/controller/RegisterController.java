@@ -112,15 +112,10 @@ public class RegisterController {
     public ModelAndView updateMyPassword(@Valid @ModelAttribute("passwordForm") final PasswordForm passwordForm,
                                          final BindingResult errors,
                                          HttpServletRequest request) {
-        if(errors.hasErrors())
-            return forgotMyPassword(false, passwordForm);
-        Optional<User> maybeUser = userService.findByEmail(passwordForm.getEmail());
-        if(!maybeUser.isPresent())
-            //TODO: Esto tiene que ser un validator del form. no tiene que ir así.
-            return forgotMyPassword(true, passwordForm);
-        User user = maybeUser.get();
-        String path = request.getRequestURL().toString().replace(request.getServletPath(), "") + "/newPassword?token=";
-        passwordService.passwordToken(path, user);
+        if(errors.hasErrors()) return forgotMyPassword(false, passwordForm);
+        String path = request.getRequestURL().toString().replace(request.getServletPath(), "") +
+                "/newPassword?token=";
+        passwordService.passwordToken(path, passwordForm.getEmail());
         return new ModelAndView("congratulations");
     }
     @RequestMapping(value = "/newPassword")

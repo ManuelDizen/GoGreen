@@ -40,7 +40,10 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Transactional
     @Override
-    public void passwordToken(String path, User user) {
+    public void passwordToken(String path, String email) {
+        Optional<User> maybeUser = userService.findByEmail(email);
+        if(!maybeUser.isPresent()){throw new UserNotFoundException();} //This line should never be reached
+        User user = maybeUser.get();
         if(!hasUsableToken(user)) {
             Token token = create(UUID.randomUUID().toString(), user);
             emailService.updatePassword(
