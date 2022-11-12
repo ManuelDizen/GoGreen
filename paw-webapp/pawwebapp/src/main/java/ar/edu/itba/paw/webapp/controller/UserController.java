@@ -201,10 +201,10 @@ public class UserController {
             @RequestParam(name="direction", defaultValue = "1") final int direction
                                         ){
         //TODO: Paginate queries not to load all sellers in memory simultaneously
-        //Pagination<Seller> sellers = sellerService.filter(name, areaId, favorite, page, sort, direction);
-        List<Seller> sellers = sellerService.getAll();
+        Pagination<Seller> sellers = sellerService.filter(name, areaId, favorite, page, sort, direction);
+        //List<Seller> sellers = sellerService.getAll();
         final ModelAndView mav = new ModelAndView("exploreSellers");
-        mav.addObject("isEmpty", sellers.isEmpty()); //TODO: Change the "getAll()" call
+        mav.addObject("isEmpty", sellers.getItems().isEmpty()); //TODO: Change the "getAll()" call
         mav.addObject("sellers", sellers);
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
@@ -218,6 +218,7 @@ public class UserController {
             //productService.onlyFavorites(filteredProducts, userService.getLoggedUser().getId());
             favoritePath = "favorite=on&";
         }
+        mav.addObject("currentPage", page);
         mav.addObject("favoritePath", favoritePath);
         mav.addObject("direction", direction);
         String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();

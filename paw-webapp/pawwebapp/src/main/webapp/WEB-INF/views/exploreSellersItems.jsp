@@ -19,12 +19,12 @@
             </sec:authorize>
         </div>
     </c:if>
-    <c:if test="${sellers.size() != 0}">
-        <c:forEach items="${sellers}" var="seller">
+    <c:if test="${sellers.items.size() != 0}">
+        <c:forEach items="${sellers.items}" var="seller">
             <%@include file="sellerCard.jsp"%>
         </c:forEach>
     </c:if>
-    <c:if test="${sellers.size() == 0 && !isEmpty}">
+    <c:if test="${sellers.items.size() == 0 && !isEmpty}">
         <div class="noproducts-container">
             <h4><spring:message code="explore.noproductsfilter"/></h4>
             <div class="circle">

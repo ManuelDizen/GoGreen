@@ -1,21 +1,18 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
-import ar.edu.itba.paw.models.Area;
-import ar.edu.itba.paw.models.Pagination;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.util.*;
 
 @Repository
 public class SellerHibernateDao implements SellerDao {
-
     private static int EXPLORE_SELLER_PAGE_SIZE = 8;
 
     @PersistenceContext
@@ -31,6 +28,10 @@ public class SellerHibernateDao implements SellerDao {
     @Override
     public Optional<Seller> findById(long id) {
         return Optional.ofNullable(em.find(Seller.class, id));
+    }
+
+    private Long getAmount() {
+        return em.createQuery("SELECT COUNT(*) FROM Seller", Long.class).getSingleResult();
     }
 
     @Override
@@ -56,6 +57,7 @@ public class SellerHibernateDao implements SellerDao {
 
     public Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
                               int direction){
+
         //TODO: Creo que direction no tiene mucho sentido acá considerando que después vamos a sortear
         StringBuilder nativeQuery = new StringBuilder();
         Map<String, Object> args = new HashMap<>();
@@ -79,14 +81,24 @@ public class SellerHibernateDao implements SellerDao {
 
         final List<Long> sellerIds = new ArrayList<>();
         for (Object o : finalNativeQuery.getResultList()) {
-            sellerIds.add(((Integer) o).longValue());
+            sellerIds.add(((BigInteger) o).longValue());
         }
 
         //TODO: Finish!!!
+        if(sellerIds.isEmpty())
+            return new Pagination<>(new ArrayList<>(), (long) page,
+                    (finalNativeQuery.getResultList().size() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
+
+        final TypedQuery<Seller> finalQuery =
+                em.createQuery("SELECT DISTINCT s FROM Seller s WHERE s.id IN :sellers", Seller.class);
+        finalQuery.setParameter("sellers", sellerIds);
+
+        List<Seller> sellerPage = finalQuery.getResultList();
+
+        return new Pagination<>(sellerPage, (long) page,
+                (getAmount() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
 
 
 
-        return new Pagination<>(new ArrayList<>(), (long) page,
-(finalNativeQuery.getResultList().size() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
     }
 }
