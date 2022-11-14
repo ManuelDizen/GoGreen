@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.exceptions;
+package ar.edu.itba.paw.services.exceptions;
 
 public class UnauthorizedRoleException extends RuntimeException{
     private final static String MESSAGE = "Not authorized to perform this action.";

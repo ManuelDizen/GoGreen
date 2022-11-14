@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.exceptions;
+package ar.edu.itba.paw.services.exceptions;
 
 public class EmailErrorException extends RuntimeException{
     private final static String MESSAGE = "Email could not be delivered.";

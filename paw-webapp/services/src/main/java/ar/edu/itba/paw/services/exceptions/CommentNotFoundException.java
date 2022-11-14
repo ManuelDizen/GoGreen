@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.exceptions;
+package ar.edu.itba.paw.services.exceptions;
 
 public class CommentNotFoundException extends RuntimeException{
     private final static String MESSAGE = "Comment was not found";

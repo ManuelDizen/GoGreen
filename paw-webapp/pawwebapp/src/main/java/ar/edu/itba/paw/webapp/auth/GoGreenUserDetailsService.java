@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfaces.services.UserRoleService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.UserRole;
 import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

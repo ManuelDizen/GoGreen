@@ -202,7 +202,8 @@ public class UserController {
             @RequestParam(name="direction", defaultValue = "1") final int direction
                                         ){
         //TODO: Paginate queries not to load all sellers in memory simultaneously
-        long userId = userService.getLoggedUser().getId();
+        User user = userService.getLoggedUser();
+        long userId = user == null?-1:user.getId();
         Pagination<Seller> sellers = sellerService.filter(name, areaId, favorite, page, userId);
         //List<Seller> sellers = sellerService.getAll();
         final ModelAndView mav = new ModelAndView("exploreSellers");
