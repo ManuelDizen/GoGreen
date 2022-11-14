@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.persistence;
 
 import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 
@@ -26,4 +27,8 @@ public interface ProductDao {
     int getSales(String productName);
     List<Product> getByCategory(Long id);
     boolean atLeastOneProduct();
+
+    Pagination<Product> findBySeller(long sellerId, int page, int amount);
+
+    Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount);
 }

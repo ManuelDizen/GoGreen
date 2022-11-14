@@ -200,7 +200,7 @@
                     </c:if>
                 </div>
             </div>
-            <c:if test="${productPages.size() > 1}">
+            <c:if test="${productPages > 1}">
                 <div class="pagin">
                     <c:set var="nextPage" value="${currentPageP+1}"/>
                     <c:set var="previousPage" value="${currentPageP-1}"/>
@@ -214,11 +214,11 @@
                                 <li class="waves-effect"><a href="?pageP=${currentPageP-1}#products" style="color: #EDFA8B">${previousPage}</a></li>
                             </c:if>
                             <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
-                            <c:if test="${currentPageP < productPages.size()}">
+                            <c:if test="${currentPageP < productPages}">
                                 <li class="waves-effect"><a href="?pageP=${currentPageP+1}#products" style="color: #EDFA8B">${nextPage}</a></li>
                                 <li><a href="?pageP=${currentPageP+1}#products"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
-                            <c:if test="${currentPageP >= productPages.size()}">
+                            <c:if test="${currentPageP >= productPages}">
                                 <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
                         </ul>

@@ -1,24 +1,18 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
-import ar.edu.itba.paw.models.Image;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.ProductStatus;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.models.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.*;
 
 @Repository
 public class ProductHibernateDao implements ProductDao {
-
     @PersistenceContext
     private EntityManager em;
 
@@ -186,5 +180,51 @@ public class ProductHibernateDao implements ProductDao {
         String queryStr = "SELECT COUNT(*) FROM products";
         Query query = em.createNativeQuery(queryStr);
         return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue() > 0;
+    }
+
+    //TODO: :Refactor the two methods below (casi el mismo código)
+
+    @Override
+    public Pagination<Product> findBySeller(long sellerId, int page, int amount) {
+        ProductStatus deleted = ProductStatus.DELETED;
+        final TypedQuery<Product> query = em.createQuery(
+                "SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.seller.id = :sellerId " +
+                        "AND p.status <> :deleted ORDER BY p.id DESC",
+                Product.class);
+        query.setParameter("sellerId", sellerId);
+        query.setParameter("deleted", deleted);
+        query.setMaxResults(amount);
+        query.setFirstResult((page-1)*amount);
+
+        String str = "FROM products WHERE sellerid = :sellerId";
+        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
+        countQuery.setParameter("sellerId", sellerId);
+        @SuppressWarnings("unchecked")
+        long count =
+                ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
+        return new Pagination<>(query.getResultList(), page, (count+amount-1)/amount);
+    }
+
+    @Override
+    public Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount) {
+        ProductStatus deleted = ProductStatus.DELETED;
+        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p" +
+                        " WHERE p.seller.id = :sellerId " +
+                        "AND p.status <> :deleted ORDER BY p.id DESC",
+                Product.class);
+        query.setParameter("sellerId", sellerId);
+        query.setParameter("deleted", deleted);
+        query.setMaxResults(amount);
+        query.setFirstResult((page-1)*amount);
+
+        String str = "FROM products WHERE sellerid = :sellerId AND productstatus_id <> :deletedId";
+        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
+        countQuery.setParameter("sellerId", sellerId);
+        countQuery.setParameter("deletedId", deleted.getId());
+        @SuppressWarnings("unchecked")
+        long count =
+                ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
+        return new Pagination<>(query.getResultList(), page, (count+amount-1)/amount);
     }
 }

@@ -74,7 +74,6 @@ public class OrderHibernateDao implements OrderDao {
     // en todo el codigo es un parametro
     @Override
     public Pagination<Order> getBySellerEmail(String sellerEmail, int page, int amount) {
-        String str = "FROM orders WHERE sellerEmail = :sellerEmail";
         final TypedQuery<Order> query = em.createQuery(
                 "FROM Order AS o WHERE sellerEmail = :sellerEmail " +
                         "ORDER BY o.dateTime DESC", Order.class);
@@ -82,6 +81,7 @@ public class OrderHibernateDao implements OrderDao {
         query.setMaxResults(amount);
         query.setFirstResult((page-1)*amount);
 
+        String str = "FROM orders WHERE sellerEmail = :sellerEmail";
         final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
         countQuery.setParameter("sellerEmail", sellerEmail);
         @SuppressWarnings("unchecked")

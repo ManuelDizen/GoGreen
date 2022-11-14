@@ -24,6 +24,7 @@ public class UserController {
 
     private static final int ORDERS_PER_PAGE = 8;
     private static final int PRODUCTS_PER_PAGE = 6;
+
     private final UserService userService;
     private final SellerService sellerService;
     private final OrderService orderService;
@@ -101,25 +102,19 @@ public class UserController {
         Optional<Seller> seller = sellerService.findByMail(user.getEmail());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        //List<Order> orders = orderService.getBySellerEmail(user.getEmail());
-        //List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
+        Pagination<Order> orders = orderService.getBySellerEmail(user.getEmail(), pageO);
 
-        Pagination<Order> orders2 = orderService.getBySellerEmail(user.getEmail(), pageO);
-
-        List<Product> products = productService.findBySeller(seller.get().getId(), false);
-        List<List<Product>> productPages = productService.divideIntoPages(products, PRODUCTS_PER_PAGE);
+        Pagination<Product> products = productService.findBySeller(seller.get().getId(), false,
+                pageP, PRODUCTS_PER_PAGE);
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user);
         mav.addObject("currentPageP", pageP);
         mav.addObject("currentPageO", pageO);
-        mav.addObject("productPages", productPages);
-        //mav.addObject("orderPages", orderPages);
-        //mav.addObject("orders", orderPages.get(pageO-1));
-        mav.addObject("orderPages", orders2.getPageCount());
-        mav.addObject("orders", orders2.getItems());
-        mav.addObject("products", productPages.get(pageP-1));
-
+        mav.addObject("productPages", products.getPageCount());
+        mav.addObject("orderPages", orders.getPageCount());
+        mav.addObject("orders", orders.getItems());
+        mav.addObject("products", products.getItems());
         //TODO: See how to optimize this 4 states while keeping it parametrized
         mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
         mav.addObject("pausedId", ProductStatus.PAUSED.getId());

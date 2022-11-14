@@ -12,7 +12,6 @@ import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-
     private final static int N_LANDING = 4;
     private final static int ASCENDING = 0;
     private final static int DESCENDING = 1;
@@ -69,6 +68,25 @@ public class ProductServiceImpl implements ProductService {
         }
         else{
             return findBySellerNoEcotag(sellerId);
+        }
+    }
+
+    private Pagination<Product> findBySeller(long sellerId, int page, int amount) {
+        return productDao.findBySeller(sellerId, page, amount);
+    }
+
+    private Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount) {
+        return productDao.findBySellerNoEcotag(sellerId, page, amount);
+    }
+
+
+    @Override
+    public Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount){
+        if(ecotag){
+            return findBySeller(sellerId, page, amount);
+        }
+        else{
+            return findBySellerNoEcotag(sellerId, page, amount);
         }
     }
 
