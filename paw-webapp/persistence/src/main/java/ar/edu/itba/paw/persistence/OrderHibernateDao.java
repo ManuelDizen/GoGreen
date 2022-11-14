@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.models.Order;
+import ar.edu.itba.paw.models.Pagination;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -50,6 +51,43 @@ public class OrderHibernateDao implements OrderDao {
                 Order.class);
         query.setParameter("buyerEmail", buyerEmail);
         return query.getResultList();
+    }
+
+    @Override
+    public Pagination<Order> getByBuyerEmail(String buyerEmail, int page, int amount) {
+        String str = "FROM orders WHERE buyeremail = :buyerEmail";
+        final TypedQuery<Order> query = em.createQuery(
+                "FROM Order AS o WHERE buyeremail = :buyerEmail " +
+                "ORDER BY o.dateTime DESC", Order.class);
+        query.setParameter("buyerEmail", buyerEmail);
+        query.setMaxResults(amount);
+        query.setFirstResult((page-1)*amount);
+
+        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
+        countQuery.setParameter("buyerEmail", buyerEmail);
+        @SuppressWarnings("unchecked")
+        long count =
+            ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
+        return new Pagination<>(query.getResultList(), page,(count+amount-1)/amount); //TODO: Set page count
+    }
+    //TODO: Momentaneo, estaría bueno que parametrizes estos dos metodos dado que la unica diferencia
+    // en todo el codigo es un parametro
+    @Override
+    public Pagination<Order> getBySellerEmail(String sellerEmail, int page, int amount) {
+        String str = "FROM orders WHERE sellerEmail = :sellerEmail";
+        final TypedQuery<Order> query = em.createQuery(
+                "FROM Order AS o WHERE sellerEmail = :sellerEmail " +
+                        "ORDER BY o.dateTime DESC", Order.class);
+        query.setParameter("sellerEmail", sellerEmail);
+        query.setMaxResults(amount);
+        query.setFirstResult((page-1)*amount);
+
+        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
+        countQuery.setParameter("sellerEmail", sellerEmail);
+        @SuppressWarnings("unchecked")
+        long count =
+            ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
+        return new Pagination<>(query.getResultList(), page,(count+amount-1)/amount); //TODO: Set page count
     }
 
     @Override

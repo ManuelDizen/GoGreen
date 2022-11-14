@@ -24,4 +24,5 @@ public interface SellerService {
                                   String email, String password, Locale locale, String phone,
                                   String address, Area area);
     Pagination<Seller> filter(String name, long areaId, boolean favorite, int page, long userId);
+    String getProfileUrl();
 }

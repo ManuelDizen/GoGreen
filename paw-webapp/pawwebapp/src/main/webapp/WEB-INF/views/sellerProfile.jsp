@@ -308,7 +308,7 @@
                     </c:if>
                 </div>
             </div>
-            <c:if test="${orderPages.size() > 1}">
+            <c:if test="${orderPages > 1}">
                 <div class="pagin">
                     <c:set var="nextPage" value="${currentPageO+1}"/>
                     <c:set var="previousPage" value="${currentPageO-1}"/>
@@ -322,11 +322,11 @@
                                 <li class="waves-effect"><a href="?pageO=${currentPageO-1}#orders" style="color: #EDFA8B">${previousPage}</a></li>
                             </c:if>
                             <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
-                            <c:if test="${currentPageO < orderPages.size()}">
+                            <c:if test="${currentPageO < orderPages}">
                                 <li class="waves-effect"><a href="?pageO=${currentPageO+1}#orders" style="color: #EDFA8B">${nextPage}</a></li>
                                 <li><a href="?pageO=${currentPageO+1}#orders"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
-                            <c:if test="${currentPageO >= orderPages.size()}">
+                            <c:if test="${currentPageO >= orderPages}">
                                 <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
                         </ul>

@@ -45,14 +45,8 @@ public class UserController {
 
     @RequestMapping(value="profile")
     public ModelAndView profile(){
-        User user = userService.getLoggedUser();
-        if(user == null){
-            throw new UnauthorizedRoleException();
-        }
-        if(sellerService.findByMail(user.getEmail()).isPresent()){
-            return new ModelAndView("redirect:/sellerProfile");
-        }
-        return new ModelAndView("redirect:/userProfile");
+        String url = sellerService.getProfileUrl();
+        return new ModelAndView("redirect:" + url);
     }
 
 
@@ -67,17 +61,23 @@ public class UserController {
         if(user == null) throw new UserNotFoundException();
         mav.addObject("user", user);
 
-        //TODO: Cambiar por paginación
-        List<Order> orders = orderService.getByBuyerEmail(user.getEmail());
-        //TODO: este método debería estar en algun "utils"
-        List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
+        Pagination<Order> orders = orderService.getByBuyerEmail(user.getEmail(), page);
 
         mav.addObject("currentPage", page);
-        mav.addObject("pages", orderPages);
-        mav.addObject("orders", orderPages.get(page-1));
+        mav.addObject("pages", orders.getPageCount());
+        mav.addObject("orders", orders.getItems());
         mav.addObject("fromSale", fromSale);
         //TODO: Che esto esta muy mal, hay que cambiarlo urgente por un
         // "getUsersForLogged" y "getSellersForLogged"
+        /*
+        Update: Esto igual presenta un problema mayor. Nosotros las orders las tenemos todas mediante
+        strings, y no mediante otros models, por lo que para traer la información del vendedor
+        si o si tenemos que hacer el proceso "mail de vendedor de order -> vendedor -> usuario"
+
+        Lo que se me ocurre es armar un get sellers de los que tienen alguna compra en la página
+        del usuario, y así compararlo. No es escalable, pero es mucho mas escalable que lo que esta actualmente
+
+         */
         mav.addObject("users", userService.getAll());
         mav.addObject("sellers", sellerService.getAll());
         return mav;
@@ -101,8 +101,11 @@ public class UserController {
         Optional<Seller> seller = sellerService.findByMail(user.getEmail());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        List<Order> orders = orderService.getBySellerEmail(user.getEmail());
-        List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
+        //List<Order> orders = orderService.getBySellerEmail(user.getEmail());
+        //List<List<Order>> orderPages = productService.divideIntoPages(orders, ORDERS_PER_PAGE);
+
+        Pagination<Order> orders2 = orderService.getBySellerEmail(user.getEmail(), pageO);
+
         List<Product> products = productService.findBySeller(seller.get().getId(), false);
         List<List<Product>> productPages = productService.divideIntoPages(products, PRODUCTS_PER_PAGE);
 
@@ -111,8 +114,10 @@ public class UserController {
         mav.addObject("currentPageP", pageP);
         mav.addObject("currentPageO", pageO);
         mav.addObject("productPages", productPages);
-        mav.addObject("orderPages", orderPages);
-        mav.addObject("orders", orderPages.get(pageO-1));
+        //mav.addObject("orderPages", orderPages);
+        //mav.addObject("orders", orderPages.get(pageO-1));
+        mav.addObject("orderPages", orders2.getPageCount());
+        mav.addObject("orders", orders2.getItems());
         mav.addObject("products", productPages.get(pageP-1));
 
         //TODO: See how to optimize this 4 states while keeping it parametrized

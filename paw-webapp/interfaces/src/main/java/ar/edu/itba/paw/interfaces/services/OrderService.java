@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Order;
+import ar.edu.itba.paw.models.Pagination;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,10 @@ public interface OrderService {
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);
     List<Order> getByBuyerEmail(String buyerEmail);
+    Pagination<Order> getByBuyerEmail(String buyerEmail, int page);
+
+    Pagination<Order> getBySellerEmail(String sellerEmail, int page);
+
     void create(long productId, int amount, String message);
 
 

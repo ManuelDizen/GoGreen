@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.persistence;
 
 import ar.edu.itba.paw.models.Order;
+import ar.edu.itba.paw.models.Pagination;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,11 @@ public interface OrderDao {
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);
     List<Order> getByBuyerEmail(String buyerEmail);
+    Pagination<Order> getByBuyerEmail(String buyerEmail, int page, int amount);
+
+    //TODO: Momentaneo, estaría bueno que parametrizes estos dos metodos dado que la unica diferencia
+    // en todo el codigo es un parametro
+    Pagination<Order> getBySellerEmail(String sellerEmail, int page, int amount);
 
     void deleteOrder(long orderId);
     int getTotalOrdersForSeller(String sellerEmail);

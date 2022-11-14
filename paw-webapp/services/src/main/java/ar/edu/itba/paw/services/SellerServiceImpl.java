@@ -3,10 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
-import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UserRegisterException;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +16,6 @@ public class SellerServiceImpl implements SellerService {
     private final SellerDao sellerDao;
     private final UserService userService;
     private final RoleService roleService;
-    private final UserRoleService userRoleService;
     private final EmailService emailService;
     @Autowired
 
@@ -27,7 +23,6 @@ public class SellerServiceImpl implements SellerService {
         this.sellerDao = sellerDao;
         this.userService = userService;
         this.roleService = roleService;
-        this.userRoleService = userRoleService;
         this.emailService = emailService;
     }
 
@@ -120,5 +115,17 @@ public class SellerServiceImpl implements SellerService {
         Pagination<Seller> toReturn = sellerDao.filter(name, area, favorite, page, userId);
         // sortSellers(toReturn, sortType);
         return toReturn;
+    }
+
+    @Override
+    public String getProfileUrl(){
+        User user = userService.getLoggedUser();
+        if(user == null){
+            throw new UnauthorizedRoleException();
+        }
+        if(findByMail(user.getEmail()).isPresent()){
+            return "/sellerProfile";
+        }
+        return "/userProfile";
     }
 }

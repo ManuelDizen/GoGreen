@@ -56,6 +56,16 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getByBuyerEmail(buyerEmail);
     }
 
+    @Override
+    public Pagination<Order> getByBuyerEmail(String buyerEmail, int page){
+        return orderDao.getByBuyerEmail(buyerEmail, page, PAGE_SIZE);
+    }
+
+    @Override
+    public Pagination<Order> getBySellerEmail(String sellerEmail, int page){
+        return orderDao.getBySellerEmail(sellerEmail, page, PAGE_SIZE);
+    }
+
     @Transactional
     @Override
     public void create(long productId, int amount, String message) {
@@ -77,21 +87,6 @@ public class OrderServiceImpl implements OrderService {
         final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
         final Seller seller = maybeSeller.get();
-
-        // Sobre el locale de los mails: Si bien almacenamos el locale de los usuarios a la
-        // hora de registrarse, si el usuario está navegando en ese momento en otro Locale,
-        // resulta pertinente enviarle el mail en ese idioma. Es por eso que el mail de
-        // user sale con el locale del navegador actual, y el del vendedor con el guardado
-        // (no lo tenemos guardado)
-
-        //Update 28/10/22: Por corrección de cátedra, se remueve el mail enviado a comprador.
-        // El mismo no debe ser notificado de acciones que él realizó dentro de la página
-
-        /*emailService.purchase(user.getEmail(), user.getFirstName(),
-                product, amount,
-                product.getPrice(), sellerService.getName(seller.getUser().getId()),
-                seller.getPhone(), sellerService.getEmail(seller.getUser().getId()),
-                user.getLocale());*/
 
         emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
                 sellerService.getName(seller.getUser().getId()), product,
