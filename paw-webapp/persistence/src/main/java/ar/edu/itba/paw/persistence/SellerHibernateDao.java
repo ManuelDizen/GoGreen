@@ -71,7 +71,7 @@ public class SellerHibernateDao implements SellerDao {
             nativeQuery.append(" AND areaid = :areaid");
             args.put("areaid", area.getId());
         }
-        if(favorite && userId != -1) {
+        if(favorite) {
             nativeQuery.append(" AND id IN (SELECT seller_id FROM favorites WHERE user_id = :userId)");
             args.put("userId", userId);
         }
@@ -87,7 +87,7 @@ public class SellerHibernateDao implements SellerDao {
 
         final List<Long> sellerIds = new ArrayList<>();
         for (Object o : finalNativeQuery.getResultList()) {
-            sellerIds.add(((Integer) o).longValue());
+            sellerIds.add(((BigInteger) o).longValue());
         }
 
         if(sellerIds.isEmpty())
@@ -102,5 +102,8 @@ public class SellerHibernateDao implements SellerDao {
 
         return new Pagination<>(sellerPage, (long) page,
                 (getAmount() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
+
+
+
     }
 }

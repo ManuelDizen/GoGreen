@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.services.PasswordService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Area;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserRegisterException;
@@ -25,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 @Controller
 public class RegisterController {

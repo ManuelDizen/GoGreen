@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.services.exceptions;
+package ar.edu.itba.paw.models.exceptions;
 
 public class ForbiddenActionException extends RuntimeException{
     private final static String MESSAGE = "User is not authorized to perform action";

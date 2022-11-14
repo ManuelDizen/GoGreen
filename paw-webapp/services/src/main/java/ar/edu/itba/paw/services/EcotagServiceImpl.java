@@ -4,7 +4,7 @@ import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.EcotagService;
 import ar.edu.itba.paw.models.Ecotag;
 import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.services.exceptions.ProductNotFoundException;
+import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
