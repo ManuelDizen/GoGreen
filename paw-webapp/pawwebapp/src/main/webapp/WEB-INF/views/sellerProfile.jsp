@@ -50,8 +50,8 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <div class="col s6 text-center separate-20-top">
-                        <a class="waves-effect waves-light btn modal-trigger" href="#updatePicModal">
+                    <div class="col s6 text-center flex-column-center-align-vertical format-col">
+                        <a class="waves-effect waves-light btn modal-trigger pp-btn" href="#updatePicModal">
                             <spring:message code="updateprofilepic.newpic.msg"/>
                         </a>
                     </div>

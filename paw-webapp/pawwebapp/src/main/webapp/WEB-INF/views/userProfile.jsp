@@ -13,8 +13,7 @@
             <div id="orders" class="col s12">
                 <div class="user-profile-container-2">
                     <div class="information row" style="margin:0;">
-
-                        <div class="col s6">
+                        <div class="col s6 format-col flex-column-center-align-vertical">
                             <div class="userprofile-info-1">
                                 <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
                             </div>
@@ -22,11 +21,6 @@
                                 <c:out value="${user.email}"/>
                             </div>
                         </div>
-                        <%--div class="col s6">
-                            <div class="userprofile-info-2">
-                                <c:out value="${user.email}"/>
-                            </div>
-                        </div--%>
                         <c:choose>
                             <c:when test="${user.image != null}">
                                 <div class="col s6 separate-20-top">
@@ -49,8 +43,8 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <div class="col s6 text-center separate-20-top">
-                                    <a class="waves-effect waves-light btn modal-trigger" href="#updatePicModal">
+                                <div class="col s6 text-center flex-column-center-align-vertical format-col">
+                                    <a class="waves-effect waves-light btn modal-trigger pp-btn" href="#updatePicModal">
                                         <spring:message code="updateprofilepic.newpic.msg"/>
                                     </a>
                                 </div>

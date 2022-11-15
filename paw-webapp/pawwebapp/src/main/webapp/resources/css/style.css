@@ -2884,3 +2884,8 @@ input[type=number] {
 .format-col{
     height:200px;
 }
+
+.pp-btn{
+    width:fit-content;
+    margin: 0 auto;
+}
