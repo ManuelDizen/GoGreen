@@ -19,13 +19,15 @@ public interface ProductService {
     List<Product> getAvailable();
     List<Product> getAvailable(int limit);
     List<Product> getPopular(int amount);
+
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
+    Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId);
     void sortProducts(List<Product> productList, int sort, int direction);
 
     <T> List<List<T>> divideIntoPages(List<T> list, int pageSize);
 
-    List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice,
-                                 long areaId, int sort, int direction, boolean favorite);
+    //List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice,
+      //                           long areaId, int sort, int direction, boolean favorite);
 
     void deleteProduct(long productId);
     void attemptDelete(long productId);

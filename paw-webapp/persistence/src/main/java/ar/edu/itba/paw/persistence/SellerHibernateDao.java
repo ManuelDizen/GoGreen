@@ -13,7 +13,7 @@ import java.util.*;
 
 @Repository
 public class SellerHibernateDao implements SellerDao {
-    private static int EXPLORE_SELLER_PAGE_SIZE = 8;
+    private static int EXPLORE_SELLER_PAGE_SIZE = 4;
 
     @PersistenceContext
     private EntityManager em;

@@ -111,6 +111,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAvailable(int limit){return productDao.getAvailable(limit);}
 
+
     @Override
     public List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId) {
         List<Long> ecotags = new ArrayList<>();
@@ -118,6 +119,14 @@ public class ProductServiceImpl implements ProductService {
             ecotags.add(tag.getId());
         }
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
+    }
+    @Override
+    public Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId) {
+        List<Long> ecotags = new ArrayList<>();
+        for(Ecotag tag : tags) {
+            ecotags.add(tag.getId());
+        }
+        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, favorite, page, sort, direction, userId);
     }
 
     private int getSales(String productName) {
@@ -171,19 +180,19 @@ public class ProductServiceImpl implements ProductService {
         return pageList;
     }
 
-    @Override
-    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
-                                        Integer maxPrice, long areaId, int sort, int direction,
-                                        boolean favorite) {
-        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
-        setTagList(productList);
-        sortProducts(productList, sort, direction);
-        if(favorite) {
-            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
-            productList.removeIf(product -> !sellers.contains(product.getSeller()));
-        }
-        return productList;
-    }
+//    @Override
+//    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
+//                                        Integer maxPrice, long areaId, int sort, int direction,
+//                                        boolean favorite) {
+//        List<Product> productList = filter(name, category, tags, maxPrice, areaId, favorite, 1, sort, direction);
+//        setTagList(productList);
+//        sortProducts(productList, sort, direction);
+//        if(favorite) {
+//            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
+//            productList.removeIf(product -> !sellers.contains(product.getSeller()));
+//        }
+//        return productList;
+//    }
 
     @Transactional
     @Override

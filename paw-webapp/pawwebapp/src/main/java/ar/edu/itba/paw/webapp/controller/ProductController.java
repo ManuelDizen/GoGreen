@@ -86,11 +86,19 @@ public class ProductController {
         mav.addObject("boolTags", boolTags);
         mav.addObject("favoritePath", favorite?"favorite=on&":"");
 
+        User loggedUser = userService.getLoggedUser();
+
+        Pagination<Product> filteredProducts;
+
         //TODO: FIX PAGINATION!
-        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter,
-                maxPrice, areaId, sort, direction, favorite);
-        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts,
-                PRODUCTS_PER_PAGE);
+        if(favorite)
+            filteredProducts = productService.filter(name, category, tagsToFilter, maxPrice, areaId, favorite, page, sort, direction, loggedUser.getId());
+        else
+            filteredProducts = productService.filter(name, category, tagsToFilter, maxPrice, areaId, favorite, page, sort, direction, 0);
+//        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter,
+//                maxPrice, areaId, sort, direction, favorite);
+//        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts,
+//                PRODUCTS_PER_PAGE);
 
         //Sorting
         mav.addObject("sort", sort);
@@ -101,10 +109,8 @@ public class ProductController {
 
         //Pagination
         mav.addObject("currentPage", page);
-        mav.addObject("pages", productPages);
-
-        List<Product> displayProducts = productService.getProductPage(page, productPages);
-        mav.addObject("products", displayProducts);
+        mav.addObject("pages", filteredProducts.getPageCount());
+        mav.addObject("products", filteredProducts.getItems());
 
         return mav;
     }
