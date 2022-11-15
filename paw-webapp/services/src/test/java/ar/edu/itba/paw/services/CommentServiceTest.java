@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.CommentDao;
+import ar.edu.itba.paw.interfaces.services.EmailService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Comment;
@@ -14,7 +15,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static ar.edu.itba.paw.services.TestServicesResources.*;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,12 +30,15 @@ public class CommentServiceTest {
     private ProductService productService;
     @Mock
     private CommentDao commentDao;
+    @Mock
+    private EmailService emailService;
 
     @Test
     public void testCreateComment() {
         when(userService.getLoggedUser()).thenReturn(AUX_USER_FOR_SELLER);
         when(productService.getById(anyLong())).thenReturn(Optional.of(AUX_PRODUCT));
-        when(commentDao.create(AUX_USER, AUX_PRODUCT, AUX_COMMENT_MSG)).thenReturn(AUX_COMMENT);
+        when(commentDao.create(any(), any(), anyString())).thenReturn(AUX_COMMENT);
+        doNothing().when(emailService).newComment(any(), any(), anyString());
 
         Comment comment = null;
         try{

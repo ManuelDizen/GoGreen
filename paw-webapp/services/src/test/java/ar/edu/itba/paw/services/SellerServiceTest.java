@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
@@ -15,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import static ar.edu.itba.paw.services.TestServicesResources.*;
 import static org.junit.Assert.assertEquals;
@@ -30,12 +32,15 @@ public class SellerServiceTest {
 
     @Mock
     private SellerDao sellerDao;
+    @Mock
+    private UserService userService;
 
     @Test
     public void testCreate(){
+        when(userService.findById(anyLong())).thenReturn(Optional.of(AUX_USER_FOR_SELLER));
         when(sellerDao.create(any(), anyString(), anyString(), any())).thenReturn(AUX_SELLER);
         try{
-            sellerService.create(AUX_USER_FOR_SELLER.getId(), SELLER_PHONE, SELLER_ADDRESS, SELLER_AREA);
+            sellerService.create(AUX_USER_FOR_SELLER_ID, SELLER_PHONE, SELLER_ADDRESS, SELLER_AREA);
         }
         catch(Exception e){
             System.out.println(e.getClass());

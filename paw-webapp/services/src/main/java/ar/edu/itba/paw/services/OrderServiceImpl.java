@@ -33,12 +33,53 @@ public class OrderServiceImpl implements OrderService {
         this.userService = userService;
     }
 
+    @Transactional
     @Override
-    public Order create(String productName, String buyerName, String buyerSurname,
-                        String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                        Integer amount, Integer price, LocalDateTime dateTime, String message) {
-        return orderDao.create(productName, buyerName, buyerSurname, buyerEmail,
-                sellerName, sellerSurname, sellerEmail, amount, price, dateTime, message);
+    public Order create(long productId, int amount, String message) {
+        final Optional<Product> maybeProduct = productService.getById(productId);
+        if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
+        final Product product = maybeProduct.get();
+
+        boolean enough = productService.checkForAvailableStock(product, amount);
+        if(!enough){
+            //TODO: Preguntar que hacer acá. Capaz podríamos handlearlo sin un 500
+            // De momento quedo con un 400, pero preguntar.
+            throw new InsufficientStockException();
+        }
+
+        User user = userService.getLoggedUser();
+        if(user == null || userService.isLoggedSeller()) throw new UnauthorizedRoleException();
+
+        final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
+        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
+        final Seller seller = maybeSeller.get();
+
+        emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
+                sellerService.getName(seller.getUser().getId()), product,
+                amount, product.getPrice(), user.getFirstName(), user.getEmail(),
+                message, sellerService.getLocale(seller.getUser().getId()));
+
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        Order order = orderDao.create(product.getName(), user.getFirstName(),
+                user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
+                sellerService.getSurname(seller.getUser().getId()),
+                sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
+                message);
+        if(order == null) throw new OrderCreationException();
+
+        productService.decreaseStock(product.getProductId(), amount);
+        Optional<Product> modified = productService.getById(product.getProductId());
+        if (!modified.isPresent()) throw new ProductNotFoundException();
+        if (modified.get().getStock() == 0) {
+            Optional<User> seller2 = userService.findById(seller.getUser().getId());
+            if (!seller2.isPresent()) throw new UserNotFoundException();
+            User u = seller2.get();
+            emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
+                    u.getSurname(), u.getLocale());
+            modified.get().setStatus(ProductStatus.OUTOFSTOCK);
+        }
+        return order;
     }
 
     @Override
@@ -59,55 +100,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Pagination<Order> getBySellerEmail(String sellerEmail, int page){
         return orderDao.getBySellerEmail(sellerEmail, page, PAGE_SIZE);
-    }
-
-    @Transactional
-    @Override
-    public void create(long productId, int amount, String message) {
-        //TODO: Cambiar nombre (métodos tienen que usar unitarios)
-        final Optional<Product> maybeProduct = productService.getById(productId);
-        if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
-        final Product product = maybeProduct.get();
-
-        boolean enough = productService.checkForAvailableStock(product, amount);
-        if(!enough){
-            //TODO: Preguntar que hacer acá. Capaz podríamos handlearlo sin un 500
-            // De momento quedo con un 400, pero preguntar.
-            throw new InsufficientStockException();
-        }
-
-        User user = userService.getLoggedUser();
-        if(user == null) throw new UnauthorizedRoleException();
-
-        final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
-        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
-        final Seller seller = maybeSeller.get();
-
-        emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
-                sellerService.getName(seller.getUser().getId()), product,
-                amount, product.getPrice(), user.getFirstName(), user.getEmail(),
-                message, sellerService.getLocale(seller.getUser().getId()));
-
-        LocalDateTime dateTime = LocalDateTime.now(); //TODO: Explorar acá
-
-        Order order = orderDao.create(product.getName(), user.getFirstName(),
-                user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
-                sellerService.getSurname(seller.getUser().getId()),
-                sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
-                message);
-        if(order == null) throw new OrderCreationException();
-
-        productService.decreaseStock(product.getProductId(), amount);
-        Optional<Product> modified = productService.getById(product.getProductId());
-        if (!modified.isPresent()) throw new ProductNotFoundException();
-        if (modified.get().getStock() == 0) {
-            Optional<User> seller2 = userService.findById(seller.getUser().getId());
-            if (!seller2.isPresent()) throw new UserNotFoundException();
-            User u = seller2.get();
-            emailService.noMoreStock(modified.get(), u.getEmail(), u.getFirstName(),
-                    u.getSurname(), u.getLocale());
-            modified.get().setStatus(ProductStatus.OUTOFSTOCK);
-        }
     }
 
     @Override
