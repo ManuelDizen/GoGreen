@@ -130,7 +130,7 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:if test="${fromSale && num == 0 && currentPage == 1}">
-                                            <div class="center user-margin">
+                                            <div class="center user-margin flex-center">
                                                 <div class="chip green chip-font">
                                                     <spring:message code="profile.newpurchase"/>
                                                 </div>

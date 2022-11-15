@@ -234,7 +234,7 @@ public class ProductController {
         } catch (IOException e) {throw new RuntimeException(e);}
         Product product = productService.createProduct(Integer.parseInt(form.getStock()), Integer.parseInt(form.getPrice()),
                 form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
-        return new ModelAndView("redirect:/createdProduct/" + product.getProductId());
+        return new ModelAndView("redirect:/product/" + product.getProductId());
     }
 
     @RequestMapping(value="/updateProduct/{productId:[0-9]+}", method=RequestMethod.GET)
