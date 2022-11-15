@@ -14,7 +14,7 @@ import java.util.*;
 @Repository
 public class ProductHibernateDao implements ProductDao {
 
-    private static final int EXPLORE_PAGE_SIZE = 8;
+    private static final int EXPLORE_PAGE_SIZE = 12;
 
     private final static int ASCENDING = 0;
     private final static int DESCENDING = 1;

@@ -172,15 +172,14 @@ public class UserController {
 
     @RequestMapping(value="/newsFeed")
     public ModelAndView newsFeed(@RequestParam(name="page", defaultValue = "1") final int page){
-        List<Article> news = articleService.getForLoggedUser();
+        Pagination<Article> news = articleService.getForLoggedUser(page);
         //TODO: This method should go to an utils service, which should definitely not be seen by the controller
-        List<List<Article>> newsPages = productService.divideIntoPages(news, 10);
         final ModelAndView mav = new ModelAndView("userNewsFeed");
         List<Seller> favs = favoriteService.getFavoriteSellersByUserId();
         mav.addObject("currentPage", page);
-        mav.addObject("pages", newsPages);
+        mav.addObject("pages", news);
         mav.addObject("favs", favs);
-        mav.addObject("news", newsPages.get(page-1));
+        mav.addObject("news", news.getItems());
         mav.addObject("user", userService.getLoggedUser());
         return mav;
     }

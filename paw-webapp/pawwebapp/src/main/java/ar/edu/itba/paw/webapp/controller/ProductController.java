@@ -148,9 +148,9 @@ public class ProductController {
         User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
-        List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
-        mav.addObject("comments", comments.get(page-1));
-        mav.addObject("commentPages", comments);
+        Pagination<Comment> comments = commentService.getCommentsForProduct(productId, page);
+        mav.addObject("comments", comments);
+        mav.addObject("commentPages", comments.getPageCount());
         mav.addObject("currentPage", page);
 
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.CommentDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Comment;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.CommentNotFoundException;
@@ -51,21 +52,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<List<Comment>> getCommentsForProduct(long productId) {
-        List<Comment> allComments = commentDao.getCommentsForProduct(productId);
-        Collections.reverse(allComments);
-        List<List<Comment>> pageList = new ArrayList<>();
-
-        int aux = 1;
-        while(aux <= allComments.size()/PAGESIZE) {
-            pageList.add(allComments.subList((aux-1)*PAGESIZE, aux*PAGESIZE));
-            aux++;
-        }
-        if(allComments.size() % PAGESIZE != 0)
-            pageList.add(allComments.subList((aux-1)*PAGESIZE, allComments.size()));
-        if(allComments.size() == 0) pageList.add(new ArrayList<>());
-        return pageList;
-
+    public Pagination<Comment> getCommentsForProduct(long productId, int page) {
+        return commentDao.getCommentsForProduct(productId, page);
     }
 
     @Transactional
