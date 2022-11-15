@@ -13,7 +13,7 @@
 <%@ include file="navbar.jsp"%>
 <div class="seller-profile-main-body-container">
     <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
-        <div class="information row">
+        <div class="information row" style="margin:0;">
             <div class="col s6">
                 <div class="sellerprofile-info-1">
                     <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>

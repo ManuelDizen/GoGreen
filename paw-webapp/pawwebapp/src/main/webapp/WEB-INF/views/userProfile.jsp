@@ -12,7 +12,7 @@
         <div class="row">
             <div id="orders" class="col s12">
                 <div class="user-profile-container-2">
-                    <div class="information row">
+                    <div class="information row" style="margin:0;">
                         <div class="col s6">
                             <div class="userprofile-info-1">
                                 <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
