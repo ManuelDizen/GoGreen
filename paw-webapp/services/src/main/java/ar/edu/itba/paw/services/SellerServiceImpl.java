@@ -37,13 +37,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Optional<Seller> findById(long id) {
-        System.out.println("\n\n\n!!!Entro con id: " + id + " !!!\n\n\n");
-        Optional<Seller> seller = sellerDao.findById(id);
-        if(seller.isPresent()) System.out.println("ENCONTRE SELLER\n\n");
-        else{
-            System.out.println("NO ENCONTRE¡!\n\n");
-        }
-        return seller;
+        return sellerDao.findById(id);
     }
 
     @Override

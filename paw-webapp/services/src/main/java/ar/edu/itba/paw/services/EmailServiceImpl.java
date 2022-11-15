@@ -46,7 +46,6 @@ public class EmailServiceImpl implements EmailService {
         ctx.setVariables(data);
         String htmlBody = templateEngine.process(template, ctx);
         String sbj = messageSource.getMessage(subject, null, locale);
-        System.out.println(sbj);
         try {
             sendMail(to, htmlBody, sbj);
         } catch(MessagingException mex) {

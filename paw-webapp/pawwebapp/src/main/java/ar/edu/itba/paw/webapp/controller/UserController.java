@@ -130,7 +130,6 @@ public class UserController {
         ModelAndView mav = new ModelAndView("sellerPage");
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()){
-            System.out.println("!!! No encontre seller con sellerId " + sellerId + "!!!\n\n");
             throw new UserNotFoundException();
         }
         mav.addObject("seller", seller.get());
@@ -139,20 +138,14 @@ public class UserController {
         mav.addObject("areas", Area.values());
         mav.addObject("categories", Category.values());
 
-        Pagination<Product> products = productService.findBySeller(sellerId, true, page, ORDERS_PER_PAGE);
-        //TODO: Move to service
-        //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
-
-        List<Article> news = articleService.getBySellerId(sellerId);
-        //TODO: Move to service
-        news = news.size() > 2? news.subList(0, 2):news;
-        mav.addObject("news", news);
-
+        Pagination<Product> products = productService.findBySeller(sellerId, true, page,
+                ORDERS_PER_PAGE);
+        Pagination<Article> newsPage = articleService.getBySellerId(sellerId,1);
+        mav.addObject("news", newsPage.getItems().size() > 2?
+                newsPage.getItems().subList(0, 2):newsPage.getItems());
         int n_orders = orderService.getTotalOrdersForSeller(seller.get().getUser().getEmail());
         mav.addObject("n_orders", n_orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
-
-        //TODO: Refactor for pagination!
         mav.addObject("currentPage", page);
         mav.addObject("pages", products.getPageCount());
         mav.addObject("recentProducts", products.getItems());
