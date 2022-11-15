@@ -114,4 +114,13 @@ public class OrderHibernateDao implements OrderDao {
         query.setParameter("buyeremail", buyerEmail);
         return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
     }
+
+    @Override
+    public List<String> getFirstNDistinct(int amount) {
+        String queryStr = "SELECT productname FROM orders GROUP BY productname ORDER BY " +
+                "MAX(id) DESC LIMIT :limit";
+        Query query = em.createNativeQuery(queryStr);
+        query.setParameter("limit", amount);
+        return query.getResultList();
+    }
 }

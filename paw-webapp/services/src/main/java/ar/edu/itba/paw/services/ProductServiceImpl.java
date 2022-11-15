@@ -160,21 +160,6 @@ public class ProductServiceImpl implements ProductService {
         });
     }
 
-    @Override
-    public <T> List<List<T>> divideIntoPages(List<T> list, int pageSize) {
-        List<List<T>> pageList = new ArrayList<>();
-
-        int aux = 1;
-        while(aux <= list.size()/pageSize) {
-            pageList.add(list.subList((aux-1)*pageSize, aux*pageSize));
-            aux++;
-        }
-        if(list.size() % pageSize != 0)
-            pageList.add(list.subList((aux-1)*pageSize, list.size()));
-        if(list.size() == 0) pageList.add(new ArrayList<>());
-        return pageList;
-    }
-
     @Transactional
     @Override
     public void deleteProduct(long productId) {
@@ -295,14 +280,6 @@ public class ProductServiceImpl implements ProductService {
         product.setStock(amount + product.getStock());
     }
 
-    @Transactional
-    @Override
-    public void addStock(long prodId, int amount){
-        Optional<Product> product = getById(prodId);
-        if(!product.isPresent()) return;
-        addStock(product.get().getName(), amount);
-    }
-
     @Override
     public String buildPath(String[] strings) {
         StringBuilder str = new StringBuilder();
@@ -374,26 +351,21 @@ public class ProductServiceImpl implements ProductService {
         return interesting;
     }
 
-
-    @Override
-    public List<List<Product>> productsPerCategory() {
-        List<List<Product>> products = new ArrayList<>();
-        for(Category c : Category.values()){
-            List<Product> auxSet = getByCategory(c);
-            products.add(auxSet);
-        }
-        return products;
-    }
-
     @Override
     public List<Product> getByCategory(Category c){
         return productDao.getByCategory(c.getId());
     }
 
     @Override
-    public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser) {
-        List<Product> products;
-        if(loggedUser == null || ordersForUser.isEmpty()) products = getPopular(N_LANDING);
+    public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser,
+                                            List<String> popularOrders) {
+        List<Product> products = new ArrayList<>();
+        if(loggedUser == null || ordersForUser.isEmpty())
+            for(String name : popularOrders){
+                Optional<Product> product = getByName(name);
+                product.ifPresent(products::add);
+                //Should never "not" be present
+            }
         else{
             products = getInterestingForUser(ordersForUser, N_LANDING);
         }
@@ -411,16 +383,6 @@ public class ProductServiceImpl implements ProductService {
             return productPages.get(page-1);
         return new ArrayList<>();
 
-    }
-
-    @Override
-    public List<Product> getPopular(int amount) {
-
-        //TODO:redo
-
-        List<Product> products = getAvailable(N_LANDING);
-        products.sort((o1, o2) -> getSales(o2.getName()) - getSales(o1.getName()));
-        return products;
     }
 
     @Transactional

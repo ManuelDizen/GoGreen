@@ -23,5 +23,6 @@ public interface OrderDao {
     void deleteOrder(long orderId);
     int getTotalOrdersForSeller(String sellerEmail);
     int getTotalOrdersForUser(String buyerEmail);
+    List<String> getFirstNDistinct(int amount);
 
 }

@@ -142,6 +142,12 @@ public class OrderServiceImpl implements OrderService {
     public int getTotalOrdersForUser(String userEmail){
         return orderDao.getTotalOrdersForSeller(userEmail);
     }
+
+    @Override
+    public List<String> getFirstNDistinct(int amount) {
+        return orderDao.getFirstNDistinct(amount);
+    }
+
     @Override
     public int getTotalOrdersForSeller(String sellerEmail){
         return orderDao.getTotalOrdersForSeller(sellerEmail);

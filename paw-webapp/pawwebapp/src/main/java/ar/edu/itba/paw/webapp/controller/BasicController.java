@@ -33,11 +33,15 @@ public class BasicController {
     @RequestMapping("/")
     public ModelAndView landingPage() {
         User loggedUser = userService.getLoggedUser();
-        Pagination<Order> ordersForUser = null;
+        List<Order> ordersForUser = null;
+        List<String> popularOrders = null;
         if(loggedUser!=null) ordersForUser =
-                orderService.getByBuyerEmail(loggedUser.getEmail(), 1);
+            orderService.getByBuyerEmail(loggedUser.getEmail(), 1).getItems();
+        else{
+            popularOrders = orderService.getFirstNDistinct(N_LANDING);
+        }
         List<Product> products = productService.getLandingProducts(loggedUser,
-                ordersForUser==null? null:ordersForUser.getItems());
+                ordersForUser, popularOrders);
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("products", products);
         mav.addObject("categories", Category.values());
