@@ -100,11 +100,6 @@ public class ProductServiceImpl implements ProductService {
         return productDao.getByName(name);
     }
 
-//    @Override
-//    public List<Product> getAll() {
-//        return productDao.getAll();
-//    }
-
     @Override
     public List<Product> getAvailable(){return productDao.getAvailable();}
 

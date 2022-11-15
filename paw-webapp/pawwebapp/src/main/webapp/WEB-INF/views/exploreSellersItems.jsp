@@ -1,22 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Explore Products</title>
+    <title><spring:message code="navbar.companyname"/> - <spring:message code="explorsellers.title"/></title>
 </head>
 <body>
 <div class="explore-products">
     <c:if test="${isEmpty}">
         <div>
-            <h4><spring:message code="explore.noproducts"/></h4>
-            <sec:authorize access="hasRole('SELLER')">
-                <div style="margin:10px auto; text-align:center;"><spring:message code="explore.noproducts.sellermsg"/></div>
-                <div>
-                    <a class="decision-button waves-effect waves-light btn standard-button center"
-                       href="<c:url value="/createProduct"/>" style="margin:20px auto; text-align:center;">
-                        <spring:message code="explore.createproduct"/>
-                    </a>
-                </div>
-            </sec:authorize>
+            <h4><spring:message code="explore.nosellers"/></h4>
         </div>
     </c:if>
     <c:if test="${sellers.items.size() != 0}">
