@@ -84,6 +84,7 @@ public class PasswordServiceImpl implements PasswordService {
         token.get().use();
     }
 
+    @Transactional
     @Override
     public void updatePassword(String token, String password){
         Optional<User> maybeUser = getByToken(token);

@@ -112,8 +112,8 @@ public class SellerServiceImpl implements SellerService {
     public Pagination<Seller> filter(String name, long areaId, boolean favorite, int page,
                               long userId){
         Area area = Area.getById(areaId);
-        Pagination<Seller> toReturn = sellerDao.filter(name, area, favorite, page, userId);
-        // sortSellers(toReturn, sortType);
+        Pagination<Seller> toReturn = sellerDao.filter(parseString(name), area,
+                favorite, page, userId);
         return toReturn;
     }
 
@@ -127,5 +127,24 @@ public class SellerServiceImpl implements SellerService {
             return "/sellerProfile";
         }
         return "/userProfile";
+    }
+
+    private String parseString(String str){
+        char[] sqlSpecialChars = {'%', '_'};
+        char[] charArray = str.toCharArray();
+        StringBuilder out = new StringBuilder();
+        boolean flag;
+        for(char c : charArray) {
+            flag = false;
+            for (char s : sqlSpecialChars) {
+                if (c == s) {
+                    out.append("\\").append(c);
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) out.append(c);
+        }
+        return out.toString();
     }
 }

@@ -180,31 +180,9 @@ public class ProductServiceImpl implements ProductService {
         return pageList;
     }
 
-//    @Override
-//    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
-//                                        Integer maxPrice, long areaId, int sort, int direction,
-//                                        boolean favorite) {
-//        List<Product> productList = filter(name, category, tags, maxPrice, areaId, favorite, 1, sort, direction);
-//        setTagList(productList);
-//        sortProducts(productList, sort, direction);
-//        if(favorite) {
-//            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
-//            productList.removeIf(product -> !sellers.contains(product.getSeller()));
-//        }
-//        return productList;
-//    }
-
     @Transactional
     @Override
     public void deleteProduct(long productId) {
-        /*
-        Opción 1: La que estaba antes, una baja física.
-         */
-        // productDao.deleteProduct(productId);
-
-        /*
-        Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
-         */
         Optional<Product> product = getById(productId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         product.get().setStatus(ProductStatus.DELETED);
@@ -228,10 +206,6 @@ public class ProductServiceImpl implements ProductService {
             if(product.getStatus().getId() == ProductStatus.AVAILABLE.getId()){
                 prod.get().setStatus(ProductStatus.PAUSED);
             }
-            // Aclaración: Si el status está out of stock, no tiene sentido pausar.
-            // Tecnicamente, "ya está pausado". Si esta deleted, ni siquiera debería ser alcanzable.
-            // Por lo que el único cambio posible es si está AVAILABLE, pasarlo a PAUSED.
-            // (Si esta paused obviamente no es necesario modificar nada)
         }
     }
 
