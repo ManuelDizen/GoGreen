@@ -108,7 +108,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getBySellerId(Long sellerId) {
-        return articleDao.getBySellerId(sellerId);
+        List<Article> news = articleDao.getBySellerId(sellerId);
+        return news.size() > 2? news.subList(0, 2):news;
     }
 
     @Override

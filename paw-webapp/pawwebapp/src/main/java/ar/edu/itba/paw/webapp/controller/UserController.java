@@ -130,7 +130,6 @@ public class UserController {
         ModelAndView mav = new ModelAndView("sellerPage");
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()){
-            System.out.println("!!! No encontre seller con sellerId " + sellerId + "!!!\n\n");
             throw new UserNotFoundException();
         }
         mav.addObject("seller", seller.get());
@@ -140,19 +139,13 @@ public class UserController {
         mav.addObject("categories", Category.values());
 
         Pagination<Product> products = productService.findBySeller(sellerId, true, page, ORDERS_PER_PAGE);
-        //TODO: Move to service
-        //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
 
         List<Article> news = articleService.getBySellerId(sellerId);
-        //TODO: Move to service
-        news = news.size() > 2? news.subList(0, 2):news;
         mav.addObject("news", news);
 
         int n_orders = orderService.getTotalOrdersForSeller(seller.get().getUser().getEmail());
         mav.addObject("n_orders", n_orders);
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
-
-        //TODO: Refactor for pagination!
         mav.addObject("currentPage", page);
         mav.addObject("pages", products.getPageCount());
         mav.addObject("recentProducts", products.getItems());
@@ -199,12 +192,12 @@ public class UserController {
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
                                         ){
-        //TODO: Paginate queries not to load all sellers in memory simultaneously
+
         long userId = userService.getLoggedUser().getId();
         Pagination<Seller> sellers = sellerService.filter(name, areaId, favorite, page, userId);
-        //List<Seller> sellers = sellerService.getAll();
+
         final ModelAndView mav = new ModelAndView("exploreSellers");
-        mav.addObject("isEmpty", sellers.getItems().isEmpty()); //TODO: Change the "getAll()" call
+        mav.addObject("isEmpty", sellers.getItems().isEmpty());
         mav.addObject("sellers", sellers);
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
@@ -214,8 +207,6 @@ public class UserController {
 
         String favoritePath = "";
         if(favorite) {
-            //TODO: Filter by favorites (en realidad se debería hacer directo en el servicio inicial)
-            //productService.onlyFavorites(filteredProducts, userService.getLoggedUser().getId());
             favoritePath = "favorite=on&";
         }
         mav.addObject("currentPage", page);
