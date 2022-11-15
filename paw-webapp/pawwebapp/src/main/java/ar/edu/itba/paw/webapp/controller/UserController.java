@@ -61,26 +61,11 @@ public class UserController {
         User user = userService.getLoggedUser();
         if(user == null) throw new UserNotFoundException();
         mav.addObject("user", user);
-
         Pagination<Order> orders = orderService.getByBuyerEmail(user.getEmail(), page);
-
         mav.addObject("currentPage", page);
         mav.addObject("pages", orders.getPageCount());
         mav.addObject("orders", orders.getItems());
         mav.addObject("fromSale", fromSale);
-        //TODO: Che esto esta muy mal, hay que cambiarlo urgente por un
-        // "getUsersForLogged" y "getSellersForLogged"
-        /*
-        Update: Esto igual presenta un problema mayor. Nosotros las orders las tenemos todas mediante
-        strings, y no mediante otros models, por lo que para traer la información del vendedor
-        si o si tenemos que hacer el proceso "mail de vendedor de order -> vendedor -> usuario"
-
-        Lo que se me ocurre es armar un get sellers de los que tienen alguna compra en la página
-        del usuario, y así compararlo. No es escalable, pero es mucho mas escalable que lo que esta actualmente
-
-         */
-        mav.addObject("users", userService.getAll());
-        mav.addObject("sellers", sellerService.getAll());
         return mav;
     }
 

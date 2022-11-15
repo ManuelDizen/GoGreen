@@ -13,6 +13,8 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final static int N_LANDING = 4;
+
+    private final static int N_PROD_PAGE = 4;
     private final static int ASCENDING = 0;
     private final static int DESCENDING = 1;
 
@@ -135,14 +137,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
         productList.sort((o1, o2) -> {
-            if (sort == Sort.SORT_POPULAR.getId()) {
-                if (direction == ASCENDING) {
-                    return (getSales(o1.getName())- getSales(o2.getName()));
-                } else {
-                    return (getSales(o2.getName()) - getSales(o1.getName()));
-                }
-
-            } else if (sort == Sort.SORT_PRICE.getId()) {
+            if (sort == Sort.SORT_PRICE.getId()) {
                 if (direction == ASCENDING) {
                     return (o1.getPrice() - o2.getPrice());
                 } else {
@@ -270,7 +265,6 @@ public class ProductServiceImpl implements ProductService {
         if(!product.isPresent()) return;
         Product prod = product.get();
         prod.setStock(prod.getStock() - amount);
-        //productDao.updateStock(prodId, (prod.getStock()-amount));
         if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
     }
 
@@ -347,43 +341,37 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if(toReturn.size() < amount) {
-            List<Product> bySeller = findBySeller(product.getSeller().getId(), true);
-            addIfNotPresent(toReturn, bySeller, amount, product);
+            addIfNotPresent(toReturn, bySellerAndCategory, amount, product);
         }
         if(toReturn.size() < amount) {
-            List<Product> sorted = getAvailable();
+            List<Product> sorted = getAvailable(N_PROD_PAGE);
             sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), DESCENDING);
             addIfNotPresent(toReturn, sorted, amount, product);
         }
-        setTagList(toReturn);
         return toReturn;
     }
 
     @Override
     public List<Product> getInterestingForUser(List<Order> orders, int amount) {
-        // TODO: Rebuild this whole method
-        /*List<Product> interesting = new ArrayList<>();
-        int i=0;
-        while(interesting.size() < amount) {
-            for(Order order : orders) {
-                Optional<Product> aux = getByName(order.getProductName());
-                if(aux.isPresent()) {
-                    Product product = aux.get();
-                    Product candidate = getInteresting(product, i+1).get(i);
-                    if (!interesting.contains(candidate) && interesting.size() < amount)
-                        interesting.add(candidate);
-                }
+        List<Product> interesting = new ArrayList<>();
+        for(Order order : orders) {
+            Optional<Product> aux = getByName(order.getProductName());
+            if(aux.isPresent()) {
+                Product product = aux.get();
+                Product candidate = getInteresting(product, 1).get(0);
+                if (!interesting.contains(candidate) && interesting.size() < amount)
+                    interesting.add(candidate);
             }
-            i++;
+        }
+        if(interesting.size() < amount){
+            List<Product> candidates = getAvailable(N_LANDING);
+            for(Product p : candidates){
+                if(!interesting.contains(p)) interesting.add(p);
+                if(interesting.size() == amount) break;
+                //Should always reach at least N_LANDING products with this for
+            }
         }
         return interesting;
-         */
-        return getPopular(amount);
-
-        /*
-        Que hace: Se trae los productos de las ordenes de un usuario.
-
-         */
     }
 
 
@@ -407,7 +395,6 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products;
         if(loggedUser == null || ordersForUser.isEmpty()) products = getPopular(N_LANDING);
         else{
-            //TODO: Rebuild getInterestingForUser method
             products = getInterestingForUser(ordersForUser, N_LANDING);
         }
         return products;
@@ -429,15 +416,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getPopular(int amount) {
 
-        List<Product> products = getAvailable(4);
+        //TODO:redo
 
+        List<Product> products = getAvailable(N_LANDING);
         products.sort((o1, o2) -> getSales(o2.getName()) - getSales(o1.getName()));
-
-        //List<Product> popular = products.size() < amount? products:products.subList(0, amount);
-
-        /*for(Product product : popular) {
-            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
-        }*/
         return products;
     }
 

@@ -33,9 +33,7 @@ import java.util.Optional;
 public class RegisterController {
 
     private final SellerService sellerService;
-
     private final UserService userService;
-
     private final PasswordService passwordService;
     private final AuthenticationManager authenticationManager;
 
@@ -94,8 +92,6 @@ public class RegisterController {
                 form.getEmail(), form.getPassword(), LocaleContextHolder.getLocale(), form.getPhone(),
                 form.getAddress(), Area.getById(form.getArea()));
         authWithAuthManager(request, form.getEmail(), form.getPassword());
-
-        //TODO: Check how to link if coming from product page
         return new ModelAndView("redirect:/");
     }
 

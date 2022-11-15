@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Pagination;
+import ar.edu.itba.paw.models.Seller;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -23,9 +24,9 @@ public class OrderHibernateDao implements OrderDao {
     @Override
     public Order create(String productName, String buyerName, String buyerSurname, String buyerEmail,
                         String sellerName, String sellerSurname, String sellerEmail, Integer amount,
-                        Integer price, LocalDateTime dateTime, String message) {
+                        Integer price, LocalDateTime dateTime, String message, Seller seller) {
         final Order order = new Order(productName, buyerName, buyerSurname, buyerEmail, sellerName,
-                sellerSurname, sellerEmail, amount, price, dateTime, message);
+                sellerSurname, sellerEmail, amount, price, dateTime, message, seller);
         em.persist(order);
         return order;
     }

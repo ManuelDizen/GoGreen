@@ -55,14 +55,10 @@ public class ProductHibernateDao implements ProductDao {
 
     @Override
     public Optional<Product> getById(long productId) {
-        //TODO: Preguntar si esta manera es mejor, me queda la duda si poner lazy pero traer los
-        // taglist de esta manera es mejor que ponerlo como eager directamente (la realidad es que casi
-        // siempre que necesitamos el producto necesitamos el tagList).
         return em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
                         " WHERE p.id = :id " +
                         "ORDER BY p.id DESC",
                 Product.class).setParameter("id", productId).getResultList().stream().findFirst();
-        //return Optional.ofNullable(em.find(Product.class, productId));
     }
 
     @Override
@@ -214,9 +210,10 @@ public class ProductHibernateDao implements ProductDao {
 
     private String getOrder(int sort, int direction) {
         String toRet = "";
-        if (sort == Sort.SORT_POPULAR.getId()) {
+        /*if (sort == Sort.SORT_POPULAR.getId()) {
             toRet += "price ";
-        } else if (sort == Sort.SORT_PRICE.getId()) {
+        } else */
+        if (sort == Sort.SORT_PRICE.getId()) {
             toRet += "price ";
         } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
             toRet += "name ";
@@ -234,9 +231,10 @@ public class ProductHibernateDao implements ProductDao {
 
         String toRet = "";
 
-        if (sort == Sort.SORT_POPULAR.getId()) {
+        /*if (sort == Sort.SORT_POPULAR.getId()) {
             toRet += "p.price ";
-        } else if (sort == Sort.SORT_PRICE.getId()) {
+        } else */
+        if (sort == Sort.SORT_PRICE.getId()) {
             toRet += "p.price ";
         } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
             toRet += "p.name ";
@@ -354,8 +352,6 @@ public class ProductHibernateDao implements ProductDao {
         Query query = em.createNativeQuery(queryStr);
         return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue() > 0;
     }
-
-    //TODO: :Refactor the two methods below (casi el mismo código)
 
     @Override
     public Pagination<Product> findBySeller(long sellerId, int page, int amount) {

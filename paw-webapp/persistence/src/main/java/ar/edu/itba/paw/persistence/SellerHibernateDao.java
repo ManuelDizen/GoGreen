@@ -83,7 +83,6 @@ public class SellerHibernateDao implements SellerDao {
     public Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
                               long userId){
 
-        //TODO: Creo que direction no tiene mucho sentido acá considerando que después vamos a sortear
         StringBuilder nativeQuery = new StringBuilder();
         Map<String, Object> args = new HashMap<>();
         nativeQuery.append("SELECT id FROM sellers WHERE true");

@@ -115,20 +115,14 @@
                                             <spring:message code="sellerprofile.neworder.sellermail"
                                                             arguments="${order.sellerEmail}"/>:
                                         </div>
-                                        <c:forEach items="${users}" var="user">
-                                            <c:if test="${user.email == order.sellerEmail}">
-                                                <c:forEach items="${sellers}" var="seller">
-                                                    <c:if test="${user.id == seller.user.id}">
-                                                        <div>
-                                                            <spring:message code="userprofile.orders.selleraddress" arguments="${seller.address}"/>
-                                                        </div>
-                                                        <div>
-                                                            <spring:message code="userprofile.orders.sellerphone" arguments="${seller.phone}"/>
-                                                        </div>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:forEach>
+
+                                        <div>
+                                            <spring:message code="userprofile.orders.selleraddress" arguments="${order.seller.address}"/>
+                                        </div>
+                                        <div>
+                                            <spring:message code="userprofile.orders.sellerphone" arguments="${order.seller.phone}"/>
+                                        </div>
+
                                         <c:if test="${fromSale && num == 0 && currentPage == 1}">
                                             <div class="center user-margin flex-center">
                                                 <div class="chip green chip-font">
@@ -202,22 +196,12 @@
                                     <spring:message code="sellerprofile.neworder.sellermail"
                                     arguments="${order.sellerEmail}"/>
                                 </li>
-                                <c:forEach items="${users}" var="user">
-                                    <c:if test="${user.email == order.sellerEmail}">
-                                        <c:forEach items="${sellers}" var="seller">
-                                            <c:if test="${user.id == seller.user.id}">
-                                                <li>
-                                                    <spring:message code="registerbuyer.form.address"
-                                                    arguments="${seller.address}"/>
-                                                </li>
-                                                <li>
-                                                    <spring:message code="registerbuyer.form.phone"
-                                                    arguments="${seller.phone}"/>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
-                                </c:forEach>
+                                <li>
+                                    <spring:message code="userprofile.orders.selleraddress" arguments="${order.seller.address}"/>
+                                </li>
+                                <li>
+                                    <spring:message code="userprofile.orders.sellerphone" arguments="${order.seller.phone}"/>
+                                </li>
                             </ul>
                         </div>
                     </div>

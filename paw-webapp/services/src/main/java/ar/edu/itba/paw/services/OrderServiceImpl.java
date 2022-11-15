@@ -33,43 +33,9 @@ public class OrderServiceImpl implements OrderService {
         this.userService = userService;
     }
 
-    @Override
-    public Order create(String productName, String buyerName, String buyerSurname,
-                        String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                        Integer amount, Integer price, LocalDateTime dateTime, String message) {
-        return orderDao.create(productName, buyerName, buyerSurname, buyerEmail,
-                sellerName, sellerSurname, sellerEmail, amount, price, dateTime, message);
-    }
-
-    @Override
-    public Optional<Order> getById(long orderId) {
-        return orderDao.getById(orderId);
-    }
-
-    @Override
-    public List<Order> getBySellerEmail(String sellerEmail) {
-        return orderDao.getBySellerEmail(sellerEmail);
-    }
-
-    @Override
-    public List<Order> getByBuyerEmail(String buyerEmail) {
-        return orderDao.getByBuyerEmail(buyerEmail);
-    }
-
-    @Override
-    public Pagination<Order> getByBuyerEmail(String buyerEmail, int page){
-        return orderDao.getByBuyerEmail(buyerEmail, page, PAGE_SIZE);
-    }
-
-    @Override
-    public Pagination<Order> getBySellerEmail(String sellerEmail, int page){
-        return orderDao.getBySellerEmail(sellerEmail, page, PAGE_SIZE);
-    }
-
     @Transactional
     @Override
-    public void create(long productId, int amount, String message) {
-        //TODO: Cambiar nombre (métodos tienen que usar unitarios)
+    public Order create(long productId, int amount, String message) {
         final Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
@@ -99,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
                 user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
                 sellerService.getSurname(seller.getUser().getId()),
                 sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
-                message);
+                message, seller);
         if(order == null) throw new OrderCreationException();
 
         productService.decreaseStock(product.getProductId(), amount);
@@ -113,6 +79,32 @@ public class OrderServiceImpl implements OrderService {
                     u.getSurname(), u.getLocale());
             modified.get().setStatus(ProductStatus.OUTOFSTOCK);
         }
+        return order;
+    }
+
+    @Override
+    public Optional<Order> getById(long orderId) {
+        return orderDao.getById(orderId);
+    }
+
+    @Override
+    public List<Order> getBySellerEmail(String sellerEmail) {
+        return orderDao.getBySellerEmail(sellerEmail);
+    }
+
+    @Override
+    public List<Order> getByBuyerEmail(String buyerEmail) {
+        return orderDao.getByBuyerEmail(buyerEmail);
+    }
+
+    @Override
+    public Pagination<Order> getByBuyerEmail(String buyerEmail, int page){
+        return orderDao.getByBuyerEmail(buyerEmail, page, PAGE_SIZE);
+    }
+
+    @Override
+    public Pagination<Order> getBySellerEmail(String sellerEmail, int page){
+        return orderDao.getBySellerEmail(sellerEmail, page, PAGE_SIZE);
     }
 
     @Override

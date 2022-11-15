@@ -44,6 +44,8 @@ public class Product {
     @Enumerated(EnumType.ORDINAL)
     private ProductStatus status;
 
+
+
     public void addEcotag(Ecotag tag) {
         tagList.add(tag);
     }
