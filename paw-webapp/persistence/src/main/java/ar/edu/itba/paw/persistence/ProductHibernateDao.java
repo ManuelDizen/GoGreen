@@ -309,7 +309,7 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaList) {
-            products.add(((Integer)o).longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
         if(products.isEmpty())
@@ -373,7 +373,7 @@ public class ProductHibernateDao implements ProductDao {
         for(Object o : query.getResultList()) {
 //            BigInteger big = BigInteger.valueOf((Integer)o);
 //            products.add(big.longValue());
-            products.add(((Integer)o).longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
         if(products.isEmpty())

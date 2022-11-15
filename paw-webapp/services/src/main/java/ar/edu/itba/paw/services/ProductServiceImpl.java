@@ -120,13 +120,25 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
     }
+
+//    @Override
+//    public Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId) {
+//        List<Long> ecotags = new ArrayList<>();
+//        for(Ecotag tag : tags) {
+//            ecotags.add(tag.getId());
+//        }
+//        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, favorite, page, sort, direction, userId);
+//    }
+
     @Override
-    public Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId) {
+    public Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
             ecotags.add(tag.getId());
         }
-        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, favorite, page, sort, direction, userId);
+        if(favorite)
+            return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, true, page, sort, direction, userService.getLoggedUser().getId());
+        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, false, page, sort, direction, 0);
     }
 
     private int getSales(String productName) {
@@ -165,46 +177,9 @@ public class ProductServiceImpl implements ProductService {
         });
     }
 
-    @Override
-    public <T> List<List<T>> divideIntoPages(List<T> list, int pageSize) {
-        List<List<T>> pageList = new ArrayList<>();
-
-        int aux = 1;
-        while(aux <= list.size()/pageSize) {
-            pageList.add(list.subList((aux-1)*pageSize, aux*pageSize));
-            aux++;
-        }
-        if(list.size() % pageSize != 0)
-            pageList.add(list.subList((aux-1)*pageSize, list.size()));
-        if(list.size() == 0) pageList.add(new ArrayList<>());
-        return pageList;
-    }
-
-//    @Override
-//    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
-//                                        Integer maxPrice, long areaId, int sort, int direction,
-//                                        boolean favorite) {
-//        List<Product> productList = filter(name, category, tags, maxPrice, areaId, favorite, 1, sort, direction);
-//        setTagList(productList);
-//        sortProducts(productList, sort, direction);
-//        if(favorite) {
-//            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
-//            productList.removeIf(product -> !sellers.contains(product.getSeller()));
-//        }
-//        return productList;
-//    }
-
     @Transactional
     @Override
     public void deleteProduct(long productId) {
-        /*
-        Opción 1: La que estaba antes, una baja física.
-         */
-        // productDao.deleteProduct(productId);
-
-        /*
-        Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
-         */
         Optional<Product> product = getById(productId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         product.get().setStatus(ProductStatus.DELETED);

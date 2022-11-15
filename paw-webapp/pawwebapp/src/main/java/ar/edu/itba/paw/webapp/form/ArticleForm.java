@@ -2,12 +2,14 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.validations.FileSize;
 import ar.edu.itba.paw.webapp.validations.FileType;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Size;
 
 public class ArticleForm {
 
+    @NotEmpty
     @Size(max = 1023)
     private String message;
 
