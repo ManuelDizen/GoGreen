@@ -1525,6 +1525,7 @@ ALL CREDITS TO @andrewsims
     /*width: 80%;*/
     font-size: 13px;
     height: fit-content;
+    min-height:280px;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);

@@ -112,7 +112,7 @@ public class SellerHibernateDao implements SellerDao {
 
         final List<Long> sellerIds = new ArrayList<>();
         for (Object o : finalNativeQuery.getResultList()) {
-            sellerIds.add(((BigInteger) o).longValue());
+            sellerIds.add(((Integer) o).longValue());
         }
 
         if(sellerIds.isEmpty())

@@ -82,12 +82,12 @@ public class WebConfig {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-//        ds.setUrl(environment.getProperty("database.path"));
-//        ds.setUsername(environment.getProperty("database.username"));
-//        ds.setPassword(environment.getProperty("database.password"));
-        ds.setUrl("jdbc:postgresql://localhost/postgres");
-        ds.setUsername("postgres");
-        ds.setPassword("docker");
+        ds.setUrl(environment.getProperty("database.path"));
+        ds.setUsername(environment.getProperty("database.username"));
+        ds.setPassword(environment.getProperty("database.password"));
+        //ds.setUrl("jdbc:postgresql://localhost/postgres");
+        //ds.setUsername("postgres");
+        //ds.setPassword("docker");
         return ds;
     }
 
