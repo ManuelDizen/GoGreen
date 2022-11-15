@@ -14,6 +14,8 @@ public interface ArticleService {
     void delete(Long id);
 
     List<Article> getBySellerId(Long sellerId);
+
+    Pagination<Article> getBySellerId(Long sellerId, int page);
     Pagination<Article> getForLoggedUser(int page);
     Optional<Article> getById(Long id);
 }

@@ -32,29 +32,35 @@ public class CommentHibernateDao implements CommentDao {
 
     @Override
     public Pagination<Comment> getCommentsForProduct(long productId, int page) {
-        Query query = em.createNativeQuery("SELECT id FROM comments WHERE productId = :productId ORDER BY datetime DESC LIMIT :limit OFFSET :offset");
+
+        String str = "FROM comments WHERE productId = :productId";
+
+        Query query = em.createNativeQuery("SELECT * " + str + " ORDER BY datetime DESC LIMIT :limit OFFSET :offset", Comment.class);
 
         query.setParameter("productId", productId);
         query.setParameter("limit", COMMENT_PAGE_SIZE);
         query.setParameter("offset", (page-1)*COMMENT_PAGE_SIZE);
 
-        List<Long> comments = new ArrayList<>();
+//        List<Long> comments = new ArrayList<>();
+//
+//        for(Object o : query.getResultList()) {
+//            comments.add(((BigInteger) o).longValue());
+//        }
 
-        for(Object o : query.getResultList()) {
-            comments.add(((BigInteger) o).longValue());
-        }
+        List<Comment> comments = query.getResultList();
 
         if(comments.isEmpty())
             return new Pagination<>(new ArrayList<>(), (long) page,
                     0);
 
-        Query countQuery = em.createNativeQuery("SELECT COUNT(*) FROM comments WHERE productid = :productId");
+        Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
         countQuery.setParameter("productId", productId);
         int count = ((BigInteger)countQuery.getSingleResult()).intValue();
-        System.out.println("count!!! " + count);
-        final TypedQuery<Comment> jpaQuery = em.createQuery("SELECT DISTINCT c FROM Comment c WHERE c.id IN :comments", Comment.class);
-        jpaQuery.setParameter("comments", comments);
-        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + COMMENT_PAGE_SIZE - 1)/COMMENT_PAGE_SIZE);
+
+        return new Pagination<>(comments, (long) page, (count + COMMENT_PAGE_SIZE - 1)/COMMENT_PAGE_SIZE);
+//        final TypedQuery<Comment> jpaQuery = em.createQuery("SELECT DISTINCT c FROM Comment c WHERE c.id IN :comments", Comment.class);
+//        jpaQuery.setParameter("comments", comments);
+//        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + COMMENT_PAGE_SIZE - 1)/COMMENT_PAGE_SIZE);
     }
 
     @Override

@@ -48,30 +48,68 @@ public class ArticleHibernateDao implements ArticleDao {
     }
 
     @Override
-    public Pagination<Article> getForUser(long userId, int page) {
+    public Pagination<Article> getBySellerId(Long sellerId, int page) {
 
-        Query query = em.createNativeQuery("SELECT id FROM news WHERE sellerid IN (SELECT seller_id FROM favorites WHERE user_id = :userId) ORDER BY datetime DESC LIMIT :limit OFFSET :offset");
+        String str = "FROM news WHERE sellerid = :sellerId";
 
-        query.setParameter("userId", userId);
+        Query query = em.createNativeQuery("SELECT * " + str + " ORDER BY datetime DESC LIMIT :limit OFFSET :offset", Article.class);
+
+        query.setParameter("sellerId", sellerId);
         query.setParameter("limit", NEWS_PAGE_SIZE);
         query.setParameter("offset", (page-1)*NEWS_PAGE_SIZE);
 
-        List<Long> articles = new ArrayList<>();
+//        List<Long> articles = new ArrayList<>();
+//
+//        for(Object o : query.getResultList()) {
+//            articles.add(((BigInteger) o).longValue());
+//        }
 
-        for(Object o : query.getResultList()) {
-            articles.add(((BigInteger) o).longValue());
-        }
+        List<Article> articles = query.getResultList();
 
         if(articles.isEmpty())
             return new Pagination<>(new ArrayList<>(), (long) page,
                     0);
 
-        Query countQuery = em.createNativeQuery("SELECT COUNT(*) FROM news  WHERE sellerid IN (SELECT seller_id FROM favorites WHERE user_id = :userId)");
+        Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
+        countQuery.setParameter("sellerId", sellerId);
+        int count = ((BigInteger)countQuery.getSingleResult()).intValue();
+
+//        final TypedQuery<Article> jpaQuery = em.createQuery("SELECT DISTINCT a FROM Article a WHERE a.id IN :articles", Article.class);
+//        jpaQuery.setParameter("articles", articles);
+//        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
+        return new Pagination<>(articles, (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
+    }
+
+    @Override
+    public Pagination<Article> getForUser(long userId, int page) {
+
+        String str = "FROM news WHERE sellerid IN (SELECT seller_id FROM favorites WHERE user_id = :userId)";
+
+        Query query = em.createNativeQuery("SELECT * " + str + " ORDER BY datetime DESC LIMIT :limit OFFSET :offset", Article.class);
+
+        query.setParameter("userId", userId);
+        query.setParameter("limit", NEWS_PAGE_SIZE);
+        query.setParameter("offset", (page-1)*NEWS_PAGE_SIZE);
+
+//        List<Long> articles = new ArrayList<>();
+//
+//        for(Object o : query.getResultList()) {
+//            articles.add(((BigInteger) o).longValue());
+//        }
+
+        List<Article> articles = query.getResultList();
+
+        if(articles.isEmpty())
+            return new Pagination<>(new ArrayList<>(), (long) page,
+                    0);
+
+        Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
         countQuery.setParameter("userId", userId);
         int count = ((BigInteger)countQuery.getSingleResult()).intValue();
 
-        final TypedQuery<Article> jpaQuery = em.createQuery("SELECT DISTINCT a FROM Article a WHERE a.id IN :articles", Article.class);
-        jpaQuery.setParameter("articles", articles);
-        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
+//        final TypedQuery<Article> jpaQuery = em.createQuery("SELECT DISTINCT a FROM Article a WHERE a.id IN :articles", Article.class);
+//        jpaQuery.setParameter("articles", articles);
+//        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
+        return new Pagination<>(articles, (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
     }
 }

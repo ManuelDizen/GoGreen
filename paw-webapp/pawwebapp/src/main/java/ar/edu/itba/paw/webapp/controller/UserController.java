@@ -139,7 +139,7 @@ public class UserController {
         mav.addObject("areas", Area.values());
         mav.addObject("categories", Category.values());
 
-        List<Product> products = productService.findBySeller(sellerId, true);
+        Pagination<Product> products = productService.findBySeller(sellerId, true, page, ORDERS_PER_PAGE);
         //TODO: Move to service
         //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
 
@@ -153,10 +153,9 @@ public class UserController {
         mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
 
         //TODO: Refactor for pagination!
-        List<List<Product>> productPages = productService.divideIntoPages(products, 8);
         mav.addObject("currentPage", page);
-        mav.addObject("pages", productPages);
-        mav.addObject("recentProducts", productPages.get(page-1));
+        mav.addObject("pages", products.getPageCount());
+        mav.addObject("recentProducts", products.getItems());
 
         return mav;
     }

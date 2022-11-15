@@ -15,5 +15,7 @@ public interface ArticleDao {
     Optional<Article> getById(Long id);
     List<Article> getBySellerId(Long sellerId);
 
+    Pagination<Article> getBySellerId(Long sellerId, int page);
+
     Pagination<Article> getForUser(long userId, int page);
 }

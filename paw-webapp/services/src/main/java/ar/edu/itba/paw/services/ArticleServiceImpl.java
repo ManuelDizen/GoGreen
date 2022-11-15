@@ -111,6 +111,11 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getBySellerId(sellerId);
     }
 
+    @Override
+    public Pagination<Article> getBySellerId(Long sellerId, int page) {
+        return articleDao.getBySellerId(sellerId, page);
+    }
+
     @Transactional
     @Override
     public Pagination<Article> getForLoggedUser(int page) {

@@ -104,7 +104,7 @@ public class ProductHibernateDao implements ProductDao {
         return em.createQuery("SELECT COUNT(*) FROM Product", Long.class).getSingleResult();
     }
 
-    public Long getCount(String name, long category, List<Long> tags, Integer maxPrice, long areaId, boolean favorite, long userId) {
+    public Integer getCount(String name, long category, List<Long> tags, Integer maxPrice, long areaId, boolean favorite, long userId) {
 
         StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM products WHERE ");
         Map<String, Object> args = new HashMap<>();
@@ -147,7 +147,7 @@ public class ProductHibernateDao implements ProductDao {
 
         jpaQuery.setParameter("available", ProductStatus.AVAILABLE.getId());
 
-        return ((BigInteger)jpaQuery.getSingleResult()).longValue();
+        return ((BigInteger)jpaQuery.getSingleResult()).intValue();
 
     }
 
@@ -243,7 +243,7 @@ public class ProductHibernateDao implements ProductDao {
 
         //Falta cambiar algo de la implementación de las ecotags para poder filtrar por ecotags correctamente
 
-        Long count = getCount(name, category, tags, maxPrice, areaId, favorite, userId);
+        Integer count = getCount(name, category, tags, maxPrice, areaId, favorite, userId);
 
         StringBuilder query = new StringBuilder("SELECT id FROM products WHERE ");
         Map<String, Object> args = new HashMap<>();
@@ -280,8 +280,6 @@ public class ProductHibernateDao implements ProductDao {
         String order = getOrder(sort, direction);
         query.append(order);
         query.append(" LIMIT :limit OFFSET :offset");
-
-        System.out.println("query!!!" + query.toString());
 
         Query jpaQuery = em.createNativeQuery(query.toString());
 
@@ -352,23 +350,40 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public Pagination<Product> findBySeller(long sellerId, int page, int amount) {
         ProductStatus deleted = ProductStatus.DELETED;
-        final TypedQuery<Product> query = em.createQuery(
-                "SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
-                        " WHERE p.seller.id = :sellerId " +
-                        "AND p.status <> :deleted ORDER BY p.id DESC",
-                Product.class);
-        query.setParameter("sellerId", sellerId);
-        query.setParameter("deleted", deleted);
-        query.setMaxResults(amount);
-        query.setFirstResult((page-1)*amount);
 
-        String str = "FROM products WHERE sellerid = :sellerId";
+        String str = "FROM products WHERE sellerid = :sellerId AND productstatus_id <> :deleted";
+
+        Query query = em.createNativeQuery("SELECT id " + str + " ORDER BY id DESC LIMIT :limit OFFSET :offset");
+        query.setParameter("sellerId", sellerId);
+        query.setParameter("deleted", deleted.getId());
+        query.setParameter("limit", amount);
+        query.setParameter("offset", (page-1)*amount);
+
+        List<Long> products = new ArrayList<>();
+        for(Object o : query.getResultList()) {
+//            BigInteger big = BigInteger.valueOf((Integer)o);
+//            products.add(big.longValue());
+            products.add(((BigInteger)o).longValue());
+        }
+
+        if(products.isEmpty())
+            return new Pagination<>(new ArrayList<>(), (long) page,
+                    0);;
+
+        final TypedQuery<Product> jpaQuery = em.createQuery(
+                "SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                        " WHERE p.id IN :products " +
+                        " ORDER BY p.id DESC",
+                Product.class);
+        jpaQuery.setParameter("products", products);
+
         final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
         countQuery.setParameter("sellerId", sellerId);
+        countQuery.setParameter("deleted", deleted.getId());
         @SuppressWarnings("unchecked")
         long count =
                 ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
-        return new Pagination<>(query.getResultList(), page, (count+amount-1)/amount);
+        return new Pagination<>(jpaQuery.getResultList(), page, (count+amount-1)/amount);
     }
 
     @Override
