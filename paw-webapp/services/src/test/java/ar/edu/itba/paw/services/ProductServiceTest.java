@@ -2,8 +2,13 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
+import ar.edu.itba.paw.interfaces.services.ImageService;
+import ar.edu.itba.paw.interfaces.services.SellerService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,121 +22,105 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static ar.edu.itba.paw.services.TestServicesResources.*;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
-
-    private static final long PRODUCTID = 1;
-    private static final long SELLERID = 1;
-    private static final long CATEGORYID = 1;
-    private static final String NAME = "P1";
-    private static final String DESCRIPTION = "First product";
-    private static final int STOCK = 10;
-    private static final int PRICE = 100;
-    private static final int IMAGEID = 0;
-
-    private static final long PRODUCTID2 = 2;
-    private static final String NAME2 = "Q2";
-
-    private static final long CATEGORYID2 = 2;
-    private static final int PRICE2 = 20;
-
-
     @InjectMocks
-    private ProductServiceImpl ps;
+    private ProductServiceImpl productService;
 
     @Mock
     private ProductDao productDao;
-
-/*
-    @Test
-    public void testCreate() {
-
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), null)).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-
-        final Product newProduct = ps.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null);
-        assertNotNull(newProduct);
-        assertEquals(SELLERID, newProduct.getSellerId());
-        assertEquals(NAME, newProduct.getName());
-
-    }
-
+    @Mock
+    private ImageService imageService;
+    @Mock
+    private UserService userService;
+    @Mock
+    private SellerService sellerService;
 
     @Test
-    public void testSortByChronologic() {
+    public void testCreateProduct(){
+        when(imageService.getById(0)).thenReturn(Optional.of(PRODUCT_IMAGE));
 
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), null)).thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), null)).thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        List<Product> productList = new ArrayList<>();
-
-        productList.add(productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        productList.add(productDao.create(SELLERID, CATEGORYID2, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        ps.sortProducts(productList, 0, 0);
-        assertEquals(NAME, productList.get(0).getName());
-        ps.sortProducts(productList, 0, 1);
-        assertEquals(NAME2, productList.get(0).getName());
-
+        Product product = null;
+        try{
+            product = productService.create(AUX_SELLER, CATEGORY_ID, PRODUCT_NAME, PRODUCT_DESC,
+                    PRODUCT_STOCK, PRODUCT_PRICE, IMAGE_BYTES);
+        }
+        catch(Exception e){
+            System.out.println(e.getClass());
+            Assert.fail("Error creating product: " + e.getMessage());
+        }
+        Assert.assertNotNull(product);
+        Assert.assertEquals(AUX_SELLER.getId(), product.getSeller().getId());
+        Assert.assertEquals(PRODUCT_NAME, product.getName());
     }
 
     @Test
-    public void testSortByAlphabetic() {
+    public void testDeleteProduct(){
+        when(userService.getLoggedUser()).thenReturn(AUX_USER_FOR_SELLER);
+        when(productService.getById(anyLong())).thenReturn(Optional.of(AUX_PRODUCT));
+        when(sellerService.findById(anyLong())).thenReturn(Optional.of(AUX_SELLER));
+        when(userService.findById(anyLong())).thenReturn(Optional.of(AUX_USER_FOR_SELLER));
 
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), null)).
-                thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), null))
-                .thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        List<Product> productList = new ArrayList<>();
-
-        productList.add(productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        productList.add(productDao.create(SELLERID, CATEGORYID2, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        ps.sortProducts(productList, 1, 0);
-        assertEquals(NAME, productList.get(0).getName());
-        ps.sortProducts(productList, 1, 1);
-        assertEquals(NAME2, productList.get(0).getName());
-
+        try{
+            productService.attemptDelete(AUX_PRODUCT.getProductId());
+        }
+        catch(Exception e){
+            System.out.println(e.getClass());
+            Assert.fail("Deleting product failed: " + e.getMessage());
+        }
     }
-
 
     @Test
-    public void testSortByPrice() {
+    public void testPauseProduct(){
+        when(userService.getLoggedUser()).thenReturn(AUX_USER_FOR_SELLER);
+        when(productService.getById(anyLong())).thenReturn(Optional.of(AUX_PRODUCT));
+        when(sellerService.findById(anyLong())).thenReturn(Optional.of(AUX_SELLER));
+        when(userService.findById(anyLong())).thenReturn(Optional.of(AUX_USER_FOR_SELLER));
 
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), null))
-                .thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID2), eq(NAME2), eq(DESCRIPTION), eq(STOCK), eq(PRICE2), null))
-                .thenReturn(new Product(PRODUCTID2, SELLERID, CATEGORYID, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        List<Product> productList = new ArrayList<>();
-
-        productList.add(productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-        productList.add(productDao.create(SELLERID, CATEGORYID2, NAME2, DESCRIPTION, STOCK, PRICE2, null));
-
-        ps.sortProducts(productList, 2, 0);
-        assertEquals(NAME2, productList.get(0).getName());
-        ps.sortProducts(productList, 2, 1);
-        assertEquals(NAME, productList.get(0).getName());
-
+        try{
+            productService.attemptPause(AUX_PRODUCT.getProductId());
+        }
+        catch(Exception e){
+            System.out.println(e.getClass());
+            Assert.fail("Deleting product failed: " + e.getMessage());
+        }
     }
+    @Test
+    public void testRepublishProduct(){
+        when(userService.getLoggedUser()).thenReturn(AUX_USER_FOR_SELLER);
+        when(productService.getById(anyLong())).thenReturn(Optional.of(AUX_PRODUCT));
+        when(sellerService.findById(anyLong())).thenReturn(Optional.of(AUX_SELLER));
+        when(userService.findById(anyLong())).thenReturn(Optional.of(AUX_USER_FOR_SELLER));
 
+        try{
+            productService.attemptRepublish(AUX_PRODUCT.getProductId());
+        }
+        catch(Exception e){
+            System.out.println(e.getClass());
+            Assert.fail("Deleting product failed: " + e.getMessage());
+        }
+    }
 
     @Test
-    public void testCheckForStock() {
-        Mockito.when(productDao.create(eq(SELLERID), eq(CATEGORYID), eq(NAME), eq(DESCRIPTION), eq(STOCK), eq(PRICE), null)).
-                thenReturn(new Product(PRODUCTID, SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null));
-
-        final Product newProduct = productDao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null);
-        Boolean bool = ps.checkForAvailableStock(newProduct, 20);
-        assertFalse(bool);
-        bool = ps.checkForAvailableStock(newProduct, 5);
-        assertTrue(bool);
+    public void testDeleteIfNotLogged(){
+        when(userService.getLoggedUser()).thenReturn(null);
+        Assert.assertThrows(UnauthorizedRoleException.class,
+                () -> productService.attemptDelete(AUX_PRODUCT.getProductId()));
     }
 
-*/
-
+    @Test
+    public void testDeleteIfNotOwner(){
+        when(userService.getLoggedUser()).thenReturn(AUX_USER_FOR_SELLER);
+        when(productService.getById(anyLong())).thenReturn(Optional.of(AUX_PRODUCT));
+        when(sellerService.findById(anyLong())).thenReturn(Optional.empty());
+        Assert.assertThrows(UnauthorizedRoleException.class,
+                () -> productService.attemptDelete(AUX_PRODUCT.getProductId()));
+    }
 }

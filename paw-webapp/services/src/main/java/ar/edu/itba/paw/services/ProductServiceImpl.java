@@ -188,14 +188,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void deleteProduct(long productId) {
-        /*
-        Opción 1: La que estaba antes, una baja física.
-         */
-        // productDao.deleteProduct(productId);
-
-        /*
-        Opción 2: Baja lógica, hay que discutir si creamos una manera de "recuperarlos"
-         */
         Optional<Product> product = getById(productId);
         if(!product.isPresent()) throw new ProductNotFoundException();
         product.get().setStatus(ProductStatus.DELETED);
