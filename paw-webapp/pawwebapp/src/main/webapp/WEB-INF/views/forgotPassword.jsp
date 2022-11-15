@@ -26,7 +26,9 @@
         </div>
         <c:if test="${notFound}">
             <div class="center update-margins">
-                <p class="red error-sign"><spring:message code="password.noEmail"/></p>
+                <p class="red error-sign">
+                    <spring:message code="password.noEmail"/>
+                </p>
             </div>
         </c:if>
         <div class="update-product-body">
@@ -35,7 +37,8 @@
                     <div class="input-field">
                         <form:input path="email" id="email" type="text"/>
                         <label for="email"><spring:message code="registerbuyer.form.email"/>
-                            <spring:message code="forms.obligatorysign"/></label>
+                            <spring:message code="forms.obligatorysign"/>
+                        </label>
                     </div>
                     <div class="errors">
                         <form:errors path="email" element="p" cssClass="error"/>

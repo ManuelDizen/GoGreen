@@ -156,7 +156,7 @@ nav {
     width:70%;
     vertical-align:center;
     height:fit-content;
-
+    color:white;
 }
 
 .landing-page-title{
@@ -182,6 +182,18 @@ nav {
 .card-content{
     background-color: #1b5e20;
     color: #ADE28A;
+}
+
+.green-font {
+    color: #ADE28A;
+    margin-top: 10px;
+}
+
+.seller-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 8px;
 }
 
 [type="checkbox"] {
@@ -589,6 +601,12 @@ nav {
     padding: 8px 6px;
     border-radius: 12px;
     height:30px;
+
+    display:flex;
+}
+
+.chip div{
+    margin:0 5px;
 }
 
 .chip_filter {
@@ -630,11 +648,6 @@ nav {
 
 .star-table-cell {
     display:table-cell; vertical-align:middle; margin-bottom: 40px
-}
-
-
-.fav_input {
-    margin-left: 3px;
 }
 
 .eco_div {
@@ -998,9 +1011,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .explore-products, .landing-products,
+.explore-sellers,
 .sellerpage-products,
 .landing-categories-container,
-.sellerprofile-action-buttons{
+.sellerprofile-action-buttons,
+.explore-sellers-card-container{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -1029,6 +1044,8 @@ input[type=number]::-webkit-outer-spin-button {
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
+
+    margin-top:10px;
 }
 
 .explore-products {
@@ -1036,6 +1053,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin-bottom: 10px;
     width: 100%;
 }
+
+.explore-sellers{width:95%;}
 
 .productpage-ecotag {
     margin-top: 5px; margin-bottom: 5px;
@@ -1257,16 +1276,18 @@ ALL CREDITS TO @andrewsims
     max-height: 100px;
 }
 
+
 .product-card{
     width: 22%;
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
-    height:420px;
+    height: 420px;
     margin:10px auto;
     border-radius:10px 10px 0 0;
     overflow:hidden;
 }
+
 
 .product-card-2{
     width: 46%;
@@ -1308,9 +1329,9 @@ ALL CREDITS TO @andrewsims
     font-size: 20px;
 }
 
-.product-card:hover{
+/*.product-card:hover{
     transform: translate(0, -10px);
-}
+}*/
 
 .product-card .card-image{
     background:white;
@@ -1326,6 +1347,7 @@ ALL CREDITS TO @andrewsims
 .product-card .card-content > a{
     color: #ADE28A;
 }
+
 
 .product-card .card-content > a {
     margin-top: 0;
@@ -1352,11 +1374,12 @@ ALL CREDITS TO @andrewsims
 
 .explore-container #filter_form .row .input-field .select-wrapper ul {
     background: var(--palette-color-secondary);
+    background: var(--text-color-light)
 }
 
 
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
-    color: white;
+    color: var(--text-color-dark);
 }
 
 
@@ -1369,7 +1392,7 @@ ALL CREDITS TO @andrewsims
 .eco_chip_small {
     margin:auto;
     max-height: 22px;
-    max-width: 22px;
+    width: 22px;
 }
 
 .tiny_filter {
@@ -1464,6 +1487,7 @@ ALL CREDITS TO @andrewsims
 /*    margin-top: 2px;*/
 /*}*/
 
+
 .product-card .card-content .center {
     margin-top: 25px;
     overflow: hidden;
@@ -1499,27 +1523,24 @@ ALL CREDITS TO @andrewsims
 .seller-profile-card,
 .user-profile-card{
     /*width: 80%;*/
-    padding: 5px;
     font-size: 13px;
-    height: 44vh;
+    height: fit-content;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
-    padding-bottom:2vh;
     margin: 2vh auto;
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right:10px;
+    padding: 5px 10px;
 }
 
 .user-profile-card{
     display:flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     max-height: 42vh;
 }
 
@@ -1533,33 +1554,33 @@ ALL CREDITS TO @andrewsims
 }
 
 .information {
-    margin-bottom: 5px;
+    margin:auto 0;
 }
 
 .purchase {
-    margin-top: 40px;
+    margin-top: 12px;
     font-size: 30px;
 }
 
 .userprofile-info-1 {
     font-weight: bold; font-size: 20px;
-    margin-left: 40%;
+    display:flex; justify-content: center;
 }
 
 .userprofile-info-2 {
     font-weight: bold; font-size: 20px;
-    margin-left: 20%;
+    display:flex; justify-content:center;
 }
 
 .sellerprofile-info-1 {
     font-weight: bold; font-size: 20px;
-    margin-left: 25%;
+    display:flex; justify-content: center;
     text-align: center;
 }
 
 .sellerprofile-info-2 {
     font-weight: bold; font-size: 20px;
-    margin-left: 0;
+    display:flex; justify-content: center;
     text-align: center;
 }
 
@@ -1586,7 +1607,7 @@ ALL CREDITS TO @andrewsims
 }
 
 .user-profile-card-title {
-    margin: 5px 5px 0 5px;
+    margin: 6px auto;
 }
 
 .seller-profile-card-title {
@@ -1727,6 +1748,7 @@ ALL CREDITS TO @andrewsims
 
 .register-form-container div .errors .error,
 .update-form-container div .errors .error,
+.update-product-body div .errors .error,
 .password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
@@ -1923,7 +1945,8 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     justify-content: center;
 }
 
-.createbody div .error {
+.createbody div .error,
+.create-button p{
     font-size: 13px;
     font-weight: bold;
     color: red;
@@ -2462,6 +2485,10 @@ input[type=number] {
     text-align:justify;
 }
 
+.justify-content-center{
+    justify-content: center;
+}
+
 .landing-col{
     height: 200px;
 }
@@ -2514,6 +2541,10 @@ input[type=number] {
 
 .margin-top-25 {
     margin-top: 25px;
+}
+
+.margin-top-100 {
+    margin-top: 100px;
 }
 
 .margin-left-20 {
@@ -2679,7 +2710,8 @@ input[type=number] {
     cursor: default;
 }
 
-.product-card-image-container{
+.product-card-image-container,
+.seller-card-image-container{
     height: 50%;
     width: 100%;
     background: white;
@@ -2689,10 +2721,26 @@ input[type=number] {
     margin:auto 0;
 }
 
+/*.seller-card-image-container{
+    height: 50%; width:100%; border-radius:50%;
+}*/
+
 .image-restrain{
     max-height:100%;
     max-width:100%;
     vertical-align:middle;
+}
+
+.profile-pic{
+    height:140px;
+    width:140px;
+    border-radius:50%;
+}
+
+.profile-pic-public{
+    height:160px;
+    width:160px;
+    border-radius:50%;
 }
 
 .news-card{
@@ -2779,6 +2827,7 @@ input[type=number] {
     border: 1px solid var(--palette-details-light);
     margin-top:20px;
     margin-left:50px;
+    padding: 5px 20px 20px 20px !important;
 }
 
 .user-fav-card{
@@ -2815,3 +2864,18 @@ input[type=number] {
 .separate-12-top{
     margin-top:12px;
 }
+
+.filter-category li{
+    border-bottom: 1px solid lightgrey;
+}
+
+.filter-button{
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
+}
+
+.add-image-btn{
+    height:36px!important;width:fit-content!important;line-height:36px!important;
+}
+
+.space-icons{margin:0 5px;}

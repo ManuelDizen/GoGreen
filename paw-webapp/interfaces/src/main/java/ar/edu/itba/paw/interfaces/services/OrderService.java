@@ -1,9 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.Pagination;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,10 +16,16 @@ public interface OrderService {
     Optional<Order> getById(long orderId);
     List<Order> getBySellerEmail(String sellerEmail);
     List<Order> getByBuyerEmail(String buyerEmail);
-    void createAndNotify(long productId, int amount, String message);
+    Pagination<Order> getByBuyerEmail(String buyerEmail, int page);
+
+    Pagination<Order> getBySellerEmail(String sellerEmail, int page);
+
+    void create(long productId, int amount, String message);
 
 
-    Boolean checkForOrderOwnership(long orderId);
+    boolean checkForOrderOwnership(long orderId);
 
     void deleteOrder(long orderId);
+    int getTotalOrdersForSeller(String sellerEmail);
+    int getTotalOrdersForUser(String userEmail);
 }

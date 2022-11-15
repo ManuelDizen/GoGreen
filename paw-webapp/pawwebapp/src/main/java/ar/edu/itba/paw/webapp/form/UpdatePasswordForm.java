@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 )
 public class UpdatePasswordForm {
 
-
     @Password
     @NotNull
     @NotEmpty

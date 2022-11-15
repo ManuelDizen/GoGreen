@@ -2,23 +2,20 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.*;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Role;
-import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
-import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UserRegisterException;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,14 +24,16 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final EmailService emailService;
+    private final ImageService imageService;
     @Autowired
     public UserServiceImpl(final UserDao userDao, final PasswordEncoder encoder,
-                           RoleService roleService, EmailService emailService){
+                           final RoleService roleService, final EmailService emailService,
+                           final ImageService imageService){
         this.userDao = userDao;
         this.encoder = encoder;
         this.roleService = roleService;
         this.emailService = emailService;
-
+        this.imageService = imageService;
     }
 
     @Transactional
@@ -79,30 +78,96 @@ public class UserServiceImpl implements UserService {
         Optional<User> maybeUser = userDao.findById(userId);
         if(!maybeUser.isPresent())
             throw new UserNotFoundException();
-
         User user = maybeUser.get();
         user.setPassword(encoder.encode(newPassword));
     }
 
+    @Transactional
     @Override
-    public boolean isValidPassword(long userId, String oldPassword) {
-        Optional<User> maybeUser = findById(userId);
-
-        if(!maybeUser.isPresent())
-            throw new UserNotFoundException();
-
-        User user = maybeUser.get();
-
-        return encoder.encode(oldPassword).equals(user.getPassword());
+    public void toggleNotifications(){
+        User user = getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        user.toggleNotifications();
     }
-
-
 
     @Transactional
     @Override
-    public void toggleNotifications(long userId){
-        Optional<User> user = findById(userId);
-        if(!user.isPresent()) throw new ForbiddenActionException();
-        user.get().toggleNotifications();
+    public boolean isSeller(long userId) {
+        return isRole(userId, "SELLER");
     }
+
+    @Transactional
+    @Override
+    public boolean isBuyer(long userId) {
+        return isRole(userId, "USER");
+    }
+
+    private boolean isRole(long userId, String role) {
+        Optional<User> user = userDao.findById(userId);
+        if(!user.isPresent()) throw new UserNotFoundException();
+        Optional<Role> userRole = roleService.getByName(role);
+        if(!userRole.isPresent()) throw new RoleNotFoundException();
+        return user.get().getRoles().contains(userRole.get());
+    }
+
+    @Transactional
+    @Override
+    public void setProfilePic(byte[] image){
+        User user = getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        Image img = user.getImage();
+        if(img == null){
+            if(image != null && image.length > 0){
+                img = imageService.create(image);
+            }
+            user.setImage(img);
+        }
+        else{
+            img.setSource(image);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteProfilePic(){
+        User user = getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        user.deleteImage();
+    }
+
+    @Override
+    public User getLoggedUser(){
+        Authentication auth = getAuthentication();
+        if(auth != null){
+            Optional<User> user = findByEmail(auth.getName());
+            return user.orElse(null);
+        }
+        return null;
+    }
+
+    @Override
+    public String getLoggedEmail(){
+        Authentication auth = getAuthentication();
+        if(auth != null) {
+            Optional<User> user = findByEmail(auth.getName());
+            // Remember username is given by email and not a proper username
+            return user.map(User::getEmail).orElse(null);
+        }
+        return null;
+    }
+    @Override
+    public boolean isLoggedUser(){
+        User user = getLoggedUser();
+        return user != null && user.getRoles().contains("SELLER");
+    }
+
+    @Override
+    public boolean isLoggedSeller(){
+        User user = getLoggedUser();
+        return user != null && user.getRoles().contains("USER");
+    }
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
 }

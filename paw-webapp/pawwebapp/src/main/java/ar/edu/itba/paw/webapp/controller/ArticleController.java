@@ -2,9 +2,10 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Article;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import ar.edu.itba.paw.models.exceptions.ArticleCreationException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ArticleForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,17 @@ import java.util.Optional;
 @Controller
 public class ArticleController {
 
-    private final SecurityService securityService;
+    private final UserService userService;
     private final SellerService sellerService;
     private final ArticleService articleService;
 
     private final ProductService productService;
 
     @Autowired
-    public ArticleController(final SecurityService securityService,
+    public ArticleController(final UserService userService,
                              final SellerService sellerService,
                              final ArticleService articleService, final ProductService productService){
-        this.securityService = securityService;
+        this.userService = userService;
         this.sellerService = sellerService;
         this.articleService = articleService;
         this.productService = productService;
@@ -54,22 +55,15 @@ public class ArticleController {
         if(errors.hasErrors()){
             return createArticle(form);
         }
-        User logged = securityService.getLoggedUser();
-        //Should this check even be done? Doesn't spring security check for SELLER role?
-        if(logged == null) throw new UnauthorizedRoleException();
-        Optional<Seller> seller = sellerService.findByUserId(logged.getId());
-        if(!seller.isPresent()) throw new UserNotFoundException();
-
-        //TODO: Pass this logic onto image service and make a single call
-        //  (this code block is also used to process product image)
         byte[] image;
         try {
             image = form.getImage().getBytes();
         } catch (IOException e) {throw new RuntimeException(e);}
 
-        articleService.create(seller.get(), form.getMessage(), image, LocalDateTime.now());
+        Article article = articleService.create(form.getMessage(), image, LocalDateTime.now());
+        if(article == null) throw new ArticleCreationException();
 
-        return new ModelAndView("redirect:/sellerPage/" + seller.get().getId());
+        return new ModelAndView("redirect:/sellerPage/" + article.getSeller().getId());
     }
 
     @RequestMapping(value = "/sellerPage/{sellerId:[0-9]+}/news")
@@ -77,22 +71,18 @@ public class ArticleController {
                                    @RequestParam(name="page", defaultValue = "1") final int page){
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()) throw new UserNotFoundException();
-        List<Article> news = articleService.getBySellerId(sellerId);
+        Pagination<Article> news = articleService.getBySellerId(sellerId, page);
 
         ModelAndView mav = new ModelAndView("sellerNews");
 
         mav.addObject("user", seller.get().getUser());
-        User user = securityService.getLoggedUser();
-        //TODO: Move to service
-        String loggedEmail = user == null? null : user.getEmail();
-        mav.addObject("loggedEmail", loggedEmail);
+        User user = userService.getLoggedUser();
+        mav.addObject("loggedEmail", user == null? null : user.getEmail());
 
-        List<List<Article>> newsPages = productService.divideIntoPages(news, 8);
-
-        mav.addObject("news", newsPages.get(page-1));
+        mav.addObject("news", news.getItems());
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
-        mav.addObject("pages", newsPages);
+        mav.addObject("pages", news.getPageCount());
         mav.addObject("currentPage", page);
         return mav;
     }

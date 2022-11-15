@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.OrderService;
 import ar.edu.itba.paw.interfaces.services.ProductService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
+import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Category;
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Product;
@@ -14,47 +14,36 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class BasicController {
 
     private final ProductService productService;
-    private final SecurityService securityService;
-
+    private final UserService userService;
     private final OrderService orderService;
 
     @Autowired
-    public BasicController(final ProductService productService, final SecurityService securityService, final OrderService orderService) {
+    public BasicController(final ProductService productService, final UserService userService,
+                           final OrderService orderService) {
         this.productService = productService;
-        this.securityService = securityService;
+        this.userService = userService;
         this.orderService = orderService;
     }
 
     @RequestMapping("/")
     public ModelAndView landingPage() {
-        //TODO: Pass all this logic onto a service
-        User loggedUser = securityService.getLoggedUser();
-        List<Product> products;
-        boolean popular = false;
-        if(loggedUser == null) {
-            products = productService.getPopular(4);
-            popular = true;
-        }
-        else {
-            List<Order> ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
-            if(ordersForUser.isEmpty()){
-                popular = true;
-                products = productService.getPopular(4);
-            } else {
-                products = productService.getInterestingForUser(ordersForUser, 4);
-            }
-        }
+        //TODO: refactor
+        User loggedUser = userService.getLoggedUser();
+        List<Order> ordersForUser = new ArrayList<>();
+        if(loggedUser!=null) ordersForUser = orderService.getByBuyerEmail(loggedUser.getEmail());
+        List<Product> products = productService.getLandingProducts(loggedUser, ordersForUser);
+        boolean popular = loggedUser != null && (orderService.getTotalOrdersForUser(loggedUser.getEmail()) != 0);
         final ModelAndView mav = new ModelAndView("index");
         mav.addObject("products", products);
         mav.addObject("popular", popular);
         mav.addObject("categories", Category.values());
-        mav.addObject("productsPerCategory", productService.productsPerCategory());
         return mav;
     }
 

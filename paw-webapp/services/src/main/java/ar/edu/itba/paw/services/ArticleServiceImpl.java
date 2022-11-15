@@ -19,18 +19,18 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ImageService imageService;
     private final ArticleDao articleDao;
-    private final SecurityService securityService;
+    private final UserService userService;
     private final SellerService sellerService;
     private final FavoriteService favoriteService;
     private final EmailService emailService;
 
     @Autowired
     public ArticleServiceImpl(final ImageService imageService, final ArticleDao articleDao,
-                              final SecurityService securityService, final SellerService sellerService,
+                              final UserService userService, final SellerService sellerService,
                               final FavoriteService favoriteService, final EmailService emailService) {
         this.imageService = imageService;
         this.articleDao = articleDao;
-        this.securityService = securityService;
+        this.userService = userService;
         this.sellerService = sellerService;
         this.favoriteService = favoriteService;
         this.emailService = emailService;
@@ -49,7 +49,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Transactional
     @Override
-    public Article create(Seller seller, String message, byte[] image, LocalDateTime dateTime) {
+    public Article create(String message, byte[] image, LocalDateTime dateTime) {
+
+        User logged = userService.getLoggedUser();
+        //Should this check even be done? Doesn't spring security check for SELLER role?
+        if(logged == null) throw new UnauthorizedRoleException();
+        Optional<Seller> maybeSeller = sellerService.findByUserId(logged.getId());
+        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
+        Seller seller = maybeSeller.get();
+
         Image img = parseByteArrayToImage(image);
         Article article = articleDao.create(seller, message, img, dateTime);
         if(article == null) throw new ArticleCreationException();
@@ -65,8 +73,8 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getById(id);
     }
 
-    public Boolean checkForArticleOwnership(long id) {
-        User user = securityService.getLoggedUser();
+    public boolean checkForArticleOwnership(long id) {
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Seller> maybeSeller = sellerService.findByUserId(user.getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -103,22 +111,28 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getBySellerId(sellerId);
     }
 
+    @Override
+    public Pagination<Article> getBySellerId(Long sellerId, int page) {
+        return articleDao.getBySellerId(sellerId, page);
+    }
+
     @Transactional
     @Override
-    public List<Article> getForLoggedUser() {
-        User user = securityService.getLoggedUser();
+    public Pagination<Article> getForLoggedUser(int page) {
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
-        List<Favorite> favorites = favoriteService.getByUserId(user.getId());
-        List<Article> news = new ArrayList<>();
-        for(Favorite fav : favorites){
-            news.addAll(getBySellerId(fav.getSeller().getId()));
-        }
-        news.sort(new Comparator<Article>() {
-            @Override
-            public int compare(Article o1, Article o2) {
-                return o2.getDateTime().compareTo(o1.getDateTime());
-            }
-        });
-        return news;
+//        List<Favorite> favorites = favoriteService.getByUserId(user.getId());
+//        List<Article> news = new ArrayList<>();
+//        for(Favorite fav : favorites){
+//            news.addAll(getBySellerId(fav.getSeller().getId()));
+//        }
+//        news.sort(new Comparator<Article>() {
+//            @Override
+//            public int compare(Article o1, Article o2) {
+//                return o2.getDateTime().compareTo(o1.getDateTime());
+//            }
+//        });
+
+        return articleDao.getForUser(user.getId(), page);
     }
 }

@@ -42,7 +42,7 @@ public class GoGreenUserDetailsService implements UserDetailsService {
         Collection<GrantedAuthority> auths = new ArrayList<>();
         //List<UserRole> userToRoleList = urs.getById(user.getId());
 
-        Set<Role> roles = user.getRoles();
+        Set<Role> roles = urs.getById(user.getId());
 
         for(Role role : roles){
             auths.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));

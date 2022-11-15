@@ -70,6 +70,13 @@ public class AdviceController {
         return new ModelAndView("forward:/error500");
     }
 
+    @ExceptionHandler(ProductCreationException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Error creating product")
+    public ModelAndView productCreationException(ArticleCreationException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error500");
+    }
+
     @ExceptionHandler(ProductDeleteException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
     public ModelAndView productDeleteError(ProductDeleteException e){
@@ -82,6 +89,13 @@ public class AdviceController {
     public ModelAndView productUpdateError(ProductUpdateException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error500");
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Not enough stock available")
+    public ModelAndView forbiddenActionError(InsufficientStockException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error400");
     }
 
     @ExceptionHandler(SellerRegisterException.class)
@@ -98,9 +112,21 @@ public class AdviceController {
         return new ModelAndView("forward:/error500");
     }
 
+    @ExceptionHandler(TokenNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Token Not Found")
+    public ModelAndView articleNotFoundError(TokenNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error400");
+    }
     @ExceptionHandler(ArticleNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Article Not Found")
     public ModelAndView articleNotFoundError(ArticleNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error404");
+    }
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Comment Not Found")
+    public ModelAndView commentNotFoundError(CommentNotFoundException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }

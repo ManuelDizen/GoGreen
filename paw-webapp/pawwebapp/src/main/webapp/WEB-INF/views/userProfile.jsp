@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -13,11 +14,70 @@
                 <div class="user-profile-container-2">
                     <div class="information row">
                         <div class="col s6">
-                            <div class="userprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+                            <div class="userprofile-info-1">
+                                <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
+                            </div>
                         </div>
                         <div class="col s6">
                             <div class="userprofile-info-2">
                                 <c:out value="${user.email}"/>
+                            </div>
+                        </div>
+                        <c:choose>
+                            <c:when test="${user.image != null}">
+                                <div class="col s12 separate-20-top">
+                                    <div class="flex-center">
+                                        <img src="<c:url value="/image/${user.image.id}"/>"
+                                             class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
+                                    </div>
+                                    <div class="flex-center separate-12-top">
+                                        <a class="space-icons" href="<c:url value="/deleteProfilePic"/>">
+                                            <i class="center-align small material-icons white-text">
+                                                delete
+                                            </i>
+                                        </a>
+                                        <a class="modal-trigger space-icons" href="#updatePicModal">
+                                            <i class="center-align small material-icons white-text">
+                                                edit
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col s12 text-center separate-20-top">
+                                    <a class="waves-effect waves-light btn modal-trigger" href="#updatePicModal">
+                                        <spring:message code="updateprofilepic.newpic.msg"/>
+                                    </a>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                        <div id="updatePicModal" class="modal green-modal">
+                            <div class="modal-content">
+                                <h3 class="underline text-center">
+                                    <spring:message code="updateprofilepic.msg"/>
+                                </h3>
+                                <div class="col s12 separate-20-top">
+                                    <c:url value="/updateProfilePic" var="url"/>
+                                    <form:form modelAttribute="profilePicForm" method="post" action="${url}"
+                                               enctype="multipart/form-data">
+                                        <div class="file-field input-field flex-center">
+                                            <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
+                                                <span><spring:message code="createproduct.form.image"/></span>
+                                                <form:input path="image" type="file"/>
+                                            </div>
+                                            <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                                <input class="file-path validate" type="text" readonly id="readonly-input">
+                                            </div>
+                                        </div>
+                                        <form:errors path="image" element="p" cssClass="error"/>
+                                        <div class="center create-submit flex-center">
+                                            <button type="submit" class="waves-effect waves-light btn flex-center">
+                                                <spring:message code="updateprofilepic.form.submit"/>
+                                            </button>
+                                        </div>
+                                    </form:form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -25,7 +85,9 @@
                     <div class="seller-profile-container-orders-2">
                         <c:if test="${orders.size() == 0}">
                             <div class="seller-margin">
-                                <div class="text-center"><spring:message code="userprofile.noorders"/></div>
+                                <div class="text-center">
+                                    <spring:message code="userprofile.noorders"/>
+                                </div>
                             </div>
                         </c:if>
                         <c:if test="${orders.size() != 0}">
@@ -40,19 +102,20 @@
                                     </div>
                                     <div class="seller-profile-card-content">
                                         <div>
-                                            <spring:message code="sellerprofile.orders.price"/>
-                                            <c:out value="${'$'}${order.price}"/>
+                                            <spring:message code="sellerprofile.orders.price"
+                                            arguments="${order.price}"/>
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.orders.amount"/>
-                                            <c:out value="${order.amount}"/>
+                                            <spring:message code="sellerprofile.orders.amount"
+                                            arguments="${order.amount}"/>
                                         </div>
                                         <div>
                                             <spring:message code="sellerprofile.orders.seller"
                                             arguments="${order.sellerName}, ${order.sellerSurname}"/>:
                                         </div>
                                         <div>
-                                            <spring:message code="sellerprofile.neworder.sellermail" arguments="${order.sellerEmail}"/>:
+                                            <spring:message code="sellerprofile.neworder.sellermail"
+                                                            arguments="${order.sellerEmail}"/>:
                                         </div>
                                         <c:forEach items="${users}" var="user">
                                             <c:if test="${user.email == order.sellerEmail}">
@@ -82,7 +145,7 @@
                         </c:if>
                     </div>
                 </div>
-                <c:if test="${pages.size() > 1}">
+                <c:if test="${pages > 1}">
                     <div class="pagin">
                         <c:set var="nextPage" value="${currentPage+1}"/>
                         <c:set var="previousPage" value="${currentPage-1}"/>
@@ -96,11 +159,11 @@
                                     <li class="waves-effect"><a href="?page=${currentPage-1}" style="color: #EDFA8B">${previousPage}</a></li>
                                 </c:if>
                                 <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
-                                <c:if test="${currentPage < pages.size()}">
+                                <c:if test="${currentPage < pages}">
                                     <li class="waves-effect"><a href="?page=${currentPage+1}" style="color: #EDFA8B">${nextPage}</a></li>
                                     <li><a href="?page=${currentPage+1}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                                 </c:if>
-                                <c:if test="${currentPage >= pages.size()}">
+                                <c:if test="${currentPage >= pages}">
                                     <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                                 </c:if>
                             </ul>
@@ -118,34 +181,40 @@
                         <div>
                             <c:choose>
                                 <c:when test="${order.amount > 1}">
-                                    <p class="orderSuccessModal"><spring:message code="userprofile.ordercompleted.message"
-                                                                                 arguments="${user.firstName}, ${user.surname},
-                        ${order.productName}, ${order.amount}"/></p>
+                                    <p class="orderSuccessModal">
+                                        <spring:message code="userprofile.ordercompleted.message"
+                                         arguments="${user.firstName}, ${user.surname},
+                                        ${order.productName}, ${order.amount}"/>
+                                    </p>
                                 </c:when>
                                 <c:otherwise>
-                                    <p class="orderSuccessModal"><spring:message code="userprofile.ordercompleted.oneunit.message"
-                                                                                 arguments="${user.firstName}, ${user.surname},
-                        ${order.productName}, ${order.amount}"/></p>
+                                    <p class="orderSuccessModal">
+                                        <spring:message code="userprofile.ordercompleted.oneunit.message"
+                                        arguments="${user.firstName}, ${user.surname},
+                                        ${order.productName}, ${order.amount}"/>
+                                    </p>
                                 </c:otherwise>
                             </c:choose>
                             <ul class="seller-info">
                                 <li>
-                                    <spring:message code="sellerprofile.orders.seller" arguments="${order.sellerName}, ${order.sellerSurname}"/>
+                                    <spring:message code="sellerprofile.orders.seller"
+                                    arguments="${order.sellerName}, ${order.sellerSurname}"/>
                                 </li>
                                 <li>
-                                    <spring:message code="sellerprofile.neworder.sellermail" arguments="${order.sellerEmail}"/>
+                                    <spring:message code="sellerprofile.neworder.sellermail"
+                                    arguments="${order.sellerEmail}"/>
                                 </li>
                                 <c:forEach items="${users}" var="user">
                                     <c:if test="${user.email == order.sellerEmail}">
                                         <c:forEach items="${sellers}" var="seller">
                                             <c:if test="${user.id == seller.user.id}">
                                                 <li>
-                                                    <spring:message code="registerbuyer.form.address"/>
-                                                    <c:out value="${': '}${seller.address}"/>
+                                                    <spring:message code="registerbuyer.form.address"
+                                                    arguments="${seller.address}"/>
                                                 </li>
                                                 <li>
-                                                    <spring:message code="registerbuyer.form.phone"/>
-                                                    <c:out value="${': '}${seller.phone}"/>
+                                                    <spring:message code="registerbuyer.form.phone"
+                                                    arguments="${seller.phone}"/>
                                                 </li>
                                             </c:if>
                                         </c:forEach>

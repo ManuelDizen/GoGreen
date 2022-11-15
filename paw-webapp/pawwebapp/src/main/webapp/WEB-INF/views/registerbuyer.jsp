@@ -57,9 +57,10 @@
                         <div class="input-field">
                             <form:input path="password" id="password" type="password"/>
                             <spring:message var="passCond" code="registerbuyer.form.passwordCondition"/>
-                            <label for="password"><spring:message code="registerbuyer.form.password"/>
-                                <spring:message code="forms.obligatorysign"/>
-                            <c:out value="${' ('}${passCond}${') '}"/></label>
+                            <label for="password">
+                                <spring:message code="registerbuyer.form.password"
+                                arguments="${passCond}"/>
+                            </label>
                         </div>
                         <div class="errors" style="height:fit-content;">
                             <form:errors path="password" element="p" cssClass="error"/>
@@ -70,8 +71,10 @@
                     <div class="col s12">
                         <div class="input-field">
                             <form:input path="confirmationPassword" id="confirmationPassword" type="password"/>
-                            <label for="password"><spring:message code="registerbuyer.form.confirmpassword"/>
-                                <spring:message code="forms.obligatorysign"/></label>
+                            <label for="password">
+                                <spring:message code="registerbuyer.form.confirmpassword"/>
+                                <spring:message code="forms.obligatorysign"/>
+                            </label>
                         </div>
                         <div class="errors">
                             <form:errors path="confirmationPassword" element="p" cssClass="error"/>

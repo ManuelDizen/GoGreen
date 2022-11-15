@@ -4,7 +4,6 @@ import ar.edu.itba.paw.models.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface ProductService {
 
@@ -12,27 +11,31 @@ public interface ProductService {
                    Integer price, byte[] image);
 
     List<Product> findBySeller(long sellerId);
+    List<Product> findBySeller(long sellerId, boolean ecotag);
+    Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount);
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
     //List<Product> getAll();
     List<Product> getAvailable();
+    List<Product> getAvailable(int limit);
     List<Product> getPopular(int amount);
-    List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
 
-    void onlyFavorites(List<Product> productList, long userId);
+    List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
+    Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId);
     void sortProducts(List<Product> productList, int sort, int direction);
 
     <T> List<List<T>> divideIntoPages(List<T> list, int pageSize);
 
-    List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction);
+    //List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice,
+      //                           long areaId, int sort, int direction, boolean favorite);
 
     void deleteProduct(long productId);
     void attemptDelete(long productId);
     void attemptPause(long productId);
     void attemptRepublish(long productId);
 
-    Boolean checkForAvailableStock(Product p, int amount);
-    Boolean checkForOwnership(long prodId);
+    boolean checkForAvailableStock(Product p, int amount);
+    boolean checkForOwnership(long prodId);
     void decreaseStock(long prodId, int amount);
 
     void updateProduct(long prodId, int amount, int price);
@@ -56,4 +59,6 @@ public interface ProductService {
     List<List<Product>> productsPerCategory();
     List<Product> getByCategory(Category c);
 
+    List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser);
+    boolean atLeastOneProduct();
 }

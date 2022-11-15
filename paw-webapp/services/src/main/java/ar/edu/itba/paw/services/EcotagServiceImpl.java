@@ -34,6 +34,7 @@ public class EcotagServiceImpl implements EcotagService {
         product.get().addEcotag(tag);
     }
 
+    @Transactional
     @Override
     public List<Ecotag> getTagsFromProduct(long productId) {
         Optional<Product> product = productDao.getById(productId);

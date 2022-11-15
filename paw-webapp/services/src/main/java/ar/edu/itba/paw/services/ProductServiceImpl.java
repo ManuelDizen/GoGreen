@@ -3,12 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
-import ar.edu.itba.paw.models.exceptions.ProductNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,23 +12,25 @@ import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+    private final static int N_LANDING = 4;
+    private final static int ASCENDING = 0;
+    private final static int DESCENDING = 1;
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductDao productDao;
     private final ImageService imageService;
-    private final SecurityService securityService;
     private final SellerService sellerService;
     private final UserService userService;
     private final EcotagService ecotagService;
-
     private final FavoriteService favoriteService;
 
 
     @Autowired
-    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService, SecurityService securityService, SellerService sellerService, UserService userService, EcotagService ecotagService, FavoriteService favoriteService){
+    public ProductServiceImpl(final ProductDao productDao, final ImageService imageService,
+                              SellerService sellerService,
+                              UserService userService, EcotagService ecotagService,
+                              FavoriteService favoriteService){
         this.productDao = productDao;
         this.imageService = imageService;
-        this.securityService = securityService;
         this.sellerService = sellerService;
         this.userService = userService;
         this.ecotagService = ecotagService;
@@ -60,6 +57,39 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findBySeller(sellerId);
     }
 
+    private List<Product> findBySellerNoEcotag(long sellerId) {
+        return productDao.findBySellerNoEcotag(sellerId);
+    }
+
+    @Override
+    public List<Product> findBySeller(long sellerId, boolean ecotag) {
+        if(ecotag){
+            return findBySeller(sellerId);
+        }
+        else{
+            return findBySellerNoEcotag(sellerId);
+        }
+    }
+
+    private Pagination<Product> findBySeller(long sellerId, int page, int amount) {
+        return productDao.findBySeller(sellerId, page, amount);
+    }
+
+    private Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount) {
+        return productDao.findBySellerNoEcotag(sellerId, page, amount);
+    }
+
+
+    @Override
+    public Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount){
+        if(ecotag){
+            return findBySeller(sellerId, page, amount);
+        }
+        else{
+            return findBySellerNoEcotag(sellerId, page, amount);
+        }
+    }
+
     @Override
     public Optional<Product> getById(long productId) {
         return productDao.getById(productId);
@@ -79,6 +109,10 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAvailable(){return productDao.getAvailable();}
 
     @Override
+    public List<Product> getAvailable(int limit){return productDao.getAvailable(limit);}
+
+
+    @Override
     public List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId) {
         List<Long> ecotags = new ArrayList<>();
         for(Ecotag tag : tags) {
@@ -86,11 +120,13 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
     }
-
     @Override
-    public void onlyFavorites(List<Product> productList, long userId) {
-        List<Seller> sellers = favoriteService.getFavoriteSellersByUserId(userId);
-        productList.removeIf(product -> !sellers.contains(product.getSeller()));
+    public Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId) {
+        List<Long> ecotags = new ArrayList<>();
+        for(Ecotag tag : tags) {
+            ecotags.add(tag.getId());
+        }
+        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, favorite, page, sort, direction, userId);
     }
 
     private int getSales(String productName) {
@@ -98,37 +134,34 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public void sortProducts(List<Product> productList, int sort, int direction) {
-        productList.sort(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                if (sort == 3) {
-                    if (direction == 0) {
-                        return (getSales(o1.getName())- getSales(o2.getName()));
-                    } else {
-                        return (getSales(o2.getName()) - getSales(o1.getName()));
-                    }
-
-                } else if (sort == 2) {
-                    if (direction == 0) {
-                        return (o1.getPrice() - o2.getPrice());
-                    } else {
-                        return (o2.getPrice() - o1.getPrice());
-                    }
-                } else if (sort == 1) {
-                    if (direction == 0) {
-                        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-                    } else {
-                        return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
-                    }
-                } else if (sort == 0) {
-                    if (direction == 0)
-                        return (int) (o1.getProductId() - o2.getProductId());
-                    else {
-                        return (int) (o2.getProductId() - o1.getProductId());
-                    }
+        productList.sort((o1, o2) -> {
+            if (sort == Sort.SORT_POPULAR.getId()) {
+                if (direction == ASCENDING) {
+                    return (getSales(o1.getName())- getSales(o2.getName()));
+                } else {
+                    return (getSales(o2.getName()) - getSales(o1.getName()));
                 }
-                return 0;
+
+            } else if (sort == Sort.SORT_PRICE.getId()) {
+                if (direction == ASCENDING) {
+                    return (o1.getPrice() - o2.getPrice());
+                } else {
+                    return (o2.getPrice() - o1.getPrice());
+                }
+            } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
+                if (direction == ASCENDING) {
+                    return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+                } else {
+                    return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
+                }
+            } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
+                if (direction == ASCENDING)
+                    return (int) (o1.getProductId() - o2.getProductId());
+                else {
+                    return (int) (o2.getProductId() - o1.getProductId());
+                }
             }
+            return 0;
         });
     }
 
@@ -147,13 +180,19 @@ public class ProductServiceImpl implements ProductService {
         return pageList;
     }
 
-    @Override
-    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, int sort, int direction) {
-        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
-        setTagList(productList);
-        sortProducts(productList, sort, direction);
-        return productList;
-    }
+//    @Override
+//    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
+//                                        Integer maxPrice, long areaId, int sort, int direction,
+//                                        boolean favorite) {
+//        List<Product> productList = filter(name, category, tags, maxPrice, areaId, favorite, 1, sort, direction);
+//        setTagList(productList);
+//        sortProducts(productList, sort, direction);
+//        if(favorite) {
+//            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
+//            productList.removeIf(product -> !sellers.contains(product.getSeller()));
+//        }
+//        return productList;
+//    }
 
     @Transactional
     @Override
@@ -183,12 +222,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void attemptPause(long productId) {
         if(checkForOwnership(productId)){
-            System.out.println("Entro a if de attemptPause");
             Optional<Product> prod = getById(productId);
             if(!prod.isPresent()) throw new ProductNotFoundException();
             Product product = prod.get();
             if(product.getStatus().getId() == ProductStatus.AVAILABLE.getId()){
-                System.out.println("Entro al if de estado");
                 prod.get().setStatus(ProductStatus.PAUSED);
             }
             // Aclaración: Si el status está out of stock, no tiene sentido pausar.
@@ -231,16 +268,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean checkForAvailableStock(Product p, int amount) {
+    public boolean checkForAvailableStock(Product p, int amount) {
         return p.getStock() >= amount;
     }
 
     @Override
-    public Boolean checkForOwnership(long prodId) {
-        User user = securityService.getLoggedUser();
+    public boolean checkForOwnership(long prodId) {
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Product> prodToDelete = getById(prodId);
-        if(prodToDelete.isPresent()){
+        if(!prodToDelete.isPresent()) throw new ProductNotFoundException();
+        else{
             Product prod = prodToDelete.get();
             Optional<Seller> prodOwner = sellerService.findById(prod.getSeller().getId());
             if(!prodOwner.isPresent()) throw new UserNotFoundException();
@@ -249,7 +287,6 @@ public class ProductServiceImpl implements ProductService {
 
             return userProdOwner.get().getEmail().equals(user.getEmail());
         }
-        return false;
     }
 
     @Transactional
@@ -266,7 +303,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void updateProduct(long prodId, int amount, int price) {
-        Boolean isOwner = checkForOwnership(prodId);
+        boolean isOwner = checkForOwnership(prodId);
         if(!isOwner) throw new ForbiddenActionException();
         Optional<Product> product = productDao.getById(prodId);
         if(!product.isPresent()) throw new ProductNotFoundException();
@@ -300,7 +337,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String buildPath(String[] strings) {
-        StringBuilder str = new StringBuilder("");
+        StringBuilder str = new StringBuilder();
         for(String s : strings) {
             str.append("&strings=").append(s);
         }
@@ -321,7 +358,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getInteresting(Product product, int amount) {
         List<Product> toReturn = new ArrayList<>();
-        List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId());
+        List<Product> bySellerAndCategory = findBySeller(product.getSeller().getId(), true);
         long availableId = ProductStatus.AVAILABLE.getId();
         for(Product prod : bySellerAndCategory) {
             if(prod.getStatus().getId() == availableId &&
@@ -336,12 +373,12 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if(toReturn.size() < amount) {
-            List<Product> bySeller = findBySeller(product.getSeller().getId());
+            List<Product> bySeller = findBySeller(product.getSeller().getId(), true);
             addIfNotPresent(toReturn, bySeller, amount, product);
         }
         if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable();
-            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), 1);
+            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), DESCENDING);
             addIfNotPresent(toReturn, sorted, amount, product);
         }
         setTagList(toReturn);
@@ -350,7 +387,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getInterestingForUser(List<Order> orders, int amount) {
-        List<Product> interesting = new ArrayList<>();
+        // TODO: Rebuild this whole method
+        /*List<Product> interesting = new ArrayList<>();
         int i=0;
         while(interesting.size() < amount) {
             for(Order order : orders) {
@@ -365,6 +403,13 @@ public class ProductServiceImpl implements ProductService {
             i++;
         }
         return interesting;
+         */
+        return getPopular(amount);
+
+        /*
+        Que hace: Se trae los productos de las ordenes de un usuario.
+
+         */
     }
 
 
@@ -383,6 +428,17 @@ public class ProductServiceImpl implements ProductService {
         return productDao.getByCategory(c.getId());
     }
 
+    @Override
+    public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser) {
+        List<Product> products;
+        if(loggedUser == null || ordersForUser.isEmpty()) products = getPopular(N_LANDING);
+        else{
+            //TODO: Rebuild getInterestingForUser method
+            products = getInterestingForUser(ordersForUser, N_LANDING);
+        }
+        return products;
+    }
+
     public void setTagList(List<Product> productList) {
         for(Product product : productList) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
@@ -399,35 +455,34 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getPopular(int amount) {
 
-        List<Product> products = getAvailable();
+        List<Product> products = getAvailable(4);
 
-        products.sort(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                return getSales(o2.getName()) - getSales(o1.getName());
-            }
-        });
+        products.sort((o1, o2) -> getSales(o2.getName()) - getSales(o1.getName()));
 
-        List<Product> popular = products.size() < amount? products:products.subList(0, amount);
+        //List<Product> popular = products.size() < amount? products:products.subList(0, amount);
 
-        for(Product product : popular) {
+        /*for(Product product : popular) {
             product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
-        }
-        return popular;
+        }*/
+        return products;
     }
 
     @Transactional
     @Override
     public Product createProduct(Integer stock, Integer price, long categoryId, String name,
                                  String description, byte[] image, long[] ecotagIds){
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null)  throw new UnauthorizedRoleException();
         Optional<Seller> seller = sellerService.findByUserId(user.getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
         Product product = create(seller.get(), categoryId, name, description, stock, price, image);
+        if(product == null) throw new ProductCreationException();
         for (long id : ecotagIds) {
             ecotagService.addTag(Ecotag.getById(id), product.getProductId());
         }
         return product;
     }
+
+    @Override
+    public boolean atLeastOneProduct(){return productDao.atLeastOneProduct();}
 }
