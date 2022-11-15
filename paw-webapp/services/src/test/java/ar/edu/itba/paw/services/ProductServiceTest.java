@@ -37,6 +37,7 @@ public class ProductServiceTest {
 
     @Test
     public void testCreateProduct(){
+        when(imageService.create(any())).thenReturn(AUX_IMAGE);
         when(imageService.getById(0)).thenReturn(Optional.of(AUX_IMAGE));
         when(productDao.create(any(), anyLong(), anyString(), anyString(), anyInt(),
                 anyInt(), any())).thenReturn(AUX_PRODUCT);

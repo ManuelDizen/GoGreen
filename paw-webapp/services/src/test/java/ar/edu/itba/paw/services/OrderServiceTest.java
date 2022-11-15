@@ -43,13 +43,14 @@ public class OrderServiceTest {
         when(productService.checkForAvailableStock(any(), anyInt())).thenReturn(true);
         when(userService.getLoggedUser()).thenReturn(AUX_USER);
         when(sellerService.findById(anyLong())).thenReturn(Optional.of(AUX_SELLER));
-        //when(emailService.itemsold(anyString(), anyString(), any(), anyInt(),
-        //        anyInt(), anyString(), anyString(), anyString(), any()))
         when(orderDao.create(anyString(), anyString(), anyString(), anyString(), anyString(),
                 anyString(), anyString(), anyInt(), anyInt(), any(), anyString())).thenReturn(AUX_ORDER);
-        when(userService.findById(anyLong())).thenReturn(Optional.of(AUX_USER_FOR_SELLER));
         doNothing().when(emailService).itemsold(anyString(), any(), any(),
                 anyInt(), anyInt(), anyString(), anyString(), anyString(), any());
+        when(sellerService.getName(anyLong())).thenReturn(SELLER_NAME);
+        when(sellerService.getSurname(anyLong())).thenReturn(SELLER_SURNAME);
+        when(sellerService.getEmail(anyLong())).thenReturn(SELLER_EMAIL);
+
 
 
         Order order = null;
