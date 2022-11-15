@@ -217,9 +217,7 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     private String getOrder(int sort, int direction) {
-
         String toRet = "";
-
         if (sort == Sort.SORT_POPULAR.getId()) {
             toRet += "price ";
         } else if (sort == Sort.SORT_PRICE.getId()) {
@@ -228,6 +226,26 @@ public class ProductHibernateDao implements ProductDao {
             toRet += "name ";
         } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
             toRet += "id ";
+        }
+        if(direction == ASCENDING)
+            toRet += "ASC";
+        else if(direction == DESCENDING)
+            toRet += "DESC";
+        return toRet;
+    }
+
+    private String getOrder2(int sort, int direction) {
+
+        String toRet = "";
+
+        if (sort == Sort.SORT_POPULAR.getId()) {
+            toRet += "p.price ";
+        } else if (sort == Sort.SORT_PRICE.getId()) {
+            toRet += "p.price ";
+        } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
+            toRet += "p.name ";
+        } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
+            toRet += "p.id ";
         }
 
         if(direction == ASCENDING)
@@ -295,20 +313,16 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaList) {
-//            BigInteger big = BigInteger.valueOf((Integer)o);
-//            products.add(big.longValue());
-            System.out.println("jpaList!!");
-            System.out.println("id: " + ((BigInteger)o).longValue());
-            products.add(((BigInteger)o).longValue());
+            products.add(((Integer)o).longValue());
         }
 
         if(products.isEmpty())
             return new Pagination<>(new ArrayList<>(), (long) page,
                     0);;
-
+        String order2 = getOrder2(sort, direction);
         final TypedQuery<Product> finalQuery =
                 em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
-                        " WHERE p.id IN :products ORDER BY " + order, Product.class);
+                        " WHERE p.id IN :products ORDER BY " + order2, Product.class);
         finalQuery.setParameter("products", products);
 
         List<Product> productList = finalQuery.getResultList();
