@@ -1,29 +1,21 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.ProductDao;
-import ar.edu.itba.paw.interfaces.persistence.UserDao;
 import ar.edu.itba.paw.interfaces.services.ImageService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.print.attribute.standard.MediaSize;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static ar.edu.itba.paw.services.TestServicesResources.*;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.*;
@@ -45,7 +37,9 @@ public class ProductServiceTest {
 
     @Test
     public void testCreateProduct(){
-        when(imageService.getById(0)).thenReturn(Optional.of(PRODUCT_IMAGE));
+        when(imageService.getById(0)).thenReturn(Optional.of(AUX_IMAGE));
+        when(productDao.create(any(), anyLong(), anyString(), anyString(), anyInt(),
+                anyInt(), any())).thenReturn(AUX_PRODUCT);
 
         Product product = null;
         try{

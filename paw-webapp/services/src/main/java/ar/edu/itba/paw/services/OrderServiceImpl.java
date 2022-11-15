@@ -47,11 +47,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getBySellerEmail(String sellerEmail) {
-        return orderDao.getBySellerEmail(sellerEmail);
-    }
-
-    @Override
     public List<Order> getByBuyerEmail(String buyerEmail) {
         return orderDao.getByBuyerEmail(buyerEmail);
     }

@@ -36,7 +36,8 @@ public class ArticleServiceImpl implements ArticleService {
         this.emailService = emailService;
     }
 
-    private Image parseByteArrayToImage(byte[] image){
+    @Override
+    public Image parseByteArrayToImage(byte[] image){
         Image img = null;
         if (image != null && image.length > 0) {
             img = imageService.create(image);
