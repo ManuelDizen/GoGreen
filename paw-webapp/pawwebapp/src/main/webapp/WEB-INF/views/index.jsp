@@ -21,20 +21,20 @@
             </h4>
             <%@ include file="searchBar.jsp"%>
         </div>
-        <c:if test="${popular}">
+        <sec:authorize access="!hasRole('USER')">
             <div class="row landing-row animate glow delay-2">
                 <div class="col s12">
-                    <h5 class="landing-label"><spring:message code="landing.moresold"/></h5>
+                    <h5 class="landing-label"><spring:message code="landing.popular"/></h5>
                 </div>
             </div>
-        </c:if>
-        <c:if test="${!popular}">
+        </sec:authorize>
+        <sec:authorize access="hasRole('USER')">
             <div class="row landing-row animate glow delay-2">
                 <div class="col s12">
                     <h5 class="landing-label"><spring:message code="landing.basedonpurchase"/></h5>
                 </div>
             </div>
-        </c:if>
+        </sec:authorize>
         <div class="landing-products separate-20-bottom animate glow delay-2">
             <c:forEach items="${products}" var="product">
                 <%@include file="productCard.jsp"%>

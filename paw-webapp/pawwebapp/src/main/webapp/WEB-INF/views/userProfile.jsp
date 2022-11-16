@@ -12,20 +12,18 @@
         <div class="row">
             <div id="orders" class="col s12">
                 <div class="user-profile-container-2">
-                    <div class="information row">
-                        <div class="col s6">
+                    <div class="information row" style="margin:0;">
+                        <div class="col s6 format-col flex-column-center-align-vertical">
                             <div class="userprofile-info-1">
                                 <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
                             </div>
-                        </div>
-                        <div class="col s6">
                             <div class="userprofile-info-2">
                                 <c:out value="${user.email}"/>
                             </div>
                         </div>
                         <c:choose>
                             <c:when test="${user.image != null}">
-                                <div class="col s12 separate-20-top">
+                                <div class="col s6 separate-20-top">
                                     <div class="flex-center">
                                         <img src="<c:url value="/image/${user.image.id}"/>"
                                              class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
@@ -45,8 +43,8 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <div class="col s12 text-center separate-20-top">
-                                    <a class="waves-effect waves-light btn modal-trigger" href="#updatePicModal">
+                                <div class="col s6 text-center flex-column-center-align-vertical format-col">
+                                    <a class="waves-effect waves-light btn modal-trigger pp-btn" href="#updatePicModal">
                                         <spring:message code="updateprofilepic.newpic.msg"/>
                                     </a>
                                 </div>
@@ -117,22 +115,16 @@
                                             <spring:message code="sellerprofile.neworder.sellermail"
                                                             arguments="${order.sellerEmail}"/>:
                                         </div>
-                                        <c:forEach items="${users}" var="user">
-                                            <c:if test="${user.email == order.sellerEmail}">
-                                                <c:forEach items="${sellers}" var="seller">
-                                                    <c:if test="${user.id == seller.user.id}">
-                                                        <div>
-                                                            <spring:message code="userprofile.orders.selleraddress" arguments="${seller.address}"/>
-                                                        </div>
-                                                        <div>
-                                                            <spring:message code="userprofile.orders.sellerphone" arguments="${seller.phone}"/>
-                                                        </div>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:forEach>
+
+                                        <div>
+                                            <spring:message code="userprofile.orders.selleraddress" arguments="${order.seller.address}"/>
+                                        </div>
+                                        <div>
+                                            <spring:message code="userprofile.orders.sellerphone" arguments="${order.seller.phone}"/>
+                                        </div>
+
                                         <c:if test="${fromSale && num == 0 && currentPage == 1}">
-                                            <div class="center user-margin">
+                                            <div class="center user-margin flex-center">
                                                 <div class="chip green chip-font">
                                                     <spring:message code="profile.newpurchase"/>
                                                 </div>
@@ -172,9 +164,6 @@
                 </c:if>
             </div>
             <div id="orderSuccess" class="modal green-modal center fit-modal-content">
-                <%-- TODO: Unclear solution to get the 1st element of a collection,
-                        but it seems JSP does not offer an alternative
-                        to pick one element and store it as a var--%>
                 <c:forEach var="order" items="${orders}" end="0">
                     <div class="modal-content" style="padding-bottom:0;">
                         <h3 class="underline"><spring:message code="userprofile.ordercompleted"/></h3>
@@ -204,22 +193,12 @@
                                     <spring:message code="sellerprofile.neworder.sellermail"
                                     arguments="${order.sellerEmail}"/>
                                 </li>
-                                <c:forEach items="${users}" var="user">
-                                    <c:if test="${user.email == order.sellerEmail}">
-                                        <c:forEach items="${sellers}" var="seller">
-                                            <c:if test="${user.id == seller.user.id}">
-                                                <li>
-                                                    <spring:message code="registerbuyer.form.address"
-                                                    arguments="${seller.address}"/>
-                                                </li>
-                                                <li>
-                                                    <spring:message code="registerbuyer.form.phone"
-                                                    arguments="${seller.phone}"/>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
-                                </c:forEach>
+                                <li>
+                                    <spring:message code="userprofile.orders.selleraddress" arguments="${order.seller.address}"/>
+                                </li>
+                                <li>
+                                    <spring:message code="userprofile.orders.sellerphone" arguments="${order.seller.phone}"/>
+                                </li>
                             </ul>
                         </div>
                     </div>

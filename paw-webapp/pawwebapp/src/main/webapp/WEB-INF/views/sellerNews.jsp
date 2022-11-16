@@ -22,7 +22,7 @@
             <%@include file="newsCard.jsp"%>
         </c:forEach>
     </div>
-    <c:if test="${pages.size() > 1}">
+    <c:if test="${pages > 1}">
         <div class="pagin">
             <c:set var="nextPage" value="${currentPage+1}"/>
             <c:set var="previousPage" value="${currentPage-1}"/>
@@ -36,11 +36,11 @@
                         <li class="waves-effect"><a href="?page=${previousPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${previousPage}</a></li>
                     </c:if>
                     <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
-                    <c:if test="${currentPage < pages.size()}">
+                    <c:if test="${currentPage < pages}">
                         <li class="waves-effect"><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${nextPage}</a></li>
                         <li><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
-                    <c:if test="${currentPage >= pages.size()}">
+                    <c:if test="${currentPage >= pages}">
                         <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
                 </ul>

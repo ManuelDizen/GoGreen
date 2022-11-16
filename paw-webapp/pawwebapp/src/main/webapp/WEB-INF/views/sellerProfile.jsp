@@ -13,26 +13,24 @@
 <%@ include file="navbar.jsp"%>
 <div class="seller-profile-main-body-container">
     <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
-        <div class="information row">
-            <div class="col s6">
+        <div class="information row" style="margin:0;">
+            <div class="col s6 format-col flex-column-center-align-vertical">
                 <div class="sellerprofile-info-1">
                     <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
                 </div>
                 <div class="sellerprofile-info-1"><c:out value="${user.email}"/></div>
-            </div>
-            <div class="col s6">
                 <div class="sellerprofile-info-2">
                     <spring:message code="sellerprofile.address"
-                    arguments="${seller.address}"/>
+                                    arguments="${seller.address}"/>
                 </div>
                 <div class="sellerprofile-info-2">
                     <spring:message code="sellerprofile.phone"
-                    arguments="${seller.phone}"/>
+                                    arguments="${seller.phone}"/>
                 </div>
             </div>
             <c:choose>
                 <c:when test="${user.image != null}">
-                    <div class="col s12 separate-20-top">
+                    <div class="col s6 separate-20-top">
                         <div class="flex-center">
                             <img src="<c:url value="/image/${user.image.id}"/>"
                                  class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
@@ -52,8 +50,8 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <div class="col s12 text-center separate-20-top">
-                        <a class="waves-effect waves-light btn modal-trigger" href="#updatePicModal">
+                    <div class="col s6 text-center flex-column-center-align-vertical format-col">
+                        <a class="waves-effect waves-light btn modal-trigger pp-btn" href="#updatePicModal">
                             <spring:message code="updateprofilepic.newpic.msg"/>
                         </a>
                     </div>

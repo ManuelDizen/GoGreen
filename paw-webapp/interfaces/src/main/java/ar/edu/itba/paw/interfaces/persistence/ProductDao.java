@@ -23,12 +23,12 @@ public interface ProductDao {
     List<Product> getAvailable(int limit);
 
     List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId);
+    Pagination<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId);
 
     int getSales(String productName);
     List<Product> getByCategory(Long id);
     boolean atLeastOneProduct();
 
-    Pagination<Product> findBySeller(long sellerId, int page, int amount);
+    Pagination<Product> findBySeller(long sellerId, int page, int amount, boolean ecotag);
 
-    Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount);
 }

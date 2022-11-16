@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
                 user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
                 sellerService.getSurname(seller.getUser().getId()),
                 sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
-                message);
+                message, seller);
         if(order == null) throw new OrderCreationException();
 
         productService.decreaseStock(product.getProductId(), amount);
@@ -85,6 +85,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> getById(long orderId) {
         return orderDao.getById(orderId);
+    }
+
+    @Override
+    public List<Order> getBySellerEmail(String sellerEmail) {
+        return orderDao.getBySellerEmail(sellerEmail);
     }
 
     @Override
@@ -137,6 +142,12 @@ public class OrderServiceImpl implements OrderService {
     public int getTotalOrdersForUser(String userEmail){
         return orderDao.getTotalOrdersForSeller(userEmail);
     }
+
+    @Override
+    public List<String> getFirstNDistinct(int amount) {
+        return orderDao.getFirstNDistinct(amount);
+    }
+
     @Override
     public int getTotalOrdersForSeller(String sellerEmail){
         return orderDao.getTotalOrdersForSeller(sellerEmail);

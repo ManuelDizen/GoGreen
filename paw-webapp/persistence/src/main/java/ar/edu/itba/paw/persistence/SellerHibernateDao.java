@@ -13,7 +13,7 @@ import java.util.*;
 
 @Repository
 public class SellerHibernateDao implements SellerDao {
-    private static int EXPLORE_SELLER_PAGE_SIZE = 8;
+    private static int EXPLORE_SELLER_PAGE_SIZE = 4;
 
     @PersistenceContext
     private EntityManager em;
@@ -30,8 +30,33 @@ public class SellerHibernateDao implements SellerDao {
         return Optional.ofNullable(em.find(Seller.class, id));
     }
 
-    private Long getAmount() {
-        return em.createQuery("SELECT COUNT(*) FROM Seller", Long.class).getSingleResult();
+    private Integer getCount(String name,Area area, boolean favorite,
+                         long userId) {
+
+        StringBuilder nativeQuery = new StringBuilder();
+        Map<String, Object> args = new HashMap<>();
+        nativeQuery.append("SELECT COUNT(*) FROM sellers WHERE true");
+
+        if(name != null && !name.equals("")){
+            nativeQuery.append(" AND userid IN (SELECT id FROM users WHERE LOWER(firstName) like :name)");
+            args.put("name", '%' + name.toLowerCase() + '%');
+        }
+        if(area != null){
+            nativeQuery.append(" AND areaid = :areaid");
+            args.put("areaid", area.getId());
+        }
+        if(favorite) {
+            nativeQuery.append(" AND id IN (SELECT seller_id FROM favorites WHERE user_id = :userId)");
+            args.put("userId", userId);
+        }
+
+        Query finalNativeQuery = em.createNativeQuery(nativeQuery.toString());
+        for(String key : args.keySet()){
+            finalNativeQuery.setParameter(key, args.get(key));
+        }
+
+        return ((BigInteger)finalNativeQuery.getSingleResult()).intValue();
+
     }
 
     @Override
@@ -58,7 +83,6 @@ public class SellerHibernateDao implements SellerDao {
     public Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
                               long userId){
 
-        //TODO: Creo que direction no tiene mucho sentido acá considerando que después vamos a sortear
         StringBuilder nativeQuery = new StringBuilder();
         Map<String, Object> args = new HashMap<>();
         nativeQuery.append("SELECT id FROM sellers WHERE true");
@@ -87,7 +111,7 @@ public class SellerHibernateDao implements SellerDao {
 
         final List<Long> sellerIds = new ArrayList<>();
         for (Object o : finalNativeQuery.getResultList()) {
-            sellerIds.add(((BigInteger) o).longValue());
+            sellerIds.add(((Integer) o).longValue());
         }
 
         if(sellerIds.isEmpty())
@@ -101,7 +125,7 @@ public class SellerHibernateDao implements SellerDao {
         List<Seller> sellerPage = finalQuery.getResultList();
 
         return new Pagination<>(sellerPage, (long) page,
-                (getAmount() + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
+                (getCount(name, area, favorite, userId) + EXPLORE_SELLER_PAGE_SIZE - 1)/EXPLORE_SELLER_PAGE_SIZE);
 
 
 

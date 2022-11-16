@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 
 public class CommentForm {
 
-    @Size(max = 300)
+    @Size(min = 1, max = 300)
     private String message;
 
     private long parentId;

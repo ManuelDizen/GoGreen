@@ -86,25 +86,20 @@ public class ProductController {
         mav.addObject("boolTags", boolTags);
         mav.addObject("favoritePath", favorite?"favorite=on&":"");
 
-        //TODO: FIX PAGINATION!
-        List<Product> filteredProducts = productService.exploreProcess(name, category, tagsToFilter,
-                maxPrice, areaId, sort, direction, favorite);
-        List<List<Product>> productPages = productService.divideIntoPages(filteredProducts,
-                PRODUCTS_PER_PAGE);
+        User loggedUser = userService.getLoggedUser();
 
-        //Sorting
+        Pagination<Product> filteredProducts;
+        filteredProducts = productService.filter(name, category, tagsToFilter, maxPrice,
+                areaId, favorite, page, sort, direction, favorite?loggedUser.getId():0);
+
         mav.addObject("sort", sort);
         mav.addObject("direction", direction);
         String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
         mav.addObject("sortName", sortName);
         mav.addObject("sorting", Sort.values());
-
-        //Pagination
         mav.addObject("currentPage", page);
-        mav.addObject("pages", productPages);
-
-        List<Product> displayProducts = productService.getProductPage(page, productPages);
-        mav.addObject("products", displayProducts);
+        mav.addObject("pages", filteredProducts.getPageCount());
+        mav.addObject("products", filteredProducts.getItems());
 
         return mav;
     }
@@ -142,9 +137,9 @@ public class ProductController {
         User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
-        List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
-        mav.addObject("comments", comments.get(page-1));
-        mav.addObject("commentPages", comments);
+        Pagination<Comment> comments = commentService.getCommentsForProduct(productId, page);
+        mav.addObject("comments", comments);
+        mav.addObject("commentPages", comments.getPageCount());
         mav.addObject("currentPage", page);
 
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
@@ -205,18 +200,6 @@ public class ProductController {
         return mav;
     }
 
-    @RequestMapping(value="/pauseProduct/{productId:[0-9]+}", method=RequestMethod.GET)
-    public ModelAndView pauseProduct(@PathVariable("productId") final long productId) {
-        productService.attemptPause(productId);
-        return new ModelAndView("redirect:/sellerProfile");
-    }
-
-    @RequestMapping(value="/republishProduct/{productId:[0-9]+}", method=RequestMethod.GET)
-    public ModelAndView republishProduct(@PathVariable("productId") final long productId) {
-        productService.attemptRepublish(productId);
-        return new ModelAndView("redirect:/sellerProfile");
-    }
-
     @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
     public ModelAndView createProductPost(
             @Valid @ModelAttribute("productForm") final ProductForm form,
@@ -228,7 +211,19 @@ public class ProductController {
         } catch (IOException e) {throw new RuntimeException(e);}
         Product product = productService.createProduct(Integer.parseInt(form.getStock()), Integer.parseInt(form.getPrice()),
                 form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
-        return new ModelAndView("redirect:/createdProduct/" + product.getProductId());
+        return new ModelAndView("redirect:/product/" + product.getProductId());
+    }
+
+    @RequestMapping(value="/pauseProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView pauseProduct(@PathVariable("productId") final long productId) {
+        productService.attemptPause(productId);
+        return new ModelAndView("redirect:/sellerProfile");
+    }
+
+    @RequestMapping(value="/republishProduct/{productId:[0-9]+}", method=RequestMethod.GET)
+    public ModelAndView republishProduct(@PathVariable("productId") final long productId) {
+        productService.attemptRepublish(productId);
+        return new ModelAndView("redirect:/sellerProfile");
     }
 
     @RequestMapping(value="/updateProduct/{productId:[0-9]+}", method=RequestMethod.GET)

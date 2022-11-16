@@ -112,22 +112,28 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getBySellerId(sellerId);
     }
 
+    @Override
+    public Pagination<Article> getBySellerId(Long sellerId, int page) {
+        return articleDao.getBySellerId(sellerId, page);
+    }
+
     @Transactional
     @Override
-    public List<Article> getForLoggedUser() {
+    public Pagination<Article> getForLoggedUser(int page) {
         User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
-        List<Favorite> favorites = favoriteService.getByUserId(user.getId());
-        List<Article> news = new ArrayList<>();
-        for(Favorite fav : favorites){
-            news.addAll(getBySellerId(fav.getSeller().getId()));
-        }
-        news.sort(new Comparator<Article>() {
-            @Override
-            public int compare(Article o1, Article o2) {
-                return o2.getDateTime().compareTo(o1.getDateTime());
-            }
-        });
-        return news;
+//        List<Favorite> favorites = favoriteService.getByUserId(user.getId());
+//        List<Article> news = new ArrayList<>();
+//        for(Favorite fav : favorites){
+//            news.addAll(getBySellerId(fav.getSeller().getId()));
+//        }
+//        news.sort(new Comparator<Article>() {
+//            @Override
+//            public int compare(Article o1, Article o2) {
+//                return o2.getDateTime().compareTo(o1.getDateTime());
+//            }
+//        });
+
+        return articleDao.getForUser(user.getId(), page);
     }
 }

@@ -18,14 +18,8 @@ public interface ProductService {
     //List<Product> getAll();
     List<Product> getAvailable();
     List<Product> getAvailable(int limit);
-    List<Product> getPopular(int amount);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
-    void sortProducts(List<Product> productList, int sort, int direction);
-
-    <T> List<List<T>> divideIntoPages(List<T> list, int pageSize);
-
-    List<Product> exploreProcess(String name, long category, List<Ecotag> tags, Integer maxPrice,
-                                 long areaId, int sort, int direction, boolean favorite);
+    Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId);
 
     void deleteProduct(long productId);
     void attemptDelete(long productId);
@@ -39,24 +33,17 @@ public interface ProductService {
     void updateProduct(long prodId, int amount, int price);
 
     void addStock(String prodName, int amount);
-    void addStock(long prodId, int amount);
-
     String buildPath(String[] strings);
 
     Product createProduct(Integer stock, Integer price, long categoryId, String name,
                           String description, byte[] image, long[] ecotagIds);
 
-    void setTagList(List<Product> productList);
-
-    List<Product> getProductPage(int page, List<List<Product>> productPages);
+    List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser,
+                                     List<String> popularOrders);
 
     List<Product> getInteresting(Product product, int amount);
 
     List<Product> getInterestingForUser(List<Order> orders, int amount);
 
-    List<List<Product>> productsPerCategory();
-    List<Product> getByCategory(Category c);
-
-    List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser);
     boolean atLeastOneProduct();
 }

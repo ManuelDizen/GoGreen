@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfaces.persistence.OrderDao;
 import ar.edu.itba.paw.models.Order;
 import ar.edu.itba.paw.models.Pagination;
+import ar.edu.itba.paw.models.Seller;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -23,9 +24,9 @@ public class OrderHibernateDao implements OrderDao {
     @Override
     public Order create(String productName, String buyerName, String buyerSurname, String buyerEmail,
                         String sellerName, String sellerSurname, String sellerEmail, Integer amount,
-                        Integer price, LocalDateTime dateTime, String message) {
+                        Integer price, LocalDateTime dateTime, String message, Seller seller) {
         final Order order = new Order(productName, buyerName, buyerSurname, buyerEmail, sellerName,
-                sellerSurname, sellerEmail, amount, price, dateTime, message);
+                sellerSurname, sellerEmail, amount, price, dateTime, message, seller);
         em.persist(order);
         return order;
     }
@@ -53,41 +54,43 @@ public class OrderHibernateDao implements OrderDao {
         return query.getResultList();
     }
 
+    private Pagination<Order> queryResolver(boolean buyer, String email, int page, int amount) {
+        String str = "FROM orders WHERE ";
+        String str2 = "SELECT * FROM orders WHERE ";
+        if(buyer) {
+            str += "buyeremail";
+            str2 += "buyeremail";
+        } else {
+            str += "selleremail";
+            str2 += "selleremail";
+        }
+        str += " = :email";
+        str2 += " = :email ORDER BY datetime DESC LIMIT :limit OFFSET :offset";
+
+        final Query query = em.createNativeQuery(
+                str2, Order.class);
+
+        query.setParameter("email", email);
+        query.setParameter("limit", amount);
+        query.setParameter("offset", (page-1)*amount);
+
+        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
+        countQuery.setParameter("email", email);
+        @SuppressWarnings("unchecked")
+        int count =
+                ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).intValue();
+        return new Pagination<>(query.getResultList(), page,(count+amount-1)/amount);
+
+    }
+
     @Override
     public Pagination<Order> getByBuyerEmail(String buyerEmail, int page, int amount) {
-        String str = "FROM orders WHERE buyeremail = :buyerEmail";
-        final TypedQuery<Order> query = em.createQuery(
-                "FROM Order AS o WHERE buyeremail = :buyerEmail " +
-                "ORDER BY o.dateTime DESC", Order.class);
-        query.setParameter("buyerEmail", buyerEmail);
-        query.setMaxResults(amount);
-        query.setFirstResult((page-1)*amount);
-
-        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
-        countQuery.setParameter("buyerEmail", buyerEmail);
-        @SuppressWarnings("unchecked")
-        long count =
-            ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
-        return new Pagination<>(query.getResultList(), page,(count+amount-1)/amount); //TODO: Set page count
+        return queryResolver(true, buyerEmail, page, amount);
     }
-    //TODO: Momentaneo, estaría bueno que parametrizes estos dos metodos dado que la unica diferencia
-    // en todo el codigo es un parametro
+
     @Override
     public Pagination<Order> getBySellerEmail(String sellerEmail, int page, int amount) {
-        final TypedQuery<Order> query = em.createQuery(
-                "FROM Order AS o WHERE sellerEmail = :sellerEmail " +
-                        "ORDER BY o.dateTime DESC", Order.class);
-        query.setParameter("sellerEmail", sellerEmail);
-        query.setMaxResults(amount);
-        query.setFirstResult((page-1)*amount);
-
-        String str = "FROM orders WHERE sellerEmail = :sellerEmail";
-        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
-        countQuery.setParameter("sellerEmail", sellerEmail);
-        @SuppressWarnings("unchecked")
-        long count =
-            ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
-        return new Pagination<>(query.getResultList(), page,(count+amount-1)/amount); //TODO: Set page count
+        return queryResolver(false, sellerEmail, page, amount);
     }
 
     @Override
@@ -109,5 +112,14 @@ public class OrderHibernateDao implements OrderDao {
         Query query = em.createNativeQuery(queryStr);
         query.setParameter("buyeremail", buyerEmail);
         return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
+    }
+
+    @Override
+    public List<String> getFirstNDistinct(int amount) {
+        String queryStr = "SELECT productname FROM orders GROUP BY productname ORDER BY " +
+                "MAX(id) DESC LIMIT :limit";
+        Query query = em.createNativeQuery(queryStr);
+        query.setParameter("limit", amount);
+        return query.getResultList();
     }
 }

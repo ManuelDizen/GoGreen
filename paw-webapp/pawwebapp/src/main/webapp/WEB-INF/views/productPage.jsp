@@ -273,7 +273,7 @@
     </div>
     <div class="container comments-container">
         <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
-        <c:if test="${comments.size() == 0}">
+        <c:if test="${comments.items.size() == 0}">
             <span><spring:message code="nocommentsyet"/></span>
         </c:if>
         <sec:authorize access="hasRole('USER')">
@@ -307,7 +307,7 @@
                 </div>
             </form:form>
         </div>
-        <c:forEach items="${comments}" var="comment">
+        <c:forEach items="${comments.items}" var="comment">
             <div class="comment-box">
                 <div  style="align-self: start; width:50%; text-align:left; margin: 5px 0 10px 0; color:black; border-radius:10px;
             background-color: #ffffff;">
@@ -375,7 +375,7 @@
         </c:forEach>
 
     </div>
-    <c:if test="${commentPages.size() > 1}">
+    <c:if test="${commentPages > 1}">
         <div class="pagin">
             <c:set var="nextPage" value="${currentPage+1}"/>
             <c:set var="previousPage" value="${currentPage-1}"/>
@@ -389,11 +389,11 @@
                         <li class="waves-effect"><a href="?page=${previousPage}" style="color: #EDFA8B">${previousPage}</a></li>
                     </c:if>
                     <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
-                    <c:if test="${currentPage < commentPages.size()}">
+                    <c:if test="${currentPage < commentPages}">
                         <li class="waves-effect"><a href="?page=${nextPage}" style="color: #EDFA8B">${nextPage}</a></li>
                         <li><a href="?page=${nextPage}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
-                    <c:if test="${currentPage >= commentPages.size()}">
+                    <c:if test="${currentPage >= commentPages}">
                         <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
                 </ul>

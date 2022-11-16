@@ -1525,6 +1525,7 @@ ALL CREDITS TO @andrewsims
     /*width: 80%;*/
     font-size: 13px;
     height: fit-content;
+    min-height:280px;
     width: 23%;
     /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
@@ -2879,3 +2880,12 @@ input[type=number] {
 }
 
 .space-icons{margin:0 5px;}
+
+.format-col{
+    height:200px;
+}
+
+.pp-btn{
+    width:fit-content;
+    margin: 0 auto;
+}

@@ -22,7 +22,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         HttpSession session = request.getSession();
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("url_prior_login");
-            if (redirectUrl != null) {
+            if (redirectUrl != null && redirectUrl.contains("product")) {
                 // we do not forget to clean this attribute from session
                 session.removeAttribute("url_prior_login");
                 // then we redirect

@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Article;
-import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 
 import java.time.LocalDateTime;
@@ -15,6 +15,8 @@ public interface ArticleService {
     void delete(Long id);
 
     List<Article> getBySellerId(Long sellerId);
-    List<Article> getForLoggedUser();
+
+    Pagination<Article> getBySellerId(Long sellerId, int page);
+    Pagination<Article> getForLoggedUser(int page);
     Optional<Article> getById(Long id);
 }

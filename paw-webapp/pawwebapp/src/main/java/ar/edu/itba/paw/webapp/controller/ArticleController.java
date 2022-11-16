@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.Article;
+import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ArticleCreationException;
@@ -70,7 +71,7 @@ public class ArticleController {
                                    @RequestParam(name="page", defaultValue = "1") final int page){
         Optional<Seller> seller = sellerService.findById(sellerId);
         if(!seller.isPresent()) throw new UserNotFoundException();
-        List<Article> news = articleService.getBySellerId(sellerId);
+        Pagination<Article> news = articleService.getBySellerId(sellerId, page);
 
         ModelAndView mav = new ModelAndView("sellerNews");
 
@@ -78,12 +79,10 @@ public class ArticleController {
         User user = userService.getLoggedUser();
         mav.addObject("loggedEmail", user == null? null : user.getEmail());
 
-        List<List<Article>> newsPages = productService.divideIntoPages(news, 8);
-
-        mav.addObject("news", newsPages.get(page-1));
+        mav.addObject("news", news.getItems());
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
-        mav.addObject("pages", newsPages);
+        mav.addObject("pages", news.getPageCount());
         mav.addObject("currentPage", page);
         return mav;
     }

@@ -13,6 +13,8 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final static int N_LANDING = 4;
+
+    private final static int N_PROD_PAGE = 4;
     private final static int ASCENDING = 0;
     private final static int DESCENDING = 1;
 
@@ -71,23 +73,10 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private Pagination<Product> findBySeller(long sellerId, int page, int amount) {
-        return productDao.findBySeller(sellerId, page, amount);
-    }
-
-    private Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount) {
-        return productDao.findBySellerNoEcotag(sellerId, page, amount);
-    }
-
 
     @Override
     public Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount){
-        if(ecotag){
-            return findBySeller(sellerId, page, amount);
-        }
-        else{
-            return findBySellerNoEcotag(sellerId, page, amount);
-        }
+        return productDao.findBySeller(sellerId, page, amount, ecotag);
     }
 
     @Override
@@ -106,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAvailable(int limit){return productDao.getAvailable(limit);}
 
+
     @Override
     public List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId) {
         List<Long> ecotags = new ArrayList<>();
@@ -114,70 +104,13 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId);
     }
-
-    private int getSales(String productName) {
-        return productDao.getSales(productName);
-    }
     @Override
-    public void sortProducts(List<Product> productList, int sort, int direction) {
-        productList.sort((o1, o2) -> {
-            if (sort == Sort.SORT_POPULAR.getId()) {
-                if (direction == ASCENDING) {
-                    return (getSales(o1.getName())- getSales(o2.getName()));
-                } else {
-                    return (getSales(o2.getName()) - getSales(o1.getName()));
-                }
-
-            } else if (sort == Sort.SORT_PRICE.getId()) {
-                if (direction == ASCENDING) {
-                    return (o1.getPrice() - o2.getPrice());
-                } else {
-                    return (o2.getPrice() - o1.getPrice());
-                }
-            } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
-                if (direction == ASCENDING) {
-                    return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-                } else {
-                    return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
-                }
-            } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
-                if (direction == ASCENDING)
-                    return (int) (o1.getProductId() - o2.getProductId());
-                else {
-                    return (int) (o2.getProductId() - o1.getProductId());
-                }
-            }
-            return 0;
-        });
-    }
-
-    @Override
-    public <T> List<List<T>> divideIntoPages(List<T> list, int pageSize) {
-        List<List<T>> pageList = new ArrayList<>();
-
-        int aux = 1;
-        while(aux <= list.size()/pageSize) {
-            pageList.add(list.subList((aux-1)*pageSize, aux*pageSize));
-            aux++;
+    public Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId) {
+        List<Long> ecotags = new ArrayList<>();
+        for(Ecotag tag : tags) {
+            ecotags.add(tag.getId());
         }
-        if(list.size() % pageSize != 0)
-            pageList.add(list.subList((aux-1)*pageSize, list.size()));
-        if(list.size() == 0) pageList.add(new ArrayList<>());
-        return pageList;
-    }
-
-    @Override
-    public List<Product> exploreProcess(String name, long category, List<Ecotag> tags,
-                                        Integer maxPrice, long areaId, int sort, int direction,
-                                        boolean favorite) {
-        List<Product> productList = filter(name, category, tags, maxPrice, areaId);
-        setTagList(productList);
-        sortProducts(productList, sort, direction);
-        if(favorite) {
-            List<Seller> sellers = favoriteService.getFavoriteSellersByUserId();
-            productList.removeIf(product -> !sellers.contains(product.getSeller()));
-        }
-        return productList;
+        return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, favorite, page, sort, direction, userId);
     }
 
     @Transactional
@@ -206,10 +139,6 @@ public class ProductServiceImpl implements ProductService {
             if(product.getStatus().getId() == ProductStatus.AVAILABLE.getId()){
                 prod.get().setStatus(ProductStatus.PAUSED);
             }
-            // Aclaración: Si el status está out of stock, no tiene sentido pausar.
-            // Tecnicamente, "ya está pausado". Si esta deleted, ni siquiera debería ser alcanzable.
-            // Por lo que el único cambio posible es si está AVAILABLE, pasarlo a PAUSED.
-            // (Si esta paused obviamente no es necesario modificar nada)
         }
     }
 
@@ -274,7 +203,6 @@ public class ProductServiceImpl implements ProductService {
         if(!product.isPresent()) return;
         Product prod = product.get();
         prod.setStock(prod.getStock() - amount);
-        //productDao.updateStock(prodId, (prod.getStock()-amount));
         if(prod.getStock() == 0) prod.setStatus(ProductStatus.OUTOFSTOCK);
     }
 
@@ -303,14 +231,6 @@ public class ProductServiceImpl implements ProductService {
             product.setStatus(ProductStatus.AVAILABLE);
         }
         product.setStock(amount + product.getStock());
-    }
-
-    @Transactional
-    @Override
-    public void addStock(long prodId, int amount){
-        Optional<Product> product = getById(prodId);
-        if(!product.isPresent()) return;
-        addStock(product.get().getName(), amount);
     }
 
     @Override
@@ -351,97 +271,50 @@ public class ProductServiceImpl implements ProductService {
 
         }
         if(toReturn.size() < amount) {
-            List<Product> bySeller = findBySeller(product.getSeller().getId(), true);
-            addIfNotPresent(toReturn, bySeller, amount, product);
+            addIfNotPresent(toReturn, bySellerAndCategory, amount, product);
         }
         if(toReturn.size() < amount) {
-            List<Product> sorted = getAvailable();
-            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), DESCENDING);
+            List<Product> sorted = getAvailable(N_PROD_PAGE);
             addIfNotPresent(toReturn, sorted, amount, product);
         }
-        setTagList(toReturn);
         return toReturn;
     }
 
     @Override
     public List<Product> getInterestingForUser(List<Order> orders, int amount) {
-        // TODO: Rebuild this whole method
-        /*List<Product> interesting = new ArrayList<>();
-        int i=0;
-        while(interesting.size() < amount) {
-            for(Order order : orders) {
-                Optional<Product> aux = getByName(order.getProductName());
-                if(aux.isPresent()) {
-                    Product product = aux.get();
-                    Product candidate = getInteresting(product, i+1).get(i);
-                    if (!interesting.contains(candidate) && interesting.size() < amount)
-                        interesting.add(candidate);
-                }
+        List<Product> interesting = new ArrayList<>();
+        for(Order order : orders) {
+            Optional<Product> aux = getByName(order.getProductName());
+            if(aux.isPresent()) {
+                Product product = aux.get();
+                Product candidate = getInteresting(product, 1).get(0);
+                if (!interesting.contains(candidate) && interesting.size() < amount)
+                    interesting.add(candidate);
             }
-            i++;
+        }
+        if(interesting.size() < amount){
+            List<Product> candidates = getAvailable(N_LANDING);
+            for(Product p : candidates){
+                if(!interesting.contains(p)) interesting.add(p);
+                if(interesting.size() == amount) break;
+                //Should always reach at least N_LANDING products with this for
+            }
         }
         return interesting;
-         */
-        return getPopular(amount);
-
-        /*
-        Que hace: Se trae los productos de las ordenes de un usuario.
-
-         */
     }
-
-
     @Override
-    public List<List<Product>> productsPerCategory() {
-        List<List<Product>> products = new ArrayList<>();
-        for(Category c : Category.values()){
-            List<Product> auxSet = getByCategory(c);
-            products.add(auxSet);
-        }
-        return products;
-    }
-
-    @Override
-    public List<Product> getByCategory(Category c){
-        return productDao.getByCategory(c.getId());
-    }
-
-    @Override
-    public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser) {
-        List<Product> products;
-        if(loggedUser == null || ordersForUser.isEmpty()) products = getPopular(N_LANDING);
+    public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser,
+                                            List<String> popularOrders) {
+        List<Product> products = new ArrayList<>();
+        if(loggedUser == null || ordersForUser.isEmpty())
+            for(String name : popularOrders){
+                Optional<Product> product = getByName(name);
+                product.ifPresent(products::add);
+                //Should never "not" be present
+            }
         else{
-            //TODO: Rebuild getInterestingForUser method
             products = getInterestingForUser(ordersForUser, N_LANDING);
         }
-        return products;
-    }
-
-    public void setTagList(List<Product> productList) {
-        for(Product product : productList) {
-            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
-        }
-    }
-
-    public List<Product> getProductPage(int page, List<List<Product>> productPages) {
-        if(productPages.size() != 0)
-            return productPages.get(page-1);
-        return new ArrayList<>();
-
-    }
-
-    @Override
-    public List<Product> getPopular(int amount) {
-
-        List<Product> products = getAvailable(4);
-
-        products.sort((o1, o2) -> getSales(o2.getName()) - getSales(o1.getName()));
-
-        //List<Product> popular = products.size() < amount? products:products.subList(0, amount);
-
-        /*for(Product product : popular) {
-            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
-        }*/
         return products;
     }
 

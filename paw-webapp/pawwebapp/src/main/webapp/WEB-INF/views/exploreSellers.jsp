@@ -42,7 +42,7 @@
         </div>
         </c:if>
 
-        <%-- TODO: Build pagination --%>
+
 
         <%--c:if test="${pages.size() > 1}">
             <div class="pagin">
