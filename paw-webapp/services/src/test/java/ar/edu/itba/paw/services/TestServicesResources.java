@@ -57,8 +57,7 @@ public class TestServicesResources {
     static final long AUX_ORDER_ID = 1;
     static final Order AUX_ORDER = new Order(AUX_ORDER_ID, PRODUCT_NAME, AUX_USER_NAME, AUX_USER_SURNAME,
             AUX_USER_EMAIL, SELLER_NAME, SELLER_SURNAME, SELLER_EMAIL, AUX_ORDER_AMOUNT, PRODUCT_PRICE,
-            DATE_TIME, AUX_ORDER_MSG);
-
+            DATE_TIME, AUX_ORDER_MSG, AUX_SELLER);
     static final Role AUX_USER_ROLE = new Role("USER");
     static final long AUX_ARTICLE_ID = 4;
     static final Article AUX_ARTICLE = new Article(AUX_ARTICLE_ID, AUX_IMAGE, AUX_ARTICLE_MESSAGE,

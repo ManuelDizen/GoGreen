@@ -43,8 +43,8 @@ public class OrderServiceTest {
         when(productService.checkForAvailableStock(any(), anyInt())).thenReturn(true);
         when(userService.getLoggedUser()).thenReturn(AUX_USER);
         when(sellerService.findById(anyLong())).thenReturn(Optional.of(AUX_SELLER));
-        when(orderDao.create(anyString(), anyString(), anyString(), anyString(), anyString(),
-                anyString(), anyString(), anyInt(), anyInt(), any(), anyString())).thenReturn(AUX_ORDER);
+        when(orderDao.create(anyString(),anyString(),anyString(),anyString(),anyString(),anyString(),
+                anyString(), anyInt(), anyInt(), any(), anyString(), any())).thenReturn(AUX_ORDER);
         doNothing().when(emailService).itemsold(anyString(), any(), any(),
                 anyInt(), anyInt(), anyString(), anyString(), anyString(), any());
         when(sellerService.getName(anyLong())).thenReturn(SELLER_NAME);
