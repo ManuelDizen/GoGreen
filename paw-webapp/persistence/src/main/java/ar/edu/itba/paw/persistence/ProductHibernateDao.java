@@ -194,7 +194,7 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaList) {
-            products.add(((BigInteger)o).longValue());
+            products.add(((Integer)o).longValue());
         }
 
 
@@ -356,16 +356,23 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     @Override
-    public Pagination<Product> findBySeller(long sellerId, int page, int amount, boolean ecotag) {
+    public Pagination<Product> findBySeller(long sellerId, int page, int amount, boolean ecotag,
+                                            boolean available) {
         ProductStatus deleted = ProductStatus.DELETED;
 
         String str = "FROM products WHERE sellerid = :sellerId AND productstatus_id <> :deleted";
+        if(available){
+            str += " AND productstatus_id = :available";
+        }
 
         Query query = em.createNativeQuery("SELECT id " + str + " ORDER BY id DESC LIMIT :limit OFFSET :offset");
         query.setParameter("sellerId", sellerId);
         query.setParameter("deleted", deleted.getId());
         query.setParameter("limit", amount);
         query.setParameter("offset", (page-1)*amount);
+        if(available){
+            query.setParameter("available", ProductStatus.AVAILABLE.getId());
+        }
 
         List<Long> products = new ArrayList<>();
         for(Object o : query.getResultList()) {
@@ -393,6 +400,9 @@ public class ProductHibernateDao implements ProductDao {
         final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
         countQuery.setParameter("sellerId", sellerId);
         countQuery.setParameter("deleted", deleted.getId());
+        if(available){
+            countQuery.setParameter("available", ProductStatus.AVAILABLE.getId());
+        }
         @SuppressWarnings("unchecked")
         long count =
                 ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Product;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
+import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,6 @@ public class ProductServiceTest {
     @Test
     public void testCreateProduct(){
         when(imageService.create(any())).thenReturn(AUX_IMAGE);
-        when(imageService.getById(0)).thenReturn(Optional.of(AUX_IMAGE));
         when(productDao.create(any(), anyLong(), anyString(), anyString(), anyInt(),
                 anyInt(), any())).thenReturn(AUX_PRODUCT);
 
@@ -115,7 +115,7 @@ public class ProductServiceTest {
         when(userService.getLoggedUser()).thenReturn(AUX_USER_FOR_SELLER);
         when(productService.getById(anyLong())).thenReturn(Optional.of(AUX_PRODUCT));
         when(sellerService.findById(anyLong())).thenReturn(Optional.empty());
-        Assert.assertThrows(UnauthorizedRoleException.class,
+        Assert.assertThrows(UserNotFoundException.class,
                 () -> productService.attemptDelete(AUX_PRODUCT.getProductId()));
     }
 }

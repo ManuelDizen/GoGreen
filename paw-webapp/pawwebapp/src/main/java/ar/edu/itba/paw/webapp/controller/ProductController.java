@@ -113,8 +113,8 @@ public class ProductController {
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
-            @Valid @ModelAttribute("orderForm") final OrderForm form,
-            @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+            @ModelAttribute("orderForm") final OrderForm form,
+            @ModelAttribute("commentForm") final CommentForm commentForm,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="created", defaultValue = "false") final boolean created,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
@@ -160,7 +160,7 @@ public class ProductController {
     @RequestMapping(value="/process/{productId}", method = {RequestMethod.POST})
     public ModelAndView process(@PathVariable final long productId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
-                                @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+                                @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors()){
             return productPage(productId, form, commentForm,1,false, true);
@@ -172,7 +172,7 @@ public class ProductController {
 
     @RequestMapping(value = "/newComment/{productId}", method = {RequestMethod.POST})
     public ModelAndView comment(@PathVariable final long productId,
-                                @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                @ModelAttribute("orderForm") final OrderForm form,
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())

@@ -33,11 +33,11 @@ public class BasicController {
     @RequestMapping("/")
     public ModelAndView landingPage() {
         User loggedUser = userService.getLoggedUser();
-        List<Order> ordersForUser = null;
-        List<String> popularOrders = null;
+        List<Order> ordersForUser = new ArrayList<>();
+        List<String> popularOrders = new ArrayList<>();
         if(loggedUser!=null) ordersForUser =
             orderService.getByBuyerEmail(loggedUser.getEmail(), 1).getItems();
-        else{
+        if(loggedUser == null || ordersForUser.isEmpty()){
             popularOrders = orderService.getFirstNDistinct(N_LANDING);
         }
         List<Product> products = productService.getLandingProducts(loggedUser,

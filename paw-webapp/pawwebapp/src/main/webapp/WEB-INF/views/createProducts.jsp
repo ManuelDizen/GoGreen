@@ -72,7 +72,8 @@
             <div class="createproduct_row create-button col s6">
                 <div class="file-field input-field img-div-createproduct">
                     <div class="decision-button waves-effect waves-light btn image_button" style="margin: auto 10px;">
-                        <span><spring:message code="createproduct.form.image"/></span>
+                        <span><spring:message code="createproduct.form.image"/>
+                        <spring:message code="forms.obligatorysign"/></span>
                         <form:input path="image" type="file"/>
                     </div>
                     <div class="file-path-wrapper-style" style="margin: auto 10px;">

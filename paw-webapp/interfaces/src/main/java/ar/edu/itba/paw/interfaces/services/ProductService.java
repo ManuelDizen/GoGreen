@@ -12,7 +12,7 @@ public interface ProductService {
 
     List<Product> findBySeller(long sellerId);
     List<Product> findBySeller(long sellerId, boolean ecotag);
-    Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount);
+    Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount, boolean available);
     Optional<Product> getById(long productId);
     Optional<Product> getByName(String name);
     //List<Product> getAll();

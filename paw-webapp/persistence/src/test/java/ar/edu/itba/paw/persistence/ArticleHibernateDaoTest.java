@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.Article;
+import ar.edu.itba.paw.models.Image;
+import ar.edu.itba.paw.models.Seller;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +36,12 @@ public class ArticleHibernateDaoTest {
 
     @Test
     public void testCreate(){
-        Article article = TestHelper.articleCreateHelperFunction(em, AUX_IMAGE, AUX_SELLER,
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Article article = TestHelper.articleCreateHelperFunction(em, image, seller,
                 ARTICLE_MESSAGE, AUX_DATETIME);
         assertNotNull(article);
         assertEquals(ARTICLE_MESSAGE, article.getMessage());
@@ -41,7 +49,12 @@ public class ArticleHibernateDaoTest {
 
     @Test
     public void testFindById(){
-        Article article = TestHelper.articleCreateHelperFunction(em, AUX_IMAGE, AUX_SELLER,
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Article article = TestHelper.articleCreateHelperFunction(em, image, seller,
                 ARTICLE_MESSAGE, AUX_DATETIME);
         Optional<Article> maybeArticle = articleHibernateDao.getById(article.getId());
         assertTrue(maybeArticle.isPresent());

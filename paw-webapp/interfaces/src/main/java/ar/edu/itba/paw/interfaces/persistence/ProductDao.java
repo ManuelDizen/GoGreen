@@ -29,6 +29,6 @@ public interface ProductDao {
     List<Product> getByCategory(Long id);
     boolean atLeastOneProduct();
 
-    Pagination<Product> findBySeller(long sellerId, int page, int amount, boolean ecotag);
+    Pagination<Product> findBySeller(long sellerId, int page, int amount, boolean ecotag, boolean available);
 
 }

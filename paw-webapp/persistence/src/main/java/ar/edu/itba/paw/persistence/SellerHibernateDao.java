@@ -100,7 +100,7 @@ public class SellerHibernateDao implements SellerDao {
             args.put("userId", userId);
         }
 
-        nativeQuery.append(" LIMIT :limit OFFSET :offset");
+        nativeQuery.append("ORDER BY id DESC LIMIT :limit OFFSET :offset");
 
         Query finalNativeQuery = em.createNativeQuery(nativeQuery.toString());
         for(String key : args.keySet()){

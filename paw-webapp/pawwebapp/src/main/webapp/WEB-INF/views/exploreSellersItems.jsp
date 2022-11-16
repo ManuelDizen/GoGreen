@@ -1,8 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title><spring:message code="navbar.companyname"/> - <spring:message code="explorsellers.title"/></title>
-</head>
 <body>
 <div class="explore-products">
     <c:if test="${isEmpty}">

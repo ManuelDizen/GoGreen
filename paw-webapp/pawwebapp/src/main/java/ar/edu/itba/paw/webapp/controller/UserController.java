@@ -89,7 +89,7 @@ public class UserController {
         Pagination<Order> orders = orderService.getBySellerEmail(user.getEmail(), pageO);
 
         Pagination<Product> products = productService.findBySeller(seller.get().getId(), false,
-                pageP, PRODUCTS_PER_PAGE);
+                pageP, PRODUCTS_PER_PAGE, false);
 
         mav.addObject("seller", seller.get());
         mav.addObject("user", user);
@@ -122,7 +122,7 @@ public class UserController {
         mav.addObject("categories", Category.values());
 
         Pagination<Product> products = productService.findBySeller(sellerId, true, page,
-                ORDERS_PER_PAGE);
+                ORDERS_PER_PAGE, true);
         Pagination<Article> newsPage = articleService.getBySellerId(sellerId,1);
         mav.addObject("news", newsPage.getItems().size() > 2?
                 newsPage.getItems().subList(0, 2):newsPage.getItems());
@@ -211,7 +211,7 @@ public class UserController {
                 return buyerProfile(form,1,false);
             else if(userService.isLoggedSeller())
                 return sellerProfile(form,1,1);
-            else throw new ForbiddenActionException();
+            return new ModelAndView("redirect:/");
         }
         byte[] image;
         try {

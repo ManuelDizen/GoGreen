@@ -75,8 +75,9 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount){
-        return productDao.findBySeller(sellerId, page, amount, ecotag);
+    public Pagination<Product> findBySeller(long sellerId, boolean ecotag, int page, int amount,
+                                            boolean available){
+        return productDao.findBySeller(sellerId, page, amount, ecotag, available);
     }
 
     @Override
