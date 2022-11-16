@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.Image;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -125,238 +122,73 @@ public class ProductJdbcDaoTest {
     }
 
     @Test
-    public void test
+    public void testFilterByName(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Product product1 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT.getId(), PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK,
+                PRODUCT_PRICE, image);
+        Product product2 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT_2.getId(), PRODUCT_NAME_2, PRODUCT_DESC_2, PRODUCT_STOCK_2,
+                PRODUCT_PRICE_2, image);
+        Product product3 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT_3.getId(), PRODUCT_NAME_3, PRODUCT_DESC_3, PRODUCT_STOCK_3,
+                PRODUCT_PRICE_3, image);
 
-
-    /*
-    @Test
-    public void testCreate() {
-        //1.precondiciones
-
-        //2.exercise
-        Product newProduct = dao.create(SELLERID, CATEGORYID, NAME, DESCRIPTION, STOCK, PRICE, null);
-        //3.assertions
-        assertNotNull(newProduct);
-        assertEquals(NAME, newProduct.getName());
+        List<Product> productsByName = productHibernateDao.filter("meat", 0,
+                new ArrayList<>(), -1, 0);
+        assertEquals(1, productsByName.size());
+        assertEquals(product1, productsByName.get(0));
     }
 
     @Test
-    public void testFindById() {
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);
+    public void testFilterByCategory(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Product product1 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT.getId(), PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK,
+                PRODUCT_PRICE, image);
+        Product product2 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT_2.getId(), PRODUCT_NAME_2, PRODUCT_DESC_2, PRODUCT_STOCK_2,
+                PRODUCT_PRICE_2, image);
+        Product product3 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT_3.getId(), PRODUCT_NAME_3, PRODUCT_DESC_3, PRODUCT_STOCK_3,
+                PRODUCT_PRICE_3, image);
 
-        final Number productId = insert.executeAndReturnKey(values);
-        final Optional<Product> maybeProduct = dao.getById(productId.longValue());
-        assertTrue(maybeProduct.isPresent());
-        assertEquals(NAME, maybeProduct.get().getName());
+        List<Product> productsByName = productHibernateDao.filter(null,
+                Category.CLOTHING.getId(), new ArrayList<>(), -1, 0);
+        assertEquals(1, productsByName.size());
+        assertEquals(product2, productsByName.get(0));
     }
 
     @Test
-    public void testFindByName() {
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        insert.execute(values);
-        final Optional<Product> maybeProduct = dao.getByName(NAME);
-        assertTrue(maybeProduct.isPresent());
-        assertEquals(NAME, maybeProduct.get().getName());
+    public void testFilterByPrice(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Product product1 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT.getId(), PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK,
+                PRODUCT_PRICE, image);
+        Product product2 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT_2.getId(), PRODUCT_NAME_2, PRODUCT_DESC_2, PRODUCT_STOCK_2,
+                PRODUCT_PRICE_2, image);
+        Product product3 = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT_3.getId(), PRODUCT_NAME_3, PRODUCT_DESC_3, PRODUCT_STOCK_3,
+                PRODUCT_PRICE_3, image);
+
+        List<Product> productsByName = productHibernateDao.filter(null,
+                0, new ArrayList<>(), 200, 0);
+        assertEquals(1, productsByName.size());
+        assertEquals(product3, productsByName.get(0));
     }
-
-
-    @Test
-    public void testFindBySeller() {
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        insert.execute(values);
-        List<Product> bySeller = dao.findBySeller(SELLERID);
-        for(Product prod : bySeller) {
-            assertEquals(SELLERID, prod.getSellerId());
-        };
-    }
-
-    @Test
-    public void testDelete() {
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        final Number productId = insert.executeAndReturnKey(values);
-        assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "products"));
-        dao.deleteProduct(productId.longValue());
-        assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, "products"));
-    }
-
-
-    @Test
-    public void testGetRecent() {
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);
-        insert.execute(values);
-        List<Product> recentProducts = dao.getRecent(1);
-        assertEquals(NAME, recentProducts.get(0).getName());
-    }
-
-    @Test
-    public void testFilterByName() {
-
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        final Number number = insert.executeAndReturnKey(values);
-
-        final Map<String, Object> values2 = new HashMap<>();
-        values2.put("sellerId", SELLERID);
-        values2.put("categoryId", CATEGORYID2);
-        values2.put("name", NAME2);
-        values2.put("description", DESCRIPTION);
-        values2.put("stock", STOCK);
-        values2.put("price", PRICE2);
-        values2.put("imageId", IMAGEID);
-        insert.execute(values2);
-
-        List<Product> filteredList = dao.filter(NAME, 0, new ArrayList<>(), -1, 0);
-        assertEquals(1, filteredList.size());
-        assertEquals(number.longValue(), filteredList.get(0).getProductId());
-
-    }
-    @Test
-    public void testFilterByPrice() {
-
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        insert.execute(values);
-
-        final Map<String, Object> values2 = new HashMap<>();
-        values2.put("sellerId", SELLERID);
-        values2.put("categoryId", CATEGORYID2);
-        values2.put("name", NAME2);
-        values2.put("description", DESCRIPTION);
-        values2.put("stock", STOCK);
-        values2.put("price", PRICE2);
-        values2.put("imageId", IMAGEID);
-        final Number number = insert.executeAndReturnKey(values2);
-
-        List<Product> filteredList = dao.filter("", 0, new ArrayList<>(), 30, 0);
-        assertEquals(1, filteredList.size());
-        assertEquals(number.longValue(), filteredList.get(0).getProductId());
-
-    }
-
-    @Test
-    public void testFilterByCategory() {
-
-        final Map<String, Object> values =new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        insert.execute(values);
-
-        final Map<String, Object> values2 = new HashMap<>();
-        values2.put("sellerId", SELLERID);
-        values2.put("categoryId", CATEGORYID2);
-        values2.put("name", NAME2);
-        values2.put("description", DESCRIPTION);
-        values2.put("stock", STOCK);
-        values2.put("price", PRICE2);
-        values2.put("imageId", IMAGEID);
-        final Number number = insert.executeAndReturnKey(values2);
-
-        List<Product> filteredList = dao.filter("", CATEGORYID2, new ArrayList<>(), -1, 0);
-        assertEquals(1, filteredList.size());
-        assertEquals(number.longValue(), filteredList.get(0).getProductId());
-
-    }
-
-    @Test
-    public void testFilterGetNothing() {
-
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        insert.execute(values);
-
-        final Map<String, Object> values2 = new HashMap<>();
-        values2.put("sellerId", SELLERID);
-        values2.put("categoryId", CATEGORYID2);
-        values2.put("name", NAME2);
-        values2.put("description", DESCRIPTION);
-        values2.put("stock", STOCK);
-        values2.put("price", PRICE2);
-        values2.put("imageId", IMAGEID);
-        insert.execute(values2);
-
-        assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "products"));
-        List<Product> filteredList = dao.filter("", CATEGORYID, new ArrayList<>(), 30, 0);
-        assertEquals(0, filteredList.size());
-
-
-    }
-
-    @Test
-    public void testUpdateStock() {
-
-        final Map<String, Object> values = new HashMap<>();
-        values.put("sellerId", SELLERID);
-        values.put("categoryId", CATEGORYID);
-        values.put("name", NAME);
-        values.put("description", DESCRIPTION);
-        values.put("stock", STOCK);
-        values.put("price", PRICE);
-        values.put("imageId", IMAGEID);;
-        final Number number = insert.executeAndReturnKey(values);
-
-
-        dao.updateStock(number.longValue(), 20);
-        Product product = dao.getById(number.longValue()).get();
-        assertEquals(20, product.getStock());
-    }*/
 
 
 }

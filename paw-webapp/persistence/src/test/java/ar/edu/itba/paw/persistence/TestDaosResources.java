@@ -76,5 +76,17 @@ public class TestDaosResources {
     static final byte[] BYTES_FOR_PROD_IMAGE = new byte[]{0,1};
     static final Image PRODUCT_IMAGE = new Image(BYTES_FOR_PROD_IMAGE);
 
+    static final Category PRODUCT_CAT_2 = Category.CLOTHING;
+    static final String PRODUCT_NAME_2 = "Cruelty free ecoleather jacket";
+    static final String PRODUCT_DESC_2 = "A jacket composed entirely out of recycled plastic fabrics";
+    static final int PRODUCT_STOCK_2 = 50;
+    static final Integer PRODUCT_PRICE_2 = 3000;
+
+    static final Category PRODUCT_CAT_3 = Category.SKINCARE;
+    static final String PRODUCT_NAME_3 = "Exfoliating cream";
+    static final String PRODUCT_DESC_3 = "Everyday cream to moisturize the skin";
+    static final int PRODUCT_STOCK_3 = 200;
+    static final Integer PRODUCT_PRICE_3 = 200;
+
 
 }
