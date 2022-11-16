@@ -87,8 +87,7 @@ public class OrderHibernateDao implements OrderDao {
     public Pagination<Order> getByBuyerEmail(String buyerEmail, int page, int amount) {
         return queryResolver(true, buyerEmail, page, amount);
     }
-    //TODO: Momentaneo, estaría bueno que parametrizes estos dos metodos dado que la unica diferencia
-    // en todo el codigo es un parametro
+
     @Override
     public Pagination<Order> getBySellerEmail(String sellerEmail, int page, int amount) {
         return queryResolver(false, sellerEmail, page, amount);

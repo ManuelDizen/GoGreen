@@ -164,9 +164,6 @@
                 </c:if>
             </div>
             <div id="orderSuccess" class="modal green-modal center fit-modal-content">
-                <%-- TODO: Unclear solution to get the 1st element of a collection,
-                        but it seems JSP does not offer an alternative
-                        to pick one element and store it as a var--%>
                 <c:forEach var="order" items="${orders}" end="0">
                     <div class="modal-content" style="padding-bottom:0;">
                         <h3 class="underline"><spring:message code="userprofile.ordercompleted"/></h3>
