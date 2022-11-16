@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.Area;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 
 import java.util.Locale;
 
@@ -32,17 +31,17 @@ public class TestDaosResources {
 
     // ------------ SECOND MOCK SELLER -----------------
 
-    static final Long AUX_U_FOR_SELLER_ID_2 = 3L;
+    //static final Long AUX_U_FOR_SELLER_ID_2 = 3L;
     static final String AUX_U_FOR_SELLER_FIRSTNAME_2 = "Leonardo";
     static final String AUX_U_FOR_SELLER_SURNAME_2 = "Di Caprio";
     static final String AUX_U_FOR_SELLER_EMAIL_2 = "leodicaprio@email.com";
     static final String AUX_U_FOR_SELLER_PASSWORD_2 = "H3LL0";
     static final Locale AUX_U_FOR_SELLER_LOCALE_2 = Locale.UK;
 
-    static final User AUX_USER_FOR_SELLER_2 = new User(AUX_U_FOR_SELLER_ID_2, AUX_U_FOR_SELLER_FIRSTNAME_2,
+    /*static final User AUX_USER_FOR_SELLER_2 = new User(AUX_U_FOR_SELLER_ID_2, AUX_U_FOR_SELLER_FIRSTNAME_2,
             AUX_U_FOR_SELLER_SURNAME_2, AUX_U_FOR_SELLER_EMAIL_2, AUX_U_FOR_SELLER_PASSWORD_2,
             AUX_U_FOR_SELLER_LOCALE_2);
-    static final int SELLER_ID_2 = 2;
+    static final int SELLER_ID_2 = 2;*/
     static final String SELLER_PHONE_2 = "11 2323 5656";
     static final String SELLER_ADDRESS_2 = "Av. Callao 123";
     static final Area SELLER_AREA_2 = Area.RECOLETA;
@@ -56,13 +55,26 @@ public class TestDaosResources {
     static final String AUX_U_FOR_SELLER_PASSWORD_3 = "G00DB13";
     static final Locale AUX_U_FOR_SELLER_LOCALE_3 = Locale.FRANCE;
 
-    static final User AUX_USER_FOR_SELLER_3 = new User(AUX_U_FOR_SELLER_ID_3, AUX_U_FOR_SELLER_FIRSTNAME_3,
+    /*static final User AUX_USER_FOR_SELLER_3 = new User(AUX_U_FOR_SELLER_ID_3, AUX_U_FOR_SELLER_FIRSTNAME_3,
             AUX_U_FOR_SELLER_SURNAME_3, AUX_U_FOR_SELLER_EMAIL_3, AUX_U_FOR_SELLER_PASSWORD_3,
             AUX_U_FOR_SELLER_LOCALE_3);
-    static final int SELLER_ID_3 = 3;
+    static final int SELLER_ID_3 = 3;*/
     static final String SELLER_PHONE_3 = "11 2222 3333";
     static final String SELLER_ADDRESS_3 = "Iguazú 123";
     static final Area SELLER_AREA_3 = Area.PARQUE_PATRICIOS;
+
+
+    // ------------ PRODUCT TEST DATA -----------------
+    static final Seller AUX_SELLER_FOR_PRODUCT = new Seller(AUX_USER_FOR_SELLER, SELLER_PHONE,
+            SELLER_ADDRESS, SELLER_AREA);
+    static final int PRODUCT_ID = 1;
+    static final Category PRODUCT_CAT = Category.FOOD;
+    static final String PRODUCT_NAME = "100% plant based meat";
+    static final String PRODUCT_DESC = "A steak prepared entirely out of plant based ingredients";
+    static final int PRODUCT_STOCK = 100;
+    static final Integer PRODUCT_PRICE = 500;
+    static final byte[] BYTES_FOR_PROD_IMAGE = new byte[]{0,1};
+    static final Image PRODUCT_IMAGE = new Image(BYTES_FOR_PROD_IMAGE);
 
 
 }

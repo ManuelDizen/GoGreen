@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Product;
+import ar.edu.itba.paw.models.Seller;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,18 +16,23 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import java.util.*;
 
+import static ar.edu.itba.paw.persistence.TestDaosResources.*;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Rollback
+@Transactional
 public class ProductJdbcDaoTest {
 
 
@@ -43,18 +51,82 @@ public class ProductJdbcDaoTest {
     private static final int PRICE2 = 20;
 
     @Autowired
-    private ProductHibernateDao dao;
+    private ProductHibernateDao productHibernateDao;
 
-    @Autowired
-    private DataSource ds;
+    @PersistenceContext
+    private EntityManager em;
 
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert insert;
 
     @Before
-    public void setUp() {
-        this.dao = new ProductHibernateDao();
+    public void setUp() {}
+
+    @Test
+    public void testCreate(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Product product = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT.getId(), PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK,
+                PRODUCT_PRICE, image);
+        assertNotNull(product);
+        assertEquals(PRODUCT_NAME, product.getName());
     }
+
+    @Test
+    public void testFindById(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Product product = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT.getId(), PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK,
+                PRODUCT_PRICE, image);
+        Optional<Product> maybeProduct = productHibernateDao.getById(product.getProductId());
+        assertTrue(maybeProduct.isPresent());
+        product = maybeProduct.get();
+        assertEquals(PRODUCT_NAME, product.getName());
+        assertEquals(PRODUCT_DESC, product.getDescription());
+        assertEquals(PRODUCT_STOCK, product.getStock());
+        assertEquals(PRODUCT_PRICE, product.getPrice());
+    }
+
+    @Test
+    public void testFindByIdWhenNotExists(){
+        Optional<Product> maybeProduct = productHibernateDao.getById(PRODUCT_ID);
+        assertFalse(maybeProduct.isPresent());
+    }
+
+    @Test
+    public void testFindByName(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+        Seller seller = TestHelper.sellerCreateHelperFunction(em, user, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+        Image image = TestHelper.imageCreateHelperFunction(em, BYTES_FOR_PROD_IMAGE);
+        Product product = TestHelper.productCreateHelperFunction(em, seller,
+                PRODUCT_CAT.getId(), PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK,
+                PRODUCT_PRICE, image);
+        Optional<Product> maybeProduct = productHibernateDao.getByName(product.getName());
+        assertTrue(maybeProduct.isPresent());
+        product = maybeProduct.get();
+        assertEquals(PRODUCT_NAME, product.getName());
+        assertEquals(PRODUCT_DESC, product.getDescription());
+        assertEquals(PRODUCT_STOCK, product.getStock());
+        assertEquals(PRODUCT_PRICE, product.getPrice());
+    }
+
+    @Test
+    public void testFindByNameWhenNotExists(){
+        Optional<Product> maybeProduct = productHibernateDao.getByName(PRODUCT_NAME);
+        assertFalse(maybeProduct.isPresent());
+    }
+
+    @Test
+    public void test
+
 
     /*
     @Test

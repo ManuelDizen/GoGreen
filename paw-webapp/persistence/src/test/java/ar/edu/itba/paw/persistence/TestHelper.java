@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.Area;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import org.hibernate.AssertionFailure;
 
 import javax.persistence.EntityManager;
@@ -22,5 +20,19 @@ public class TestHelper {
         Seller seller = new Seller(user, phone, address, area);
         em.persist(seller);
         return seller;
+    }
+
+    static Image imageCreateHelperFunction(EntityManager em, byte[] bytes){
+        Image image = new Image(bytes);
+        em.persist(image);
+        return image;
+    }
+
+    static Product productCreateHelperFunction(EntityManager em, Seller seller, long categoryId,
+                                       String name, String description, int stock, int price,
+                                               Image image){
+        Product product = new Product(seller,categoryId,name,description,stock,price,image);
+        em.persist(product);
+        return product;
     }
 }

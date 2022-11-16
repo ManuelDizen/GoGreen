@@ -33,17 +33,6 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
 public class SellerJdbcDaoTest {
-
-    private static final String PHONE = "11111111";
-    private static final String ADDRESS = "Address";
-    private static final String FIRSTNAME = "John";
-    private static final String SURNAME = "Doe";
-    private static final String EMAIL = "foo@bar.edu.ar";
-    private static final String PASSWORD = "secret";
-    private static final Locale LOCALE = new Locale("es");
-
-    private static final long AREAID = 1;
-
     @Autowired
     private SellerHibernateDao sellerHibernateDao;
 
@@ -120,7 +109,7 @@ public class SellerJdbcDaoTest {
     }
 
     @Test
-    public void testFilter(){
+    public void testFilterByArea(){
         User user1 = TestHelper.userCreateHelperFunction(em, AUX_U_FOR_SELLER_FIRSTNAME,
                 AUX_U_FOR_SELLER_SURNAME, AUX_U_FOR_SELLER_EMAIL, AUX_U_FOR_SELLER_PASSWORD,
                 AUX_U_FOR_SELLER_LOCALE);
@@ -143,6 +132,27 @@ public class SellerJdbcDaoTest {
                 false, 1, 0); // UserId is irrelevant as favorite is false
         assertEquals(1, sellersByArea.getItems().size());
         assertEquals(seller1, sellersByArea.getItems().get(0));
+    }
+
+    @Test
+    public void testFilterByName(){
+        User user1 = TestHelper.userCreateHelperFunction(em, AUX_U_FOR_SELLER_FIRSTNAME,
+                AUX_U_FOR_SELLER_SURNAME, AUX_U_FOR_SELLER_EMAIL, AUX_U_FOR_SELLER_PASSWORD,
+                AUX_U_FOR_SELLER_LOCALE);
+        Seller seller1 = TestHelper.sellerCreateHelperFunction(em, user1, SELLER_PHONE,
+                SELLER_ADDRESS, SELLER_AREA);
+
+        User user2 = TestHelper.userCreateHelperFunction(em, AUX_U_FOR_SELLER_FIRSTNAME_2,
+                AUX_U_FOR_SELLER_SURNAME_2, AUX_U_FOR_SELLER_EMAIL_2, AUX_U_FOR_SELLER_PASSWORD_2,
+                AUX_U_FOR_SELLER_LOCALE_2);
+        Seller seller2 = TestHelper.sellerCreateHelperFunction(em, user2,
+                SELLER_PHONE_2, SELLER_ADDRESS_2, SELLER_AREA_2);
+
+        User user3 = TestHelper.userCreateHelperFunction(em, AUX_U_FOR_SELLER_FIRSTNAME_3,
+                AUX_U_FOR_SELLER_SURNAME_3, AUX_U_FOR_SELLER_EMAIL_3, AUX_U_FOR_SELLER_PASSWORD_3,
+                AUX_U_FOR_SELLER_LOCALE_3);
+        Seller seller3 = TestHelper.sellerCreateHelperFunction(em, user3,
+                SELLER_PHONE_3, SELLER_ADDRESS_3, SELLER_AREA_3);
 
         Pagination<Seller> sellersByName = sellerHibernateDao.filter("Leonardo", null,
                 false, 1, 0); // UserId is irrelevant as favorite is false
