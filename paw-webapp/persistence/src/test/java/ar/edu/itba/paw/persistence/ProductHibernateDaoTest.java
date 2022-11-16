@@ -5,48 +5,24 @@ import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 
 import java.util.*;
 
 import static ar.edu.itba.paw.persistence.TestDaosResources.*;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
-public class ProductJdbcDaoTest {
-
-
-    private static final long SELLERID = 1;
-    private static final long CATEGORYID = 1;
-    private static final String NAME = "P1";
-    private static final String DESCRIPTION = "First product";
-    private static final int STOCK = 10;
-    private static final int PRICE = 100;
-    private static final int IMAGEID = 0;
-
-    private static final long PRODUCTID2 = 2;
-    private static final String NAME2 = "Q2";
-
-    private static final long CATEGORYID2 = 2;
-    private static final int PRICE2 = 20;
-
+public class ProductHibernateDaoTest {
     @Autowired
     private ProductHibernateDao productHibernateDao;
 
@@ -161,7 +137,7 @@ public class ProductJdbcDaoTest {
                 PRODUCT_CAT_3.getId(), PRODUCT_NAME_3, PRODUCT_DESC_3, PRODUCT_STOCK_3,
                 PRODUCT_PRICE_3, image);
 
-        List<Product> productsByName = productHibernateDao.filter(null,
+        List<Product> productsByName = productHibernateDao.filter("",
                 Category.CLOTHING.getId(), new ArrayList<>(), -1, 0);
         assertEquals(1, productsByName.size());
         assertEquals(product2, productsByName.get(0));
@@ -184,7 +160,7 @@ public class ProductJdbcDaoTest {
                 PRODUCT_CAT_3.getId(), PRODUCT_NAME_3, PRODUCT_DESC_3, PRODUCT_STOCK_3,
                 PRODUCT_PRICE_3, image);
 
-        List<Product> productsByName = productHibernateDao.filter(null,
+        List<Product> productsByName = productHibernateDao.filter("",
                 0, new ArrayList<>(), 200, 0);
         assertEquals(1, productsByName.size());
         assertEquals(product3, productsByName.get(0));

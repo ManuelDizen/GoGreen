@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.*;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class TestDaosResources {
@@ -65,16 +66,16 @@ public class TestDaosResources {
 
 
     // ------------ PRODUCT TEST DATA -----------------
-    static final Seller AUX_SELLER_FOR_PRODUCT = new Seller(AUX_USER_FOR_SELLER, SELLER_PHONE,
+    static final Seller AUX_SELLER = new Seller(AUX_USER_FOR_SELLER, SELLER_PHONE,
             SELLER_ADDRESS, SELLER_AREA);
-    static final int PRODUCT_ID = 1;
+    static final Long PRODUCT_ID = 1L;
     static final Category PRODUCT_CAT = Category.FOOD;
     static final String PRODUCT_NAME = "100% plant based meat";
     static final String PRODUCT_DESC = "A steak prepared entirely out of plant based ingredients";
     static final int PRODUCT_STOCK = 100;
     static final Integer PRODUCT_PRICE = 500;
     static final byte[] BYTES_FOR_PROD_IMAGE = new byte[]{0,1};
-    static final Image PRODUCT_IMAGE = new Image(BYTES_FOR_PROD_IMAGE);
+    static final Image AUX_IMAGE = new Image(BYTES_FOR_PROD_IMAGE);
 
     static final Category PRODUCT_CAT_2 = Category.CLOTHING;
     static final String PRODUCT_NAME_2 = "Cruelty free ecoleather jacket";
@@ -88,5 +89,14 @@ public class TestDaosResources {
     static final int PRODUCT_STOCK_3 = 200;
     static final Integer PRODUCT_PRICE_3 = 200;
 
+    static final String ARTICLE_MESSAGE = "Next week, our latest release is coming: New bamboo toothbrushes!";
+    static final LocalDateTime AUX_DATETIME = LocalDateTime.now();
+    static final Long AUX_ARTICLE_ID = 1L;
 
+    static final Product AUX_PRODUCT = new Product(PRODUCT_ID, AUX_SELLER, PRODUCT_CAT.getId(),
+            PRODUCT_NAME, PRODUCT_DESC, PRODUCT_STOCK, PRODUCT_PRICE, AUX_IMAGE);
+
+    static final String COMMENT_MSG = "Does this product have a blue variant?";
+    static final String COMMENT_REPLY = "Yes! Please check our seller profile to find other color variants!";
+    static final long AUX_COMMENT_ID = 1;
 }

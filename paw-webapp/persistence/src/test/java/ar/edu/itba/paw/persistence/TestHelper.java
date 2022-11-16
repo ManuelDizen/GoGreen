@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.*;
 import org.hibernate.AssertionFailure;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class TestHelper {
@@ -34,5 +35,19 @@ public class TestHelper {
         Product product = new Product(seller,categoryId,name,description,stock,price,image);
         em.persist(product);
         return product;
+    }
+
+    static Article articleCreateHelperFunction(EntityManager em, Image image, Seller seller,
+                                               String message, LocalDateTime datetime){
+        Article article = new Article(image, message, seller, datetime);
+        em.persist(article);
+        return article;
+    }
+
+    static Comment commentCreateHelperFunction(EntityManager em, User user, Product product,
+                                               String message, LocalDateTime datetime){
+        Comment comment = new Comment(message, user, product, datetime);
+        em.persist(comment);
+        return comment;
     }
 }

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Article;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 

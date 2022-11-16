@@ -58,12 +58,6 @@ public class ArticleHibernateDao implements ArticleDao {
         query.setParameter("limit", NEWS_PAGE_SIZE);
         query.setParameter("offset", (page-1)*NEWS_PAGE_SIZE);
 
-//        List<Long> articles = new ArrayList<>();
-//
-//        for(Object o : query.getResultList()) {
-//            articles.add(((BigInteger) o).longValue());
-//        }
-
         List<Article> articles = query.getResultList();
 
         if(articles.isEmpty())
@@ -74,9 +68,6 @@ public class ArticleHibernateDao implements ArticleDao {
         countQuery.setParameter("sellerId", sellerId);
         int count = ((BigInteger)countQuery.getSingleResult()).intValue();
 
-//        final TypedQuery<Article> jpaQuery = em.createQuery("SELECT DISTINCT a FROM Article a WHERE a.id IN :articles", Article.class);
-//        jpaQuery.setParameter("articles", articles);
-//        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
         return new Pagination<>(articles, (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
     }
 
@@ -91,12 +82,6 @@ public class ArticleHibernateDao implements ArticleDao {
         query.setParameter("limit", NEWS_PAGE_SIZE);
         query.setParameter("offset", (page-1)*NEWS_PAGE_SIZE);
 
-//        List<Long> articles = new ArrayList<>();
-//
-//        for(Object o : query.getResultList()) {
-//            articles.add(((BigInteger) o).longValue());
-//        }
-
         List<Article> articles = query.getResultList();
 
         if(articles.isEmpty())
@@ -107,9 +92,6 @@ public class ArticleHibernateDao implements ArticleDao {
         countQuery.setParameter("userId", userId);
         int count = ((BigInteger)countQuery.getSingleResult()).intValue();
 
-//        final TypedQuery<Article> jpaQuery = em.createQuery("SELECT DISTINCT a FROM Article a WHERE a.id IN :articles", Article.class);
-//        jpaQuery.setParameter("articles", articles);
-//        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
         return new Pagination<>(articles, (long) page, (count + NEWS_PAGE_SIZE - 1)/NEWS_PAGE_SIZE);
     }
 }
