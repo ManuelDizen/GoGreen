@@ -68,7 +68,7 @@
                                                 <input class="file-path validate" type="text" readonly id="readonly-input">
                                             </div>
                                         </div>
-                                        <form:errors path="image" element="p" cssClass="error"/>
+                                        <form:errors path="image" element="p" cssClass="error center"/>
                                         <div class="center create-submit flex-center">
                                             <button type="submit" class="waves-effect waves-light btn flex-center">
                                                 <spring:message code="updateprofilepic.form.submit"/>

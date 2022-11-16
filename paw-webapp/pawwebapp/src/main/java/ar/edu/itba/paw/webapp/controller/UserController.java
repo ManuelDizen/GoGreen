@@ -206,19 +206,18 @@ public class UserController {
     public ModelAndView updateProfilePic(HttpServletRequest request,
                                          @Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
                                          final BindingResult errors){
+        String referer = request.getHeader("Referer");
         if (errors.hasErrors()){
-            if(userService.isLoggedUser())
+            if(referer.contains("user"))
                 return buyerProfile(form,1,false);
-            else if(userService.isLoggedSeller())
+            else
                 return sellerProfile(form,1,1);
-            return new ModelAndView("redirect:/");
         }
         byte[] image;
         try {
             image = form.getImage().getBytes();
         } catch (IOException e) {throw new RuntimeException(e);}
         userService.setProfilePic(image);
-        String referer = request.getHeader("Referer");
         return new ModelAndView("redirect:" + referer);
     }
 

@@ -222,6 +222,7 @@
                                 </div>
                             </div>
                         </div>
+                        <form:errors path="amount" element="p" cssClass="error"/>
                     </form:form>
                 </c:if>
                 <c:if test="${product.status.id != availableId}">

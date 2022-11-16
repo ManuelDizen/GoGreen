@@ -578,6 +578,15 @@ nav {
     overflow-y:auto;
 }
 
+.explore-sellers-container{
+    display:grid;
+    grid-template-columns: 1fr 3fr;
+    width:100%;
+    min-height:70%;
+    height:fit-content;
+    overflow-y:auto;
+}
+
 .explore-filter .row .input-field > label, .filter-inputlabel,
 .explore-filter .row .select-wrapper > input {
     color: white;
@@ -2093,6 +2102,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 .container #product_form .row .input-field .btn .character-counter,
 input#ecotag, input#ecotag2,
 .explore-container #filter_form .row .input-field .select-wrapper ul,
+.explore-sellers-container #filter_form .row .input-field .select-wrapper ul,
 .input-field .selectMultiple .select-wrapper,
 .sort ul,
 #orderamount ul,

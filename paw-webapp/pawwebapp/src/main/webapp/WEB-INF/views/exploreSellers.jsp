@@ -8,7 +8,7 @@
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
-    <div class="explore-container margin-top-100">
+    <div class="explore-sellers-container margin-top-100">
         <div class="explore-filter z-depth-1">
             <%@ include file="exploreSellersFilter.jsp"%>
         </div>
