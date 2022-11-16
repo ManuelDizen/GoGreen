@@ -23,7 +23,8 @@ public class ProductHibernateDao implements ProductDao {
     private EntityManager em;
 
     @Override
-    public Product create(Seller seller, long categoryId, String name, String description, int stock, Integer price, Image image) {
+    public Product create(Seller seller, long categoryId, String name, String description, int stock,
+                          Integer price, Image image) {
         final Product prod = new Product(seller, categoryId, name, description, stock, price, image);
         em.persist(prod);
         return prod;
@@ -148,7 +149,8 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     @Override
-    public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId) {
+    public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice,
+                                long areaId) {
 
         //Falta cambiar algo de la implementación de las ecotags para poder filtrar por ecotags correctamente
 
@@ -192,7 +194,7 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : jpaList) {
-            products.add(((Integer)o).longValue());
+            products.add(((BigInteger)o).longValue());
         }
 
 

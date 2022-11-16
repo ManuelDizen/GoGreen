@@ -96,12 +96,6 @@ public class UserServiceImpl implements UserService {
         return isRole(userId, "SELLER");
     }
 
-    @Transactional
-    @Override
-    public boolean isBuyer(long userId) {
-        return isRole(userId, "USER");
-    }
-
     private boolean isRole(long userId, String role) {
         Optional<User> user = userDao.findById(userId);
         if(!user.isPresent()) throw new UserNotFoundException();

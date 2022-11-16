@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         User user = userService.getLoggedUser();
-        if(user == null) throw new UnauthorizedRoleException();
+        if(user == null || userService.isLoggedSeller()) throw new UnauthorizedRoleException();
 
         final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
                 amount, product.getPrice(), user.getFirstName(), user.getEmail(),
                 message, sellerService.getLocale(seller.getUser().getId()));
 
-        LocalDateTime dateTime = LocalDateTime.now(); //TODO: Explorar acá
+        LocalDateTime dateTime = LocalDateTime.now();
 
         Order order = orderDao.create(product.getName(), user.getFirstName(),
                 user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
@@ -85,11 +85,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> getById(long orderId) {
         return orderDao.getById(orderId);
-    }
-
-    @Override
-    public List<Order> getBySellerEmail(String sellerEmail) {
-        return orderDao.getBySellerEmail(sellerEmail);
     }
 
     @Override

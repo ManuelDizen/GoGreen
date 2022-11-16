@@ -41,12 +41,6 @@ public class CommentHibernateDao implements CommentDao {
         query.setParameter("limit", COMMENT_PAGE_SIZE);
         query.setParameter("offset", (page-1)*COMMENT_PAGE_SIZE);
 
-//        List<Long> comments = new ArrayList<>();
-//
-//        for(Object o : query.getResultList()) {
-//            comments.add(((BigInteger) o).longValue());
-//        }
-
         List<Comment> comments = query.getResultList();
 
         if(comments.isEmpty())

@@ -2,30 +2,84 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 
+import static ar.edu.itba.paw.persistence.TestDaosResources.*;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Rollback
-public class UserJdbcDaoTest {
+@Transactional
+public class UserHibernateDaoTest {
+
+    @Autowired
+    private UserHibernateDao userHibernateDao;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @Before
+    public void setUp(){}
+
+    @Test
+    public void testCreate(){
+        User newUser = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME,
+                USER_EMAIL, USER_PASSWORD, USER_LOCALE);
+        assertNotNull(newUser);
+        assertEquals(USER_EMAIL, newUser.getEmail());
+    }
+
+    @Test
+    public void testFindByEmail(){
+        TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+
+        Optional<User> maybeUser = userHibernateDao.findByEmail(USER_EMAIL);
+        assertTrue(maybeUser.isPresent());
+        User user = maybeUser.get();
+        Assert.assertEquals(USER_EMAIL, user.getEmail());
+        Assert.assertEquals(USER_FIRSTNAME, user.getFirstName());
+        Assert.assertEquals(USER_SURNAME, user.getSurname());
+    }
+
+    @Test
+    public void testFindById(){
+        User user = TestHelper.userCreateHelperFunction(em, USER_FIRSTNAME, USER_SURNAME, USER_EMAIL,
+                USER_PASSWORD, USER_LOCALE);
+
+        Optional<User> maybeUser = userHibernateDao.findById(user.getId());
+        assertTrue(maybeUser.isPresent());
+        user = maybeUser.get();
+        Assert.assertEquals(USER_EMAIL, user.getEmail());
+        Assert.assertEquals(USER_FIRSTNAME, user.getFirstName());
+        Assert.assertEquals(USER_SURNAME, user.getSurname());
+    }
+
+    @Test
+    public void testAttemptFindByIdWhenNotExists(){
+        Optional<User> maybeUser = userHibernateDao.findById(USER_ID);
+        assertFalse(maybeUser.isPresent());
+    }
+
+    @Test
+    public void testAttemptFindByEmailWhenNotExists(){
+        Optional<User> maybeUser = userHibernateDao.findByEmail(USER_EMAIL);
+        assertFalse(maybeUser.isPresent());
+    }
+
 
     /*private static final String FIRSTNAME = "John";
     private static final String SURNAME = "Doe";

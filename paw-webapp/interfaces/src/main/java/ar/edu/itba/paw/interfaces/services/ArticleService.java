@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Article;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleService {
+    Image parseByteArrayToImage(byte[] image);
     Article create(String message, byte[] image, LocalDateTime dateTime);
     void edit(Long id, String newMessage, byte[] newImage);
     void delete(Long id);

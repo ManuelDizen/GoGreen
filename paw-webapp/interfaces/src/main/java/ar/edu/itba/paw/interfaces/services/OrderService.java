@@ -10,10 +10,8 @@ public interface OrderService {
 
     Order create(long productId, int amount, String message);
     Optional<Order> getById(long orderId);
-    List<Order> getBySellerEmail(String sellerEmail);
     List<Order> getByBuyerEmail(String buyerEmail);
     Pagination<Order> getByBuyerEmail(String buyerEmail, int page);
-
     Pagination<Order> getBySellerEmail(String sellerEmail, int page);
 
     boolean checkForOrderOwnership(long orderId);

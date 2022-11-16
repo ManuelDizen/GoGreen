@@ -21,8 +21,6 @@ public interface UserService {
     void changePassword(long userId, String newPassword);
 
     boolean isSeller(long userId);
-
-    boolean isBuyer(long userId);
     void setProfilePic(byte[] image);
     void deleteProfilePic();
     User getLoggedUser();
