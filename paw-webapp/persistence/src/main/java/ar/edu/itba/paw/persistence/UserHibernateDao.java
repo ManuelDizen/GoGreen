@@ -36,10 +36,4 @@ public class UserHibernateDao implements UserDao {
     public Optional<User> findById(final long userId) {
         return Optional.ofNullable(em.find(User.class, userId));
     }
-
-    @Override
-    public List<User> getAll() {
-        final TypedQuery<User> query = em.createQuery("FROM User", User.class);
-        return query.getResultList();
-    }
 }

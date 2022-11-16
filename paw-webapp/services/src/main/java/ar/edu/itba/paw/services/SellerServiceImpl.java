@@ -52,11 +52,6 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public List<Seller> getAll() {
-        return sellerDao.getAll();
-    }
-
-    @Override
     public String getEmail(long userid) {
         Optional<User> maybeUser = userService.findById(userid);
         if(!maybeUser.isPresent()) throw new UserNotFoundException();

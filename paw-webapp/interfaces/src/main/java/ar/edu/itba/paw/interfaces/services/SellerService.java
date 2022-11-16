@@ -14,7 +14,6 @@ public interface SellerService {
     Optional<Seller> findById(long id);
     Optional<Seller> findByUserId(long userId);
     Optional<Seller> findByMail(String mail);
-    List<Seller> getAll();
     String getEmail(long userid);
     String getName(long userid);
     String getSurname(long userid);

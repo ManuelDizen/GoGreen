@@ -12,5 +12,4 @@ public interface UserDao {
     User create(String firstName, String surname, String email, String password, Locale locale);
     Optional<User> findByEmail(String email);
     Optional<User> findById(long userId);
-    List<User> getAll();
 }

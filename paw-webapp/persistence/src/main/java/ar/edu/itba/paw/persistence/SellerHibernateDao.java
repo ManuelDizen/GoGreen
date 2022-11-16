@@ -74,11 +74,6 @@ public class SellerHibernateDao implements SellerDao {
         return query.getResultList().stream().findFirst();
     }
 
-    @Override
-    public List<Seller> getAll() {
-        return em.createQuery("FROM Seller", Seller.class).getResultList();
-    }
-
     public Pagination<Seller> filter(String name, Area area, boolean favorite, int page,
                               long userId){
 
