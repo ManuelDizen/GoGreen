@@ -100,7 +100,7 @@ public class SellerHibernateDaoTest {
         assertFalse(maybeSeller.isPresent());
     }
 
-    /*@Test
+    @Test
     public void testFilterByArea(){
         User user1 = TestHelper.userCreateHelperFunction(em, AUX_U_FOR_SELLER_FIRSTNAME,
                 AUX_U_FOR_SELLER_SURNAME, AUX_U_FOR_SELLER_EMAIL, AUX_U_FOR_SELLER_PASSWORD,
@@ -150,5 +150,5 @@ public class SellerHibernateDaoTest {
                 false, 1, 0); // UserId is irrelevant as favorite is false
         assertEquals(1, sellersByName.getItems().size());
         assertEquals(seller2, sellersByName.getItems().get(0));
-    }*/
+    }
 }
