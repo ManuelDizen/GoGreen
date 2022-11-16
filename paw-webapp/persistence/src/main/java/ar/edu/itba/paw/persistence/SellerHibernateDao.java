@@ -61,7 +61,6 @@ public class SellerHibernateDao implements SellerDao {
 
     @Override
     public Optional<Seller> findByUserId(long userId) {
-        //TODO: Redo this method
         final TypedQuery<Seller> query = em.createQuery("FROM Seller WHERE userid = :userid", Seller.class);
         query.setParameter("userid", userId);
         return query.getResultList().stream().findFirst();
@@ -113,7 +112,6 @@ public class SellerHibernateDao implements SellerDao {
         for (Object o : finalNativeQuery.getResultList()) {
             BigInteger big = new BigInteger(o.toString());
             sellerIds.add(big.longValue());
-            //sellerIds.add(((Integer) o).longValue());
         }
 
         if(sellerIds.isEmpty())

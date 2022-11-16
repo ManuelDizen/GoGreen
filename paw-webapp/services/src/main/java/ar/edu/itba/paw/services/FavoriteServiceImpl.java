@@ -69,22 +69,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         return getFavoriteSellersByUserId(user.getId());
     }
 
-    @Transactional
-    @Override
-    public boolean isFavorite(User user, Seller seller){
-        if(user == null || seller == null) return false;
-        Set<Role> roles = user.getRoles();
-        for(Role role : roles){
-            if(Objects.equals(role.getName(), "SELLER")) return false;
-        }
-
-        List<Favorite> favorites = getByUserId(user.getId());
-        for(Favorite fav : favorites){
-            if(Objects.equals(fav.getSeller().getId(), seller.getId())) return true;
-        }
-        return false;
-    }
-
     @Override
     public boolean isFavorite(Seller seller) {
         User user = userService.getLoggedUser();

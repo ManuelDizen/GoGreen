@@ -15,12 +15,6 @@ public class Image {
     @Column(nullable = false)
     private byte[] source;
 
-    /*@OneToMany(mappedBy="image")
-    private Set<Product> products;
-
-    @OneToMany(mappedBy="image")
-    private Set<Article> articles;*/
-
     Image(){}
 
     public Image(byte[] source){

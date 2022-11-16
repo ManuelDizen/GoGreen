@@ -30,7 +30,6 @@
             </c:if>
             <!-- Dropdown Trigger -->
             <a class='dropdown-trigger btn waves-effect waves-light btn standard-button drop-align' href='#' data-target='dropdown1'><spring:message code="${sortName}"/></a>
-
             <!-- Dropdown Structure -->
             <ul id='dropdown1' class='dropdown-content'>
                 <c:forEach items="${sorting}" var="sortVal">

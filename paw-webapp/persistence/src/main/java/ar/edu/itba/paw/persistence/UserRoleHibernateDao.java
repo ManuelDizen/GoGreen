@@ -18,7 +18,6 @@ public class UserRoleHibernateDao implements UserRoleDao {
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     public Set<Role> getById(long userId) {
         Optional<User> user = em.createQuery("SELECT u from User u JOIN FETCH u.roles WHERE u.id = :userId",

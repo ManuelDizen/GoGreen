@@ -30,7 +30,6 @@ public class UserHibernateDao implements UserDao {
                 em.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         return query.getResultList().stream().findFirst();
-        //Hablo como JPA y siempre en terminos de mis models
     }
 
     @Override

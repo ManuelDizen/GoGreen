@@ -53,7 +53,6 @@ public class ArticleServiceImpl implements ArticleService {
     public Article create(String message, byte[] image, LocalDateTime dateTime) {
 
         User logged = userService.getLoggedUser();
-        //Should this check even be done? Doesn't spring security check for SELLER role?
         if(logged == null) throw new UnauthorizedRoleException();
         Optional<Seller> maybeSeller = sellerService.findByUserId(logged.getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -74,42 +73,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getById(id);
     }
 
-    public boolean checkForArticleOwnership(long id) {
-        User user = userService.getLoggedUser();
-        if(user == null) throw new UnauthorizedRoleException();
-        Optional<Seller> maybeSeller = sellerService.findByUserId(user.getId());
-        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
-        Seller seller = maybeSeller.get();
-        Optional<Article> maybeArticle = getById(id);
-        if(maybeArticle.isPresent()){
-            Article article = maybeArticle.get();
-            return article.getSeller().getId().equals(seller.getId());
-        }
-        return false;
-    }
-    @Transactional
-    @Override
-    public void edit(Long id, String newMessage, byte[] newImage) {
-        if(!checkForArticleOwnership(id)){throw new ForbiddenActionException();}
-
-        Optional<Article> maybeArticle = articleDao.getById(id);
-        if(!maybeArticle.isPresent()) throw new ArticleNotFoundException();
-        Article article = maybeArticle.get();
-
-        article.setMessage(newMessage);
-        article.setImage(parseByteArrayToImage(newImage));
-    }
-
     @Transactional
     @Override
     public void delete(Long id) {
-        // Unlike deleting products, this will produce a physical deletion
         articleDao.delete(id);
-    }
-
-    @Override
-    public List<Article> getBySellerId(Long sellerId) {
-        return articleDao.getBySellerId(sellerId);
     }
 
     @Override
@@ -122,18 +89,6 @@ public class ArticleServiceImpl implements ArticleService {
     public Pagination<Article> getForLoggedUser(int page) {
         User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
-//        List<Favorite> favorites = favoriteService.getByUserId(user.getId());
-//        List<Article> news = new ArrayList<>();
-//        for(Favorite fav : favorites){
-//            news.addAll(getBySellerId(fav.getSeller().getId()));
-//        }
-//        news.sort(new Comparator<Article>() {
-//            @Override
-//            public int compare(Article o1, Article o2) {
-//                return o2.getDateTime().compareTo(o1.getDateTime());
-//            }
-//        });
-
         return articleDao.getForUser(user.getId(), page);
     }
 }

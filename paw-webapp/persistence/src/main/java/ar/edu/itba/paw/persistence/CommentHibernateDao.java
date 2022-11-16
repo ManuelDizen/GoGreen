@@ -52,9 +52,6 @@ public class CommentHibernateDao implements CommentDao {
         int count = ((BigInteger)countQuery.getSingleResult()).intValue();
 
         return new Pagination<>(comments, (long) page, (count + COMMENT_PAGE_SIZE - 1)/COMMENT_PAGE_SIZE);
-//        final TypedQuery<Comment> jpaQuery = em.createQuery("SELECT DISTINCT c FROM Comment c WHERE c.id IN :comments", Comment.class);
-//        jpaQuery.setParameter("comments", comments);
-//        return new Pagination<>(jpaQuery.getResultList(), (long) page, (count + COMMENT_PAGE_SIZE - 1)/COMMENT_PAGE_SIZE);
     }
 
     @Override

@@ -17,7 +17,6 @@ import java.util.List;
 @Controller
 public class BasicController {
     private static final int N_LANDING = 4;
-
     private final ProductService productService;
     private final UserService userService;
     private final OrderService orderService;

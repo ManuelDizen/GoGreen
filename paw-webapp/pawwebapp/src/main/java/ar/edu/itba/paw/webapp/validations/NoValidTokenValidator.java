@@ -25,15 +25,6 @@ public class NoValidTokenValidator implements ConstraintValidator<NoValidToken, 
         Optional<User> user = userService.findByEmail(s);
         if(!user.isPresent()) return false;
         Optional<Token> maybeToken = passwordService.getByUser(user.get());
-
-        /*
-        Casos:
-        1) No existe --> Devuelvo TRUE, quiero que pueda generar otro token
-        2) Existe pero está invalido --> Devuelvo TRUE, quiero que pueda generar otro token
-        3) Existe y no esta vencido --> Devuelvo FALSE, tiene un token activo válido
-         */
-
-
         return !(maybeToken.isPresent() && maybeToken.get().isValid());
 
     }

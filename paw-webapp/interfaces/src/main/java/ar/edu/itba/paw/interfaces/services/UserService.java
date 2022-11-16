@@ -10,16 +10,10 @@ public interface UserService {
 
     User register(String firstName, String surname, String email, String password, Locale locale);
     void registerUser(String firstName, String surname, String email, String password, Locale locale);
-
     Optional<User> findByEmail(String email);
-
     Optional<User> findById(long userId);
-
-    List<User> getAll();
     void toggleNotifications();
-
     void changePassword(long userId, String newPassword);
-
     boolean isSeller(long userId);
     void setProfilePic(byte[] image);
     void deleteProfilePic();

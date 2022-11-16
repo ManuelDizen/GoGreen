@@ -12,11 +12,7 @@ import java.util.Optional;
 public interface ArticleService {
     Image parseByteArrayToImage(byte[] image);
     Article create(String message, byte[] image, LocalDateTime dateTime);
-    void edit(Long id, String newMessage, byte[] newImage);
     void delete(Long id);
-
-    List<Article> getBySellerId(Long sellerId);
-
     Pagination<Article> getBySellerId(Long sellerId, int page);
     Pagination<Article> getForLoggedUser(int page);
     Optional<Article> getById(Long id);

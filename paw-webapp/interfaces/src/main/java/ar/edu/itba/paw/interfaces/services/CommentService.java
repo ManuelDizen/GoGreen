@@ -8,12 +8,9 @@ import ar.edu.itba.paw.models.User;
 import java.util.List;
 
 public interface CommentService {
-
     Comment create(long productId, String message);
-
     Pagination<Comment> getCommentsForProduct(long productId, int page);
     Comment getById(long id);
-
     void replyComment(long parentId, String message);
 
 }

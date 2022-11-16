@@ -36,24 +36,6 @@ public class OrderHibernateDao implements OrderDao {
         return Optional.ofNullable(em.find(Order.class, orderId));
     }
 
-    @Override
-    public List<Order> getBySellerEmail(String sellerEmail) {
-        final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.sellerEmail = :sellerEmail " +
-                        "ORDER BY o.dateTime DESC",
-                Order.class);
-        query.setParameter("sellerEmail", sellerEmail);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<Order> getByBuyerEmail(String buyerEmail) {
-        final TypedQuery<Order> query = em.createQuery("FROM Order AS o WHERE o.buyerEmail = :buyerEmail " +
-                        "ORDER BY o.dateTime DESC",
-                Order.class);
-        query.setParameter("buyerEmail", buyerEmail);
-        return query.getResultList();
-    }
-
     private Pagination<Order> queryResolver(boolean buyer, String email, int page, int amount) {
         String str = "FROM orders WHERE ";
         String str2 = "SELECT * FROM orders WHERE ";
@@ -103,14 +85,6 @@ public class OrderHibernateDao implements OrderDao {
         String queryStr = "SELECT COALESCE(SUM(amount), 0) FROM orders WHERE selleremail = :selleremail";
         Query query = em.createNativeQuery(queryStr);
         query.setParameter("selleremail", sellerEmail);
-        return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
-    }
-
-    @Override
-    public int getTotalOrdersForUser(String buyerEmail){
-        String queryStr = "SELECT COALESCE(SUM(amount), 0) FROM orders WHERE buyeremail = :buyeremail";
-        Query query = em.createNativeQuery(queryStr);
-        query.setParameter("buyeremail", buyerEmail);
         return ((BigInteger) query.getResultList().stream().findFirst().orElse(0)).intValue();
     }
 

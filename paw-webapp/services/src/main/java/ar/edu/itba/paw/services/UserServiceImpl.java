@@ -68,12 +68,6 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public List<User> getAll() {
-        return userDao.getAll();
-    }
-
-    @Transactional
-    @Override
     public void changePassword(long userId, String newPassword) {
         Optional<User> maybeUser = userDao.findById(userId);
         if(!maybeUser.isPresent())
@@ -144,7 +138,6 @@ public class UserServiceImpl implements UserService {
         Authentication auth = getAuthentication();
         if(auth != null) {
             Optional<User> user = findByEmail(auth.getName());
-            // Remember username is given by email and not a proper username
             return user.map(User::getEmail).orElse(null);
         }
         return null;

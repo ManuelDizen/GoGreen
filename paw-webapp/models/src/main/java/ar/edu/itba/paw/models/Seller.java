@@ -25,13 +25,6 @@ public class Seller {
     @Column(name = "areaid", nullable = true)
     private Area area;
 
-
-    /*@OneToMany(mappedBy = "seller")
-    private Set<Product> products;
-
-    @OneToMany(mappedBy = "seller")
-    private Set<Article> news;*/
-
     Seller(){}
 
     public Seller(User user, String phone, String address, Area area){

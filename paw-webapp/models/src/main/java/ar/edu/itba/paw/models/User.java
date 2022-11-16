@@ -26,9 +26,6 @@ public class User {
     @Column(nullable=false, length=255, name="password")
     private String password;
 
-
-    //private long imageId;
-
     @Column(nullable=false, name="locale")
     private Locale locale;
 

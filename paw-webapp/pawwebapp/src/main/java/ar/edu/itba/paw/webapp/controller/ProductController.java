@@ -25,19 +25,12 @@ import java.util.Optional;
 @Controller
 public class ProductController {
     private final ProductService productService;
-
     private final SellerService sellerService;
-
     private final EcotagService ecotagService;
-
     private final OrderService orderService;
-
     private final CommentService commentService;
-
     private final UserService userService;
-
     private static final int INTERESTING_SIZE = 4;
-    private static final int PRODUCTS_PER_PAGE = 12;
 
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
@@ -65,8 +58,6 @@ public class ProductController {
     ) {
         final ModelAndView mav = new ModelAndView("explore");
         mav.addObject("isEmpty", !productService.atLeastOneProduct());
-
-        //Parameters for filter
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
         mav.addObject("chosenCategory", category);
@@ -74,8 +65,6 @@ public class ProductController {
         mav.addObject("chosenArea", areaId);
         mav.addObject("favorite", favorite);
         mav.addObject("maxPrice", maxPrice > -1?maxPrice:null);
-
-        //Ecotag management
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
         mav.addObject("path", productService.buildPath(strings));
 
@@ -87,7 +76,6 @@ public class ProductController {
         mav.addObject("favoritePath", favorite?"favorite=on&":"");
 
         User loggedUser = userService.getLoggedUser();
-
         Pagination<Product> filteredProducts;
         filteredProducts = productService.filter(name, category, tagsToFilter, maxPrice,
                 areaId, favorite, page, sort, direction, favorite?loggedUser.getId():0);

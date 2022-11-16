@@ -151,9 +151,6 @@ public class ProductHibernateDao implements ProductDao {
     @Override
     public List<Product> filter(String name, long category, List<Long> tags, Integer maxPrice,
                                 long areaId) {
-
-        //Falta cambiar algo de la implementación de las ecotags para poder filtrar por ecotags correctamente
-
         StringBuilder query = new StringBuilder("SELECT id FROM products WHERE ");
         Map<String, Object> args = new HashMap<>();
         if(name != null){
@@ -195,10 +192,8 @@ public class ProductHibernateDao implements ProductDao {
         List<Long> products = new ArrayList<>();
         for(Object o : jpaList) {
             BigInteger big = new BigInteger(o.toString());
-            //products.add(((Integer)o).longValue());
             products.add(big.longValue());
         }
-
 
         if(products.isEmpty())
             return new ArrayList<>();
@@ -214,9 +209,6 @@ public class ProductHibernateDao implements ProductDao {
 
     private String getOrder(int sort, int direction) {
         String toRet = "";
-        /*if (sort == Sort.SORT_POPULAR.getId()) {
-            toRet += "price ";
-        } else */
         if (sort == Sort.SORT_PRICE.getId()) {
             toRet += "price ";
         } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
@@ -232,12 +224,7 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     private String getOrder2(int sort, int direction) {
-
         String toRet = "";
-
-        /*if (sort == Sort.SORT_POPULAR.getId()) {
-            toRet += "p.price ";
-        } else */
         if (sort == Sort.SORT_PRICE.getId()) {
             toRet += "p.price ";
         } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
@@ -245,20 +232,15 @@ public class ProductHibernateDao implements ProductDao {
         } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
             toRet += "p.id ";
         }
-
         if(direction == ASCENDING)
             toRet += "ASC";
         else if(direction == DESCENDING)
             toRet += "DESC";
-
         return toRet;
     }
 
     @Override
     public Pagination<Product> filter(String name, long category, List<Long> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId) {
-
-        //Falta cambiar algo de la implementación de las ecotags para poder filtrar por ecotags correctamente
-
         Integer count = getCount(name, category, tags, maxPrice, areaId, favorite, userId);
 
         StringBuilder query = new StringBuilder("SELECT id FROM products WHERE ");
@@ -329,27 +311,6 @@ public class ProductHibernateDao implements ProductDao {
                 (count + EXPLORE_PAGE_SIZE - 1)/EXPLORE_PAGE_SIZE);
     }
 
-    public int getSales(String productName) {
-        int cant = 0;
-        String query = "SELECT amount FROM orders WHERE productname = :productName";
-        Query jpaQuery = em.createNativeQuery(query);
-        jpaQuery.setParameter("productName", productName);
-        for (Object o : jpaQuery.getResultList()) {
-            cant += (Integer) o;
-        }
-        return cant;
-    }
-
-    @Override
-    public List<Product> getByCategory(Long categoryId){
-        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
-                        " WHERE p.categoryId = :categoryId " +
-                        "AND p.image.id <> 0 ORDER BY p.id DESC",
-                Product.class);
-        query.setParameter("categoryId", categoryId);
-        return query.getResultList();
-    }
-
     @Override
     public boolean atLeastOneProduct(){
         String queryStr = "SELECT COUNT(*) FROM products";
@@ -378,8 +339,6 @@ public class ProductHibernateDao implements ProductDao {
 
         List<Long> products = new ArrayList<>();
         for(Object o : query.getResultList()) {
-//            BigInteger big = BigInteger.valueOf((Integer)o);
-//            products.add(big.longValue());
             products.add(((Integer)o).longValue());
         }
 

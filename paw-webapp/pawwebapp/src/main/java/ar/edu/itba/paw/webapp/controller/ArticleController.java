@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.Pagination;
 import ar.edu.itba.paw.models.Seller;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.exceptions.ArticleCreationException;
+import ar.edu.itba.paw.models.exceptions.ArticleNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ArticleForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,13 @@ public class ArticleController {
     private final UserService userService;
     private final SellerService sellerService;
     private final ArticleService articleService;
-
-    private final ProductService productService;
-
     @Autowired
     public ArticleController(final UserService userService,
                              final SellerService sellerService,
-                             final ArticleService articleService, final ProductService productService){
+                             final ArticleService articleService){
         this.userService = userService;
         this.sellerService = sellerService;
         this.articleService = articleService;
-        this.productService = productService;
     }
 
     @RequestMapping(value = "/createArticle", method = RequestMethod.GET)
@@ -91,7 +88,7 @@ public class ArticleController {
     public ModelAndView deleteProduct(@PathVariable final long articleId){
         Optional<Article> article = articleService.getById(articleId);
         if(!article.isPresent())
-            throw new NoSuchElementException();
+            throw new ArticleNotFoundException();
         long sellerId = article.get().getSeller().getId();
         articleService.delete(articleId);
         return new ModelAndView("redirect:/sellerPage/" + sellerId + "/news");

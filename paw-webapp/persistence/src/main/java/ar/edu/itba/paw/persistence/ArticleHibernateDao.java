@@ -23,7 +23,6 @@ public class ArticleHibernateDao implements ArticleDao {
 
     @Override
     public Article create(Seller seller, String message, Image image, LocalDateTime dateTime) {
-        // Should I delete completely?
         final Article article = new Article(image, message, seller, dateTime);
         em.persist(article);
         return article;

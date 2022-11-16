@@ -1,7 +1,6 @@
 /* General CSS rules for every view */
 
 *{
-    /*border: 1px solid red;*/
     font-family: 'Manrope';
 }
 
@@ -35,13 +34,10 @@ main {
     flex: 1 0 auto;
 }
 
-/* Navbar CSS rules (joined with materialize standards)*/
-
 .custom-nav{
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border-bottom: 2px solid var(--palette-details-light);
-    /*vertical-align: middle;*/
     padding: 0px 20px;
 }
 
@@ -116,9 +112,6 @@ nav {
     border-bottom:transparent;
     box-shadow:none;
 }
-
-
-
 
 .main-container{
     flex-wrap: nowrap;
@@ -199,7 +192,6 @@ nav {
 [type="checkbox"] {
     margin-top: 10px;
     margin-right: 5px;
-    /* checkbox aspect */
 }
 
 .landing-recent-product-container .card .card-content{
@@ -246,7 +238,6 @@ nav {
     animation-fill-mode: backwards;
 }
 
-/* Glow In */
 .animate.glow {
     animation-name: animate-glow;
     animation-timing-function: ease;
@@ -281,8 +272,6 @@ nav {
     animation-delay:0.8s;
 }
 
-/*                  */
-
 .card-content .card-title {
     font-size: 18px;
 }
@@ -303,8 +292,6 @@ nav {
     display:flex;
     justify-content: space-evenly;
 }
-
-
 
 .product-card-goto{
     color: #ADE28A;
@@ -329,8 +316,6 @@ nav {
     object-fit: contain;
 }
 
-
-
 .product-card-holder img{
     height:100%;
     width:100%;
@@ -354,7 +339,6 @@ nav {
 .card-image-custom-adjust{
     height:available;
 }
-
 
 .web.info{
     width:100px;
@@ -385,8 +369,6 @@ nav {
     margin-right: 10vh;
     text-align: center;
 }
-
-  /* Clear floats after the columns */
 
 .row:after {
     content: "";
@@ -426,8 +408,6 @@ nav {
     background-color: var(--palette-color-primary);
     color: var(--text-color-dark);
 }
-
-/* PRODUCT PAGE */
 
 .form-failure {
     height:5vh; width:100%;
@@ -482,9 +462,7 @@ nav {
     flex:30%;
     margin: 10px 20px 20px 20px;
     padding-bottom: 20px;
-    /*background-color: #EDF8AB;*/
     border-radius: 10px;
-    color: #1E425E;
     color:white;
     display:flex;
     flex-direction:column;
@@ -610,7 +588,6 @@ nav {
     padding: 8px 6px;
     border-radius: 12px;
     height:30px;
-
     display:flex;
 }
 
@@ -630,10 +607,6 @@ nav {
 
 .eco_label {
     margin-bottom: 10px;
-}
-
-.eco_input {
-    /*margin-left: 40px;*/
 }
 
 .star {
@@ -673,10 +646,8 @@ nav {
     left: 0;
 }
 
-
 .explore-filter{
     display:grid;
-    /*grid-template-rows: 1fr 9fr;*/
     margin: 10px 5px 10px 25px;
     padding-top: 15px;
     background-color: var(--palette-color-secondary);
@@ -712,10 +683,6 @@ nav {
     justify-content: center;
 }
 
-/* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
-to remove automatic appearance of increment and decrement bar
- */
-
 .explore-filter input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -725,9 +692,11 @@ input[type=number]::-webkit-outer-spin-button {
     width: 400px;
     position: relative;
 }
+
 .selectMultiple select {
     display: none;
 }
+
 .selectMultiple > div {
     position: relative;
     z-index: 2;
@@ -739,9 +708,11 @@ input[type=number]::-webkit-outer-spin-button {
     box-shadow: 0 4px 16px 0 rgba(22, 42, 90, 0.12);
     transition: box-shadow 0.3s ease;
 }
+
 .selectMultiple > div:hover {
     box-shadow: 0 4px 24px -1px rgba(22, 42, 90, 0.16);
 }
+
 .selectMultiple > div .arrow {
     right: 1px;
     top: 0;
@@ -750,6 +721,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 28px;
     position: absolute;
 }
+
 .selectMultiple > div .arrow:before, .selectMultiple > div .arrow:after {
     content: "";
     position: absolute;
@@ -760,14 +732,17 @@ input[type=number]::-webkit-outer-spin-button {
     top: 43%;
     transition: all 0.3s ease;
 }
+
 .selectMultiple > div .arrow:before {
     right: 12px;
     transform: rotate(-130deg);
 }
+
 .selectMultiple > div .arrow:after {
     left: 9px;
     transform: rotate(130deg);
 }
+
 .selectMultiple > div span {
     color: #99A3BA;
     display: block;
@@ -778,11 +753,13 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 28px;
     transition: all 0.3s ease;
 }
+
 .selectMultiple > div span.hide {
     opacity: 0;
     visibility: hidden;
     transform: translate(-4px, 0);
 }
+
 .selectMultiple > div a {
     position: relative;
     padding: 0 24px 6px 8px;
@@ -792,11 +769,13 @@ input[type=number]::-webkit-outer-spin-button {
     vertical-align: top;
     margin: 0 6px 0 0;
 }
+
 .selectMultiple > div a em {
     font-style: normal;
     display: block;
     white-space: nowrap;
 }
+
 .selectMultiple > div a:before {
     content: "";
     left: 0;
@@ -809,6 +788,7 @@ input[type=number]::-webkit-outer-spin-button {
     z-index: -1;
     border-radius: 4px;
 }
+
 .selectMultiple > div a i {
     cursor: pointer;
     position: absolute;
@@ -818,6 +798,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 28px;
     display: block;
 }
+
 .selectMultiple > div a i:before, .selectMultiple > div a i:after {
     content: "";
     display: block;
@@ -829,55 +810,69 @@ input[type=number]::-webkit-outer-spin-button {
     background: #4D18FF;
     border-radius: 1px;
 }
+
 .selectMultiple > div a i:before {
     transform: translate(-50%, -50%) rotate(45deg);
 }
+
 .selectMultiple > div a i:after {
     transform: translate(-50%, -50%) rotate(-45deg);
 }
+
 .selectMultiple > div a.notShown {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
+
 .selectMultiple > div a.notShown:before {
     width: 28px;
     transition: width 0.45s cubic-bezier(0.87, -0.41, 0.19, 1.44) 0.2s;
 }
+
 .selectMultiple > div a.notShown i {
     opacity: 0;
     transition: all 0.3s ease 0.3s;
 }
+
 .selectMultiple > div a.notShown em {
     opacity: 0;
     transform: translate(-6px, 0);
     transition: all 0.4s ease 0.3s;
 }
+
 .selectMultiple > div a.notShown.shown {
     opacity: 1;
 }
+
 .selectMultiple > div a.notShown.shown:before {
     width: 100%;
 }
+
 .selectMultiple > div a.notShown.shown i {
     opacity: 1;
 }
+
 .selectMultiple > div a.notShown.shown em {
     opacity: 1;
     transform: translate(0, 0);
 }
+
 .selectMultiple > div a.remove:before {
     width: 28px;
     transition: width 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44) 0s;
 }
+
 .selectMultiple > div a.remove i {
     opacity: 0;
     transition: all 0.3s ease 0s;
 }
+
 .selectMultiple > div a.remove em {
     opacity: 0;
     transform: translate(-12px, 0);
     transition: all 0.4s ease 0s;
 }
+
 .selectMultiple > div a.remove.disappear {
     opacity: 0;
     transition: opacity 0.5s ease 0s;
@@ -901,6 +896,7 @@ input[type=number]::-webkit-outer-spin-button {
     filter: drop-shadow(0 12px 20px rgba(22, 42, 90, 0.08));
     transition: all 0.4s ease, transform 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44), filter 0.3s ease 0.2s;
 }
+
 .selectMultiple > ul li {
     color: #1E2330;
     background: #fff;
@@ -910,22 +906,28 @@ input[type=number]::-webkit-outer-spin-button {
     position: relative;
     transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease 0.3s, opacity 0.5s ease 0.3s, border-radius 0.3s ease 0.3s;
 }
+
 .selectMultiple > ul li:first-child {
     border-radius: 8px 8px 0 0;
 }
+
 .selectMultiple > ul li:first-child:last-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li:last-child {
     border-radius: 0 0 8px 8px;
 }
+
 .selectMultiple > ul li:last-child:first-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li:hover {
     background: #4D18FF;
     color: #fff;
 }
+
 .selectMultiple > ul li:after {
     content: "";
     position: absolute;
@@ -939,45 +941,57 @@ input[type=number]::-webkit-outer-spin-button {
     transform: scale(1, 1) translate(-50%, -50%);
     transform-origin: 50% 50%;
 }
+
 .selectMultiple > ul li.beforeRemove {
     border-radius: 0 0 8px 8px;
 }
+
 .selectMultiple > ul li.beforeRemove:first-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li.afterRemove {
     border-radius: 8px 8px 0 0;
 }
+
 .selectMultiple > ul li.afterRemove:last-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li.remove {
     transform: scale(0);
     opacity: 0;
 }
+
 .selectMultiple > ul li.remove:after {
     -webkit-animation: ripple 0.4s ease-out;
     animation: ripple 0.4s ease-out;
 }
+
 .selectMultiple > ul li.notShown {
     display: none;
     transform: scale(0);
     opacity: 0;
     transition: transform 0.35s ease, opacity 0.4s ease;
 }
+
 .selectMultiple > ul li.notShown.show {
     transform: scale(1);
     opacity: 1;
 }
+
 .selectMultiple.open > div {
     box-shadow: 0 4px 20px -1px rgba(22, 42, 90, 0.12);
 }
+
 .selectMultiple.open > div .arrow:before {
     transform: rotate(-50deg);
 }
+
 .selectMultiple.open > div .arrow:after {
     transform: rotate(50deg);
 }
+
 .selectMultiple.open > ul {
     transform: translate(0, 12px) scale(1);
     opacity: 1;
@@ -1089,11 +1103,6 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 
-/*
-PRODUCT CARD DESIGN RETRIEVED FROM: https://codepen.io/andrewsims/pen/mQoYwz
-ALL CREDITS TO @andrewsims
- */
-
 .pccontainer {
     width: 100%;
     height: 100%;
@@ -1144,8 +1153,6 @@ ALL CREDITS TO @andrewsims
     color: black;
 }
 
-
-
 .pccard1 {
     display: block;
     position: relative;
@@ -1190,11 +1197,6 @@ ALL CREDITS TO @andrewsims
     color: black;
 }
 
-
-/*
-    REGISTER PAGE
-*/
-
 .register-container{
     width:100%;
     height: fit-content;
@@ -1228,7 +1230,6 @@ ALL CREDITS TO @andrewsims
     flex:50%;
     margin: 10px 5px;
     padding-bottom: 10px;
-    /*background-color: #EDF8AB;*/
     border-radius: 10px;
     color: white;
 }
@@ -1236,8 +1237,6 @@ ALL CREDITS TO @andrewsims
 .register-seller-form-container{
     color:white;
 }
-
-/* ------ SELLER PROFILE ------ */
 
 .seller-profile-main-body-container, .buyer-profile-main-body-container{
     display:flex;
@@ -1285,7 +1284,6 @@ ALL CREDITS TO @andrewsims
     max-height: 100px;
 }
 
-
 .product-card{
     width: 22%;
     background: transparent;
@@ -1296,7 +1294,6 @@ ALL CREDITS TO @andrewsims
     border-radius:10px 10px 0 0;
     overflow:hidden;
 }
-
 
 .product-card-2{
     width: 46%;
@@ -1338,10 +1335,6 @@ ALL CREDITS TO @andrewsims
     font-size: 20px;
 }
 
-/*.product-card:hover{
-    transform: translate(0, -10px);
-}*/
-
 .product-card .card-image{
     background:white;
     border-radius:10px 10px 0 0;
@@ -1356,7 +1349,6 @@ ALL CREDITS TO @andrewsims
 .product-card .card-content > a{
     color: #ADE28A;
 }
-
 
 .product-card .card-content > a {
     margin-top: 0;
@@ -1386,11 +1378,9 @@ ALL CREDITS TO @andrewsims
     background: var(--text-color-light)
 }
 
-
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
     color: var(--text-color-dark);
 }
-
 
 .eco_chip {
     width: fit-content;
@@ -1418,7 +1408,6 @@ ALL CREDITS TO @andrewsims
     font-size: 13px;
     min-height: 75px;
     width: 96%;
-    /*height: fit-content;*/
     background-color: var(--comment-box-primary);
     color: var(--text-color-light);
     border: 1px solid white;
@@ -1459,7 +1448,6 @@ ALL CREDITS TO @andrewsims
     font-size: 13px;
     min-height: 75px;
     width: 95%;
-    /*height: fit-content;*/
     background-color: var(--comment-box-primary);
     color: var(--text-color-light);
     border: 1px solid white;
@@ -1490,12 +1478,6 @@ ALL CREDITS TO @andrewsims
 .comment-button {
     width: fit-content;
 }
-
-/*.product-card .card-content > div {*/
-/*    margin-bottom: 2px;*/
-/*    margin-top: 2px;*/
-/*}*/
-
 
 .product-card .card-content .center {
     margin-top: 25px;
@@ -1531,12 +1513,10 @@ ALL CREDITS TO @andrewsims
 }
 .seller-profile-card,
 .user-profile-card{
-    /*width: 80%;*/
     font-size: 13px;
     height: fit-content;
     min-height:280px;
     width: 23%;
-    /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
@@ -1641,13 +1621,6 @@ ALL CREDITS TO @andrewsims
     overflow: hidden;
 }
 
-/*.seller-profile-product-card,
-.seller-profile-product-card-info{
-    display:flex;
-    align-items:center;
-    justify-content: center;
-}*/
-
 .seller-profile-product-card{
     width:28%;
     vertical-align: center;
@@ -1685,15 +1658,10 @@ ALL CREDITS TO @andrewsims
     align-items:center;
 }
 
-/* ------- REGISTER VIEWS ------- */
-
 .register-form-row{
     display:flex;
     justify-content: space-around;
 }
-
-/* -------- LOGIN VIEW ------- */
-
 
 .login{
     max-width: 500px;
@@ -1770,8 +1738,6 @@ ALL CREDITS TO @andrewsims
     margin: 0 0 0 0;
 }
 
-
-
 .label-container{
     margin-top:2vh;
 }
@@ -1801,12 +1767,6 @@ ALL CREDITS TO @andrewsims
 margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     color:white;
 }
-
-/*.container #product_form div label,*/
-/*.container #product_form div input{*/
-/*    color:black;*/
-
-/*}*/
 
 .container #product_form .input-field ul li span label{
     color:var(--palette-color-secondary)
@@ -1887,8 +1847,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     gap: 0.5em;
 }
 
-/* -------- CREATE PRODUCT ------- */
-
 .createproducts{
     width: 900px;
     padding: 20px 35px 20px 35px;
@@ -1942,8 +1900,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     color: white;
     border-bottom-color: white;
 }
-
-
 
 .createproduct_column {
     margin:25px 25px 25px 25px;
@@ -2015,9 +1971,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     max-height: 50px;
 }
 
-
-
-/* ------ USER PROFILE VIEW ---------- */
 .buyer-profile-container{
     display: flex;
     flex-direction: column;
@@ -2032,7 +1985,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     align-self: center;
 }
 
-/* ------ ERROR VIEW -------- */
 .error-container{
     display: flex;
     flex-direction: column;
@@ -2090,10 +2042,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     margin:2vh auto;
 }
 
-
-
-
-/* ----- some features ----- */
 #product_form .select-wrapper select, .login #login_form #rememberme input,
 #product_form .input-field .select-wrapper ul li input,
 .container #product_form .input-field .select-wrapper ul,
@@ -2124,16 +2072,10 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-
-
-/* --------- TESTING PURPOSES ------- */
-
 .seller-profile-container-2-bis {
     height:fit-content;
     background:var(--palette-color-secondary);
     color:white;
-    /*display:flex;
-    justify-content: space-around;*/
     display:block;
     align-self: center;
     padding-top:2vh;
@@ -2150,8 +2092,6 @@ input[type=number] {
     height:fit-content;
     background:var(--palette-color-secondary);
     color:white;
-    /*display:flex;
-    justify-content: space-around;*/
     display:block;
     align-self: center;
     padding-top:6vh;
@@ -2159,13 +2099,11 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
-
 }
 
 .user-profile-container-2 {
     border-top: 1px solid var(--palette-details-light);
 }
-
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
     width:80%;
@@ -2221,7 +2159,6 @@ input[type=number] {
     margin-left:1vw;
 }
 
-
 #sellerprofile_tabs{
     background-color: var(--palette-color-secondary);
     border-left: 1px solid var(--palette-details-light);
@@ -2245,7 +2182,6 @@ input[type=number] {
     justify-content: space-between;
 }
 
-
 .seller-profile-pic-container img{
     border-radius: 50%;
     height: auto;
@@ -2258,8 +2194,6 @@ input[type=number] {
     overflow: hidden;
     text-align:center;
 }
-
-
 
 .text-center{
     text-align:center !important;
@@ -2322,11 +2256,6 @@ input[type=number] {
     width: fit-content;
     margin: auto;
 }
-
-
-
-/* UPDATE PRODUCT */
-
 
 .update-margins {
     margin-top: 25px; margin-bottom: 35px;
@@ -2579,10 +2508,6 @@ input[type=number] {
     margin:0;
 }
 
-.filter-category .select-wrapper input.select-dropdown{
-
-}
-
 .search-style{
     background-color: var(--palette-color-secondary);
     border: 1px solid var(--palette-details-light);
@@ -2711,7 +2636,6 @@ input[type=number] {
     vertical-align: middle;
 }
 
-
 .file-path-wrapper input,
 #image-label-createarticle{
     color:white;
@@ -2731,10 +2655,6 @@ input[type=number] {
     justify-content: center;
     margin:auto 0;
 }
-
-/*.seller-card-image-container{
-    height: 50%; width:100%; border-radius:50%;
-}*/
 
 .image-restrain{
     max-height:100%;

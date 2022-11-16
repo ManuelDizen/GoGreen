@@ -3,8 +3,6 @@ package ar.edu.itba.paw.models;
 import javax.persistence.*;
 import java.util.Objects;
 
-// Logic based on section 3.3 of https://www.baeldung.com/jpa-many-to-many
-
 @Entity
 @Table(name="favorites")
 public class Favorite {

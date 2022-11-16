@@ -15,28 +15,23 @@ public class ProductServiceImpl implements ProductService {
     private final static int N_LANDING = 4;
 
     private final static int N_PROD_PAGE = 4;
-    private final static int ASCENDING = 0;
-    private final static int DESCENDING = 1;
 
     private final ProductDao productDao;
     private final ImageService imageService;
     private final SellerService sellerService;
     private final UserService userService;
     private final EcotagService ecotagService;
-    private final FavoriteService favoriteService;
 
 
     @Autowired
     public ProductServiceImpl(final ProductDao productDao, final ImageService imageService,
                               SellerService sellerService,
-                              UserService userService, EcotagService ecotagService,
-                              FavoriteService favoriteService){
+                              UserService userService, EcotagService ecotagService){
         this.productDao = productDao;
         this.imageService = imageService;
         this.sellerService = sellerService;
         this.userService = userService;
         this.ecotagService = ecotagService;
-        this.favoriteService = favoriteService;
     }
 
     @Transactional

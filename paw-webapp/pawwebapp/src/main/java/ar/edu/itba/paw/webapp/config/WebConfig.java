@@ -60,15 +60,6 @@ public class WebConfig {
     @Autowired
     private Environment environment;
 
-    @Value("classpath:products.sql")
-    private Resource productsSql;
-
-    @Value("classpath:roles.sql")
-    private Resource rolesSql;
-
-    @Value("classpath:orders.sql")
-    private Resource ordersSql;
-
     @Bean
     public ViewResolver viewResolver() {
         final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -82,12 +73,12 @@ public class WebConfig {
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl(environment.getProperty("database.path"));
-        ds.setUsername(environment.getProperty("database.username"));
-        ds.setPassword(environment.getProperty("database.password"));
-        //ds.setUrl("jdbc:postgresql://localhost/postgres");
-        //ds.setUsername("postgres");
-        //ds.setPassword("docker");
+        //ds.setUrl(environment.getProperty("database.path"));
+        //ds.setUsername(environment.getProperty("database.username"));
+        //ds.setPassword(environment.getProperty("database.password"));
+        ds.setUrl("jdbc:postgresql://localhost/postgres");
+        ds.setUsername("postgres");
+        ds.setPassword("docker");
         return ds;
     }
 

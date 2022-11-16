@@ -15,14 +15,9 @@ public interface OrderDao {
                  Integer amount, Integer price, LocalDateTime dateTime, String message, Seller seller);
 
     Optional<Order> getById(long orderId);
-    List<Order> getBySellerEmail(String sellerEmail);
-    List<Order> getByBuyerEmail(String buyerEmail);
     Pagination<Order> getByBuyerEmail(String buyerEmail, int page, int amount);
     Pagination<Order> getBySellerEmail(String sellerEmail, int page, int amount);
-
     void deleteOrder(long orderId);
     int getTotalOrdersForSeller(String sellerEmail);
-    int getTotalOrdersForUser(String buyerEmail);
     List<String> getFirstNDistinct(int amount);
-
 }

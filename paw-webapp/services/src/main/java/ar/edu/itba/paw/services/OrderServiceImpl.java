@@ -42,8 +42,6 @@ public class OrderServiceImpl implements OrderService {
 
         boolean enough = productService.checkForAvailableStock(product, amount);
         if(!enough){
-            //TODO: Preguntar que hacer acá. Capaz podríamos handlearlo sin un 500
-            // De momento quedo con un 400, pero preguntar.
             throw new InsufficientStockException();
         }
 
@@ -88,11 +86,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getByBuyerEmail(String buyerEmail) {
-        return orderDao.getByBuyerEmail(buyerEmail);
-    }
-
-    @Override
     public Pagination<Order> getByBuyerEmail(String buyerEmail, int page){
         return orderDao.getByBuyerEmail(buyerEmail, page, PAGE_SIZE);
     }
@@ -132,12 +125,6 @@ public class OrderServiceImpl implements OrderService {
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
         productService.addStock(order.get().getProductName(), order.get().getAmount());
     }
-
-    @Override
-    public int getTotalOrdersForUser(String userEmail){
-        return orderDao.getTotalOrdersForSeller(userEmail);
-    }
-
     @Override
     public List<String> getFirstNDistinct(int amount) {
         return orderDao.getFirstNDistinct(amount);
