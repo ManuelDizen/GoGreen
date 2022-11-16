@@ -12,8 +12,8 @@ public class PasswordForm {
     @Email
     @Size(min = 8, max = 50)
     @NotNull
-    @NoValidToken
     @EmailExists
+    @NoValidToken
     private String email;
 
     public String getEmail() {
