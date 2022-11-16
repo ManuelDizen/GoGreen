@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserRoleServiceImpl implements UserRoleService{
@@ -22,7 +22,7 @@ public class UserRoleServiceImpl implements UserRoleService{
     }
 
     @Override
-    public List<UserRole> getById(long userId) {
+    public Set<Role> getById(long userId) {
         return userRoleDao.getById(userId);
     }
 

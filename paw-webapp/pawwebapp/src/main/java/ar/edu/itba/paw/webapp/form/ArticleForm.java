@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 public class ArticleForm {
 
-    @Size(max = 1023)
+    @Size(min = 1, max = 1023)
     private String message;
 
     @FileType(types = {"image/png", "image/jpeg"})

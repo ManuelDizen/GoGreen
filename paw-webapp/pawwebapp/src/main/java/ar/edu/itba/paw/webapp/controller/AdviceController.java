@@ -16,35 +16,35 @@ public class AdviceController {
 
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="No product found")
-    public ModelAndView productNotFound(ProductNotFoundException e){
+    public ModelAndView productNotFoundError(ProductNotFoundException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="No user found")
-    public ModelAndView userNotFound(UserNotFoundException e){
+    public ModelAndView userNotFoundError(UserNotFoundException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="No order found")
-    public ModelAndView orderNotFound(OrderNotFoundException e){
+    public ModelAndView orderNotFoundError(OrderNotFoundException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Role not found")
-    public ModelAndView orderNotFound(RoleNotFoundException e){
+    public ModelAndView roleNotFoundError(RoleNotFoundException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }
 
     @ExceptionHandler(UnauthorizedRoleException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason="Unauthorized to perform action")
-    public ModelAndView unauthorizedRole(UnauthorizedRoleException e){
+    public ModelAndView unauthorizedRoleError(UnauthorizedRoleException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error401");
     }
@@ -63,25 +63,18 @@ public class AdviceController {
         return new ModelAndView("forward:/error500");
     }
 
-    @ExceptionHandler(OrderDeleteException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
-    public ModelAndView orderDeleteError(OrderDeleteException e){
+    @ExceptionHandler(ProductCreationException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Error creating product")
+    public ModelAndView productCreationError(ProductCreationException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error500");
     }
 
-    @ExceptionHandler(ProductDeleteException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
-    public ModelAndView productDeleteError(ProductDeleteException e){
+    @ExceptionHandler(InsufficientStockException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Not enough stock available")
+    public ModelAndView insufficientStockError(InsufficientStockException e){
         LOGGER.warn(e.getErrMsg());
-        return new ModelAndView("forward:/error500");
-    }
-
-    @ExceptionHandler(ProductUpdateException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Internal Server Error")
-    public ModelAndView productUpdateError(ProductUpdateException e){
-        LOGGER.warn(e.getErrMsg());
-        return new ModelAndView("forward:/error500");
+        return new ModelAndView("forward:/error400");
     }
 
     @ExceptionHandler(SellerRegisterException.class)
@@ -98,16 +91,35 @@ public class AdviceController {
         return new ModelAndView("forward:/error500");
     }
 
+    @ExceptionHandler(TokenNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Token Not Found")
+    public ModelAndView tokenNotFoundError(TokenNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error400");
+    }
     @ExceptionHandler(ArticleNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Article Not Found")
     public ModelAndView articleNotFoundError(ArticleNotFoundException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error404");
     }
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Comment Not Found")
+    public ModelAndView commentNotFoundError(CommentNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error404");
+    }
+
+    @ExceptionHandler(ImageNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Image Not Found")
+    public ModelAndView imageNotFoundError(ImageNotFoundException e){
+        LOGGER.warn(e.getErrMsg());
+        return new ModelAndView("forward:/error404");
+    }
 
     @ExceptionHandler(ArticleCreationException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason="Error creating article")
-    public ModelAndView articleNotFoundError(ArticleCreationException e){
+    public ModelAndView articleCreationError(ArticleCreationException e){
         LOGGER.warn(e.getErrMsg());
         return new ModelAndView("forward:/error500");
     }

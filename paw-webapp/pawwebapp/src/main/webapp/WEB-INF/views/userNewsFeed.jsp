@@ -28,28 +28,6 @@
           </c:otherwise>
         </c:choose>
       </div>
-      <%--div class="toggle-notifications">
-        <div class="switch">
-          <label>
-            <spring:message code="off"/>
-            <c:choose>
-              <c:when test="${!user.notifications}">
-                <input id="notif_switch"
-                       type="checkbox">
-                <span class="lever"></span>
-              </c:when>
-              <c:otherwise>
-                <input id="notif_switch"
-                       type="checkbox"
-                       checked>
-                <span class="lever"></span>
-              </c:otherwise>
-            </c:choose>
-            <spring:message code="on"/>
-          </label>
-        </div>
-      </div--%>
-
       <div class="left-align separate-12-top"><spring:message code="newsfeed.userfavs"/></div>
       <c:forEach items="${favs}" var="fav">
         <div class="user-fav-card">
@@ -63,6 +41,11 @@
           </div>
         </div>
       </c:forEach>
+      <div class="separate-12-top flex-center">
+        <a class="waves-effect waves-light btn-small" href="<c:url value="/exploreSellers"/>">
+          <spring:message code="newsfeed.exploresellers"/>
+        </a>
+      </div>
     </div>
     <div class="col s8">
       <c:set var="displayName" value="1"/>
@@ -76,7 +59,7 @@
       </c:if>
     </div>
   </div>
-  <c:if test="${pages.size() > 1}">
+  <c:if test="${pages.pageCount > 1}">
     <div class="pagin">
       <c:set var="nextPage" value="${currentPage+1}"/>
       <c:set var="previousPage" value="${currentPage-1}"/>
@@ -90,11 +73,11 @@
             <li class="waves-effect"><a href="?page=${previousPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${previousPage}</a></li>
           </c:if>
           <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
-          <c:if test="${currentPage < pages.size()}">
+          <c:if test="${currentPage < pages.pageCount}">
             <li class="waves-effect"><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}" style="color: #EDFA8B">${nextPage}</a></li>
             <li><a href="?page=${nextPage}&name=${name}&category=${chosenCategory}&maxPrice=${maxPrice}&areaId=${chosenArea}${path}&sort=${sort}&direction=${direction}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
           </c:if>
-          <c:if test="${currentPage >= pages.size()}">
+          <c:if test="${currentPage >= pages.pageCount}">
             <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
           </c:if>
         </ul>

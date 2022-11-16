@@ -27,20 +27,13 @@ public class UserHibernateDao implements UserDao {
     @Override
     public Optional<User> findByEmail(final String email) {
         final TypedQuery<User> query =
-                em.createQuery("FROM User as u WHERE u.email = :email", User.class);
+                em.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         return query.getResultList().stream().findFirst();
-        //Hablo como JPA y siempre en terminos de mis models
     }
 
     @Override
     public Optional<User> findById(final long userId) {
         return Optional.ofNullable(em.find(User.class, userId));
-    }
-
-    @Override
-    public List<User> getAll() {
-        final TypedQuery<User> query = em.createQuery("FROM User", User.class);
-        return query.getResultList();
     }
 }

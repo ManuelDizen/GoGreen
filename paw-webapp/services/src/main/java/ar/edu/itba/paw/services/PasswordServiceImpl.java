@@ -6,11 +6,13 @@ import ar.edu.itba.paw.interfaces.services.PasswordService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Token;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.exceptions.TokenNotFoundException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,30 +34,34 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public Token create(String passToken, User user) {
-        return passwordDao.create(passToken, user);
+        LocalDateTime dateTime = LocalDateTime.now();
+        return passwordDao.create(passToken, user, dateTime);
     }
 
     @Transactional
     @Override
-    public void passwordToken(String path, User user) {
-        if(!hasToken(user)) {
+    public void passwordToken(String path, String email) {
+        Optional<User> maybeUser = userService.findByEmail(email);
+        if(!maybeUser.isPresent()){throw new UserNotFoundException();} //This line should never be reached
+        User user = maybeUser.get();
+        if(!hasUsableToken(user)) {
             Token token = create(UUID.randomUUID().toString(), user);
             emailService.updatePassword(
                     user, path + token.getPassToken(), user.getLocale());
         }
     }
 
-    public Optional<Token> getByUserId(User user) {
+    public Optional<Token> getByUser(User user) {
         return passwordDao.getByUserId(user);
     }
 
-    private boolean hasToken(User user) {
+    private boolean hasUsableToken(User user) {
         Optional<Token> maybeToken =  passwordDao.getByUserId(user);
         if(!maybeToken.isPresent()) {
             return false;
         }
         Token userToken = maybeToken.get();
-        return userToken.expired();
+        return userToken.isValid();
     }
 
     public Optional<User> getByToken(String token) {
@@ -65,6 +71,23 @@ public class PasswordServiceImpl implements PasswordService {
 
         Token userToken = maybeToken.get();
         return userService.findById(userToken.getUser().getId());
+    }
+
+    @Transactional
+    public void burnToken(User user){
+        Optional<Token> token = getByUser(user);
+        if(!token.isPresent()) throw new TokenNotFoundException();
+        token.get().use();
+    }
+
+    @Transactional
+    @Override
+    public void updatePassword(String token, String password){
+        Optional<User> maybeUser = getByToken(token);
+        if(!maybeUser.isPresent())
+            throw new UserNotFoundException();
+        userService.changePassword(maybeUser.get().getId(), password);
+        burnToken(maybeUser.get());
     }
 
 }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class UserRoleHibernateDao implements UserRoleDao {
@@ -18,13 +18,11 @@ public class UserRoleHibernateDao implements UserRoleDao {
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
-    public List<UserRole> getById(long userId) {
-        //TODO: Refactor
-        final TypedQuery<UserRole> query = em.createQuery("FROM UserRole WHERE user.id = :userId", UserRole.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
+    public Set<Role> getById(long userId) {
+        Optional<User> user = em.createQuery("SELECT u from User u JOIN FETCH u.roles WHERE u.id = :userId",
+                User.class).setParameter("userId", userId).getResultList().stream().findFirst();
+        return user.orElseThrow(UserNotFoundException::new).getRoles();
     }
 
     @Override

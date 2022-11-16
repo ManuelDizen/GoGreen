@@ -1,7 +1,6 @@
 /* General CSS rules for every view */
 
 *{
-    /*border: 1px solid red;*/
     font-family: 'Manrope';
 }
 
@@ -35,13 +34,10 @@ main {
     flex: 1 0 auto;
 }
 
-/* Navbar CSS rules (joined with materialize standards)*/
-
 .custom-nav{
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border-bottom: 2px solid var(--palette-details-light);
-    /*vertical-align: middle;*/
     padding: 0px 20px;
 }
 
@@ -117,9 +113,6 @@ nav {
     box-shadow:none;
 }
 
-
-
-
 .main-container{
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -156,7 +149,7 @@ nav {
     width:70%;
     vertical-align:center;
     height:fit-content;
-
+    color:white;
 }
 
 .landing-page-title{
@@ -184,10 +177,21 @@ nav {
     color: #ADE28A;
 }
 
+.green-font {
+    color: #ADE28A;
+    margin-top: 10px;
+}
+
+.seller-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
 [type="checkbox"] {
     margin-top: 10px;
     margin-right: 5px;
-    /* checkbox aspect */
 }
 
 .landing-recent-product-container .card .card-content{
@@ -234,7 +238,6 @@ nav {
     animation-fill-mode: backwards;
 }
 
-/* Glow In */
 .animate.glow {
     animation-name: animate-glow;
     animation-timing-function: ease;
@@ -269,8 +272,6 @@ nav {
     animation-delay:0.8s;
 }
 
-/*                  */
-
 .card-content .card-title {
     font-size: 18px;
 }
@@ -291,8 +292,6 @@ nav {
     display:flex;
     justify-content: space-evenly;
 }
-
-
 
 .product-card-goto{
     color: #ADE28A;
@@ -317,8 +316,6 @@ nav {
     object-fit: contain;
 }
 
-
-
 .product-card-holder img{
     height:100%;
     width:100%;
@@ -342,7 +339,6 @@ nav {
 .card-image-custom-adjust{
     height:available;
 }
-
 
 .web.info{
     width:100px;
@@ -373,8 +369,6 @@ nav {
     margin-right: 10vh;
     text-align: center;
 }
-
-  /* Clear floats after the columns */
 
 .row:after {
     content: "";
@@ -414,8 +408,6 @@ nav {
     background-color: var(--palette-color-primary);
     color: var(--text-color-dark);
 }
-
-/* PRODUCT PAGE */
 
 .form-failure {
     height:5vh; width:100%;
@@ -470,9 +462,7 @@ nav {
     flex:30%;
     margin: 10px 20px 20px 20px;
     padding-bottom: 20px;
-    /*background-color: #EDF8AB;*/
     border-radius: 10px;
-    color: #1E425E;
     color:white;
     display:flex;
     flex-direction:column;
@@ -525,6 +515,18 @@ nav {
     margin-bottom: 10px;
 }
 
+.created-product{
+    padding: 10px;
+    background-color: #34971e;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    width:80%;
+    margin:auto;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 .order-failure{
     background-color: #FC100D;
     border-color: #FFFFFF;
@@ -554,6 +556,15 @@ nav {
     overflow-y:auto;
 }
 
+.explore-sellers-container{
+    display:grid;
+    grid-template-columns: 1fr 3fr;
+    width:100%;
+    min-height:70%;
+    height:fit-content;
+    overflow-y:auto;
+}
+
 .explore-filter .row .input-field > label, .filter-inputlabel,
 .explore-filter .row .select-wrapper > input {
     color: white;
@@ -577,6 +588,11 @@ nav {
     padding: 8px 6px;
     border-radius: 12px;
     height:30px;
+    display:flex;
+}
+
+.chip div{
+    margin:0 5px;
 }
 
 .chip_filter {
@@ -593,8 +609,27 @@ nav {
     margin-bottom: 10px;
 }
 
-.eco_input {
-    /*margin-left: 40px;*/
+.star {
+    visibility:hidden;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.star:before {
+    color: yellow;
+    content: "\2606";
+    position: absolute;
+    visibility:visible;
+}
+
+.star:checked:before {
+    color: yellow;
+    content: "\2605";
+    position: absolute;
+}
+
+.star-table-cell {
+    display:table-cell; vertical-align:middle; margin-bottom: 40px
 }
 
 .eco_div {
@@ -611,10 +646,8 @@ nav {
     left: 0;
 }
 
-
 .explore-filter{
     display:grid;
-    /*grid-template-rows: 1fr 9fr;*/
     margin: 10px 5px 10px 25px;
     padding-top: 15px;
     background-color: var(--palette-color-secondary);
@@ -650,10 +683,6 @@ nav {
     justify-content: center;
 }
 
-/* From source https://stackoverflow.com/questions/40690284/remove-increment-and-decrement-icon-from-input-field
-to remove automatic appearance of increment and decrement bar
- */
-
 .explore-filter input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -663,9 +692,11 @@ input[type=number]::-webkit-outer-spin-button {
     width: 400px;
     position: relative;
 }
+
 .selectMultiple select {
     display: none;
 }
+
 .selectMultiple > div {
     position: relative;
     z-index: 2;
@@ -677,9 +708,11 @@ input[type=number]::-webkit-outer-spin-button {
     box-shadow: 0 4px 16px 0 rgba(22, 42, 90, 0.12);
     transition: box-shadow 0.3s ease;
 }
+
 .selectMultiple > div:hover {
     box-shadow: 0 4px 24px -1px rgba(22, 42, 90, 0.16);
 }
+
 .selectMultiple > div .arrow {
     right: 1px;
     top: 0;
@@ -688,6 +721,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 28px;
     position: absolute;
 }
+
 .selectMultiple > div .arrow:before, .selectMultiple > div .arrow:after {
     content: "";
     position: absolute;
@@ -698,14 +732,17 @@ input[type=number]::-webkit-outer-spin-button {
     top: 43%;
     transition: all 0.3s ease;
 }
+
 .selectMultiple > div .arrow:before {
     right: 12px;
     transform: rotate(-130deg);
 }
+
 .selectMultiple > div .arrow:after {
     left: 9px;
     transform: rotate(130deg);
 }
+
 .selectMultiple > div span {
     color: #99A3BA;
     display: block;
@@ -716,11 +753,13 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 28px;
     transition: all 0.3s ease;
 }
+
 .selectMultiple > div span.hide {
     opacity: 0;
     visibility: hidden;
     transform: translate(-4px, 0);
 }
+
 .selectMultiple > div a {
     position: relative;
     padding: 0 24px 6px 8px;
@@ -730,11 +769,13 @@ input[type=number]::-webkit-outer-spin-button {
     vertical-align: top;
     margin: 0 6px 0 0;
 }
+
 .selectMultiple > div a em {
     font-style: normal;
     display: block;
     white-space: nowrap;
 }
+
 .selectMultiple > div a:before {
     content: "";
     left: 0;
@@ -747,6 +788,7 @@ input[type=number]::-webkit-outer-spin-button {
     z-index: -1;
     border-radius: 4px;
 }
+
 .selectMultiple > div a i {
     cursor: pointer;
     position: absolute;
@@ -756,6 +798,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 28px;
     display: block;
 }
+
 .selectMultiple > div a i:before, .selectMultiple > div a i:after {
     content: "";
     display: block;
@@ -767,55 +810,69 @@ input[type=number]::-webkit-outer-spin-button {
     background: #4D18FF;
     border-radius: 1px;
 }
+
 .selectMultiple > div a i:before {
     transform: translate(-50%, -50%) rotate(45deg);
 }
+
 .selectMultiple > div a i:after {
     transform: translate(-50%, -50%) rotate(-45deg);
 }
+
 .selectMultiple > div a.notShown {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
+
 .selectMultiple > div a.notShown:before {
     width: 28px;
     transition: width 0.45s cubic-bezier(0.87, -0.41, 0.19, 1.44) 0.2s;
 }
+
 .selectMultiple > div a.notShown i {
     opacity: 0;
     transition: all 0.3s ease 0.3s;
 }
+
 .selectMultiple > div a.notShown em {
     opacity: 0;
     transform: translate(-6px, 0);
     transition: all 0.4s ease 0.3s;
 }
+
 .selectMultiple > div a.notShown.shown {
     opacity: 1;
 }
+
 .selectMultiple > div a.notShown.shown:before {
     width: 100%;
 }
+
 .selectMultiple > div a.notShown.shown i {
     opacity: 1;
 }
+
 .selectMultiple > div a.notShown.shown em {
     opacity: 1;
     transform: translate(0, 0);
 }
+
 .selectMultiple > div a.remove:before {
     width: 28px;
     transition: width 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44) 0s;
 }
+
 .selectMultiple > div a.remove i {
     opacity: 0;
     transition: all 0.3s ease 0s;
 }
+
 .selectMultiple > div a.remove em {
     opacity: 0;
     transform: translate(-12px, 0);
     transition: all 0.4s ease 0s;
 }
+
 .selectMultiple > div a.remove.disappear {
     opacity: 0;
     transition: opacity 0.5s ease 0s;
@@ -839,6 +896,7 @@ input[type=number]::-webkit-outer-spin-button {
     filter: drop-shadow(0 12px 20px rgba(22, 42, 90, 0.08));
     transition: all 0.4s ease, transform 0.4s cubic-bezier(0.87, -0.41, 0.19, 1.44), filter 0.3s ease 0.2s;
 }
+
 .selectMultiple > ul li {
     color: #1E2330;
     background: #fff;
@@ -848,22 +906,28 @@ input[type=number]::-webkit-outer-spin-button {
     position: relative;
     transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease 0.3s, opacity 0.5s ease 0.3s, border-radius 0.3s ease 0.3s;
 }
+
 .selectMultiple > ul li:first-child {
     border-radius: 8px 8px 0 0;
 }
+
 .selectMultiple > ul li:first-child:last-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li:last-child {
     border-radius: 0 0 8px 8px;
 }
+
 .selectMultiple > ul li:last-child:first-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li:hover {
     background: #4D18FF;
     color: #fff;
 }
+
 .selectMultiple > ul li:after {
     content: "";
     position: absolute;
@@ -877,45 +941,57 @@ input[type=number]::-webkit-outer-spin-button {
     transform: scale(1, 1) translate(-50%, -50%);
     transform-origin: 50% 50%;
 }
+
 .selectMultiple > ul li.beforeRemove {
     border-radius: 0 0 8px 8px;
 }
+
 .selectMultiple > ul li.beforeRemove:first-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li.afterRemove {
     border-radius: 8px 8px 0 0;
 }
+
 .selectMultiple > ul li.afterRemove:last-child {
     border-radius: 8px;
 }
+
 .selectMultiple > ul li.remove {
     transform: scale(0);
     opacity: 0;
 }
+
 .selectMultiple > ul li.remove:after {
     -webkit-animation: ripple 0.4s ease-out;
     animation: ripple 0.4s ease-out;
 }
+
 .selectMultiple > ul li.notShown {
     display: none;
     transform: scale(0);
     opacity: 0;
     transition: transform 0.35s ease, opacity 0.4s ease;
 }
+
 .selectMultiple > ul li.notShown.show {
     transform: scale(1);
     opacity: 1;
 }
+
 .selectMultiple.open > div {
     box-shadow: 0 4px 20px -1px rgba(22, 42, 90, 0.12);
 }
+
 .selectMultiple.open > div .arrow:before {
     transform: rotate(-50deg);
 }
+
 .selectMultiple.open > div .arrow:after {
     transform: rotate(50deg);
 }
+
 .selectMultiple.open > ul {
     transform: translate(0, 12px) scale(1);
     opacity: 1;
@@ -958,9 +1034,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .explore-products, .landing-products,
+.explore-sellers,
 .sellerpage-products,
 .landing-categories-container,
-.sellerprofile-action-buttons{
+.sellerprofile-action-buttons,
+.explore-sellers-card-container{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -989,6 +1067,8 @@ input[type=number]::-webkit-outer-spin-button {
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
+
+    margin-top:10px;
 }
 
 .explore-products {
@@ -996,6 +1076,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin-bottom: 10px;
     width: 100%;
 }
+
+.explore-sellers{width:95%;}
 
 .productpage-ecotag {
     margin-top: 5px; margin-bottom: 5px;
@@ -1020,11 +1102,6 @@ input[type=number]::-webkit-outer-spin-button {
     margin-right: 5px;
 
 }
-
-/*
-PRODUCT CARD DESIGN RETRIEVED FROM: https://codepen.io/andrewsims/pen/mQoYwz
-ALL CREDITS TO @andrewsims
- */
 
 .pccontainer {
     width: 100%;
@@ -1076,8 +1153,6 @@ ALL CREDITS TO @andrewsims
     color: black;
 }
 
-
-
 .pccard1 {
     display: block;
     position: relative;
@@ -1122,11 +1197,6 @@ ALL CREDITS TO @andrewsims
     color: black;
 }
 
-
-/*
-    REGISTER PAGE
-*/
-
 .register-container{
     width:100%;
     height: fit-content;
@@ -1160,7 +1230,6 @@ ALL CREDITS TO @andrewsims
     flex:50%;
     margin: 10px 5px;
     padding-bottom: 10px;
-    /*background-color: #EDF8AB;*/
     border-radius: 10px;
     color: white;
 }
@@ -1168,8 +1237,6 @@ ALL CREDITS TO @andrewsims
 .register-seller-form-container{
     color:white;
 }
-
-/* ------ SELLER PROFILE ------ */
 
 .seller-profile-main-body-container, .buyer-profile-main-body-container{
     display:flex;
@@ -1222,7 +1289,7 @@ ALL CREDITS TO @andrewsims
     background: transparent;
     box-shadow:none;
     transition: 0.3s;
-    height:420px;
+    height: 420px;
     margin:10px auto;
     border-radius:10px 10px 0 0;
     overflow:hidden;
@@ -1268,10 +1335,6 @@ ALL CREDITS TO @andrewsims
     font-size: 20px;
 }
 
-.product-card:hover{
-    transform: translate(0, -10px);
-}
-
 .product-card .card-image{
     background:white;
     border-radius:10px 10px 0 0;
@@ -1312,13 +1375,12 @@ ALL CREDITS TO @andrewsims
 
 .explore-container #filter_form .row .input-field .select-wrapper ul {
     background: var(--palette-color-secondary);
+    background: var(--text-color-light)
 }
-
 
 .explore-container #filter_form .row .input-field .select-wrapper li > span{
-    color: white;
+    color: var(--text-color-dark);
 }
-
 
 .eco_chip {
     width: fit-content;
@@ -1329,7 +1391,7 @@ ALL CREDITS TO @andrewsims
 .eco_chip_small {
     margin:auto;
     max-height: 22px;
-    max-width: 22px;
+    width: 22px;
 }
 
 .tiny_filter {
@@ -1346,7 +1408,6 @@ ALL CREDITS TO @andrewsims
     font-size: 13px;
     min-height: 75px;
     width: 96%;
-    /*height: fit-content;*/
     background-color: var(--comment-box-primary);
     color: var(--text-color-light);
     border: 1px solid white;
@@ -1387,7 +1448,6 @@ ALL CREDITS TO @andrewsims
     font-size: 13px;
     min-height: 75px;
     width: 95%;
-    /*height: fit-content;*/
     background-color: var(--comment-box-primary);
     color: var(--text-color-light);
     border: 1px solid white;
@@ -1418,11 +1478,6 @@ ALL CREDITS TO @andrewsims
 .comment-button {
     width: fit-content;
 }
-
-/*.product-card .card-content > div {*/
-/*    margin-bottom: 2px;*/
-/*    margin-top: 2px;*/
-/*}*/
 
 .product-card .card-content .center {
     margin-top: 25px;
@@ -1458,29 +1513,25 @@ ALL CREDITS TO @andrewsims
 }
 .seller-profile-card,
 .user-profile-card{
-    /*width: 80%;*/
-    padding: 5px;
     font-size: 13px;
-    height: 44vh;
+    height: fit-content;
+    min-height:280px;
     width: 23%;
-    /*height: fit-content;*/
     background-color: var(--palette-color-secondary);
     color: var(--text-color-light);
     border: 1px solid var(--palette-details-light);
-    padding-bottom:2vh;
     margin: 2vh auto;
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-left: 10px;
-    padding-right:10px;
+    padding: 5px 10px;
 }
 
 .user-profile-card{
     display:flex;
     flex-direction: column;
-    justify-content: space-between;
-    max-height: 38vh;
+    justify-content: start;
+    max-height: 42vh;
 }
 
 
@@ -1493,33 +1544,33 @@ ALL CREDITS TO @andrewsims
 }
 
 .information {
-    margin-bottom: 5px;
+    margin:auto 0;
 }
 
 .purchase {
-    margin-top: 40px;
+    margin-top: 12px;
     font-size: 30px;
 }
 
 .userprofile-info-1 {
     font-weight: bold; font-size: 20px;
-    margin-left: 40%;
+    display:flex; justify-content: center;
 }
 
 .userprofile-info-2 {
     font-weight: bold; font-size: 20px;
-    margin-left: 20%;
+    display:flex; justify-content:center;
 }
 
 .sellerprofile-info-1 {
     font-weight: bold; font-size: 20px;
-    margin-left: 25%;
+    display:flex; justify-content: center;
     text-align: center;
 }
 
 .sellerprofile-info-2 {
     font-weight: bold; font-size: 20px;
-    margin-left: 0;
+    display:flex; justify-content: center;
     text-align: center;
 }
 
@@ -1535,16 +1586,22 @@ ALL CREDITS TO @andrewsims
     color: white; font-weight: bold; max-width: 100px;
 }
 
-.seller-profile-card-title{
+.seller-profile-card-title,
+.user-profile-card-title {
     font-size:18px;
     height: 22%;
-    margin-bottom: 8px;
     font-weight:bold;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 10px 5px 5px 5px;
+}
 
+.user-profile-card-title {
+    margin: 6px auto;
+}
+
+.seller-profile-card-title {
+    margin: 10px 5px 5px 5px;
 }
 
 .seller-profile-card-info {
@@ -1556,16 +1613,13 @@ ALL CREDITS TO @andrewsims
     font-size: 25px;
 }
 
+.sellerprofile-modal {
+    overflow-wrap: break-word;
+}
+
 .seller-profile-card-content {
     overflow: hidden;
 }
-
-/*.seller-profile-product-card,
-.seller-profile-product-card-info{
-    display:flex;
-    align-items:center;
-    justify-content: center;
-}*/
 
 .seller-profile-product-card{
     width:28%;
@@ -1604,15 +1658,10 @@ ALL CREDITS TO @andrewsims
     align-items:center;
 }
 
-/* ------- REGISTER VIEWS ------- */
-
 .register-form-row{
     display:flex;
     justify-content: space-around;
 }
-
-/* -------- LOGIN VIEW ------- */
-
 
 .login{
     max-width: 500px;
@@ -1677,6 +1726,7 @@ ALL CREDITS TO @andrewsims
 
 .register-form-container div .errors .error,
 .update-form-container div .errors .error,
+.update-product-body div .errors .error,
 .password-body div .errors .error {
     font-size: 13px;
     font-weight: bold;
@@ -1687,8 +1737,6 @@ ALL CREDITS TO @andrewsims
 .register-form-container div .input-field{
     margin: 0 0 0 0;
 }
-
-
 
 .label-container{
     margin-top:2vh;
@@ -1719,12 +1767,6 @@ ALL CREDITS TO @andrewsims
 margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     color:white;
 }
-
-/*.container #product_form div label,*/
-/*.container #product_form div input{*/
-/*    color:black;*/
-
-/*}*/
 
 .container #product_form .input-field ul li span label{
     color:var(--palette-color-secondary)
@@ -1805,8 +1847,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     gap: 0.5em;
 }
 
-/* -------- CREATE PRODUCT ------- */
-
 .createproducts{
     width: 900px;
     padding: 20px 35px 20px 35px;
@@ -1861,8 +1901,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     border-bottom-color: white;
 }
 
-
-
 .createproduct_column {
     margin:25px 25px 25px 25px;
 }
@@ -1873,7 +1911,8 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     justify-content: center;
 }
 
-.createbody div .error {
+.createbody div .error,
+.create-button p{
     font-size: 13px;
     font-weight: bold;
     color: red;
@@ -1932,9 +1971,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     max-height: 50px;
 }
 
-
-
-/* ------ USER PROFILE VIEW ---------- */
 .buyer-profile-container{
     display: flex;
     flex-direction: column;
@@ -1949,7 +1985,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     align-self: center;
 }
 
-/* ------ ERROR VIEW -------- */
 .error-container{
     display: flex;
     flex-direction: column;
@@ -2007,10 +2042,6 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
     margin:2vh auto;
 }
 
-
-
-
-/* ----- some features ----- */
 #product_form .select-wrapper select, .login #login_form #rememberme input,
 #product_form .input-field .select-wrapper ul li input,
 .container #product_form .input-field .select-wrapper ul,
@@ -2019,6 +2050,7 @@ margin-bottom: 0; margin-left:4vw; width:60%; align-self: end;
 .container #product_form .row .input-field .btn .character-counter,
 input#ecotag, input#ecotag2,
 .explore-container #filter_form .row .input-field .select-wrapper ul,
+.explore-sellers-container #filter_form .row .input-field .select-wrapper ul,
 .input-field .selectMultiple .select-wrapper,
 .sort ul,
 #orderamount ul,
@@ -2040,16 +2072,10 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-
-
-/* --------- TESTING PURPOSES ------- */
-
 .seller-profile-container-2-bis {
     height:fit-content;
     background:var(--palette-color-secondary);
     color:white;
-    /*display:flex;
-    justify-content: space-around;*/
     display:block;
     align-self: center;
     padding-top:2vh;
@@ -2066,8 +2092,6 @@ input[type=number] {
     height:fit-content;
     background:var(--palette-color-secondary);
     color:white;
-    /*display:flex;
-    justify-content: space-around;*/
     display:block;
     align-self: center;
     padding-top:6vh;
@@ -2075,13 +2099,11 @@ input[type=number] {
     border-left: 1px solid var(--palette-details-light);
     border-right: 1px solid var(--palette-details-light);
     border-bottom: 1px solid var(--palette-details-light);
-
 }
 
 .user-profile-container-2 {
     border-top: 1px solid var(--palette-details-light);
 }
-
 
 .seller-profile-container-2, .seller-profile-container-2-lower{
     width:80%;
@@ -2137,7 +2159,6 @@ input[type=number] {
     margin-left:1vw;
 }
 
-
 #sellerprofile_tabs{
     background-color: var(--palette-color-secondary);
     border-left: 1px solid var(--palette-details-light);
@@ -2161,7 +2182,6 @@ input[type=number] {
     justify-content: space-between;
 }
 
-
 .seller-profile-pic-container img{
     border-radius: 50%;
     height: auto;
@@ -2174,8 +2194,6 @@ input[type=number] {
     overflow: hidden;
     text-align:center;
 }
-
-
 
 .text-center{
     text-align:center !important;
@@ -2238,11 +2256,6 @@ input[type=number] {
     width: fit-content;
     margin: auto;
 }
-
-
-
-/* UPDATE PRODUCT */
-
 
 .update-margins {
     margin-top: 25px; margin-bottom: 35px;
@@ -2412,6 +2425,10 @@ input[type=number] {
     text-align:justify;
 }
 
+.justify-content-center{
+    justify-content: center;
+}
+
 .landing-col{
     height: 200px;
 }
@@ -2462,6 +2479,14 @@ input[type=number] {
     margin: auto;
 }
 
+.margin-top-25 {
+    margin-top: 25px;
+}
+
+.margin-top-100 {
+    margin-top: 100px;
+}
+
 .margin-left-20 {
     margin-left: 20px;
 }
@@ -2481,10 +2506,6 @@ input[type=number] {
 .filter-category input,
 .filterinputs input{
     margin:0;
-}
-
-.filter-category .select-wrapper input.select-dropdown{
-
 }
 
 .search-style{
@@ -2615,7 +2636,6 @@ input[type=number] {
     vertical-align: middle;
 }
 
-
 .file-path-wrapper input,
 #image-label-createarticle{
     color:white;
@@ -2625,7 +2645,8 @@ input[type=number] {
     cursor: default;
 }
 
-.product-card-image-container{
+.product-card-image-container,
+.seller-card-image-container{
     height: 50%;
     width: 100%;
     background: white;
@@ -2639,6 +2660,18 @@ input[type=number] {
     max-height:100%;
     max-width:100%;
     vertical-align:middle;
+}
+
+.profile-pic{
+    height:140px;
+    width:140px;
+    border-radius:50%;
+}
+
+.profile-pic-public{
+    height:160px;
+    width:160px;
+    border-radius:50%;
 }
 
 .news-card{
@@ -2725,6 +2758,7 @@ input[type=number] {
     border: 1px solid var(--palette-details-light);
     margin-top:20px;
     margin-left:50px;
+    padding: 5px 20px 20px 20px !important;
 }
 
 .user-fav-card{
@@ -2735,8 +2769,7 @@ input[type=number] {
     display:flex;
     flex-direction:column;
     justify-content: center;
-
-    width:50%;
+    width:90%;
     text-align:left;
 }
 
@@ -2761,4 +2794,28 @@ input[type=number] {
 
 .separate-12-top{
     margin-top:12px;
+}
+
+.filter-category li{
+    border-bottom: 1px solid lightgrey;
+}
+
+.filter-button{
+    background-color: var(--palette-color-primary);
+    color: var(--text-color-dark);
+}
+
+.add-image-btn{
+    height:36px!important;width:fit-content!important;line-height:36px!important;
+}
+
+.space-icons{margin:0 5px;}
+
+.format-col{
+    height:200px;
+}
+
+.pp-btn{
+    width:fit-content;
+    margin: 0 auto;
 }

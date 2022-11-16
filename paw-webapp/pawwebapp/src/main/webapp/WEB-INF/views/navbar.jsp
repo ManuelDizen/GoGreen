@@ -51,11 +51,6 @@
                         <c:out value="${pageContext.request.userPrincipal.name}"/>
                     </a>
                 </li>
-                <%--li>
-                    <a href="<c:url value="/profile"/>">
-                        <spring:message code="navbar.welcomemsg" arguments="${pageContext.request.userPrincipal.name}"/>
-                    </a>
-                </li--%>
                 <li class="nav-li">
                     <a href="<c:url value="/logout"/>">
                         <i class="material-icons">logout</i>

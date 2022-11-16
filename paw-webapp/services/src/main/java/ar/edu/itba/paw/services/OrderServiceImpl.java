@@ -5,12 +5,10 @@ import ar.edu.itba.paw.interfaces.services.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,75 +20,37 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
     private final EmailService emailService;
     private final SellerService sellerService;
-    private final SecurityService securityService;
     private final UserService userService;
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ProductService productService,
-                            EmailService emailService, SellerService sellerService, SecurityService securityService, UserService userService) {
+                            EmailService emailService, SellerService sellerService,
+                            UserService userService) {
         this.orderDao = orderDao;
         this.productService = productService;
         this.emailService = emailService;
         this.sellerService = sellerService;
-        this.securityService = securityService;
         this.userService = userService;
-    }
-
-    @Override
-    public Order create(String productName, String buyerName, String buyerSurname,
-                        String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                        Integer amount, Integer price, LocalDateTime dateTime, String message) {
-        return orderDao.create(productName, buyerName, buyerSurname, buyerEmail,
-                sellerName, sellerSurname, sellerEmail, amount, price, dateTime, message);
-    }
-
-    @Override
-    public Optional<Order> getById(long orderId) {
-        return orderDao.getById(orderId);
-    }
-
-    @Override
-    public List<Order> getBySellerEmail(String sellerEmail) {
-        return orderDao.getBySellerEmail(sellerEmail);
-    }
-
-    @Override
-    public List<Order> getByBuyerEmail(String buyerEmail) {
-        return orderDao.getByBuyerEmail(buyerEmail);
     }
 
     @Transactional
     @Override
-    public void createAndNotify(long productId, int amount, String message) {
-
+    public Order create(long productId, int amount, String message) {
         final Optional<Product> maybeProduct = productService.getById(productId);
         if(!maybeProduct.isPresent()) throw new ProductNotFoundException();
         final Product product = maybeProduct.get();
 
-        Boolean enough = productService.checkForAvailableStock(product, amount);
-        if(!enough) throw new ProductUpdateException();
+        boolean enough = productService.checkForAvailableStock(product, amount);
+        if(!enough){
+            throw new InsufficientStockException();
+        }
 
-        User user = securityService.getLoggedUser();
-        if(user == null) throw new UnauthorizedRoleException();
+        User user = userService.getLoggedUser();
+        if(user == null || userService.isLoggedSeller()) throw new UnauthorizedRoleException();
 
         final Optional<Seller> maybeSeller = sellerService.findById(product.getSeller().getId());
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
         final Seller seller = maybeSeller.get();
-
-        // Sobre el locale de los mails: Si bien almacenamos el locale de los usuarios a la
-        // hora de registrarse, si el usuario está navegando en ese momento en otro Locale,
-        // resulta pertinente enviarle el mail en ese idioma. Es por eso que el mail de
-        // user sale con el locale del navegador actual, y el del vendedor con el guardado
-        // (no lo tenemos guardado)
-
-        //Update 28/10/22: Por corrección de cátedra, se remueve el mail enviado a comprador.
-        // El mismo no debe ser notificado de acciones que él realizó dentro de la página
-
-        /*emailService.purchase(user.getEmail(), user.getFirstName(),
-                product, amount,
-                product.getPrice(), sellerService.getName(seller.getUser().getId()),
-                seller.getPhone(), sellerService.getEmail(seller.getUser().getId()),
-                user.getLocale());*/
 
         emailService.itemsold(sellerService.getEmail(seller.getUser().getId()),
                 sellerService.getName(seller.getUser().getId()), product,
@@ -103,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
                 user.getSurname(), user.getEmail(), sellerService.getName(seller.getUser().getId()),
                 sellerService.getSurname(seller.getUser().getId()),
                 sellerService.getEmail(seller.getUser().getId()), amount, product.getPrice(), dateTime,
-                message);
+                message, seller);
         if(order == null) throw new OrderCreationException();
 
         productService.decreaseStock(product.getProductId(), amount);
@@ -117,11 +77,27 @@ public class OrderServiceImpl implements OrderService {
                     u.getSurname(), u.getLocale());
             modified.get().setStatus(ProductStatus.OUTOFSTOCK);
         }
+        return order;
     }
 
     @Override
-    public Boolean checkForOrderOwnership(long orderId) {
-        User user = securityService.getLoggedUser();
+    public Optional<Order> getById(long orderId) {
+        return orderDao.getById(orderId);
+    }
+
+    @Override
+    public Pagination<Order> getByBuyerEmail(String buyerEmail, int page){
+        return orderDao.getByBuyerEmail(buyerEmail, page, PAGE_SIZE);
+    }
+
+    @Override
+    public Pagination<Order> getBySellerEmail(String sellerEmail, int page){
+        return orderDao.getBySellerEmail(sellerEmail, page, PAGE_SIZE);
+    }
+
+    @Override
+    public boolean checkForOrderOwnership(long orderId) {
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
         Optional<Order> maybeOrder = getById(orderId);
         if(maybeOrder.isPresent()){
@@ -134,14 +110,13 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void deleteOrder(long orderId) {
-        Boolean isOwner = checkForOrderOwnership(orderId);
+        boolean isOwner = checkForOrderOwnership(orderId);
         if(!isOwner) throw new UnauthorizedRoleException();
 
         Optional<Order> order = orderDao.getById(orderId);
         if(!order.isPresent()) throw new OrderNotFoundException();
 
-        Boolean delete = orderDao.deleteOrder(orderId);
-        if(!delete) throw new OrderDeleteException();
+        orderDao.deleteOrder(orderId);
 
         Optional<User> buyer = userService.findByEmail(order.get().getBuyerEmail());
         if(!buyer.isPresent()) throw new UserNotFoundException();
@@ -149,5 +124,14 @@ public class OrderServiceImpl implements OrderService {
         if(!seller.isPresent()) throw new UserNotFoundException();
         emailService.orderCancelled(order.get(), buyer.get().getLocale(), seller.get().getLocale());
         productService.addStock(order.get().getProductName(), order.get().getAmount());
+    }
+    @Override
+    public List<String> getFirstNDistinct(int amount) {
+        return orderDao.getFirstNDistinct(amount);
+    }
+
+    @Override
+    public int getTotalOrdersForSeller(String sellerEmail){
+        return orderDao.getTotalOrdersForSeller(sellerEmail);
     }
 }

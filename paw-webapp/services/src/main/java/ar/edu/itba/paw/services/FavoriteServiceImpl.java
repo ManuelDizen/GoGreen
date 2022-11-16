@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.FavoriteDao;
 import ar.edu.itba.paw.interfaces.services.FavoriteService;
-import ar.edu.itba.paw.interfaces.services.SecurityService;
 import ar.edu.itba.paw.interfaces.services.SellerService;
 import ar.edu.itba.paw.interfaces.services.UserService;
 import ar.edu.itba.paw.models.Favorite;
@@ -19,22 +18,22 @@ import java.util.*;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
+    private final UserService userService;
     private final SellerService sellerService;
-    private final SecurityService securityService;
     private final FavoriteDao favoriteDao;
 
     @Autowired
-    public FavoriteServiceImpl(SellerService sellerService,
-                               SecurityService securityService, FavoriteDao favoriteDao){
+    public FavoriteServiceImpl(UserService userService, SellerService sellerService,
+                               FavoriteDao favoriteDao){
+        this.userService = userService;
         this.sellerService = sellerService;
-        this.securityService = securityService;
         this.favoriteDao = favoriteDao;
     }
 
     @Transactional
     @Override
     public void toggleFavorite(long sellerId, boolean add) {
-        User user = securityService.getLoggedUser();
+        User user = userService.getLoggedUser();
         if(user == null) throw new ForbiddenActionException();
         Optional<Seller> maybeSeller = sellerService.findById(sellerId);
         if(!maybeSeller.isPresent()) throw new UserNotFoundException();
@@ -53,7 +52,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteDao.getByUserId(userId);
     }
 
-    @Transactional
     @Override
     public List<Seller> getFavoriteSellersByUserId(long userId){
         List<Favorite> favorites = getByUserId(userId);
@@ -64,15 +62,17 @@ public class FavoriteServiceImpl implements FavoriteService {
         return sellers;
     }
 
-    @Transactional
     @Override
-    public boolean isFavorite(User user, Seller seller){
-        if(user == null || seller == null) return false;
-        Set<Role> roles = user.getRoles();
-        for(Role role : roles){
-            if(Objects.equals(role.getName(), "SELLER")) return false;
-        }
+    public List<Seller> getFavoriteSellersByUserId(){
+        User user = userService.getLoggedUser();
+        if(user == null) throw new ForbiddenActionException();
+        return getFavoriteSellersByUserId(user.getId());
+    }
 
+    @Override
+    public boolean isFavorite(Seller seller) {
+        User user = userService.getLoggedUser();
+        if(user == null || seller == null || userService.isSeller(user.getId())) return false;
         List<Favorite> favorites = getByUserId(user.getId());
         for(Favorite fav : favorites){
             if(Objects.equals(fav.getSeller().getId(), seller.getId())) return true;
@@ -84,6 +84,15 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public List<User> getSubscribedUsers(Seller seller){
         return favoriteDao.getSubscribedUsers(seller);
+    }
+
+    @Override
+    public List<Long> getFavIdsByUser(User user){
+        List<Long> toReturn = new ArrayList<>();
+        if(user == null) return toReturn;
+        List<Favorite> favorites = getByUserId(user.getId());
+        for(Favorite f : favorites) toReturn.add(f.getSeller().getId());
+        return toReturn;
     }
 
 }

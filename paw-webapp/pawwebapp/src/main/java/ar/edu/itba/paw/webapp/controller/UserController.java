@@ -5,22 +5,28 @@ import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.models.exceptions.ForbiddenActionException;
 import ar.edu.itba.paw.models.exceptions.UnauthorizedRoleException;
 import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.ProfilePicForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
 public class UserController {
+
+    private static final int ORDERS_PER_PAGE = 8;
+    private static final int PRODUCTS_PER_PAGE = 6;
+
     private final UserService userService;
     private final SellerService sellerService;
-    private final SecurityService securityService;
     private final OrderService orderService;
     private final ProductService productService;
     private final ArticleService articleService;
@@ -28,12 +34,10 @@ public class UserController {
 
     @Autowired
     public UserController(final UserService userService, final SellerService sellerService,
-                          final SecurityService securityService, final OrderService orderService,
-                          final ProductService productService, final ArticleService articleService,
-                          final FavoriteService favoriteService) {
+                          final OrderService orderService, final ProductService productService,
+                          final ArticleService articleService, final FavoriteService favoriteService) {
         this.userService = userService;
         this.sellerService = sellerService;
-        this.securityService = securityService;
         this.orderService = orderService;
         this.productService = productService;
         this.articleService = articleService;
@@ -42,71 +46,59 @@ public class UserController {
 
     @RequestMapping(value="profile")
     public ModelAndView profile(){
-        User user = securityService.getLoggedUser();
-        if(user == null){
-            throw new UnauthorizedRoleException();
-        }
-        if(sellerService.findByMail(user.getEmail()).isPresent()){
-            // It's a seller
-            return new ModelAndView("redirect:/sellerProfile");
-        }
-        return new ModelAndView("redirect:/userProfile");
+        String url = sellerService.getProfileUrl();
+        return new ModelAndView("redirect:" + url);
     }
 
 
     @RequestMapping(value="/userProfile")
     public ModelAndView buyerProfile(
+            @ModelAttribute("profilePicForm") final ProfilePicForm form,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="fromSale", defaultValue="false") final boolean fromSale){
+
         final ModelAndView mav = new ModelAndView("userProfile");
-        Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new UserNotFoundException();
-        mav.addObject("user", user.get());
-
-        List<Order> orders = orderService.getByBuyerEmail(user.get().getEmail());
-
-        List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
-
+        User user = userService.getLoggedUser();
+        if(user == null) throw new UserNotFoundException();
+        mav.addObject("user", user);
+        Pagination<Order> orders = orderService.getByBuyerEmail(user.getEmail(), page);
         mav.addObject("currentPage", page);
-        mav.addObject("pages", orderPages);
-        mav.addObject("orders", orderPages.get(page-1));
+        mav.addObject("pages", orders.getPageCount());
+        mav.addObject("orders", orders.getItems());
         mav.addObject("fromSale", fromSale);
-        mav.addObject("users", userService.getAll());
-        mav.addObject("sellers", sellerService.getAll());
         return mav;
     }
 
     @RequestMapping(value="/buyerProfile")
-    public ModelAndView buyerProfileFromSale() {
-        return buyerProfile(1, true);
+    public ModelAndView buyerProfileFromSale(@ModelAttribute("profilePicForm") final ProfilePicForm form) {
+        return buyerProfile(form, 1, true);
     }
 
     @RequestMapping(value="/sellerProfile")
-    public ModelAndView sellerProfile(@RequestParam(name="pageP", defaultValue="1") final int pageP,
+    public ModelAndView sellerProfile(@ModelAttribute("profilePicForm") final ProfilePicForm form,
+                                      @RequestParam(name="pageP", defaultValue="1") final int pageP,
                                       @RequestParam(name="pageO", defaultValue="1") final int pageO){
         final ModelAndView mav = new ModelAndView("sellerProfile");
 
-        Optional<User> user = userService.findByEmail(securityService.getLoggedEmail());
-        if(!user.isPresent()) throw new UserNotFoundException();
+        User user = userService.getLoggedUser();
+        if(user==null) throw new UserNotFoundException();
 
-        Optional<Seller> seller = sellerService.findByMail(user.get().getEmail());
+        Optional<Seller> seller = sellerService.findByMail(user.getEmail());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
-        List<Order> orders = orderService.getBySellerEmail(user.get().getEmail());
-        List<List<Order>> orderPages = productService.divideIntoPages(orders, 8);
-        List<Product> products = productService.findBySeller(seller.get().getId());
-        List<List<Product>> productPages = productService.divideIntoPages(products, 6);
+        Pagination<Order> orders = orderService.getBySellerEmail(user.getEmail(), pageO);
+
+        Pagination<Product> products = productService.findBySeller(seller.get().getId(), false,
+                pageP, PRODUCTS_PER_PAGE, false);
 
         mav.addObject("seller", seller.get());
-        mav.addObject("user", user.get());
+        mav.addObject("user", user);
         mav.addObject("currentPageP", pageP);
         mav.addObject("currentPageO", pageO);
-        mav.addObject("productPages", productPages);
-        mav.addObject("orderPages", orderPages);
-        mav.addObject("orders", orderPages.get(pageO-1));
-        mav.addObject("products", productPages.get(pageP-1));
-
-        //TODO: See how to optimize this 4 states while keeping it parametrized
+        mav.addObject("productPages", products.getPageCount());
+        mav.addObject("orderPages", orders.getPageCount());
+        mav.addObject("orders", orders.getItems());
+        mav.addObject("products", products.getItems());
         mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
         mav.addObject("pausedId", ProductStatus.PAUSED.getId());
         mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
@@ -117,36 +109,29 @@ public class UserController {
     @RequestMapping(value="/sellerPage/{sellerId:[0-9]+}")
     public ModelAndView sellerPage(@PathVariable("sellerId") long sellerId,
                                    @RequestParam(name="page", defaultValue = "1") final int page){
+
         ModelAndView mav = new ModelAndView("sellerPage");
         Optional<Seller> seller = sellerService.findById(sellerId);
-        if(!seller.isPresent()) throw new UserNotFoundException();
+        if(!seller.isPresent()){
+            throw new UserNotFoundException();
+        }
         mav.addObject("seller", seller.get());
         mav.addObject("user", seller.get().getUser());
-        User user = securityService.getLoggedUser();
-        //TODO: Move to service
-        String loggedEmail = user == null? null : user.getEmail();
-        mav.addObject("loggedEmail", loggedEmail);
+        mav.addObject("loggedEmail", userService.getLoggedEmail());
         mav.addObject("areas", Area.values());
         mav.addObject("categories", Category.values());
 
-        List<Product> products = productService.findBySeller(sellerId);
-        //TODO: Move to service
-        //mav.addObject("recentProducts", products.size() >= 3? products.subList(0,3):products);
-
-        List<Article> news = articleService.getBySellerId(sellerId);
-        //TODO: Move to service
-        news = news.size() > 2? news.subList(0, 2):news;
-        mav.addObject("news", news);
-
-        List<Order> orders = orderService.getBySellerEmail(seller.get().getUser().getEmail());
-        mav.addObject("orders", orders);
-        mav.addObject("isFavorite", favoriteService.isFavorite(
-                securityService.getLoggedUser(), seller.get()));
-
-        List<List<Product>> productPages = productService.divideIntoPages(products, 8);
+        Pagination<Product> products = productService.findBySeller(sellerId, true, page,
+                ORDERS_PER_PAGE, true);
+        Pagination<Article> newsPage = articleService.getBySellerId(sellerId,1);
+        mav.addObject("news", newsPage.getItems().size() > 2?
+                newsPage.getItems().subList(0, 2):newsPage.getItems());
+        int n_orders = orderService.getTotalOrdersForSeller(seller.get().getUser().getEmail());
+        mav.addObject("n_orders", n_orders);
+        mav.addObject("isFavorite", favoriteService.isFavorite(seller.get()));
         mav.addObject("currentPage", page);
-        mav.addObject("pages", productPages);
-        mav.addObject("recentProducts", productPages.get(page-1));
+        mav.addObject("pages", products.getPageCount());
+        mav.addObject("recentProducts", products.getItems());
 
         return mav;
     }
@@ -162,27 +147,90 @@ public class UserController {
 
     @RequestMapping(value="/newsFeed")
     public ModelAndView newsFeed(@RequestParam(name="page", defaultValue = "1") final int page){
-        List<Article> news = articleService.getForLoggedUser();
-        List<List<Article>> newsPages = productService.divideIntoPages(news, 10);
+        Pagination<Article> news = articleService.getForLoggedUser(page);
         final ModelAndView mav = new ModelAndView("userNewsFeed");
-        User user = securityService.getLoggedUser();
-        if(user == null) throw new ForbiddenActionException();
-        List<Seller> favs = favoriteService.getFavoriteSellersByUserId(user.getId());
+        List<Seller> favs = favoriteService.getFavoriteSellersByUserId();
         mav.addObject("currentPage", page);
-        mav.addObject("pages", newsPages);
+        mav.addObject("pages", news);
         mav.addObject("favs", favs);
-        mav.addObject("news", newsPages.get(page-1));
-        mav.addObject("user", user);
+        mav.addObject("news", news.getItems());
+        mav.addObject("user", userService.getLoggedUser());
         return mav;
     }
 
     @RequestMapping(value="/toggleNotifications")
     public ModelAndView toggleNotifications(HttpServletRequest request){
-        User user = securityService.getLoggedUser();
-        if(user == null) throw new ForbiddenActionException();
-        userService.toggleNotifications(user.getId());
+        userService.toggleNotifications();
         String referer = request.getHeader("Referer");
         return new ModelAndView("redirect:" + referer);
     }
 
+    @RequestMapping(value = "/exploreSellers")
+    public ModelAndView exploreSellers(
+            @RequestParam(name="name", defaultValue="") final String name,
+            @RequestParam(name="areaId", defaultValue="-1") final long areaId,
+            @RequestParam(name="favorite", defaultValue="false") final boolean favorite,
+            @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="sort", defaultValue = "0") final int sort,
+            @RequestParam(name="direction", defaultValue = "1") final int direction
+                                        ){
+
+        long userId = userService.getLoggedUser().getId();
+        Pagination<Seller> sellers = sellerService.filter(name, areaId, favorite, page, userId);
+
+        final ModelAndView mav = new ModelAndView("exploreSellers");
+        mav.addObject("isEmpty", sellers.getItems().isEmpty());
+        mav.addObject("sellers", sellers);
+        mav.addObject("name", name);
+        mav.addObject("categories", Category.values());
+        mav.addObject("areas", Area.values());
+        mav.addObject("chosenArea", areaId);
+        mav.addObject("favorite", favorite);
+
+        String favoritePath = "";
+        if(favorite) {
+            favoritePath = "favorite=on&";
+        }
+        mav.addObject("currentPage", page);
+        mav.addObject("favoritePath", favoritePath);
+        mav.addObject("direction", direction);
+        String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
+        mav.addObject("sortName", sortName);
+        mav.addObject("sorting", Sort.values());
+        mav.addObject("favIds", favoriteService.getFavIdsByUser(userService.getLoggedUser()));
+
+        return mav;
+    }
+
+    @RequestMapping(value="/updateProfilePic", method= RequestMethod.POST)
+    public ModelAndView updateProfilePic(HttpServletRequest request,
+                                         @Valid @ModelAttribute("profilePicForm") final ProfilePicForm form,
+                                         final BindingResult errors){
+        String referer = request.getHeader("Referer");
+        if (errors.hasErrors()){
+            if(referer.contains("user"))
+                return buyerProfile(form,1,false);
+            else
+                return sellerProfile(form,1,1);
+        }
+        byte[] image;
+        try {
+            image = form.getImage().getBytes();
+        } catch (IOException e) {throw new RuntimeException(e);}
+        userService.setProfilePic(image);
+        return new ModelAndView("redirect:" + referer);
+    }
+
+    @RequestMapping(value="/deleteProfilePic")
+    public ModelAndView deleteProfilePic(HttpServletRequest request){
+        userService.deleteProfilePic();
+        String referer = request.getHeader("Referer");
+        if(referer.contains("updateProfilePic")){
+            if(userService.isLoggedUser())
+                referer = "/userProfile";
+            else if(userService.isLoggedSeller())
+                referer = "/sellerProfile";
+        }
+        return new ModelAndView("redirect:" + referer);
+    }
 }

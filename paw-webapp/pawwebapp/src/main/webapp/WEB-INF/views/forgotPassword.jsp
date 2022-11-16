@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Franco De Simone
-  Date: 28/10/2022
-  Time: 09:03
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -26,7 +19,9 @@
         </div>
         <c:if test="${notFound}">
             <div class="center update-margins">
-                <p class="red error-sign"><spring:message code="password.noEmail"/></p>
+                <p class="red error-sign">
+                    <spring:message code="password.noEmail"/>
+                </p>
             </div>
         </c:if>
         <div class="update-product-body">
@@ -35,7 +30,8 @@
                     <div class="input-field">
                         <form:input path="email" id="email" type="text"/>
                         <label for="email"><spring:message code="registerbuyer.form.email"/>
-                            <spring:message code="forms.obligatorysign"/></label>
+                            <spring:message code="forms.obligatorysign"/>
+                        </label>
                     </div>
                     <div class="errors">
                         <form:errors path="email" element="p" cssClass="error"/>

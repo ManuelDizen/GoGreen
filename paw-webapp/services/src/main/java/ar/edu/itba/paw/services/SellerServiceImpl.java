@@ -2,13 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.persistence.SellerDao;
 import ar.edu.itba.paw.interfaces.services.*;
-import ar.edu.itba.paw.models.Role;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.models.exceptions.RoleNotFoundException;
-import ar.edu.itba.paw.models.exceptions.SellerRegisterException;
-import ar.edu.itba.paw.models.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.exceptions.UserRegisterException;
+import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +16,6 @@ public class SellerServiceImpl implements SellerService {
     private final SellerDao sellerDao;
     private final UserService userService;
     private final RoleService roleService;
-    private final UserRoleService userRoleService;
     private final EmailService emailService;
     @Autowired
 
@@ -29,17 +23,16 @@ public class SellerServiceImpl implements SellerService {
         this.sellerDao = sellerDao;
         this.userService = userService;
         this.roleService = roleService;
-        this.userRoleService = userRoleService;
         this.emailService = emailService;
     }
 
     @Transactional
     @Override
-    public Seller create(long userid, String phone, String address, long areaId) {
+    public Seller create(long userid, String phone, String address, Area area) {
         Optional<User> maybeUser = userService.findById(userid);
         if(!maybeUser.isPresent()) throw new UserNotFoundException();
         User user = maybeUser.get();
-        return sellerDao.create(user, phone, address, areaId);
+        return sellerDao.create(user, phone, address, area);
     }
 
     @Override
@@ -56,11 +49,6 @@ public class SellerServiceImpl implements SellerService {
     public Optional<Seller> findByMail(String mail) {
         return sellerDao.findByMail(mail);
 
-    }
-
-    @Override
-    public List<Seller> getAll() {
-        return sellerDao.getAll();
     }
 
     @Override
@@ -99,14 +87,53 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public void registerSeller(String firstName, String surname,
                 String email, String password, Locale locale, String phone,
-                        String address, long areaId){
+                        String address, Area area){
         User user = userService.register(firstName, surname, email, password, locale);
         if(user == null) throw new UserRegisterException();
-        Seller seller = create(user.getId(), phone, address, areaId);
+        Seller seller = create(user.getId(), phone, address, area);
         if(seller == null) throw new SellerRegisterException();
         Optional<Role> role = roleService.getByName("SELLER");
         if(!role.isPresent()) throw new RoleNotFoundException();
         user.addRole(role.get());
         emailService.registration(user, user.getLocale());
+    }
+
+    public Pagination<Seller> filter(String name, long areaId, boolean favorite, int page,
+                              long userId){
+        Area area = Area.getById(areaId);
+        Pagination<Seller> toReturn = sellerDao.filter(parseString(name), area,
+                favorite, page, userId);
+        return toReturn;
+    }
+
+    @Override
+    public String getProfileUrl(){
+        User user = userService.getLoggedUser();
+        if(user == null){
+            throw new UnauthorizedRoleException();
+        }
+        if(findByMail(user.getEmail()).isPresent()){
+            return "/sellerProfile";
+        }
+        return "/userProfile";
+    }
+
+    private String parseString(String str){
+        char[] sqlSpecialChars = {'%', '_'};
+        char[] charArray = str.toCharArray();
+        StringBuilder out = new StringBuilder();
+        boolean flag;
+        for(char c : charArray) {
+            flag = false;
+            for (char s : sqlSpecialChars) {
+                if (c == s) {
+                    out.append("\\").append(c);
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) out.append(c);
+        }
+        return out.toString();
     }
 }

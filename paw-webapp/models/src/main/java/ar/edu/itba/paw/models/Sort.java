@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.models;
 
 public enum Sort {
-
-    SORT_POPULAR(3, "sortbypopular"),
     SORT_PRICE(2, "sortbyprice"),
     SORT_ALPHABETIC(1, "sortalphabetic"),
     SORT_CHRONOLOGIC(0, "sortchronos");

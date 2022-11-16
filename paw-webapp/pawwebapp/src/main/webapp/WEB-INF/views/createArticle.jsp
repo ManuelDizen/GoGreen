@@ -1,11 +1,4 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: manuel
-  Date: 25/10/22
-  Time: 10:53
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -35,7 +28,8 @@
         <div class="input-field col s12">
           <div class="file-field input-field">
             <div class="decision-button waves-effect waves-light btn image_button">
-              <form:label path="image" id="image-label-createarticle"><spring:message code="createproduct.form.image"/>
+              <form:label path="image" id="image-label-createarticle">
+                <spring:message code="createproduct.form.image"/>
               </form:label>
               <form:input path="image" type="file"/>
             </div>

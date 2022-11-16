@@ -25,27 +25,23 @@ import java.util.Optional;
 @Controller
 public class ProductController {
     private final ProductService productService;
-
     private final SellerService sellerService;
-
     private final EcotagService ecotagService;
-
     private final OrderService orderService;
-
     private final CommentService commentService;
+    private final UserService userService;
+    private static final int INTERESTING_SIZE = 4;
 
-    private final SecurityService securityService;
-
-    
     @Autowired
     public ProductController(final ProductService productService, final SellerService sellerService,
-                             EcotagService ecotagService, final OrderService orderService, final CommentService commentService, final SecurityService securityService) {
+                             EcotagService ecotagService, final OrderService orderService,
+                             final CommentService commentService, final UserService userService) {
         this.productService = productService;
         this.sellerService = sellerService;
         this.ecotagService = ecotagService;
         this.orderService = orderService;
         this.commentService = commentService;
-        this.securityService = securityService;
+        this.userService = userService;
     }
 
     @RequestMapping(value="/explore")
@@ -55,27 +51,20 @@ public class ProductController {
             @RequestParam(name="strings", defaultValue = "null") final String[] strings,
             @RequestParam(name="maxPrice", defaultValue = "-1") final Integer maxPrice,
             @RequestParam(name="areaId", defaultValue="-1") final long areaId,
+            @RequestParam(name="favorite", defaultValue="false") final boolean favorite,
             @RequestParam(name="page", defaultValue = "1") final int page,
             @RequestParam(name="sort", defaultValue = "0") final int sort,
             @RequestParam(name="direction", defaultValue = "1") final int direction
     ) {
         final ModelAndView mav = new ModelAndView("explore");
-
-        List<Product> allProducts = productService.getAvailable();
-        mav.addObject("isEmpty", allProducts.isEmpty());
-
-        //Parameters for filter
+        mav.addObject("isEmpty", !productService.atLeastOneProduct());
         mav.addObject("name", name);
         mav.addObject("categories", Category.values());
         mav.addObject("chosenCategory", category);
         mav.addObject("areas", Area.values());
         mav.addObject("chosenArea", areaId);
-        if(maxPrice > -1)
-            mav.addObject("maxPrice", maxPrice);
-        else
-            mav.addObject("maxPrice", null);
-
-        //Ecotag management
+        mav.addObject("favorite", favorite);
+        mav.addObject("maxPrice", maxPrice > -1?maxPrice:null);
         mav.addObject("ecoStrings", new String[]{"1", "2", "3", "4", "5"});
         mav.addObject("path", productService.buildPath(strings));
 
@@ -84,23 +73,21 @@ public class ProductController {
         List<Ecotag> tagsToFilter = ecotagService.filterByTags(strings, boolTags);
         mav.addObject("ecotagList", Ecotag.values());
         mav.addObject("boolTags", boolTags);
+        mav.addObject("favoritePath", favorite?"favorite=on&":"");
 
-        //Product filter
-        List<List<Product>> productPages = productService.exploreProcess(name, category, tagsToFilter, maxPrice, areaId, sort, direction);
+        User loggedUser = userService.getLoggedUser();
+        Pagination<Product> filteredProducts;
+        filteredProducts = productService.filter(name, category, tagsToFilter, maxPrice,
+                areaId, favorite, page, sort, direction, favorite?loggedUser.getId():0);
 
-        //Sorting
         mav.addObject("sort", sort);
         mav.addObject("direction", direction);
         String sortName = Objects.requireNonNull(Sort.getById(sort)).getName();
         mav.addObject("sortName", sortName);
         mav.addObject("sorting", Sort.values());
-
-        //Pagination
         mav.addObject("currentPage", page);
-        mav.addObject("pages", productPages);
-
-        List<Product> displayProducts = productService.getProductPage(page, productPages);
-        mav.addObject("products", displayProducts);
+        mav.addObject("pages", filteredProducts.getPageCount());
+        mav.addObject("products", filteredProducts.getItems());
 
         return mav;
     }
@@ -114,9 +101,10 @@ public class ProductController {
     @RequestMapping("/product/{productId:[0-9]+}")
     public ModelAndView productPage(
             @PathVariable("productId") final long productId,
-            @Valid @ModelAttribute("orderForm") final OrderForm form,
-            @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+            @ModelAttribute("orderForm") final OrderForm form,
+            @ModelAttribute("commentForm") final CommentForm commentForm,
             @RequestParam(name="page", defaultValue = "1") final int page,
+            @RequestParam(name="created", defaultValue = "false") final boolean created,
             @RequestParam(name="formFailure", defaultValue = "false") final boolean formFailure){
 
         final ModelAndView mav = new ModelAndView("productPage");
@@ -125,40 +113,30 @@ public class ProductController {
         if(!product.isPresent()) throw new ProductNotFoundException();
         final Product productObj = product.get();
 
-        // Change over previous functionality:
-        // Product should now load whether stock is available or not
-        /*if(productObj.getStock() == 0){
-            return new ModelAndView("redirect:/404");
-        }*/
-
         mav.addObject("product", productObj);
         mav.addObject("category", Category.getById(productObj.getCategoryId()));
-        List<Product> interesting = productService.getInteresting(productObj, 4);
-        mav.addObject("interesting", interesting);
+        mav.addObject("created", created);
+        mav.addObject("interesting", productService.getInteresting(productObj, INTERESTING_SIZE));
 
         final Optional<Seller> seller = sellerService.findById(productObj.getSeller().getId());
         if(!seller.isPresent()) throw new UserNotFoundException();
 
         mav.addObject("user", seller.get().getUser());
-        User user = securityService.getLoggedUser();
-        String loggedEmail = user == null ? null : user.getEmail();
-        mav.addObject("loggedEmail", loggedEmail);
+        User user = userService.getLoggedUser();
+        mav.addObject("loggedEmail", user == null ? null : user.getEmail());
 
-        List<List<Comment>> comments = commentService.getCommentsForProduct(productId);
-        mav.addObject("comments", comments.get(page-1));
-        mav.addObject("commentPages", comments);
+        Pagination<Comment> comments = commentService.getCommentsForProduct(productId, page);
+        mav.addObject("comments", comments);
+        mav.addObject("commentPages", comments.getPageCount());
         mav.addObject("currentPage", page);
 
         List<Ecotag> ecotags = ecotagService.getTagsFromProduct(productObj.getProductId());
-        Area area = Area.getById(seller.get().getAreaId());
+        Area area = seller.get().getArea();
         mav.addObject("area", area);
         mav.addObject("formFailure", formFailure);
         mav.addObject("ecotags", ecotags);
         mav.addObject("categories", Category.values());
         mav.addObject("seller", seller.get());
-
-
-        //TODO: See how to optimize this 4 states while keeping it parametrized
         mav.addObject("availableId", ProductStatus.AVAILABLE.getId());
         mav.addObject("pausedId", ProductStatus.PAUSED.getId());
         mav.addObject("outofstockId", ProductStatus.OUTOFSTOCK.getId());
@@ -166,38 +144,28 @@ public class ProductController {
         return mav;
     }
 
+
     @RequestMapping(value="/process/{productId}", method = {RequestMethod.POST})
     public ModelAndView process(@PathVariable final long productId,
                                 @Valid @ModelAttribute("orderForm") final OrderForm form,
-                                @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
+                                @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
-        if(errors.hasErrors() || form.getAmount() == null){
-            return productPage(productId, form, commentForm,1,true);
+        if(errors.hasErrors()){
+            return productPage(productId, form, commentForm,1,false, true);
         }
-
-        orderService.createAndNotify(productId, form.getAmount(), form.getMessage());
-
+        orderService.create(productId, form.getAmount(), form.getMessage());
         ModelAndView mav = new ModelAndView("redirect:/buyerProfile");
         return mav;
     }
 
     @RequestMapping(value = "/newComment/{productId}", method = {RequestMethod.POST})
     public ModelAndView comment(@PathVariable final long productId,
-                                @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                @ModelAttribute("orderForm") final OrderForm form,
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())
-            return productPage(productId, form, commentForm, 1, true);
-
-        User loggedUser = securityService.getLoggedUser();
-
-        Optional<Product> product = productService.getById(productId);
-
-        if(!product.isPresent()) throw new ProductNotFoundException();
-        final Product productObj = product.get();
-
-        Comment newComment = commentService.create(loggedUser, productObj, commentForm.getMessage());
-
+            return productPage(productId, form, commentForm, 1, false, true);
+        commentService.create(productId, commentForm.getMessage());
         return new ModelAndView("redirect:/product/{productId}");
     }
 
@@ -207,19 +175,8 @@ public class ProductController {
                                 @Valid @ModelAttribute("commentForm") final CommentForm commentForm,
                                 final BindingResult errors){
         if(errors.hasErrors())
-            return productPage(productId, form, commentForm, 1, true);
-
-        //TODO: Estos parametros no se usan. No los saco pero creo que no hacen falta
-        User loggedUser = securityService.getLoggedUser();
-
-        Optional<Product> product = productService.getById(productId);
-
-        if(!product.isPresent()) throw new ProductNotFoundException();
-        final Product productObj = product.get();
-
-
+            return productPage(productId, form, commentForm, 1, false,true);
         commentService.replyComment(commentForm.getParentId(), commentForm.getMessage());
-
         return new ModelAndView("redirect:/product/{productId}");
     }
 
@@ -231,15 +188,22 @@ public class ProductController {
         return mav;
     }
 
+    @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
+    public ModelAndView createProductPost(
+            @Valid @ModelAttribute("productForm") final ProductForm form,
+            final BindingResult errors) {
+        if (errors.hasErrors()) return createProduct(form);
+        byte[] image;
+        try {
+            image = form.getImage().getBytes();
+        } catch (IOException e) {throw new RuntimeException(e);}
+        Product product = productService.createProduct(Integer.parseInt(form.getStock()), Integer.parseInt(form.getPrice()),
+                form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
+        return new ModelAndView("redirect:/product/" + product.getProductId());
+    }
+
     @RequestMapping(value="/pauseProduct/{productId:[0-9]+}", method=RequestMethod.GET)
     public ModelAndView pauseProduct(@PathVariable("productId") final long productId) {
-        /*
-        como hago
-        1) Chequeo que el usuario loggeado sea dueño del producto
-        2) Si es, chequeo estado de producto.
-        3) Si esta available/out of stock, pauso.
-        4) Si esta paused/deleted, lo dejo como esta.
-         */
         productService.attemptPause(productId);
         return new ModelAndView("redirect:/sellerProfile");
     }
@@ -250,37 +214,14 @@ public class ProductController {
         return new ModelAndView("redirect:/sellerProfile");
     }
 
-    @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
-    public ModelAndView createProductPost(
-            @Valid @ModelAttribute("productForm") final ProductForm form,
-            final BindingResult errors) {
-        if (errors.hasErrors()) return createProduct(form);
-
-        byte[] image;
-        try {
-            image = form.getImage().getBytes();
-        } catch (IOException e) {throw new RuntimeException(e);}
-
-        Product product = productService.createProduct(Integer.parseInt(form.getStock()), Integer.parseInt(form.getPrice()),
-                form.getCategory(), form.getName(), form.getDescription(), image, form.getEcotag());
-        if(product == null) throw new ProductNotFoundException();
-
-        return new ModelAndView("redirect:/product/" + product.getProductId());
-    }
-
     @RequestMapping(value="/updateProduct/{productId:[0-9]+}", method=RequestMethod.GET)
     public ModelAndView updateProduct(
             @PathVariable("productId") final long productId,
             @ModelAttribute("updateProdForm") final UpdateProdForm form
     ){
-        Boolean isOwner = productService.checkForOwnership(productId);
-        if(!isOwner) throw new UnauthorizedRoleException();
-
-        Optional<Product> product = productService.getById(productId);
-        if(!product.isPresent()) throw new ProductNotFoundException();
-
+        productService.checkForOwnership(productId);
         ModelAndView mav = new ModelAndView("/updateProduct");
-        mav.addObject("product", product.get());
+        mav.addObject("product", productService.getById(productId).get());
         return mav;
     }
 

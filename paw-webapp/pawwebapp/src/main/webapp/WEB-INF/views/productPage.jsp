@@ -15,6 +15,19 @@
             <spring:message code="productpage.orderfail"/>
         </div>
     </c:if>
+    <c:if test="${created}">
+        <sec:authorize access="hasRole('SELLER')">
+        <div class="created-product">
+            <spring:message code="productpage.created"/>
+            <div style="text-align: center; margin-top: 20px; margin-bottom: 20px">
+                <a class="waves-effect waves-light btn-small standard-button"
+                   href="<c:url value="/createArticle"/>">
+                    <spring:message code="navbar.createarticle"/>
+                </a>
+            </div>
+        </div>
+        </sec:authorize>
+    </c:if>
     <div class="row">
         <div class="col s8">
             <div class="container productpage-info-container">
@@ -22,7 +35,7 @@
                     <c:out value="${product.name}"/>
                 </div>
                 <div class="row productpage-info-content">
-                    <c:if test="${product.image.id != 0}">
+                <c:if test="${product.image.id != 0}">
                         <div class="col s7">
                             <div class = "productpage-image-container productpage-img">
                                 <img class="materialboxed alt limit" src="<c:url value="/image/${product.image.id}"/>" alt="${product.name}">
@@ -53,7 +66,7 @@
                             <div class="productpage-info-nobold"><spring:message code="productpage.prodinfo.stock"
                                                                                  arguments="${product.stock}"/></div>
                             <c:if test="${product.stock < 6}">
-                                <div>
+                                <div style="margin-top: 10px; margin-bottom: 10px">
                                     <a class="btn orange accent-4 cursor-default">
                                         <spring:message code="productpage.orderform.lastunits"/>
                                     </a>
@@ -65,7 +78,7 @@
                                         <div class="productpage-ecotag">
                                             <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                                <spring:message code="${ecotag.tag}"/>
+                                                <div class="flex-column-center-align-vertical"><span><spring:message code="${ecotag.tag}"/></span></div>
                                             </a>
                                         </div>
                                     </c:forEach>
@@ -82,13 +95,13 @@
                     </c:if>
                 <c:if test="${product.image.id == 0}">
                     <div class="col s12 productpage-info-text">
-                        <div class="productpage-info-price">
+                        <div class="productpage-info-price center">
                             <spring:message code="productpage.price" arguments="${product.price}"/>
                         </div>
-                        <div class="productpage-info-nobold" style="font-size:18px;">
+                        <div class="productpage-info-nobold center" style="font-size:18px;">
                             <c:out value="${product.description}"/>
                         </div>
-                        <div class="productpage-info" style="font-size:20px;">
+                        <div class="productpage-info center justify-content-center" style="font-size:20px;">
                             <div class="center-in-div-with-flex">
                                 <i class="tiny material-icons">category</i>
                                 <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
@@ -103,7 +116,7 @@
                                 </div>
                             </c:if>
                         </div>
-                        <div class="productpage-info-nobold space-around">
+                        <div class="productpage-info-nobold space-around flex-column-center-align center">
                             <spring:message code="productpage.prodinfo.stock" arguments="${product.stock}"/>
                             <c:if test="${product.stock < 6}">
                                 <div>
@@ -113,57 +126,31 @@
                                 </div>
                             </c:if>
                             <c:if test="${ecotags.size() != 0}">
-                                <div class="productpage-ecotags separating-fields">
+                                <div class="productpage-ecotags separating-fields justify-content-center">
                                     <c:forEach items="${ecotags}" var="ecotag">
                                         <div class="productpage-ecotag">
                                             <a class="${ecotag.color} white-text chip" href="<c:url value="/explore?strings=${ecotag.id}"/>">
                                                 <i class="tiny material-icons">${ecotag.icon}</i>
-                                                <spring:message code="${ecotag.tag}"/>
+                                                <div class="flex-column-center-align-vertical"><span><spring:message code="${ecotag.tag}"/></span></div>
                                             </a>
                                         </div>
                                     </c:forEach>
                                 </div>
                             </c:if>
-                            <div class="productpage-info">
+                            <div class="productpage-info justify-content-center">
                                 <div class="center-in-div-with-flex">
                                     <a class="productpage-link" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                        <i class="tiny material-icons separate-icon">person</i><span><c:out value="${seller.user.firstName} ${seller.user.surname}"/></span>
+                                        <i class="tiny material-icons separate-icon">person</i>
+                                        <span>
+                                            <spring:message code="fullname"
+                                                            arguments="${seller.user.firstName}, ${seller.user.surname}"/>
+                                        </span>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </c:if>
-                    <c:if test="${product.image.id == 0}">
-                        <div class="col s12 productpage-info-text">
-                            <div class="productpage-info-price">
-                                <spring:message code="productpage.price" arguments="${product.price}"/>
-                            </div>
-                            <div class="productpage-info-nobold">
-                                <c:out value="${product.description}"/>
-                            </div>
-                            <div class="productpage-info">
-                                <div class="center-in-div-with-flex">
-                                    <i class="tiny material-icons">category</i>
-                                    <a class="productpage-link" href="<c:url value="/explore?category=${category.id}&sort=${sort}&direction=${direction}"/>">
-                                        <spring:message code="${category.name}"/>
-                                    </a>
-                                </div>
-                                <c:if test="${area != null}">
-                                    <div class="center-in-div-with-flex">
-                                        <a class="productpage-link" href="<c:url value="/explore?areaId=${area.id}&sort=${sort}&direction=${direction}"/>">
-                                            <i class="tiny material-icons separate-icon">location_pin</i><span><c:out value="${area.name}"/></span>
-                                        </a>
-                                    </div>
-                                </c:if>
-                            </div>
-                            <div class="row center flex-center" style="margin:auto;">
-                                <a class="productpage-link underline text-center" href="<c:url value="/sellerPage/${seller.id}"/>">
-                                    <div class="text-center">
-                                        <spring:message code="productpage.linktoseller"/>
-                                    </div>
-                                </a>
-                            </div>
-                        </c:if>
+                    </div>
+                </c:if>
                 </div>
             </div>
         </div>
@@ -182,9 +169,10 @@
                                 <div class="input-field">
                                     <spring:message var="textareaMsg" code="productpage.orderform.message.placeholder"/>
                                     <form:textarea placeholder="${textareaMsg}" id="sellerMsg" class="materialize-textarea" path="message"
-                                                   data-length="300" style="color:white;"/>
+                                                   data-length="255" style="color:white;"/>
                                     <form:label for="sellerMsg" cssStyle="margin-left:10px; left:0;" path="message">
-                                        <spring:message code="productpage.orderform.msgToSeller"/></form:label>
+                                        <spring:message code="productpage.orderform.msgToSeller"/>
+                                    </form:label>
                                     <div class="errors">
                                         <form:errors path="message" element="p" cssClass="error"/>
                                     </div>
@@ -194,14 +182,17 @@
                                 <div class="input-field" id="orderamount">
                                     <form:select path="amount">
                                         <form:option value="0" disabled="true">
-                                            <spring:message code="productpage.orderform.amount.placeholder"/></form:option>
+                                            <spring:message code="productpage.orderform.amount.placeholder"/>
+                                        </form:option>
                                         <c:forEach var="i" begin="1" end="5">
                                             <c:if test="${i <= product.stock}">
                                                 <form:option value="${i}"><c:out value="${i}"/></form:option>
                                             </c:if>
                                         </c:forEach>
                                     </form:select>
-                                    <form:label for="amount" path="amount" cssStyle="left:0;"><spring:message code="productpage.orderform.amount"/></form:label>
+                                    <form:label for="amount" path="amount" cssStyle="left:0;">
+                                        <spring:message code="productpage.orderform.amount"/>
+                                    </form:label>
                                     <form:errors path="amount" element="p" cssClass="error"/>
                                     <div class="errors">
                                         <form:errors path="amount" element="p" cssClass="error"/>
@@ -231,6 +222,7 @@
                                 </div>
                             </div>
                         </div>
+                        <form:errors path="amount" element="p" cssClass="error"/>
                     </form:form>
                 </c:if>
                 <c:if test="${product.status.id != availableId}">
@@ -282,13 +274,14 @@
     </div>
     <div class="container comments-container">
         <h4 class="center comments"><spring:message code="productpage.comments"/></h4>
-        <c:if test="${comments.size() == 0}">
+        <c:if test="${comments.items.size() == 0}">
             <span><spring:message code="nocommentsyet"/></span>
         </c:if>
         <sec:authorize access="hasRole('USER')">
             <div class="center">
-                <a id="button" style="margin-bottom: 20px" class="comment-write waves-effect waves-light btn-small gray accent-4 modal-trigger">
-                    <spring:message code="productpage.commentmsg"/></a>
+                <a id="button" style="margin:20px 0;" class="waves-effect waves-light btn-small gray accent-4 modal-trigger">
+                    <spring:message code="productpage.commentmsg"/>
+                </a>
             </div>
         </sec:authorize>
         <div id="newform" class="comment-box comment-write" style="display: none">
@@ -299,7 +292,7 @@
                         <spring:message var="textareaMsg" code="comment.message.placeholder"/>
                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
                                        data-length="300" style="color:white;"/>
-                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                        <form:label for="message" cssStyle="margin-left:10px" path="message"/>
                         <div class="errors">
                             <form:errors path="message" element="p" cssClass="error"/>
                         </div>
@@ -315,16 +308,18 @@
                 </div>
             </form:form>
         </div>
-        <c:forEach items="${comments}" var="comment">
+        <c:forEach items="${comments.items}" var="comment">
             <div class="comment-box">
                 <div  style="align-self: start; width:50%; text-align:left; margin: 5px 0 10px 0; color:black; border-radius:10px;
             background-color: #ffffff;">
                     <div class="comment-user">
                         <i class="tiny comment-icon material-icons">
                             person
-                        </i><p class="comment-username">${comment.user.firstName}</p><p class="comment-username">${comment.user.surname}</p>
+                        </i>
+                        <p class="comment-username"><c:out value="${comment.user.firstName}"/></p>
+                        <p class="comment-username"><c:out value="${comment.user.surname}"/></p>
                     </div>
-                    <div><p class="comment-message">${comment.message}</p></div>
+                    <div><p class="comment-message"><c:out value="${comment.message}"/></p></div>
                 </div>
                 <c:if test="${comment.reply != null}">
                     <div class="comment-reply" style="align-self:end    ; width:50%; text-align:right; margin: 10px 0 5px 0;
@@ -333,9 +328,19 @@
                         <div class="comment-user">
                             <i class="tiny comment-icon material-icons">
                                 person
-                            </i><p class="comment-username">${user.firstName}</p><p class="comment-username">${user.surname}</p>
+                            </i>
+                            <p class="comment-username">
+                                <c:out value="${user.firstName}"/>
+                            </p>
+                            <p class="comment-username">
+                                <c:out value="${user.surname}"/>
+                            </p>
                         </div>
-                        <div><p class="comment-message">${comment.reply}</p></div>
+                        <div>
+                            <p class="comment-message">
+                                <c:out value="${comment.reply}"/>
+                            </p>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${user.email == loggedEmail}">
@@ -348,7 +353,7 @@
                                         <spring:message var="textareaMsg" code="comment.reply.placeholder"/>
                                         <form:textarea placeholder="${textareaMsg}" id="message" class="materialize-textarea" path="message"
                                                        data-length="300" style="color:white;"/>
-                                        <form:label for="message" cssStyle="margin-left:10px" path="message"></form:label>
+                                        <form:label for="message" cssStyle="margin-left:10px" path="message"/>
                                         <div class="errors">
                                             <form:errors path="message" element="p" cssClass="error"/>
                                         </div>
@@ -371,7 +376,7 @@
         </c:forEach>
 
     </div>
-    <c:if test="${commentPages.size() > 1}">
+    <c:if test="${commentPages > 1}">
         <div class="pagin">
             <c:set var="nextPage" value="${currentPage+1}"/>
             <c:set var="previousPage" value="${currentPage-1}"/>
@@ -385,11 +390,11 @@
                         <li class="waves-effect"><a href="?page=${previousPage}" style="color: #EDFA8B">${previousPage}</a></li>
                     </c:if>
                     <li id="${currentPage}" class="disabled active"><a class="yellow-card" href="">${currentPage}</a></li>
-                    <c:if test="${currentPage < commentPages.size()}">
+                    <c:if test="${currentPage < commentPages}">
                         <li class="waves-effect"><a href="?page=${nextPage}" style="color: #EDFA8B">${nextPage}</a></li>
                         <li><a href="?page=${nextPage}"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
-                    <c:if test="${currentPage >= commentPages.size()}">
+                    <c:if test="${currentPage >= commentPages}">
                         <li id="forward" class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                     </c:if>
                 </ul>

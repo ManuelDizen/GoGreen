@@ -13,19 +13,76 @@
 <%@ include file="navbar.jsp"%>
 <div class="seller-profile-main-body-container">
     <div class="seller-profile-container-2-bis seller-data" style="display:flex;">
-        <div class="information row">
-            <div class="col s6">
-                <div class="sellerprofile-info-1"><c:out value="${user.firstName}${' '}${user.surname}"/></div>
+        <div class="information row" style="margin:0;">
+            <div class="col s6 format-col flex-column-center-align-vertical">
+                <div class="sellerprofile-info-1">
+                    <spring:message code="fullname" arguments="${user.firstName}, ${user.surname}"/>
+                </div>
                 <div class="sellerprofile-info-1"><c:out value="${user.email}"/></div>
-            </div>
-            <div class="col s6">
                 <div class="sellerprofile-info-2">
-                    <spring:message code="sellerprofile.address"/>:
-                    <c:out value="${seller.address}"/>
+                    <spring:message code="sellerprofile.address"
+                                    arguments="${seller.address}"/>
                 </div>
                 <div class="sellerprofile-info-2">
-                    <spring:message code="sellerprofile.phone"/>:
-                    <c:out value="${seller.phone}"/>
+                    <spring:message code="sellerprofile.phone"
+                                    arguments="${seller.phone}"/>
+                </div>
+            </div>
+            <c:choose>
+                <c:when test="${user.image != null}">
+                    <div class="col s6 separate-20-top">
+                        <div class="flex-center">
+                            <img src="<c:url value="/image/${user.image.id}"/>"
+                                 class="image-restrain profile-pic flex-column-center-align-vertical" alt=""/>
+                        </div>
+                        <div class="flex-center separate-12-top">
+                            <a class="space-icons" href="<c:url value="/deleteProfilePic"/>">
+                                <i class="center-align small material-icons white-text">
+                                    delete
+                                </i>
+                            </a>
+                            <a class="modal-trigger space-icons" href="#updatePicModal">
+                                <i class="center-align small material-icons white-text">
+                                    edit
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col s6 text-center flex-column-center-align-vertical format-col">
+                        <a class="waves-effect waves-light btn modal-trigger pp-btn" href="#updatePicModal">
+                            <spring:message code="updateprofilepic.newpic.msg"/>
+                        </a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+            <div id="updatePicModal" class="modal green-modal">
+                <div class="modal-content">
+                    <h3 class="underline text-center">
+                        <spring:message code="updateprofilepic.msg"/>
+                    </h3>
+                    <div class="col s12 separate-20-top">
+                    <c:url value="/updateProfilePic" var="url"/>
+                        <form:form modelAttribute="profilePicForm" method="post" action="${url}"
+                                   enctype="multipart/form-data">
+                            <div class="file-field input-field flex-center">
+                                <div class="waves-effect waves-light btn image_button" style="margin: auto 10px;">
+                                    <span><spring:message code="createproduct.form.image"/></span>
+                                    <form:input path="image" type="file"/>
+                                </div>
+                                <div class="file-path-wrapper-style" style="margin: auto 10px;">
+                                    <input class="file-path validate" type="text" readonly id="readonly-input">
+                                </div>
+                            </div>
+                            <form:errors path="image" element="p" cssClass="error"/>
+                            <div class="center create-submit flex-center">
+                                <button type="submit" class="waves-effect waves-light btn flex-center">
+                                    <spring:message code="updateprofilepic.form.submit"/>
+                                </button>
+                            </div>
+                        </form:form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,8 +117,8 @@
                                     <div class="seller-profile-product-card-info">
                                         <c:if test="${product.stock == 0}">
                                             <div class="seller-inline-flex">
-                                                    <%--a id="edit" class="waves-effect waves-light btn blue darken-3 modal-trigger" href="#stockModal${product.productId}"--%>
-                                                <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger" href="#stockModal${product.productId}">
+                                                <a id="stockless" class="waves-effect waves-light btn orange darken-3 modal-trigger"
+                                                   href="#stockModal${product.productId}">
                                                     <i class="material-icons">warning</i>
                                                     <spring:message code="sellerprofile.warning.nostock"/>
                                                 </a>
@@ -74,12 +131,12 @@
                                         </div>
                                         <div style="display:flex; justify-content: space-evenly">
                                             <div class="seller-profile-card-content">
-                                                <spring:message code="sellerprofile.orders.price"/>
-                                                <c:out value="${'$'}${product.price}"/>
+                                                <spring:message code="sellerprofile.orders.price"
+                                                arguments="${product.price}"/>
                                             </div>
                                             <div class="seller-profile-card-content">
-                                                <spring:message code="sellerprofile.stock"/>
-                                                <c:out value="${product.stock}"/>
+                                                <spring:message code="sellerprofile.stock"
+                                                arguments="${product.stock}"/>
                                             </div>
                                         </div>
                                         <div class="sellerprofile-action-buttons">
@@ -112,7 +169,6 @@
                                             <c:out value="${product.name}"/></h3>
                                         <div class="text-center">
                                             <spring:message code="sellerprofile.updatestock.note"/>
-                                            <spring:message code="sellerprofile.updatestock.note2"/>
                                         </div>
                                         <div class="row s12 center-buttons">
                                             <a id="edit2" class="waves-effect waves-light btn edit-btn modal-trigger accomodate-button" href="<c:url value="/updateProduct/${product.productId}"/>">
@@ -132,7 +188,8 @@
                                             <spring:message code="sellerprofile.delete.cancel"/>
                                         </a>
                                         <a class="waves-effect waves-light btn  red accent-4 left-margin" href=<c:url value="/deleteProduct/${product.productId}"/>>
-                                            <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                                            <i class="material-icons left">delete</i>
+                                            <spring:message code="sellerprofile.delete.confirmbutton"/>
                                         </a>
                                     </div>
                                 </div>
@@ -141,7 +198,7 @@
                     </c:if>
                 </div>
             </div>
-            <c:if test="${productPages.size() > 1}">
+            <c:if test="${productPages > 1}">
                 <div class="pagin">
                     <c:set var="nextPage" value="${currentPageP+1}"/>
                     <c:set var="previousPage" value="${currentPageP-1}"/>
@@ -155,11 +212,11 @@
                                 <li class="waves-effect"><a href="?pageP=${currentPageP-1}#products" style="color: #EDFA8B">${previousPage}</a></li>
                             </c:if>
                             <li id="${currentPageP}" class="disabled active"><a class="yellow-card" href="">${currentPageP}</a></li>
-                            <c:if test="${currentPageP < productPages.size()}">
+                            <c:if test="${currentPageP < productPages}">
                                 <li class="waves-effect"><a href="?pageP=${currentPageP+1}#products" style="color: #EDFA8B">${nextPage}</a></li>
                                 <li><a href="?pageP=${currentPageP+1}#products"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
-                            <c:if test="${currentPageP >= productPages.size()}">
+                            <c:if test="${currentPageP >= productPages}">
                                 <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
                         </ul>
@@ -186,12 +243,12 @@
                                         <c:out value="${order.productName}"/>
                                     </div>
                                     <div class="seller-profile-card-content">
-                                        <spring:message code="sellerprofile.orders.price"/>
-                                        <c:out value="${'$'}${order.price}"/>
+                                        <spring:message code="sellerprofile.orders.price"
+                                        arguments="${order.price}"/>
                                     </div>
                                     <div class="seller-profile-card-content">
-                                        <spring:message code="sellerprofile.orders.amount"/>
-                                        <c:out value="${order.amount}"/>
+                                        <spring:message code="sellerprofile.orders.amount"
+                                        arguments="${order.amount}"/>
                                     </div>
                                     <div>
                                         <spring:message code="sellerprofile.orders.buyer" arguments="${order.buyerName}, ${order.buyerSurname}"/>
@@ -200,12 +257,6 @@
                                         <spring:message code="sellerprofile.orders.buyermail" arguments="${order.buyerEmail}"/>:
                                     </div>
                                 </div>
-<%--                                <div style="height:fit-content; overflow-wrap: break-word;">--%>
-<%--                                    <c:if test="${fn:length(order.message) > 0}">--%>
-<%--                                        <spring:message code="sellerprofile.orders.message"/>--%>
-<%--                                        <c:out value="${': '}${order.message}"/>--%>
-<%--                                    </c:if>--%>
-<%--                                </div>--%>
                                 <div class="seller-two-margin center">
                                     <c:if test="${fn:length(order.message) > 0}">
                                         <a class="waves-effect waves-light seller-btn btn-small gray accent-4 modal-trigger" href="#messagemodal${order.id}">
@@ -216,7 +267,7 @@
                                 </div>
                             </div>
                             <div id="messagemodal${order.id}" class="modal green-modal">
-                                <div class="modal-content">
+                                <div class="modal-content sellerprofile-modal">
                                     <h3 class="underline"><spring:message code="sellerprofile.orders.message"/></h3>
                                     <div>
                                         <h4><c:out value="${order.productName}"/></h4>
@@ -235,8 +286,8 @@
                                                 arguments="${order.buyerName}, ${order.buyerSurname}"/>
                                             </li>
                                             <li>
-                                                <spring:message code="sellerprofile.deleteorder.amount"/>
-                                                <c:out value="${order.amount}"/>
+                                                <spring:message code="sellerprofile.deleteorder.amount"
+                                                arguments="${order.amount}"/>
                                             </li>
                                         </ul>
                                     </div>
@@ -246,7 +297,8 @@
                                         <spring:message code="sellerprofile.delete.cancel"/>
                                     </a>
                                     <a class="waves-effect waves-light btn  red accent-4" href="<c:url value="/deleteOrder/${order.id}"/>">
-                                        <i class="material-icons left">delete</i><spring:message code="sellerprofile.delete.confirmbutton"/>
+                                        <i class="material-icons left">delete</i>
+                                        <spring:message code="sellerprofile.delete.confirmbutton"/>
                                     </a>
                                 </div>
                             </div>
@@ -254,7 +306,7 @@
                     </c:if>
                 </div>
             </div>
-            <c:if test="${orderPages.size() > 1}">
+            <c:if test="${orderPages > 1}">
                 <div class="pagin">
                     <c:set var="nextPage" value="${currentPageO+1}"/>
                     <c:set var="previousPage" value="${currentPageO-1}"/>
@@ -268,11 +320,11 @@
                                 <li class="waves-effect"><a href="?pageO=${currentPageO-1}#orders" style="color: #EDFA8B">${previousPage}</a></li>
                             </c:if>
                             <li id="${currentPageO}" class="disabled active"><a class="yellow-card" href="">${currentPageO}</a></li>
-                            <c:if test="${currentPageO < orderPages.size()}">
+                            <c:if test="${currentPageO < orderPages}">
                                 <li class="waves-effect"><a href="?pageO=${currentPageO+1}#orders" style="color: #EDFA8B">${nextPage}</a></li>
                                 <li><a href="?pageO=${currentPageO+1}#orders"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
-                            <c:if test="${currentPageO >= orderPages.size()}">
+                            <c:if test="${currentPageO >= orderPages}">
                                 <li class="disabled"><a href="" style="display: none"><i class="material-icons pagination-arrow">navigate_next</i></a></li>
                             </c:if>
                         </ul>

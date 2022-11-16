@@ -26,9 +26,6 @@ public class User {
     @Column(nullable=false, length=255, name="password")
     private String password;
 
-
-    //private long imageId;
-
     @Column(nullable=false, name="locale")
     private Locale locale;
 
@@ -38,10 +35,11 @@ public class User {
     @Column(name="notifications")
     private Boolean notifications;
 
-    //TODO: Cambiar tipo "eager" a lazy
-    //  Nota: De cualquier manera, en este caso los usuarios tienen como máximo 1 rol, por lo que a nivel
-    //  memoria es muy baja. Igual, hay que cambiarlo
-    @ManyToMany(fetch=FetchType.EAGER)
+    @OneToOne
+    @JoinColumn(name = "image_id", nullable = true)
+    private Image image;
+
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(
             name="user_roles",
             joinColumns = @JoinColumn(name="user_id"),
@@ -108,14 +106,6 @@ public class User {
         return id;
     }
 
-    /*public long getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(long imageId) {
-        this.imageId = imageId;
-    }*/
-
     public void setId(long id) {
         this.id = id;
     }
@@ -154,8 +144,14 @@ public class User {
 
     public void toggleNotifications(){
         this.notifications = !this.notifications;
-        //this.notifications = this.notifications == 0? 1:0;
-        //System.out.println("Entro a toggle!!!!!!!");
-        //if(this.notifications == 1) System.out.println("Soy true.");
     }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+    public void deleteImage(){this.image = null;}
 }

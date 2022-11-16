@@ -33,7 +33,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private GoGreenUserDetailsService userDetailsService;
 
-
     @Bean
     public RoleHierarchy roleHierarchy(){
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -91,11 +90,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/createProduct", "/editProduct/**").hasRole("SELLER")
                     .antMatchers("/pauseProduct/**", "/republishProduct/**", "/updateProduct/**").hasRole("SELLER")
                     .antMatchers("/createArticle").hasRole("SELLER")
+                    .antMatchers("/exploreSellers").hasRole("USER")
                 .and().formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .successHandler(successHandler())
-                    //.defaultSuccessUrl("/explore", false)
                     .failureUrl("/login?failure=true")
                     .loginPage("/login")
                 .and().rememberMe()

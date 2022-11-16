@@ -23,31 +23,21 @@ public class Seller {
     private String address;
 
     @Column(name = "areaid", nullable = true)
-    //@Enumerated(EnumType.ORDINAL)
-    //TODO: This should work except for AGRONOMÍA, check for solutions
-    //  Update: Changed default value of areaid to -1, and changed agronomia ID to 0 (now matches ordinal)
-    private Long areaId;
-
-
-    /*@OneToMany(mappedBy = "seller")
-    private Set<Product> products;
-
-    @OneToMany(mappedBy = "seller")
-    private Set<Article> news;*/
+    private Area area;
 
     Seller(){}
 
-    public Seller(User user, String phone, String address, long areaId){
-        this(null, user, phone, address, areaId);
+    public Seller(User user, String phone, String address, Area area){
+        this(null, user, phone, address, area);
     }
 
 
-    public Seller(Long id, User user, String phone, String address, long areaId) {
+    public Seller(Long id, User user, String phone, String address, Area area) {
         this.id = id;
         this.user = user;
         this.phone = phone;
         this.address = address;
-        this.areaId = areaId;
+        this.area = area;
     }
 
     public Long getId() {
@@ -72,12 +62,12 @@ public class Seller {
         this.address = address;
     }
 
-    public Long getAreaId() {
-        return areaId;
+    public Area getArea() {
+        return area;
     }
 
-    public void setAreaId(Long areaId) {
-        this.areaId = areaId;
+    public void setArea(Area area) {
+        this.area = area;
     }
 
     @Override

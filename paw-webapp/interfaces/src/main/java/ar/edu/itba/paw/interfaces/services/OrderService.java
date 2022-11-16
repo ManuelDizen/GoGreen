@@ -1,27 +1,18 @@
 package ar.edu.itba.paw.interfaces.services;
 
 import ar.edu.itba.paw.models.Order;
-import ar.edu.itba.paw.models.Product;
-import ar.edu.itba.paw.models.Seller;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.Pagination;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-
-    Order create(String productName, String buyerName, String buyerSurname,
-                 String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, Integer price, LocalDateTime dateTime, String message);
-
+    Order create(long productId, int amount, String message);
     Optional<Order> getById(long orderId);
-    List<Order> getBySellerEmail(String sellerEmail);
-    List<Order> getByBuyerEmail(String buyerEmail);
-    void createAndNotify(long productId, int amount, String message);
-
-
-    Boolean checkForOrderOwnership(long orderId);
-
+    Pagination<Order> getByBuyerEmail(String buyerEmail, int page);
+    Pagination<Order> getBySellerEmail(String sellerEmail, int page);
+    boolean checkForOrderOwnership(long orderId);
     void deleteOrder(long orderId);
+    int getTotalOrdersForSeller(String sellerEmail);
+    List<String> getFirstNDistinct(int amount);
 }

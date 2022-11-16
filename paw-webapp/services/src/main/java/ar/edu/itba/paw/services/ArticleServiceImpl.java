@@ -19,24 +19,25 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ImageService imageService;
     private final ArticleDao articleDao;
-    private final SecurityService securityService;
+    private final UserService userService;
     private final SellerService sellerService;
     private final FavoriteService favoriteService;
     private final EmailService emailService;
 
     @Autowired
     public ArticleServiceImpl(final ImageService imageService, final ArticleDao articleDao,
-                              final SecurityService securityService, final SellerService sellerService,
+                              final UserService userService, final SellerService sellerService,
                               final FavoriteService favoriteService, final EmailService emailService) {
         this.imageService = imageService;
         this.articleDao = articleDao;
-        this.securityService = securityService;
+        this.userService = userService;
         this.sellerService = sellerService;
         this.favoriteService = favoriteService;
         this.emailService = emailService;
     }
 
-    private Image parseByteArrayToImage(byte[] image){
+    @Override
+    public Image parseByteArrayToImage(byte[] image){
         Image img = null;
         if (image != null && image.length > 0) {
             img = imageService.create(image);
@@ -49,7 +50,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Transactional
     @Override
-    public Article create(Seller seller, String message, byte[] image, LocalDateTime dateTime) {
+    public Article create(String message, byte[] image, LocalDateTime dateTime) {
+
+        User logged = userService.getLoggedUser();
+        if(logged == null) throw new UnauthorizedRoleException();
+        Optional<Seller> maybeSeller = sellerService.findByUserId(logged.getId());
+        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
+        Seller seller = maybeSeller.get();
+
         Image img = parseByteArrayToImage(image);
         Article article = articleDao.create(seller, message, img, dateTime);
         if(article == null) throw new ArticleCreationException();
@@ -65,60 +73,22 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.getById(id);
     }
 
-    public Boolean checkForArticleOwnership(long id) {
-        User user = securityService.getLoggedUser();
-        if(user == null) throw new UnauthorizedRoleException();
-        Optional<Seller> maybeSeller = sellerService.findByUserId(user.getId());
-        if(!maybeSeller.isPresent()) throw new UserNotFoundException();
-        Seller seller = maybeSeller.get();
-        Optional<Article> maybeArticle = getById(id);
-        if(maybeArticle.isPresent()){
-            Article article = maybeArticle.get();
-            return article.getSeller().getId().equals(seller.getId());
-        }
-        return false;
-    }
-    @Transactional
-    @Override
-    public void edit(Long id, String newMessage, byte[] newImage) {
-        if(!checkForArticleOwnership(id)){throw new ForbiddenActionException();}
-
-        Optional<Article> maybeArticle = articleDao.getById(id);
-        if(!maybeArticle.isPresent()) throw new ArticleNotFoundException();
-        Article article = maybeArticle.get();
-
-        article.setMessage(newMessage);
-        article.setImage(parseByteArrayToImage(newImage));
-    }
-
     @Transactional
     @Override
     public void delete(Long id) {
-        // Unlike deleting products, this will produce a physical deletion
         articleDao.delete(id);
     }
 
     @Override
-    public List<Article> getBySellerId(Long sellerId) {
-        return articleDao.getBySellerId(sellerId);
+    public Pagination<Article> getBySellerId(Long sellerId, int page) {
+        return articleDao.getBySellerId(sellerId, page);
     }
 
     @Transactional
     @Override
-    public List<Article> getForLoggedUser() {
-        User user = securityService.getLoggedUser();
+    public Pagination<Article> getForLoggedUser(int page) {
+        User user = userService.getLoggedUser();
         if(user == null) throw new UnauthorizedRoleException();
-        List<Favorite> favorites = favoriteService.getByUserId(user.getId());
-        List<Article> news = new ArrayList<>();
-        for(Favorite fav : favorites){
-            news.addAll(getBySellerId(fav.getSeller().getId()));
-        }
-        news.sort(new Comparator<Article>() {
-            @Override
-            public int compare(Article o1, Article o2) {
-                return o2.getDateTime().compareTo(o1.getDateTime());
-            }
-        });
-        return news;
+        return articleDao.getForUser(user.getId(), page);
     }
 }

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.models;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Entity
 @Table(name="orders")
@@ -45,18 +46,23 @@ public class Order {
     @Column(name="message")
     private String message;
 
+    @ManyToOne
+    @JoinColumn(name="sellerid", nullable = false)
+    private Seller seller;
+
     Order(){}
 
     public Order(String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, Integer price, LocalDateTime dateTime, String message){
+                 Integer amount, Integer price, LocalDateTime dateTime, String message,
+                 Seller seller){
         this(null,productName, buyerName, buyerSurname, buyerEmail, sellerName, sellerSurname,
-                sellerEmail, amount, price, dateTime, message);
+                sellerEmail, amount, price, dateTime, message, seller);
     }
 
     public Order(Long id, String productName, String buyerName, String buyerSurname,
                  String buyerEmail, String sellerName, String sellerSurname, String sellerEmail,
-                 Integer amount, Integer price, LocalDateTime dateTime, String message) {
+                 Integer amount, Integer price, LocalDateTime dateTime, String message, Seller seller) {
         this.id = id;
         this.productName = productName;
         this.buyerName = buyerName;
@@ -69,6 +75,7 @@ public class Order {
         this.price = price;
         this.dateTime = dateTime;
         this.message = message;
+        this.seller = seller;
     }
 
     public Long getId() {
@@ -168,5 +175,13 @@ public class Order {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 }
