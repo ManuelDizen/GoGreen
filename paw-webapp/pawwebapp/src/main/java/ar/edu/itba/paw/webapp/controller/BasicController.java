@@ -34,14 +34,17 @@ public class BasicController {
         User loggedUser = userService.getLoggedUser();
         List<Order> ordersForUser = new ArrayList<>();
         List<String> popularOrders = new ArrayList<>();
+        boolean popular = false;
         if(loggedUser!=null) ordersForUser =
             orderService.getByBuyerEmail(loggedUser.getEmail(), 1).getItems();
         if(loggedUser == null || ordersForUser.isEmpty()){
             popularOrders = orderService.getFirstNDistinct(N_LANDING);
+            popular = true;
         }
         List<Product> products = productService.getLandingProducts(loggedUser,
                 ordersForUser, popularOrders);
         final ModelAndView mav = new ModelAndView("index");
+        mav.addObject("popular", popular);
         mav.addObject("products", products);
         mav.addObject("categories", Category.values());
         return mav;
