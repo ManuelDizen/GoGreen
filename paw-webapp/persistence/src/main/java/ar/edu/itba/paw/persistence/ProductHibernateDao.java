@@ -354,7 +354,7 @@ public class ProductHibernateDao implements ProductDao {
     }
 
     @Override
-    public Pagination<Product> findBySeller(long sellerId, int page, int amount) {
+    public Pagination<Product> findBySeller(long sellerId, int page, int amount, boolean ecotag) {
         ProductStatus deleted = ProductStatus.DELETED;
 
         String str = "FROM products WHERE sellerid = :sellerId AND productstatus_id <> :deleted";
@@ -376,8 +376,13 @@ public class ProductHibernateDao implements ProductDao {
             return new Pagination<>(new ArrayList<>(), (long) page,
                     0);;
 
+        String strEcotag = "";
+
+        if(ecotag)
+            strEcotag = "LEFT JOIN FETCH p.tagList";
+
         final TypedQuery<Product> jpaQuery = em.createQuery(
-                "SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.tagList" +
+                "SELECT DISTINCT p FROM Product p " + strEcotag +
                         " WHERE p.id IN :products " +
                         " ORDER BY p.id DESC",
                 Product.class);
@@ -392,25 +397,5 @@ public class ProductHibernateDao implements ProductDao {
         return new Pagination<>(jpaQuery.getResultList(), page, (count+amount-1)/amount);
     }
 
-    @Override
-    public Pagination<Product> findBySellerNoEcotag(long sellerId, int page, int amount) {
-        ProductStatus deleted = ProductStatus.DELETED;
-        final TypedQuery<Product> query = em.createQuery("SELECT DISTINCT p FROM Product p" +
-                        " WHERE p.seller.id = :sellerId " +
-                        "AND p.status <> :deleted ORDER BY p.id DESC",
-                Product.class);
-        query.setParameter("sellerId", sellerId);
-        query.setParameter("deleted", deleted);
-        query.setMaxResults(amount);
-        query.setFirstResult((page-1)*amount);
 
-        String str = "FROM products WHERE sellerid = :sellerId AND productstatus_id <> :deletedId";
-        final Query countQuery = em.createNativeQuery("SELECT COUNT(*) " + str);
-        countQuery.setParameter("sellerId", sellerId);
-        countQuery.setParameter("deletedId", deleted.getId());
-        @SuppressWarnings("unchecked")
-        long count =
-                ((BigInteger)countQuery.getResultList().stream().findFirst().orElse(0)).longValue();
-        return new Pagination<>(query.getResultList(), page, (count+amount-1)/amount);
-    }
 }
