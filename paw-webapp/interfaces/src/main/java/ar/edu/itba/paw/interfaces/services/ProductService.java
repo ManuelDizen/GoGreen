@@ -20,7 +20,6 @@ public interface ProductService {
     List<Product> getAvailable(int limit);
     List<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId);
     Pagination<Product> filter(String name, long category, List<Ecotag> tags, Integer maxPrice, long areaId, boolean favorite, int page, int sort, int direction, long userId);
-    void sortProducts(List<Product> productList, int sort, int direction);
 
     void deleteProduct(long productId);
     void attemptDelete(long productId);
@@ -46,6 +45,5 @@ public interface ProductService {
 
     List<Product> getInterestingForUser(List<Order> orders, int amount);
 
-    List<Product> getByCategory(Category c);
     boolean atLeastOneProduct();
 }

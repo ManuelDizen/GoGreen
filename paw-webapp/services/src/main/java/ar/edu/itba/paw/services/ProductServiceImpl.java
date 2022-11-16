@@ -102,11 +102,6 @@ public class ProductServiceImpl implements ProductService {
         return productDao.getByName(name);
     }
 
-//    @Override
-//    public List<Product> getAll() {
-//        return productDao.getAll();
-//    }
-
     @Override
     public List<Product> getAvailable(){return productDao.getAvailable();}
 
@@ -129,35 +124,6 @@ public class ProductServiceImpl implements ProductService {
             ecotags.add(tag.getId());
         }
         return productDao.filter(parseString(name), category, ecotags, maxPrice, areaId, favorite, page, sort, direction, userId);
-    }
-
-    private int getSales(String productName) {
-        return productDao.getSales(productName);
-    }
-    @Override
-    public void sortProducts(List<Product> productList, int sort, int direction) {
-        productList.sort((o1, o2) -> {
-            if (sort == Sort.SORT_PRICE.getId()) {
-                if (direction == ASCENDING) {
-                    return (o1.getPrice() - o2.getPrice());
-                } else {
-                    return (o2.getPrice() - o1.getPrice());
-                }
-            } else if (sort == Sort.SORT_ALPHABETIC.getId()) {
-                if (direction == ASCENDING) {
-                    return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-                } else {
-                    return o2.getName().toLowerCase().compareTo(o1.getName().toLowerCase());
-                }
-            } else if (sort == Sort.SORT_CHRONOLOGIC.getId()) {
-                if (direction == ASCENDING)
-                    return (int) (o1.getProductId() - o2.getProductId());
-                else {
-                    return (int) (o2.getProductId() - o1.getProductId());
-                }
-            }
-            return 0;
-        });
     }
 
     @Transactional
@@ -322,7 +288,6 @@ public class ProductServiceImpl implements ProductService {
         }
         if(toReturn.size() < amount) {
             List<Product> sorted = getAvailable(N_PROD_PAGE);
-            sortProducts(sorted, Sort.SORT_CHRONOLOGIC.getId(), DESCENDING);
             addIfNotPresent(toReturn, sorted, amount, product);
         }
         return toReturn;
@@ -350,12 +315,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return interesting;
     }
-
-    @Override
-    public List<Product> getByCategory(Category c){
-        return productDao.getByCategory(c.getId());
-    }
-
     @Override
     public List<Product> getLandingProducts(User loggedUser, List<Order> ordersForUser,
                                             List<String> popularOrders) {
@@ -370,19 +329,6 @@ public class ProductServiceImpl implements ProductService {
             products = getInterestingForUser(ordersForUser, N_LANDING);
         }
         return products;
-    }
-
-    public void setTagList(List<Product> productList) {
-        for(Product product : productList) {
-            product.setTagList(ecotagService.getTagsFromProduct(product.getProductId()));
-        }
-    }
-
-    public List<Product> getProductPage(int page, List<List<Product>> productPages) {
-        if(productPages.size() != 0)
-            return productPages.get(page-1);
-        return new ArrayList<>();
-
     }
 
     @Transactional
