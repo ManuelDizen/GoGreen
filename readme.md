@@ -2,7 +2,7 @@
 
 ## Cuenta de usuario:
 - Email: gogreenuser1@gmail.com
-- Contraseña: ABC123abc
+- Contraseña: ABC123abcd
 
 ## Cuenta de vendedor:
 - Email: gogreenseller1@gmail.com
